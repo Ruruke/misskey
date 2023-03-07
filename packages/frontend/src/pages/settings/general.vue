@@ -25,28 +25,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<option value="desktop"><i class="ti ti-device-desktop"/> {{ i18n.ts.desktop }}</option>
 	</MkRadios>
 
-  <MkSelect v-model="searchEngine" class="_formBlock">
-    <template #label>{{ i18n.ts.searchEngine }}</template>
-    <option value="https://google.com/search?">
-      Google Search (google.com)
-    </option>
-    <option value="https://duckduckgo.com/?">
-      DuckDuckGo (duckduckgo.com)
-    </option>
-    <option value="https://search.yahoo.com/search?">
-      Yahoo! Search (search.yahoo.com)
-    </option>
-    <option value="https://www.ecosia.org/search?">
-      Ecosia (ecosia.org)
-    </option>
-    <option value="https://www.startpage.com/do/search?">
-      Startpage (startpage.com)
-    </option>
-    <option value="https://search.disroot.org/search?">
-      SearX (search.disroot.org)
-    </option>
-<!--    <template #caption>{{ i18n.ts.searchEngineCaption }}</template>-->
-  </MkSelect>
+	<MkSelect v-model="searchEngine" class="_formBlock">
+		<template #label>{{ i18n.ts.searchEngine }}</template>
+		<option value="https://google.com/search?">
+			Google Search (google.com)
+		</option>
+		<option value="https://duckduckgo.com/?">
+			DuckDuckGo (duckduckgo.com)
+		</option>
+		<option value="https://search.yahoo.com/search?">
+			Yahoo! Search (search.yahoo.com)
+		</option>
+		<option value="https://www.ecosia.org/search?">
+			Ecosia (ecosia.org)
+		</option>
+		<option value="https://www.startpage.com/do/search?">
+			Startpage (startpage.com)
+		</option>
+		<option value="https://search.disroot.org/search?">
+			SearX (search.disroot.org)
+		</option>
+		<!--    <template #caption>{{ i18n.ts.searchEngineCaption }}</template>-->
+	</MkSelect>
 
 	<FormSection>
 		<div class="_gaps_s">
@@ -170,6 +170,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkRadios>
 				<div style="margin: 8px 0 0 0; font-size: 1.5em;"><Mfm :key="emojiStyle" text="🍮🍦🍭🍩🍰🍫🍬🥞🍪"/></div>
 			</div>
+
+			<MkSelect v-model="customFont">
+				<template #label>{{ i18n.ts.customFont }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+				<option :value="null">{{ i18n.ts.default }}</option>
+				<option v-for="[name, font] of Object.entries(fontList)" :value="name">{{ font.name }}</option>
+			</MkSelect>
 
 			<MkRadios v-model="fontSize">
 				<template #label>{{ i18n.ts.fontSize }}</template>
@@ -295,6 +301,7 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { fontList } from '@/scripts/font';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
 import { claimAchievement } from '@/scripts/achievements.js';
@@ -321,7 +328,9 @@ const advancedMfm = computed(defaultStore.makeGetterSetter('advancedMfm'));
 const showReactionsCount = computed(defaultStore.makeGetterSetter('showReactionsCount'));
 const enableQuickAddMfmFunction = computed(defaultStore.makeGetterSetter('enableQuickAddMfmFunction'));
 const emojiStyle = computed(defaultStore.makeGetterSetter('emojiStyle'));
+const disableDrawer = computed(defaultStore.makeGetterSetter('disableDrawer'));
 const menuStyle = computed(defaultStore.makeGetterSetter('menuStyle'));
+const customFont = computed(defaultStore.makeGetterSetter('customFont'));
 const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('disableShowingAnimatedImages'));
 const forceShowAds = computed(defaultStore.makeGetterSetter('forceShowAds'));
 const loadRawImages = computed(defaultStore.makeGetterSetter('loadRawImages'));
