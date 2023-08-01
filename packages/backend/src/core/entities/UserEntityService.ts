@@ -596,15 +596,21 @@ export class UserEntityService implements OnModuleInit {
 				publicReactions: this.isLocalUser(user) ? profile!.publicReactions : false, // https://github.com/misskey-dev/misskey/issues/12964
 				followersVisibility: profile!.followersVisibility,
 				followingVisibility: profile!.followingVisibility,
-				roles: this.roleService.getUserRoles(user.id).then(roles => roles.filter(role => role.isPublic).sort((a, b) => b.displayOrder - a.displayOrder).map(role => ({
+				roles: this.roleService.getUserRoles(user.id).then(roles => roles.filter(role => role.isPublic && role.permissionGroup !== 'Community').sort((a, b) => b.displayOrder - a.displayOrder).map(role => ({
 					id: role.id,
 					name: role.name,
 					color: role.color,
 					iconUrl: role.iconUrl,
 					description: role.description,
-					isModerator: role.isModerator,
-					isAdministrator: role.isAdministrator,
+					permissionGroup: role.permissionGroup,
 					displayOrder: role.displayOrder,
+				}))),
+				communityRoles: this.roleService.getUserRoles(user.id).then(roles => roles.filter(role => role.permissionGroup === 'Community').sort((a, b) => b.displayOrder - a.displayOrder).map(role => ({
+					id: role.id,
+					name: role.name,
+					color: role.color,
+					iconUrl: role.iconUrl,
+					description: role.description,
 				}))),
 				memo: memo,
 				moderationNote: iAmModerator ? (profile!.moderationNote ?? '') : undefined,

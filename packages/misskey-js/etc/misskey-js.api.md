@@ -1816,6 +1816,7 @@ declare namespace entities {
         ReversiSurrenderRequest,
         ReversiVerifyRequest,
         ReversiVerifyResponse,
+        RolesListRequest,
         RolesListResponse,
         RolesNotesRequest,
         RolesNotesResponse,
@@ -3136,6 +3137,9 @@ type RoleLite = components['schemas']['RoleLite'];
 
 // @public (undocumented)
 type RolePolicies = components['schemas']['RolePolicies'];
+
+// @public (undocumented)
+type RolesListRequest = operations['roles___list']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type RolesListResponse = operations['roles___list']['responses']['200']['content']['application/json'];
