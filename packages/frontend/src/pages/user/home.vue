@@ -153,6 +153,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
 			<XFiles :key="user.id" :user="user" @unfold="emit('unfoldFiles')"/>
 			<XActivity :key="user.id" :user="user"/>
+			<XFiles :key="user.id" :user="user"/>
+			<XActivity v-if="!user.hideActivity" :key="user.id" :user="user"/>
+			<XListenBrainz
+					v-if="user.listenbrainz && listenbrainzdata"
+					:key="user.id"
+					:user="user"
+					style="margin-top: var(--margin)"
+				/>
 		</div>
 	</div>
 </MkSpacer>
@@ -204,6 +212,7 @@ function calcAge(birthdate: string): number {
 const XFiles = defineAsyncComponent(() => import('./index.files.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
+const XListenBrainz = defineAsyncComponent(() => import("./index.listenbrainz.vue"));;
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed;
@@ -229,6 +238,24 @@ const memoDraft = ref(props.user.memo);
 const isEditingMemo = ref(false);
 const moderationNote = ref(props.user.moderationNote);
 const editModerationNote = ref(false);
+
+let listenbrainzdata = false;
+if (props.user.listenbrainz) {
+	try {
+		const response = await fetch(`https://api.listenbrainz.org/1/user/${props.user.listenbrainz}/playing-now`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+		});
+		const data = await response.json();
+		if (data.payload.listens && data.payload.listens.length !== 0) {
+			listenbrainzdata = true;
+		}
+	} catch(err) {
+		listenbrainzdata = false;
+	}
+}
 
 watch(moderationNote, async () => {
 	await misskeyApi('admin/update-user-note', { userId: props.user.id, text: moderationNote.value });

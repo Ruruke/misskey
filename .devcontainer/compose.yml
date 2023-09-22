@@ -27,7 +27,7 @@ services:
       retries: 20
   db:
     restart: unless-stopped
-    image: postgres:15-alpine
+    image: groonga/pgroonga:latest-alpine-16
     ports:
       - 5432:5432
     networks:
