@@ -5385,6 +5385,7 @@ export interface Locale extends ILocale {
             "section3": string;
         };
     };
+    "disableNoteNyaize": string;
     "_announcement": {
         /**
          * 既存ユーザーのみ

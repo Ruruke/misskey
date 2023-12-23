@@ -8,11 +8,9 @@ import * as Misskey from 'misskey-js';
 import { hemisphere } from '@@/js/intl-const.js';
 import lightTheme from '@@/themes/l-light.json5';
 import darkTheme from '@@/themes/d-green-lime.json5';
+import { miLocalStorage } from './local-storage.js';
 import type { SoundType } from '@/scripts/sound.js';
-import { DEFAULT_DEVICE_KIND, type DeviceKind } from '@/scripts/device-kind.js';
-import { miLocalStorage } from '@/local-storage.js';
 import { Storage } from '@/pizzax.js';
-import type { Ast } from '@syuilo/aiscript';
 
 interface PostFormAction {
 	title: string,
@@ -96,6 +94,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
+	draftSavingBehavior: {
+		where: 'account',
+		default: 'auto' as 'auto' | 'manual',
+	},
 	rememberNoteVisibility: {
 		where: 'account',
 		default: false,
@@ -107,6 +109,14 @@ export const defaultStore = markRaw(new Storage('base', {
 	defaultNoteLocalOnly: {
 		where: 'account',
 		default: false,
+	},
+	defaultScheduledNoteDelete: {
+		where: 'account',
+		default: false,
+	},
+	defaultScheduledNoteDeleteTime: {
+		where: 'account',
+		default: 86400000,
 	},
 	uploadFolder: {
 		where: 'account',
@@ -154,6 +164,20 @@ export const defaultStore = markRaw(new Storage('base', {
 			'search',
 			'-',
 			'ui',
+		],
+	},
+	postFormActions: {
+		where: 'deviceAccount',
+		default: [
+			'attachFile',
+			'poll',
+			'scheduledNoteDelete',
+			'useCw',
+			'mention',
+			'hashtags',
+			'plugins',
+			'emoji',
+			'addMfmFunction',
 		],
 	},
 	visibility: {
@@ -208,7 +232,7 @@ export const defaultStore = markRaw(new Storage('base', {
 
 	overridedDeviceKind: {
 		where: 'device',
-		default: null as DeviceKind | null,
+		default: null as null | 'smartphone' | 'tablet' | 'desktop',
 	},
 	serverDisconnectedBehavior: {
 		where: 'device',
@@ -250,6 +274,22 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	hiddenActivityAndFiles: {
+		where: 'device',
+		default: false,
+	},
+	hiddenPinnedNotes: {
+		where: 'device',
+		default: false,
+	},
+	hiddenActivity: {
+		where: 'device',
+		default: false,
+	},
+	hiddenFiles: {
+		where: 'device',
+		default: false,
+	},
 	disableShowingAnimatedImages: {
 		where: 'device',
 		default: window.matchMedia('(prefers-reduced-motion)').matches,
@@ -264,11 +304,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	useBlurEffectForModal: {
 		where: 'device',
-		default: DEFAULT_DEVICE_KIND === 'desktop',
+		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
 	},
 	useBlurEffect: {
 		where: 'device',
-		default: DEFAULT_DEVICE_KIND === 'desktop',
+		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
 	},
 	showFixedPostForm: {
 		where: 'device',
@@ -294,9 +334,17 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	customFont: {
+		where: 'device',
+		default: null as null | string,
+	},
 	instanceTicker: {
 		where: 'device',
-		default: 'remote' as 'none' | 'remote' | 'always' | 'remoteIcon' | 'alwaysIcon',
+		default: 'remote' as 'none' | 'remote' | 'always',
+	},
+	instanceIcon: {
+		where: 'device',
+		default: false,
 	},
 	emojiPickerScale: {
 		where: 'device',
@@ -369,6 +417,14 @@ export const defaultStore = markRaw(new Storage('base', {
 	reactionsDisplaySize: {
 		where: 'device',
 		default: 'medium' as 'small' | 'medium' | 'large',
+	},
+	hideReactionCount: {
+		where: 'account',
+		default: 'none' as 'none' | 'self' | 'others' | 'all',
+	},
+	hideReactionUsers: {
+		where: 'account',
+		default: false,
 	},
 	limitWidthOfReaction: {
 		where: 'device',
@@ -470,6 +526,23 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'app' as 'app' | 'appWithShift' | 'native',
 	},
+	disableNoteNyaize: {
+		where: 'device',
+		default: false,
+	},
+	hideLocalTimeLine: {
+		where: 'device',
+		default: false,
+	},
+	hideSocialTimeLine: {
+		where: 'device',
+		default: false,
+	},
+	hideGlobalTimeLine: {
+		where: 'device',
+		default: false,
+	},
+
 	skipNoteRender: {
 		where: 'device',
 		default: true,
@@ -503,6 +576,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: { type: 'syuilo/bubble2', volume: 1 } as SoundStore,
 	},
+	reactionChecksMuting: {
+		where: 'device',
+		default: true,
+	},
 }));
 
 // TODO: 他のタブと永続化されたstateを同期
@@ -518,7 +595,7 @@ export type Plugin = {
 	token: string;
 	src: string | null;
 	version: string;
-	ast: Ast.Node[];
+	ast: any[];
 	author?: string;
 	description?: string;
 	permissions?: string[];
@@ -556,13 +633,13 @@ export class ColdDeviceStorage {
 	}
 
 	public static getAll(): Partial<typeof this.default> {
-		return (Object.keys(this.default) as (keyof typeof this.default)[]).reduce<Partial<typeof this.default>>((acc, key) => {
+		return (Object.keys(this.default) as (keyof typeof this.default)[]).reduce((acc, key) => {
 			const value = localStorage.getItem(PREFIX + key);
 			if (value != null) {
 				acc[key] = JSON.parse(value);
 			}
 			return acc;
-		}, {});
+		}, {} as any);
 	}
 
 	public static set<T extends keyof typeof ColdDeviceStorage.default>(key: T, value: typeof ColdDeviceStorage.default[T]): void {
@@ -607,7 +684,7 @@ export class ColdDeviceStorage {
 			get: () => {
 				return valueRef.value;
 			},
-			set: (value: typeof ColdDeviceStorage.default[K]) => {
+			set: (value: unknown) => {
 				const val = value;
 				ColdDeviceStorage.set(key, val);
 			},

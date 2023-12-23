@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@drop.stop="onDrop"
 >
 	<header :class="$style.header">
-		<div :class="$style.headerLeft">
+		<div :class="[$style.headerLeft, {[$style.headerFixedBasis]: fixed}]">
 			<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
 			<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="$style.account" class="_button" @click="openAccountMenu">
 				<MkAvatar :user="postAccount ?? $i" :class="$style.avatar"/>
@@ -1045,6 +1045,10 @@ defineExpose({
 	flex: 0 1 100px;
 }
 
+.headerFixedBasis {
+	flex-basis: 70px;
+}
+
 .cancel {
 	padding: 0;
 	font-size: 1em;
@@ -1261,7 +1265,7 @@ defineExpose({
 	font-size: .9em;
 	color: var(--warn);
 	border-radius: 6px;
-	min-width: 1.6em;
+	min-width: 2em;
 	text-align: center;
 
 	&.textOver {
