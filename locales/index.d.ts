@@ -5615,6 +5615,14 @@ export interface Locale extends ILocale {
      * デフォルトでノートが自己消滅するように
      */
     "defaultScheduledNoteDelete": string;
+    /**
+     * 荒らしの可能性があるユーザーからのメンションをブロックする
+     */
+    "blockMentionsFromUnfamiliarRemoteUsers": string;
+    /**
+     * このサーバーからのフォロワーがいないリモートユーザーの、メンションを含むノートをブロックするようにします。
+     */
+    "blockMentionsFromUnfamiliarRemoteUsersDescription": string;
     "_bubbleGame": {
         /**
          * 遊び方

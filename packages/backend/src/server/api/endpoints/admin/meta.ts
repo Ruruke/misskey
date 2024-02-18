@@ -675,6 +675,10 @@ export const meta = {
 				type: 'number',
 				optional: false, nullable: false,
 			},
+			blockMentionsFromUnfamiliarRemoteUsers: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 		},
 	},
 } as const;
