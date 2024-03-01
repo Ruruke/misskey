@@ -153,6 +153,7 @@ export const paramDef = {
 		perUserListTimelineCacheMax: { type: 'integer' },
 		enableReactionsBuffering: { type: 'boolean' },
 		notesPerOneAd: { type: 'integer' },
+		blockMentionsFromUnfamiliarRemoteUsers: { type: 'boolean' },
 		silencedHosts: {
 			type: 'array',
 			nullable: true,
@@ -706,6 +707,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (Array.isArray(ps.federationHosts)) {
 				set.federationHosts = ps.federationHosts.filter(Boolean).map(x => x.toLowerCase());
+			}
+
+			if (ps.blockMentionsFromUnfamiliarRemoteUsers !== undefined) {
+				set.blockMentionsFromUnfamiliarRemoteUsers = ps.blockMentionsFromUnfamiliarRemoteUsers;
 			}
 
 			const before = await this.metaService.fetch(true);
