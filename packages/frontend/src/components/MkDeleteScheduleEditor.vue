@@ -1,8 +1,3 @@
-<!--
-SPDX-FileCopyrightText: syuilo and misskey-project
-SPDX-License-Identifier: AGPL-3.0-only
--->
-
 <template>
 <div class="zmdxowus">
 	<span>{{ i18n.ts.scheduledNoteDelete }}</span>
@@ -46,18 +41,16 @@ import { addTime } from '@/scripts/time.js';
 import { i18n } from '@/i18n.js';
 
 export type DeleteScheduleEditorModelValue = {
-		deleteAt: number | null;
-		deleteAfter: number | null;
-		isValid: boolean;
-	};
+			deleteAt: number | null;
+			deleteAfter: number | null;
+		};
 
 const props = defineProps<{
-		modelValue: DeleteScheduleEditorModelValue;
-		afterOnly?: boolean;
-	}>();
+			modelValue: DeleteScheduleEditorModelValue;
+		}>();
 const emit = defineEmits<{
-		(ev: 'update:modelValue', v: DeleteScheduleEditorModelValue): void;
-	}>();
+			(ev: 'update:modelValue', v: DeleteScheduleEditorModelValue): void;
+		}>();
 
 const expiration = ref('at');
 const atDate = ref(formatDateTimeString(addTime(new Date(), 1, 'day'), 'yyyy-MM-dd'));
@@ -106,85 +99,67 @@ watch([expiration, atDate, atTime, after, unit], () => emit('update:modelValue',
 });
 </script>
 
-	<style lang="scss" module>
-	.root {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		padding: 8px 0px;
+		<style lang="scss" scoped>
+		.zmdxowus {
+			padding: 8px 16px;
 
-		>span {
-			opacity: 0.7;
-		}
-
-		>ul {
-			display: block;
-			margin: 0;
-			padding: 0;
-			list-style: none;
-
-			>li {
-				display: flex;
-				margin: 8px 0;
-				padding: 0;
-				width: 100%;
-
-				>.input {
-					flex: 1;
-				}
-
-				>button {
-					width: 32px;
-					padding: 4px 0;
-				}
+			>span {
+				opacity: 0.7;
 			}
-		}
 
-		>section {
-			>div {
-				display: flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-				gap: 12px;
+			>ul {
+				display: block;
+				margin: 0;
+				padding: 0;
+				list-style: none;
 
-				&:last-child {
-					flex: 1 0 auto;
+				>li {
+					display: flex;
+					margin: 8px 0;
+					padding: 0;
+					width: 100%;
 
-					>div {
-						flex-grow: 1;
+					>.input {
+						flex: 1;
 					}
 
-					>section {
-						// MAGIC: Prevent div above from growing unless wrapped to its own line
-						flex-grow: 9999;
-						align-items: end;
-						display: flex;
-						gap: 4px;
+					>button {
+						width: 32px;
+						padding: 4px 0;
+					}
+				}
+			}
 
-						>.input {
-							flex: 1 1 auto;
+			>section {
+				margin: 16px 0 0 0;
+
+				>div {
+					margin: 0 8px;
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap;
+					gap: 12px;
+
+					&:last-child {
+						flex: 1 0 auto;
+
+						>div {
+							flex-grow: 1;
+						}
+
+						>section {
+							// MAGIC: Prevent div above from growing unless wrapped to its own line
+							flex-grow: 9999;
+							align-items: end;
+							display: flex;
+							gap: 4px;
+
+							>.input {
+								flex: 1 1 auto;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
-
-	.padding {
-		padding: 8px 24px;
-	}
-
-	.label {
-		font-size: 0.85em;
-		padding: 0 0 8px 0;
-		user-select: none;
-	}
-
-	.withAccent {
-		color: var(--MI_THEME-accent);
-	}
-
-	.chevronOpening {
-		transform: rotateX(180deg);
-	}
-	</style>
+		</style>
