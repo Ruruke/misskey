@@ -1352,6 +1352,11 @@ _delivery:
     autoSuspendedForNotResponding: "サーバー応答なしのため停止中"
 
 selectReaction: "いいねボタンで使うリアクションを選択"
+mutualLink: "相互リンク"
+mutualBannerThisUser: "このユーザーのバナー"
+maximum: "最大"
+scheduledNoteDelete: "すぐ消す"
+noteDeletationAt: "このノートは{time}に削除されます"
 
 _bubbleGame:
   howToPlay: "遊び方"

@@ -5403,6 +5403,26 @@ export interface Locale extends ILocale {
      * いいねボタンで使うリアクションを選択
      */
     "selectReaction": string;
+    /**
+     * 相互リンク
+     */
+    "mutualLink": string;
+    /**
+     * このユーザーのバナー
+     */
+    "mutualBannerThisUser": string;
+    /**
+     * 最大
+     */
+    "maximum": string;
+    /**
+     * すぐ消す
+     */
+    "scheduledNoteDelete": string;
+    /**
+     * このノートは{time}に削除されます
+     */
+    "noteDeletationAt": ParameterizedString<"time">;
     "_bubbleGame": {
         /**
          * 遊び方

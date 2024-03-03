@@ -29,8 +29,8 @@ import type {
 	DeliverQueue,
 	EndedPollNotificationQueue,
 	InboxQueue,
-	ObjectStorageQueue,
 	RelationshipQueue,
+	ObjectStorageQueue, ScheduledNoteDeleteQueue,
 	SystemQueue,
 	UserWebhookDeliverQueue,
 	SystemWebhookDeliverQueue,
@@ -136,6 +136,7 @@ export class ClientServerService {
 
 		@Inject('queue:system') public systemQueue: SystemQueue,
 		@Inject('queue:endedPollNotification') public endedPollNotificationQueue: EndedPollNotificationQueue,
+		@Inject('queue:scheduledNoteDelete') public scheduledNoteDeleteQueue: ScheduledNoteDeleteQueue,
 		@Inject('queue:deliver') public deliverQueue: DeliverQueue,
 		@Inject('queue:inbox') public inboxQueue: InboxQueue,
 		@Inject('queue:db') public dbQueue: DbQueue,
@@ -264,6 +265,7 @@ export class ClientServerService {
 			queues: [
 				this.systemQueue,
 				this.endedPollNotificationQueue,
+				this.scheduledNoteDeleteQueue,
 				this.deliverQueue,
 				this.inboxQueue,
 				this.dbQueue,
