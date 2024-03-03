@@ -4116,7 +4116,7 @@ export type components = {
       /** @enum {string} */
       icon: 'info' | 'warning' | 'error' | 'success';
       /** @enum {string} */
-      display: 'dialog' | 'normal' | 'banner';
+      display: 'dialog' | 'normal' | 'banner' | 'emergency';
       needConfirmationToRead: boolean;
       silence: boolean;
       forYou: boolean;
