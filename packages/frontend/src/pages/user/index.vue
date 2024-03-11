@@ -109,11 +109,11 @@ const headerTabs = computed(() => user.value ? [{
 	key: 'files',
 	title: i18n.ts.files,
 	icon: 'ti ti-photo',
-}, {
+}, ...($i && ($i.id === user.value.id || $i.isAdmin || $i.isModerator)) || !user.value.hideActivity ? [{
 	key: 'activity',
 	title: i18n.ts.activity,
 	icon: 'ti ti-chart-line',
-}, ...(user.value.host == null ? [{
+}] : [], ...(user.value.host == null ? [{
 	key: 'achievements',
 	title: i18n.ts.achievements,
 	icon: 'ti ti-medal',
