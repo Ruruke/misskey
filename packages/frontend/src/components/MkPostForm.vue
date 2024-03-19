@@ -318,6 +318,9 @@ const bottomItemActionDef: Record<keyof typeof bottomItemDef, {
 	saveAsDraft: {
 		action: () => saveDraft(false),
 	},
+	clearPost: {
+		action: clear,
+	},
 });
 
 watch(text, () => {
