@@ -261,18 +261,12 @@ const headerActions = computed(() => {
 					type: 'switch',
 					text: i18n.ts.showRenotes,
 					ref: withRenotes,
-				});
-
-				if (isBasicTimeline(src.value) && hasWithReplies(src.value)) {
-					menuItems.push({
-						type: 'switch',
-						text: i18n.ts.showRepliesToOthersInTimeline,
-						ref: withReplies,
-						disabled: onlyFiles,
-					});
-				}
-
-				menuItems.push({
+				}, src.value === 'local' || src.value === 'social' || src.value === 'vmimi-relay' ? {
+					type: 'switch',
+					text: i18n.ts.showRepliesToOthersInTimeline,
+					ref: withReplies,
+					disabled: onlyFiles,
+				} : undefined, {
 					type: 'switch',
 					text: i18n.ts.withSensitive,
 					ref: withSensitive,

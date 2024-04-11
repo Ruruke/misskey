@@ -23560,6 +23560,8 @@ export type operations = {
           withFiles?: boolean;
           /** @default true */
           withRenotes?: boolean;
+          /** @default false */
+          withReplies?: boolean;
           /** @default 10 */
           limit?: number;
           /** Format: misskey:id */

@@ -115,6 +115,7 @@ export type Channels = {
 		params: {
 			withRenotes?: boolean;
 			withFiles?: boolean;
+			withReplies?: boolean;
 		};
 		events: {
 			note: (payload: Note) => void;
