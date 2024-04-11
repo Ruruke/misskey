@@ -5424,6 +5424,10 @@ export interface Locale extends ILocale {
      */
     "noteDeletationAt": ParameterizedString<"time">;
     /**
+     * 1年以上先の日時を指定することはできません
+     */
+    "cannotScheduleLaterThanOneYear": string;
+    /**
      * 投稿フォーム
      */
     "postForm": string;
