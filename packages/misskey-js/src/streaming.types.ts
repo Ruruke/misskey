@@ -111,6 +111,16 @@ export type Channels = {
 		};
 		receives: null;
 	};
+	vmimiRelayTimeline: {
+		params: {
+			withRenotes?: boolean;
+			withFiles?: boolean;
+		};
+		events: {
+			note: (payload: Note) => void;
+		};
+		receives: null;
+	};
 	userList: {
 		params: {
 			listId: string;

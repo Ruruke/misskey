@@ -46,6 +46,7 @@ export type Column = {
 	channelId?: string;
 	roleId?: string;
 	excludeTypes?: typeof notificationTypes[number][];
+	tl?: 'home' | 'local' | 'social' | 'global' | 'vmimi-relay';
 	tl?: BasicTimelineType;
 	withRenotes?: boolean;
 	withReplies?: boolean;

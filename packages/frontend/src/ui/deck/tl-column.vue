@@ -6,8 +6,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <XColumn :menu="menu" :column="column" :isStacked="isStacked" :refresher="async () => { await timeline?.reloadTimeline() }">
 	<template #header>
-		<i v-if="column.tl != null" :class="basicTimelineIconClass(column.tl)"/>
-		<span style="margin-left: 8px;">{{ column.name || (column.tl ? i18n.ts._timelines[column.tl] : null) || i18n.ts._deck._columns.tl }}</span>
+		<i v-if="column.tl === 'home'" class="ti ti-home"></i>
+		<i v-else-if="column.tl === 'local'" class="ti ti-planet"></i>
+		<i v-else-if="column.tl === 'social'" class="ti ti-universe"></i>
+		<i v-else-if="column.tl === 'global'" class="ti ti-whirl"></i>
+		<i v-else-if="column.tl === 'vmimi-relay'" class="ti ti-whirl"></i><!-- TODO: change icon -->
+		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
 	<div v-if="!isAvailableBasicTimeline(column.tl)" :class="$style.disabled">
@@ -104,6 +108,8 @@ async function setType() {
 			value: 'social' as const, text: i18n.ts._timelines.social,
 		}, {
 			value: 'global' as const, text: i18n.ts._timelines.global,
+		}, {
+			value: 'vkemo-relay' as const, text: i18n.ts._timelines.vkemoRelay,
 		}],
 	});
 	if (canceled) {
