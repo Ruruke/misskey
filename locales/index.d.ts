@@ -5423,6 +5423,42 @@ export interface Locale extends ILocale {
      * このノートは{time}に削除されます
      */
     "noteDeletationAt": ParameterizedString<"time">;
+    /**
+     * 投稿フォーム
+     */
+    "postForm": string;
+    /**
+     * 投稿フォームの下部に表示される項目の並び替えが出来ます。項目をクリックすると削除できます。
+     */
+    "postFormBottomSettingsDescription": string;
+    /**
+     * 投稿フォームをリセット
+     */
+    "clearPost": string;
+    /**
+     * 絵文字ピッカーに追加
+     */
+    "addToEmojiPicker": string;
+    /**
+     * リアクション数の非表示
+     */
+    "hideReactionCount": string;
+    /**
+     * 下書き
+     */
+    "drafts": string;
+    /**
+     * 下書きの保存に関する動作
+     */
+    "draftSavingBehavior": string;
+    /**
+     * 下書きとして保存
+     */
+    "saveAsDraft": string;
+    /**
+     * 下書きを適用すると現在入力されている内容はリセットされます。よろしいですか？
+     */
+    "draftOverwriteConfirm": string;
     "_bubbleGame": {
         /**
          * 遊び方

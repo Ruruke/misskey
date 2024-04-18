@@ -52,6 +52,7 @@ function onPostError() {
 }
 
 function onModalClosed() {
+	form.value?.closed();
 	emit('closed');
 }
 </script>
