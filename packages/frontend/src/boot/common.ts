@@ -24,6 +24,8 @@ import { miLocalStorage } from '@/local-storage.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
 import { setupRouter } from '@/router/main.js';
 import { createMainRouter } from '@/router/definition.js';
+import { setupRouter } from '@/router/definition.js';
+import { applyFont } from '@/scripts/font';
 
 export async function common(createVue: () => App<Element>) {
 	console.info(`Misskey v${version}`);
@@ -163,6 +165,15 @@ export async function common(createVue: () => App<Element>) {
 		if (!defaultStore.state.darkMode) {
 			applyTheme(theme);
 		}
+	});
+
+	//# Custom font
+	if (defaultStore.state.customFont) {
+		applyFont(defaultStore.state.customFont);
+	}
+
+	watch(defaultStore.reactiveState.customFont, (font) => {
+		applyFont(font);
 	});
 
 	//#region Sync dark mode
