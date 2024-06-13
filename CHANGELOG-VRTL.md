@@ -1,6 +1,7 @@
 # CHANGELOG about VRTL
 
 VRTLのブランチで行われた変更点をまとめています
+This file lists changes to VRTL Generic Branch.
 
 <!-- VV Please add changelog here VV -->
 - chore(backend): VRTL参加サーバーの取得に失敗したときのリトライの間隔を短く
@@ -11,3 +12,4 @@ VRTLのブランチで行われた変更点をまとめています
 - fix(backend): 自分自身に対するリプライがwithReplies = falseなVRTL/VSTLにて含まれていない問題を修正
 - feat(backend): `vmimiRelayTimelineImplemented` と `disableVmimiRelayTimeline` nodeinfo に追加しました
 	- これによりサードパーティクライアントがVRTLの有無を認知できるようになりました。
+- Add `vmimiRelayTimelineImplemented` and `disableVmimiRelayTimeline` to nodeinfo
