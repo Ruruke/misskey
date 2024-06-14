@@ -7,6 +7,7 @@ import { Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
 import { IdService } from '@/core/IdService.js';
+import { DriveService } from '@/core/DriveService.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -77,12 +78,20 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	constructor(
 		private avatarDecorationService: AvatarDecorationService,
 		private idService: IdService,
+		private driveService: DriveService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			// システムユーザーとして再アップロード
+			const sysFileData = await this.driveService.uploadFromUrl({
+				url: ps.url,
+				user: null,
+				force: true,
+			});
+
 			const created = await this.avatarDecorationService.create({
 				name: ps.name,
 				description: ps.description,
-				url: ps.url,
+				url: sysFileData.url,
 				roleIdsThatCanBeUsedThisDecoration: ps.roleIdsThatCanBeUsedThisDecoration,
 			}, me);
 
