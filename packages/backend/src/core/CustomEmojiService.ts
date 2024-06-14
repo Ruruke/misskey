@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { log } from 'node:console';
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { Brackets, In, IsNull, ObjectLiteral, SelectQueryBuilder, WhereExpressionBuilder } from 'typeorm';
 import * as Redis from 'ioredis';
@@ -93,7 +94,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 
 	@bindThis
 	public async add(data: {
-		// driveFile: MiDriveFile;
+		driveFile: MiDriveFile;
 		originalUrl: string;
 		publicUrl: string;
 		fileType: string;
@@ -106,23 +107,21 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		localOnly: boolean;
 		roleIdsThatCanBeUsedThisEmojiAsReaction: MiRole['id'][];
 	}, moderator?: MiUser): Promise<MiEmoji> {
-		// const originalDriveData: MiDriveFile = data.driveFile;
+		// システムユーザーとして再アップロード
+		try {
+			if (!data.driveFile.user?.isRoot) {
+				data.driveFile = await this.driveService.uploadFromUrl({
+					url: data.driveFile.url,
+					user: null,
+					force: true,
+				});
+			}
+		} catch (e) {
+			if (e instanceof TypeError) {
+				console.error(`Err : ${e.message}`);
+			}
+		}
 
-		//TODO: なんかエラー出る。
-		// Endpoint: admin/emoji/copy
-		// Info: {"e":{"message":"Cannot read properties of undefined (reading 'user')","code":"TypeError","id":"078be3aa-cbae-42a1-8d88-3310524032fb"}}
-		// Date: 2024-12-14T17:02:00.906Z
-		// // システムユーザーとして再アップロード
-		// if (!data.driveFile !== undefined && !data.driveFile.user?.isRoot) {
-		// 	data.driveFile = await this.driveService.uploadFromUrl({
-		// 		url: data.driveFile.url,
-		// 		user: null,
-		// 		force: true,
-		// 	});
-		//
-		// 	// 元データの削除
-		// 	this.driveService.deleteFile(originalDriveData);
-		// }
 		const emoji = await this.emojisRepository.insertOne({
 			id: this.idService.gen(),
 			updatedAt: new Date(),
