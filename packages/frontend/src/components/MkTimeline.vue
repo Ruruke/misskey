@@ -133,12 +133,14 @@ function connectChannel() {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 			withReplies: props.withReplies,
+			withLocalOnly: props.withLocalOnly,
 		});
 	} else if (props.src === 'vmimi-relay-social') {
 		connection = stream.useChannel('vmimiRelayHybridTimeline', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 			withReplies: props.withReplies,
+			withLocalOnly: props.withLocalOnly,
 		});
 	} else if (props.src === 'mentions') {
 		connection = stream.useChannel('main');
@@ -226,6 +228,7 @@ function updatePaginationQuery() {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 			withReplies: props.withReplies,
+			withLocalOnly: props.withLocalOnly,
 		};
 	} else if (props.src === 'mentions') {
 		endpoint = 'notes/mentions';
