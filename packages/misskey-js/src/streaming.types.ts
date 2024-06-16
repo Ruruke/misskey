@@ -116,6 +116,19 @@ export type Channels = {
 			withRenotes?: boolean;
 			withFiles?: boolean;
 			withReplies?: boolean;
+			withLocalOnly?: boolean;
+		};
+		events: {
+			note: (payload: Note) => void;
+		};
+		receives: null;
+	};
+	vmimiRelayHybridTimeline: {
+		params: {
+			withRenotes?: boolean;
+			withReplies?: boolean;
+			withFiles?: boolean;
+			withLocalOnly?: boolean;
 		};
 		events: {
 			note: (payload: Note) => void;

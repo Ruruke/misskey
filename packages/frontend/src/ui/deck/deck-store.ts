@@ -53,6 +53,8 @@ export type Column = {
 	withSensitive?: boolean;
 	onlyFiles?: boolean;
 	soundSetting?: SoundStore;
+	withLocalOnly?: boolean;
+	soundSetting: SoundStore;
 };
 
 export const deckStore = markRaw(new Storage('deck', {

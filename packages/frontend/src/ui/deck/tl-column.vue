@@ -24,12 +24,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkTimeline
 		v-else-if="column.tl"
 		ref="timeline"
-		:key="column.tl + withRenotes + withReplies + onlyFiles"
+		:key="column.tl + withRenotes + withReplies + onlyFiles + withLocalOnly"
 		:src="column.tl"
 		:withRenotes="withRenotes"
 		:withReplies="withReplies"
 		:withSensitive="withSensitive"
 		:onlyFiles="onlyFiles"
+		:withLocalOnly="withLocalOnly"
 		@note="onNote"
 	/>
 </XColumn>
@@ -62,6 +63,7 @@ const withRenotes = ref(props.column.withRenotes ?? true);
 const withReplies = ref(props.column.withReplies ?? false);
 const withSensitive = ref(props.column.withSensitive ?? true);
 const onlyFiles = ref(props.column.onlyFiles ?? false);
+const withLocalOnly = ref(props.column.withLocalOnly ?? true);
 
 watch(withRenotes, v => {
 	updateColumn(props.column.id, {
@@ -84,6 +86,12 @@ watch(withSensitive, v => {
 watch(onlyFiles, v => {
 	updateColumn(props.column.id, {
 		onlyFiles: v,
+	});
+});
+
+watch(withLocalOnly, v => {
+	updateColumn(props.column.id, {
+		withLocalOnly: v,
 	});
 });
 
@@ -128,45 +136,33 @@ function onNote() {
 	sound.playMisskeySfxFile(soundSetting.value);
 }
 
-const menu = computed<MenuItem[]>(() => {
-	const menuItems: MenuItem[] = [];
-
-	menuItems.push({
-		icon: 'ti ti-pencil',
-		text: i18n.ts.timeline,
-		action: setType,
-	}, {
-		icon: 'ti ti-bell',
-		text: i18n.ts._deck.newNoteNotificationSettings,
-		action: () => soundSettingsButton(soundSetting),
-	}, {
-		type: 'switch',
-		text: i18n.ts.showRenotes,
-		ref: withRenotes,
-	});
-
-	if (hasWithReplies(props.column.tl)) {
-		menuItems.push({
-			type: 'switch',
-			text: i18n.ts.showRepliesToOthersInTimeline,
-			ref: withReplies,
-			disabled: onlyFiles,
-		});
-	}
-
-	menuItems.push({
-		type: 'switch',
-		text: i18n.ts.fileAttachedOnly,
-		ref: onlyFiles,
-		disabled: hasWithReplies(props.column.tl) ? withReplies : false,
-	}, {
-		type: 'switch',
-		text: i18n.ts.withSensitive,
-		ref: withSensitive,
-	});
-
-	return menuItems;
-});
+const menu: MenuItem[] = [{
+	icon: 'ti ti-pencil',
+	text: i18n.ts.timeline,
+	action: setType,
+}, {
+	icon: 'ti ti-bell',
+	text: i18n.ts._deck.newNoteNotificationSettings,
+	action: () => soundSettingsButton(soundSetting),
+}, {
+	type: 'switch',
+	text: i18n.ts.showRenotes,
+	ref: withRenotes,
+}, props.column.tl === 'local' || props.column.tl === 'social' || props.column.tl === 'vmimi-relay-social' || props.column.tl === 'vmimi-relay' ? {
+	type: 'switch',
+	text: i18n.ts.showRepliesToOthersInTimeline,
+	ref: withReplies,
+	disabled: onlyFiles,
+} : undefined, {
+	type: 'switch',
+	text: i18n.ts.fileAttachedOnly,
+	ref: onlyFiles,
+	disabled: props.column.tl === 'local' || props.column.tl === 'social' || props.column.tl === 'vmimi-relay-social' || props.column.tl === 'vmimi-relay' ? withReplies : false,
+}, props.column.tl === 'vmimi-relay-social' || props.column.tl === 'vmimi-relay' ? {
+	type: 'switch',
+	text: i18n.ts.showLocalOnlyInTimeline,
+	ref: withLocalOnly,
+} : undefined];
 </script>
 
 <style lang="scss" module>

@@ -20,7 +20,7 @@ class VmimiRelayTimelineChannel extends Channel {
 	public static requireCredential = false as const;
 	private withRenotes: boolean;
 	private withFiles: boolean;
-	private withReplies: boolean;
+	private withLocalOnly: boolean;
 
 	constructor(
 		private metaService: MetaService,
@@ -41,7 +41,7 @@ class VmimiRelayTimelineChannel extends Channel {
 
 		this.withRenotes = params.withRenotes ?? true;
 		this.withFiles = params.withFiles ?? false;
-		this.withReplies = params.withReplies ?? false;
+		this.withLocalOnly = params.withLocalOnly ?? true;
 
 		// Subscribe events
 		this.subscriber.on('notesStream', this.onNote);
@@ -51,6 +51,8 @@ class VmimiRelayTimelineChannel extends Channel {
 	private async onNote(note: Packed<'Note'>) {
 		if (this.withFiles && (note.fileIds == null || note.fileIds.length === 0)) return;
 
+		if (!this.vmimiRelayTimelineService.isRelayedInstance(note.user.host ?? null)) return;
+		if (!this.withLocalOnly && note.localOnly) return;
 		if (note.visibility !== 'public') return;
 		if (note.channelId != null) return;
 
