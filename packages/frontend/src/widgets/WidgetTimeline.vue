@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</button>
 	</template>
 
-	<div v-if="(((widgetProps.src === 'local' || widgetProps.src === 'social') && !isLocalTimelineAvailable) || (widgetProps.src === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
+	<div v-if="(((widgetProps.src === 'local' || widgetProps.src === 'social' || widgetProps.src == 'vmimi-relay-social') && !isLocalTimelineAvailable) || (widgetProps.src === 'global' && !isGlobalTimelineAvailable) || ((widgetProps.src === 'vmimi-relay' || widgetProps.src == 'vmimi-relay-social') && !isVmimiRelayTimelineAvailable))" :class="$style.disabled">
 		<p :class="$style.disabledTitle">
 			<i class="ti ti-minus"></i>
 			{{ i18n.ts._disabledTimeline.title }}
