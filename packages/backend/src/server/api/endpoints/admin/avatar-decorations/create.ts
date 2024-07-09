@@ -80,13 +80,15 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private idService: IdService,
 		private driveService: DriveService,
 	) {
-		super(meta, paramDef, async (ps, me) => {
+		super(meta, paramDef, async (ps: any, me) => {
 			// システムユーザーとして再アップロード
 			const sysFileData = await this.driveService.uploadFromUrl({
 				url: ps.url,
 				user: null,
 				force: true,
 			});
+			// 元ファイルの削除
+			this.driveService.deleteFile(ps);
 
 			const created = await this.avatarDecorationService.create({
 				name: ps.name,

@@ -107,6 +107,8 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		localOnly: boolean;
 		roleIdsThatCanBeUsedThisEmojiAsReaction: MiRole['id'][];
 	}, moderator?: MiUser): Promise<MiEmoji> {
+		const originalDriveData: MiDriveFile = data.driveFile;
+
 		// システムユーザーとして再アップロード
 		try {
 			if (!data.driveFile.user?.isRoot) {
@@ -115,6 +117,9 @@ export class CustomEmojiService implements OnApplicationShutdown {
 					user: null,
 					force: true,
 				});
+
+				// 元データの削除
+				this.driveService.deleteFile(originalDriveData);
 			}
 		} catch (e) {
 			if (e instanceof TypeError) {
