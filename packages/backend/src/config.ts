@@ -50,6 +50,7 @@ type Source = {
 	redisForJobQueue?: RedisOptionsSource;
 	redisForTimelines?: RedisOptionsSource;
 	redisForReactions?: RedisOptionsSource;
+	redisForRemoteClips?: RedisOptionsSource;
 	meilisearch?: {
 		host: string;
 		port: string;
@@ -176,6 +177,7 @@ export type Config = {
 	redisForJobQueue: RedisOptions & RedisOptionsSource;
 	redisForTimelines: RedisOptions & RedisOptionsSource;
 	redisForReactions: RedisOptions & RedisOptionsSource;
+	redisForRemoteClips: RedisOptions & RedisOptionsSource;
 	sentryForBackend: { options: Partial<Sentry.NodeOptions>; enableNodeProfiling: boolean; } | undefined;
 	sentryForFrontend: { options: Partial<Sentry.NodeOptions> } | undefined;
 	perChannelMaxNoteCacheCount: number;
@@ -258,6 +260,7 @@ export function loadConfig(): Config {
 		redisForJobQueue: config.redisForJobQueue ? convertRedisOptions(config.redisForJobQueue, host) : redis,
 		redisForTimelines: config.redisForTimelines ? convertRedisOptions(config.redisForTimelines, host) : redis,
 		redisForReactions: config.redisForReactions ? convertRedisOptions(config.redisForReactions, host) : redis,
+		redisForRemoteClips: config.redisForRemoteClips ? convertRedisOptions(config.redisForRemoteClips, host) : redis,
 		sentryForBackend: config.sentryForBackend,
 		sentryForFrontend: config.sentryForFrontend,
 		id: config.id,
