@@ -30,7 +30,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<span v-if="folder != null" :class="[$style.navPathItem, $style.navSeparator]"><i class="ti ti-chevron-right"></i></span>
 			<span v-if="folder != null" :class="[$style.navPathItem, $style.navCurrent]">{{ folder.name }}</span>
 		</div>
-		<button class="_button" :class="$style.navMenu" @click="showMenu"><i class="ti ti-dots"></i></button>
+		<div :class="$style.navMenu">
+			<!-- "Search drive via alt text or file names" -->
+			<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" :placeholder="i18n.ts.driveSearchbarPlaceholder" @enter="fetch">
+				<template #prefix><i class="ph-magnifying-glass ph-bold ph-lg"></i></template>
+			</MkInput>
+
+			<button class="_button" :class="$style.navMenu" @click="showMenu"><i class="ti ti-dots"></i></button>
+		</div>
 	</nav>
 	<div
 		ref="main"
@@ -52,7 +59,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:selectMode="select === 'folder'"
 					:isSelected="selectedFolders.some(x => x.id === f.id)"
 					@chosen="chooseFolder"
-					@unchose="unchoseFolder"
 					@move="move"
 					@upload="upload"
 					@removeFile="removeFile"
@@ -103,6 +109,7 @@ import type { MenuItem } from '@/types/menu.js';
 import XNavFolder from '@/components/MkDrive.navFolder.vue';
 import XFolder from '@/components/MkDrive.folder.vue';
 import XFile from '@/components/MkDrive.file.vue';
+import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useStream } from '@/stream.js';
@@ -110,6 +117,8 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { uploadFile, uploads } from '@/scripts/upload.js';
 import { claimAchievement } from '@/scripts/achievements.js';
+
+const searchQuery = ref('');
 
 const props = withDefaults(defineProps<{
 	initialFolder?: Misskey.entities.DriveFolder;
@@ -157,12 +166,7 @@ const ilFilesObserver = new IntersectionObserver(
 	(entries) => entries.some((entry) => entry.isIntersecting) && !fetching.value && moreFiles.value && fetchMoreFiles(),
 );
 
-const sortModeSelect = ref<NonNullable<Misskey.entities.DriveFilesRequest['sort']>>('+createdAt');
-
 watch(folder, () => emit('cd', folder.value));
-watch(sortModeSelect, () => {
-	fetch();
-});
 
 function onStreamDriveFileCreated(file: Misskey.entities.DriveFile) {
 	addFile(file, true);
@@ -198,7 +202,7 @@ function onStreamDriveFolderDeleted(folderId: string) {
 	removeFolder(folderId);
 }
 
-function onDragover(ev: DragEvent) {
+function onDragover(ev: DragEvent): any {
 	if (!ev.dataTransfer) return;
 
 	// ドラッグ元が自分自身の所有するアイテムだったら
@@ -243,7 +247,7 @@ function onDragleave() {
 	draghover.value = false;
 }
 
-function onDrop(ev: DragEvent) {
+function onDrop(ev: DragEvent): any {
 	draghover.value = false;
 
 	if (!ev.dataTransfer) return;
@@ -332,7 +336,7 @@ function createFolder() {
 		title: i18n.ts.createFolder,
 		placeholder: i18n.ts.folderName,
 	}).then(({ canceled, result: name }) => {
-		if (canceled || name == null) return;
+		if (canceled) return;
 		misskeyApi('drive/folders/create', {
 			name: name,
 			parentId: folder.value ? folder.value.id : undefined,
@@ -432,11 +436,6 @@ function chooseFolder(folderToChoose: Misskey.entities.DriveFolder) {
 			emit('change-selection', [folderToChoose]);
 		}
 	}
-}
-
-function unchoseFolder(folderToUnchose: Misskey.entities.DriveFolder) {
-	selectedFolders.value = selectedFolders.value.filter(f => f.id !== folderToUnchose.id);
-	emit('change-selection', selectedFolders.value);
 }
 
 function move(target?: Misskey.entities.DriveFolder | Misskey.entities.DriveFolder['id' | 'parentId']) {
@@ -551,6 +550,7 @@ async function fetch() {
 	const foldersPromise = misskeyApi('drive/folders', {
 		folderId: folder.value ? folder.value.id : null,
 		limit: foldersMax + 1,
+		searchQuery: searchQuery.value.toString().trim(),
 	}).then(fetchedFolders => {
 		if (fetchedFolders.length === foldersMax + 1) {
 			moreFolders.value = true;
@@ -563,7 +563,7 @@ async function fetch() {
 		folderId: folder.value ? folder.value.id : null,
 		type: props.type,
 		limit: filesMax + 1,
-		sort: sortModeSelect.value,
+		searchQuery: searchQuery.value.toString().trim(),
 	}).then(fetchedFiles => {
 		if (fetchedFiles.length === filesMax + 1) {
 			moreFiles.value = true;
@@ -590,6 +590,7 @@ function fetchMoreFolders() {
 		type: props.type,
 		untilId: folders.value.at(-1)?.id,
 		limit: max + 1,
+		searchQuery: searchQuery.value.toString().trim(),
 	}).then(folders => {
 		if (folders.length === max + 1) {
 			moreFolders.value = true;
@@ -613,7 +614,7 @@ function fetchMoreFiles() {
 		type: props.type,
 		untilId: files.value.at(-1)?.id,
 		limit: max + 1,
-		sort: sortModeSelect.value,
+		searchQuery: searchQuery.value.toString().trim(),
 	}).then(files => {
 		if (files.length === max + 1) {
 			moreFiles.value = true;
@@ -627,9 +628,7 @@ function fetchMoreFiles() {
 }
 
 function getMenu() {
-	const menu: MenuItem[] = [];
-
-	menu.push({
+	const menu: MenuItem[] = [{
 		type: 'switch',
 		text: i18n.ts.keepOriginalUploading,
 		ref: keepOriginal,
@@ -647,62 +646,19 @@ function getMenu() {
 	}, { type: 'divider' }, {
 		text: folder.value ? folder.value.name : i18n.ts.drive,
 		type: 'label',
-	});
-
-	menu.push({
-		type: 'parent',
-		text: i18n.ts.sort,
-		icon: 'ti ti-arrows-sort',
-		children: [{
-			text: `${i18n.ts.registeredDate} (${i18n.ts.descendingOrder})`,
-			icon: 'ti ti-sort-descending-letters',
-			action: () => { sortModeSelect.value = '+createdAt'; },
-			active: sortModeSelect.value === '+createdAt',
-		}, {
-			text: `${i18n.ts.registeredDate} (${i18n.ts.ascendingOrder})`,
-			icon: 'ti ti-sort-ascending-letters',
-			action: () => { sortModeSelect.value = '-createdAt'; },
-			active: sortModeSelect.value === '-createdAt',
-		}, {
-			text: `${i18n.ts.size} (${i18n.ts.descendingOrder})`,
-			icon: 'ti ti-sort-descending-letters',
-			action: () => { sortModeSelect.value = '+size'; },
-			active: sortModeSelect.value === '+size',
-		}, {
-			text: `${i18n.ts.size} (${i18n.ts.ascendingOrder})`,
-			icon: 'ti ti-sort-ascending-letters',
-			action: () => { sortModeSelect.value = '-size'; },
-			active: sortModeSelect.value === '-size',
-		}, {
-			text: `${i18n.ts.name} (${i18n.ts.descendingOrder})`,
-			icon: 'ti ti-sort-descending-letters',
-			action: () => { sortModeSelect.value = '+name'; },
-			active: sortModeSelect.value === '+name',
-		}, {
-			text: `${i18n.ts.name} (${i18n.ts.ascendingOrder})`,
-			icon: 'ti ti-sort-ascending-letters',
-			action: () => { sortModeSelect.value = '-name'; },
-			active: sortModeSelect.value === '-name',
-		}],
-	});
-
-	if (folder.value) {
-		menu.push({
-			text: i18n.ts.renameFolder,
-			icon: 'ti ti-forms',
-			action: () => { if (folder.value) renameFolder(folder.value); },
-		}, {
-			text: i18n.ts.deleteFolder,
-			icon: 'ti ti-trash',
-			action: () => { deleteFolder(folder.value as Misskey.entities.DriveFolder); },
-		});
-	}
-
-	menu.push({
+	}, folder.value ? {
+		text: i18n.ts.renameFolder,
+		icon: 'ti ti-forms',
+		action: () => { if (folder.value) renameFolder(folder.value); },
+	} : undefined, folder.value ? {
+		text: i18n.ts.deleteFolder,
+		icon: 'ti ti-trash',
+		action: () => { deleteFolder(folder.value as Misskey.entities.DriveFolder); },
+	} : undefined, {
 		text: i18n.ts.createFolder,
 		icon: 'ti ti-folder-plus',
 		action: () => { createFolder(); },
-	});
+	}];
 
 	return menu;
 }
@@ -765,7 +721,7 @@ onBeforeUnmount(() => {
 	box-sizing: border-box;
 	overflow: auto;
 	font-size: 0.9em;
-	box-shadow: 0 1px 0 var(--MI_THEME-divider);
+	box-shadow: 0 1px 0 var(--divider);
 	user-select: none;
 }
 
@@ -805,14 +761,19 @@ onBeforeUnmount(() => {
 }
 
 .navMenu {
+	display: flex;
 	margin-left: auto;
-	padding: 0 12px;
+	align-items: center;
+}
+
+.navMenu > *:not(:last-child) {
+	padding-right: 12px;
 }
 
 .main {
 	flex: 1;
 	overflow: auto;
-	padding: var(--MI-margin);
+	padding: var(--margin);
 	user-select: none;
 
 	&.fetching {
@@ -859,7 +820,7 @@ onBeforeUnmount(() => {
 	top: 38px;
 	width: 100%;
 	height: calc(100% - 38px);
-	border: dashed 2px var(--MI_THEME-focus);
+	border: dashed 2px var(--focus);
 	pointer-events: none;
 }
 </style>

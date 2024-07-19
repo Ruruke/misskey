@@ -1323,6 +1323,10 @@ export interface Locale extends ILocale {
      */
     "drive": string;
     /**
+     * 検索ドライブ
+     */
+    "driveSearchbarPlaceholder": string;
+    /**
      * ファイル名
      */
     "fileName": string;
