@@ -4,39 +4,43 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<img
-	v-if="errored && fallbackToImage"
-	:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
-	src="/client-assets/dummy.png"
-	:title="alt"
-/>
-<span v-else-if="errored">:{{ customEmojiName }}:</span>
-<img
-	v-else
-	:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
-	:src="url"
-	:alt="alt"
-	:title="alt"
-	decoding="async"
-	@error="errored = true"
-	@load="errored = false"
-	@click="onClick"
-/>
+	<img
+		v-if="errored && fallbackToImage"
+		:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
+		src="/client-assets/dummy.png"
+		:title="alt"
+	/>
+	<span v-else-if="errored">:{{ customEmojiName }}:</span>
+	<img
+		v-else
+		:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
+		:src="url"
+		:alt="alt"
+		:title="alt"
+		decoding="async"
+		@error="errored = true"
+		@load="errored = false"
+		@click.stop="onClick"
+		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+	/>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, ref } from 'vue';
-import type { MenuItem } from '@/types/menu.js';
+import { computed, onMounted, onUnmounted, inject, ref, defineAsyncComponent } from 'vue';
 import { getProxiedImageUrl, getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { defaultStore } from '@/store.js';
-import { customEmojisMap } from '@/custom-emojis.js';
+import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import * as os from '@/os.js';
-import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
-import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
+import { misskeyApiGet } from '@/scripts/misskey-api.js';
 import * as sound from '@/scripts/sound.js';
+import {copyToClipboard} from '@/scripts/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
 import MkCustomEmojiDetailedDialog from '@/components/MkCustomEmojiDetailedDialog.vue';
 import { $i } from '@/account.js';
+import { importEmojiMeta } from '@/scripts/import-emoji.js';
 
 const props = defineProps<{
 	name: string;
@@ -65,6 +69,9 @@ const rawUrl = computed(() => {
 	return props.host ? `/emoji/${customEmojiName.value}@${props.host}.webp` : `/emoji/${customEmojiName.value}.webp`;
 });
 
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => {
 	if (rawUrl.value == null) return undefined;
 
@@ -77,7 +84,7 @@ const url = computed(() => {
 				false,
 				true,
 			);
-	return defaultStore.reactiveState.disableShowingAnimatedImages.value
+	return defaultStore.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>defaultStore.reactiveState.showingAnimatedImages.value) && !playAnimation.value)
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
@@ -87,70 +94,73 @@ const errored = ref(url.value == null);
 
 function onClick(ev: MouseEvent) {
 	if (props.menu) {
-		const menuItems: MenuItem[] = [];
-
-		menuItems.push({
+		os.popupMenu([{
 			type: 'label',
 			text: `:${props.name}:`,
-		}, {
+		}, ...((customEmojis.value.find(it => it.name === customEmojiName.value)?.name ?? null) ? [{
 			text: i18n.ts.copy,
 			icon: 'ti ti-copy',
 			action: () => {
 				copyToClipboard(`:${props.name}:`);
-				os.success();
+				os.toast(i18n.ts.copied, 'copied');
 			},
-		});
-
-		if (props.menuReaction && react) {
-			menuItems.push({
-				text: i18n.ts.doReaction,
-				icon: 'ti ti-plus',
-				action: () => {
-					react(`:${props.name}:`);
-					sound.playMisskeySfx('reaction');
-				},
-			});
-		}
-
-		menuItems.push({
+		}] : []), ...(props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis) ? [{
+			text: i18n.ts.import,
+			icon: 'ti ti-plus',
+			action: async() => {
+				let emoji = await os.apiWithDialog('admin/emoji/steal', {
+					name: customEmojiName.value,
+					host: props.host,
+				});
+				emoji = await importEmojiMeta(emoji, props.host);
+				os.popup(defineAsyncComponent(() => import('@/pages/emoji-edit-dialog.vue')), {
+					emoji: emoji,
+				});
+			},
+		}] : []), ...(props.menuReaction && react ? [{
+			text: i18n.ts.doReaction,
+			icon: 'ti ti-mood-plus',
+			action: () => {
+				react(`:${props.name}:`);
+				sound.playMisskeySfx('reaction');
+			},
+		}] : []), {
 			text: i18n.ts.info,
 			icon: 'ti ti-info-circle',
 			action: async () => {
-				const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
+				os.popup(MkCustomEmojiDetailedDialog, {
 					emoji: await misskeyApiGet('emoji', {
 						name: customEmojiName.value,
 					}),
 				}, {
-					closed: () => dispose(),
+					anchor: ev.target,
 				});
 			},
-		});
-
-		if ($i?.isModerator ?? $i?.isAdmin) {
-			menuItems.push({
-				text: i18n.ts.edit,
-				icon: 'ti ti-pencil',
-				action: async () => {
-					await edit(props.name);
-				},
-			});
-		}
-
-		os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
+		}], ev.currentTarget ?? ev.target);
 	}
 }
 
-async function edit(name: string) {
-	const emoji = await misskeyApi('emoji', {
-		name: name,
-	});
-	const { dispose } = os.popup(defineAsyncComponent(() => import('@/pages/emoji-edit-dialog.vue')), {
-		emoji: emoji,
-	}, {
-		closed: () => dispose(),
-	});
+function resetTimer() {
+	playAnimation.value = true;
+	clearTimeout(playAnimationTimer);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 }
 
+onMounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.addEventListener('mousemove', resetTimer);
+		window.addEventListener('touchstart', resetTimer);
+		window.addEventListener('touchend', resetTimer);
+	}
+});
+
+onUnmounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.removeEventListener('mousemove', resetTimer);
+		window.removeEventListener('touchstart', resetTimer);
+		window.removeEventListener('touchend', resetTimer);
+	}
+});
 </script>
 
 <style lang="scss" module>
