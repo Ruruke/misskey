@@ -2519,7 +2519,8 @@ _timelines:
   local: "ローカル"
   social: "ソーシャル"
   global: "グローバル"
-  vmimiRelay: "Virtual Kemomimi リレー"
+  vmimi-relay: "ぶいみみリレー"
+  vmimi-relay-social: "ぶいみみソーシャル"
 
 _play:
   new: "Playの作成"

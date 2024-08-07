@@ -117,7 +117,9 @@ async function setType() {
 		}, {
 			value: 'global' as const, text: i18n.ts._timelines.global,
 		}, {
-			value: 'vkemo-relay' as const, text: i18n.ts._timelines.vkemoRelay,
+			value: 'vmimi-relay' as const, text: i18n.ts._timelines['vmimi-relay'],
+		}, {
+			value: 'vmimi-relay-social' as const, text: i18n.ts._timelines['vmimi-relay-social'],
 		}],
 	});
 	if (canceled) {
