@@ -106,7 +106,7 @@ redis:
 #  #prefix: example-prefix
 #  #db: 1
 
-#redisForRemoteClips:
+#redisForReactions:
 #  host: redis
 #  port: 6379
 #  #family: 0  # 0=Both, 4=IPv4, 6=IPv6
@@ -116,7 +116,8 @@ redis:
 #  # You can specify more ioredis options...
 #  #username: example-username
 
-#redisForReactions:
+
+#redisForRemoteApis:
 #  host: redis
 #  port: 6379
 #  #family: 0  # 0=Both, 4=IPv4, 6=IPv6
