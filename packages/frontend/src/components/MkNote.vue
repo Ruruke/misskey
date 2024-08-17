@@ -305,10 +305,10 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 }));
 
 function mfmParse() {
-	if(appearNote.value.user.instance instanceof String && appearNote.value.user.instance?.name === "なすきー") {
-		return computed(() => appearNote.value.text);
-	}
 	return computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
+	// if(appearNote.value.user.host) {
+	// 	return computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
+	// }
 }
 
 /* Overload FunctionにLintが対応していないのでコメントアウト

@@ -5335,6 +5335,10 @@ export interface Locale extends ILocale {
      * Inboxのモデレーション
      */
     "inboxModeration": string;
+    /**
+     * MFMの検索で利用する検索エンジン
+     */
+    "searchEngine": string;
     "_delivery": {
         /**
          * 配信状態
