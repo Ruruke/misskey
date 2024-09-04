@@ -5,6 +5,7 @@
 
 import { permissions } from 'misskey-js';
 import type { KeyOf, Schema } from '@/misc/json-schema.js';
+import { RolePolicies } from '@/core/RoleService.js';
 
 import * as ep___admin_abuseReport_notificationRecipient_list
 	from '@/server/api/endpoints/admin/abuse-report/notification-recipient/list.js';
@@ -25,6 +26,10 @@ import * as ep___admin_ad_create from './endpoints/admin/ad/create.js';
 import * as ep___admin_ad_delete from './endpoints/admin/ad/delete.js';
 import * as ep___admin_ad_list from './endpoints/admin/ad/list.js';
 import * as ep___admin_ad_update from './endpoints/admin/ad/update.js';
+import * as ep___admin_inbox_rule_list from './endpoints/admin/inbox-rule/list.js';
+import * as ep___admin_inbox_rule_set from './endpoints/admin/inbox-rule/set.js';
+import * as ep___admin_inbox_rule_edit from './endpoints/admin/inbox-rule/edit.js';
+import * as ep___admin_inbox_rule_delete from './endpoints/admin/inbox-rule/delete.js';
 import * as ep___admin_announcements_create from './endpoints/admin/announcements/create.js';
 import * as ep___admin_announcements_delete from './endpoints/admin/announcements/delete.js';
 import * as ep___admin_announcements_list from './endpoints/admin/announcements/list.js';

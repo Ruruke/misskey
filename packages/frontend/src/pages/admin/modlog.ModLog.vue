@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and misskey-project
+SPDX-FileCopyrightText: syuilo and misskey-project , Type4ny-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -18,6 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					'createAvatarDecoration',
 					'createSystemWebhook',
 					'createAbuseReportNotificationRecipient',
+					'setInboxRule',
 				].includes(log.type),
 				[$style.logYellow]: [
 					'markSensitiveDriveFile',
@@ -40,6 +41,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					'deletePage',
 					'deleteFlash',
 					'deleteGalleryPost',
+					'deleteInboxRule',
+					'inboxRejected'
 				].includes(log.type)
 			}"
 		>{{ i18n.ts._moderationLogTypes[log.type] }}</b>
@@ -169,6 +172,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.diff">
 				<CodeDiff :context="5" :hideHeader="true" :oldString="log.info.before ?? ''" :newString="log.info.after ?? ''" maxHeight="300px"/>
 			</div>
+		</template>
+		<template v-else-if="log.type === 'inboxRejected'">
+			<div>{{ log.info.rule.name }} {{ i18n.ts._moderationLogTypes.rejectedWithTheRule}}</div>
 		</template>
 
 		<details>

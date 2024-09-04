@@ -17,6 +17,7 @@ export const DI = {
 	//#region Repositories
 	usersRepository: Symbol('usersRepository'),
 	notesRepository: Symbol('notesRepository'),
+	inboxRuleRepository: Symbol('inboxRuleRepository'),
 	announcementsRepository: Symbol('announcementsRepository'),
 	announcementReadsRepository: Symbol('announcementReadsRepository'),
 	appsRepository: Symbol('appsRepository'),

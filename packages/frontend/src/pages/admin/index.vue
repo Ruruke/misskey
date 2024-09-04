@@ -185,6 +185,11 @@ const menuDef = computed(() => [{
 		to: '/admin/moderation',
 		active: currentPage.value?.route.name === 'moderation',
 	}, {
+		icon: 'ti ti-inbox',
+		text: i18n.ts.inboxModeration,
+		to: '/admin/inbox-moderation',
+		active: currentPage.value?.route.name === 'inbox-moderation',
+	}, {
 		icon: 'ti ti-mail',
 		text: i18n.ts.emailServer,
 		to: '/admin/email-settings',

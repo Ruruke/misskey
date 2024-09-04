@@ -77,7 +77,8 @@ import {
 	MiUserProfile,
 	MiUserPublickey,
 	MiUserSecurityKey,
-	MiWebhook
+	MiWebhook,
+	MiInboxRule,
 } from './_.js';
 import type { DataSource } from 'typeorm';
 
@@ -90,6 +91,13 @@ const $usersRepository: Provider = {
 const $notesRepository: Provider = {
 	provide: DI.notesRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiNote).extend(miRepository as MiRepository<MiNote>),
+	inject: [DI.db],
+};
+
+
+const $inboxRuleRepository: Provider = {
+	provide: DI.inboxRuleRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiInboxRule),
 	inject: [DI.db],
 };
 
@@ -500,6 +508,7 @@ const $reversiGamesRepository: Provider = {
 	providers: [
 		$usersRepository,
 		$notesRepository,
+		$inboxRuleRepository,
 		$announcementsRepository,
 		$announcementReadsRepository,
 		$appsRepository,
@@ -571,6 +580,7 @@ const $reversiGamesRepository: Provider = {
 	exports: [
 		$usersRepository,
 		$notesRepository,
+		$inboxRuleRepository,
 		$announcementsRepository,
 		$announcementReadsRepository,
 		$appsRepository,

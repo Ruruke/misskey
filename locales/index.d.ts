@@ -5162,6 +5162,10 @@ export interface Locale extends ILocale {
      * これ以上このクリップにノートを追加できません。
      */
     "clipNoteLimitExceeded": string;
+		/**
+		 * Inboxのモデレーション
+		 */
+		"inboxModeration": string;
     /**
      * パフォーマンス
      */
@@ -6777,6 +6781,100 @@ export interface Locale extends ILocale {
             };
         };
     };
+		"_inboxRule": {
+			/**
+			 * ルールを追加
+			 */
+			"add": string;
+			/**
+			 * ルール名
+			 */
+			"name": string;
+			/**
+			 * ルールの説明
+			 */
+			"description": string;
+			/**
+			 * このアクティビティが投稿なら
+			 */
+			"thisActivityIsNote": string;
+			/**
+			 * アクション
+			 */
+			"action": string;
+			/**
+			 * だったら
+			 */
+			"then": string;
+			/**
+			 * 拒否
+			 */
+			"reject": string;
+			/**
+			 * このサーバーのユーザーからフォローされているユーザーの数が～以下
+			 */
+			"serverPubLessThanOrEq": string;
+			/**
+			 * このサーバーのユーザーからフォローされているユーザーの数が～以上
+			 */
+			"serverPubMoreThanOrEq": string;
+			/**
+			 * このサーバーのユーザーをフォローしているユーザーの数が～以下
+			 */
+			"serverSubLessThanOrEq": string;
+			/**
+			 * このサーバーのユーザーをフォローしているユーザーの数が～以上
+			 */
+			"serverSubMoreThanOrEq": string;
+			/**
+			 * ノート内のメンション数が～以上
+			 */
+			"maxMentionsMoreThanOrEq": string;
+			/**
+			 * 添付ファイルの数が～以上
+			 */
+			"attachmentFileMoreThanOrEq": string;
+			/**
+			 * この単語を含む
+			 */
+			"isIncludeThisWord": string;
+			/**
+			 * かつ
+			 */
+			"and": string;
+			/**
+			 * または
+			 */
+			"or": string;
+			/**
+			 * でない
+			 */
+			"not": string;
+			/**
+			 * 投稿
+			 */
+			"notes": string;
+			/**
+			 * 条件
+			 */
+			"conditions": string;
+			/**
+			 * 一致した部分を書き換える
+			 */
+			"rewrite": string;
+			/**
+			 * サーバーのホスト
+			 */
+			"serverHost": string;
+			/**
+			 * サーバーのソフトウェア
+			 */
+			"serverSoftware": string;
+			/**
+			 * サーバーサイレンスされているか
+			 */
+			"serverIsSilenced": string;
+		};
     "_role": {
         /**
          * ロールの作成
@@ -10085,6 +10183,22 @@ export interface Locale extends ILocale {
          * ギャラリーの投稿を削除
          */
         "deleteGalleryPost": string;
+				/**
+				 * Inboxのルールを設定
+				 */
+				"setInboxRule": string;
+				/**
+				 * Inboxのルールを削除
+				 */
+				"deleteInboxRule": string;
+				/**
+				 * Inboxで拒否
+				 */
+				"inboxRejected": string;
+				/**
+				 * というルールで拒否されました。
+				 */
+				"rejectedWithTheRule": string;
     };
     "_fileViewer": {
         /**
