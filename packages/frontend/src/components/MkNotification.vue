@@ -184,6 +184,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkAvatar :class="$style.reactionsItemAvatar" :user="user" link preview/>
 				</div>
 			</div>
+			<div v-else-if="notification.type === 'note:grouped'">
+				<div v-for="user of notification.users" :key="user.id" :class="$style.reactionsItem">
+					<MkAvatar :class="$style.reactionsItemAvatar" :user="user" link preview/>
+				</div>
+			</div>
 
 			<MkA v-else-if="notification.type === 'scheduledNotePosted'" :class="$style.text" :to="notePage(notification.note)" :title="getNoteSummary(notification.note)">
 				<i class="ti ti-quotes" :class="$style.quote"></i>

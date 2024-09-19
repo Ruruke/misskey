@@ -138,4 +138,10 @@ export type MiGroupedNotification = MiNotification | {
 	createdAt: string;
 	noteId: MiNote['id'];
 	userIds: string[];
+} | {
+	type: 'note:grouped';
+	id: string;
+	createdAt: string;
+	noteIds: string[];
+	notifierIds: MiUser['id'][];
 };

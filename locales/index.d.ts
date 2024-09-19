@@ -323,6 +323,10 @@ export interface Locale extends ILocale {
      */
     "mentions": string;
     /**
+     * 新規投稿
+     */
+    "newNotes": string;
+    /**
      * ダイレクト投稿
      */
     "directNotes": string;
@@ -9618,6 +9622,10 @@ export interface Locale extends ILocale {
          * {n}人がリノートしました
          */
         "renotedBySomeUsers": ParameterizedString<"n">;
+        /**
+         * {n}件の新しい投稿
+         */
+        "notedBySomeUsers": ParameterizedString<"n">;
         /**
          * {n}人にフォローされました
          */
