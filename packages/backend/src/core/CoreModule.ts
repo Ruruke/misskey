@@ -817,6 +817,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$FileInfoService,
 		$SearchService,
 		$ClipService,
+		$FlashService,
 		$FeaturedService,
 		$FanoutTimelineService,
 		$FanoutTimelineEndpointService,

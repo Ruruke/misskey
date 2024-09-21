@@ -166,11 +166,12 @@ const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_
 
 let self = props.url.startsWith(local);
 let requestUrl = new URL(props.url);
-if (props.host === requestUrl.host && requestUrl.pathname.startsWith('/clips/')) {
-	requestUrl = new URL(local + requestUrl.pathname + '@' + props.host);
+let url_string: string;
+if (props.host === requestUrl.host && (requestUrl.pathname.startsWith('/clips/') || requestUrl.pathname.startsWith('/play/'))) {
+	let split = requestUrl.pathname.split('@');
+	requestUrl = new URL(local + split[0] + '@' + (split.length >= 2 ? split[1] : props.host));
 	self = true;
 }
-const url_string = requestUrl.toString();
 const attr = self ? 'to' : 'href';
 const target = self ? null : '_blank';
 let fetching = ref(true);
