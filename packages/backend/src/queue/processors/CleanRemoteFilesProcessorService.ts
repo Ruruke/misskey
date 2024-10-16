@@ -5,6 +5,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { IsNull, MoreThan, Not } from 'typeorm';
+import { ListObjectsCommandInput } from '@aws-sdk/client-s3';
 import { DI } from '@/di-symbols.js';
 import type { MiDriveFile, DriveFilesRepository, UsersRepository } from '@/models/_.js';
 import type Logger from '@/logger.js';
@@ -34,6 +35,8 @@ export class CleanRemoteFilesProcessorService {
 
 		private driveService: DriveService,
 		private queueLoggerService: QueueLoggerService,
+		private s3Service: S3Service,
+		private metaService: MetaService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('clean-remote-files');
 	}
