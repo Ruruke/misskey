@@ -174,7 +174,7 @@ export class DriveService {
 				?? `${ this.meta.objectStorageUseSSL ? 'https' : 'http' }://${ this.meta.objectStorageEndpoint }${ this.meta.objectStoragePort ? `:${this.meta.objectStoragePort}` : '' }/${ this.meta.objectStorageBucket }`;
 
 			// for original
-			const key = (isRemoteFile && this.meta.objectStoragePrefixForRemote) ? `${this.meta.objectStoragePrefixForRemote}/${randomUUID()}${ext}` : `${this.meta.objectStoragePrefix}/${randomUUID()}${ext}`;
+			const key = (isRemoteFile && this.meta.objectStoragePrefixForRemote) ? `${this.meta.objectStoragePrefixForRemote}/original/${randomUUID()}${ext}` : `${this.meta.objectStoragePrefix}/original/${randomUUID()}${ext}`;
 			const url = `${ baseUrl }/${ key }`;
 
 			// for alts
@@ -191,7 +191,7 @@ export class DriveService {
 			];
 
 			if (alts.webpublic) {
-				webpublicKey = (isRemoteFile && this.meta.objectStoragePrefixForRemote) ? `${this.meta.objectStoragePrefixForRemote}/${randomUUID()}${ext}` : `${this.meta.objectStoragePrefix}/webpublic-${randomUUID()}.${alts.webpublic.ext}`;
+				webpublicKey = (isRemoteFile && this.meta.objectStoragePrefixForRemote) ? `${this.meta.objectStoragePrefixForRemote}/webpublic/${randomUUID()}${ext}` : `${this.meta.objectStoragePrefix}/webpublic/webpublic-${randomUUID()}.${alts.webpublic.ext}`;
 				webpublicUrl = `${ baseUrl }/${ webpublicKey }`;
 
 				this.registerLogger.info(`uploading webpublic: ${webpublicKey}`);
@@ -199,7 +199,7 @@ export class DriveService {
 			}
 
 			if (alts.thumbnail) {
-				thumbnailKey = (isRemoteFile && this.meta.objectStoragePrefixForRemote) ? `${this.meta.objectStoragePrefixForRemote}/${randomUUID()}${ext}` : `${this.meta.objectStoragePrefix}/thumbnail-${randomUUID()}.${alts.thumbnail.ext}`;
+				thumbnailKey = (isRemoteFile && this.meta.objectStoragePrefixForRemote) ? `${this.meta.objectStoragePrefixForRemote}/thumbnail/${randomUUID()}${ext}` : `${this.meta.objectStoragePrefix}/thumbnail/thumbnail-${randomUUID()}.${alts.thumbnail.ext}`;
 				thumbnailUrl = `${ baseUrl }/${ thumbnailKey }`;
 
 				this.registerLogger.info(`uploading thumbnail: ${thumbnailKey}`);
