@@ -47,10 +47,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
 		<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
-		<MkAvatar :class="$style.avatar" :user="appearNote.user" :link="!mock" :preview="!mock" :showInstance="showInstanceIcon && !showTicker"/>
+		<MkAvatar :class="$style.avatar" :user="appearNote.user" :link="!mock" :preview="!mock" :showInstance="!!showInstanceIcon && !!showTicker"/>
 		<div :class="$style.main">
 			<MkNoteHeader :note="appearNote" :mini="true"/>
-			<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
+			<MkInstanceTicker v-if="showTicker && !showInstanceIcon" :instance="appearNote.user.instance"/>
 			<div style="container-type: inline-size;">
 				<p v-if="appearNote.cw != null" :class="$style.cw">
 					<Mfm
@@ -187,7 +187,6 @@ import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 import { pleaseLogin, type OpenOnRemoteOptions } from '@/scripts/please-login.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';
-import { notePage } from '@/filters/note.js';
 import { userPage } from '@/filters/user.js';
 import number from '@/filters/number.js';
 import * as os from '@/os.js';
@@ -228,7 +227,6 @@ const emit = defineEmits<{
 }>();
 
 const inTimeline = inject<boolean>('inTimeline', false);
-const tl_withSensitive = inject<Ref<boolean>>('tl_withSensitive', ref(true));
 const inChannel = inject('inChannel', null);
 const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 
@@ -275,7 +273,7 @@ const hardMuted = ref(props.withHardMute && checkMute(appearNote.value, $i?.hard
 const translation = ref<Misskey.entities.NotesTranslateResponse | null>(null);
 const translating = ref(false);
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.value.user.instance);
-const showInstanceIcon = (defaultStore.state.instanceTicker === 'alwaysIcon') || (defaultStore.state.instanceTicker === 'remoteIcon' && appearNote.value.user.instance);
+const showInstanceIcon = ref(defaultStore.state.instanceIcon);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.value.visibility) || (appearNote.value.visibility === 'followers' && appearNote.value.userId === $i?.id));
 const renoteCollapsed = ref(
 	defaultStore.state.collapseRenotes && isRenote && (
@@ -294,18 +292,15 @@ function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string 
 function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly: false): boolean | 'sensitiveMute';
 */
 function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly = false): boolean | 'sensitiveMute' {
-	if (mutedWords != null) {
-		if (checkWordMute(noteToCheck, $i, mutedWords)) return true;
-		if (noteToCheck.reply && checkWordMute(noteToCheck.reply, $i, mutedWords)) return true;
-		if (noteToCheck.renote && checkWordMute(noteToCheck.renote, $i, mutedWords)) return true;
-	}
+	if (mutedWords == null) return false;
+
+	if (checkWordMute(noteToCheck, $i, mutedWords)) return true;
+	if (noteToCheck.reply && checkWordMute(noteToCheck.reply, $i, mutedWords)) return true;
+	if (noteToCheck.renote && checkWordMute(noteToCheck.renote, $i, mutedWords)) return true;
 
 	if (checkOnly) return false;
 
-	if (inTimeline && tl_withSensitive.value === false && noteToCheck.files?.some((v) => v.isSensitive)) {
-		return 'sensitiveMute';
-	}
-
+	if (inTimeline && !defaultStore.state.tl.filter.withSensitive && noteToCheck.files?.some((v) => v.isSensitive)) return 'sensitiveMute';
 	return false;
 }
 
@@ -425,7 +420,7 @@ if (!props.mock) {
 }
 
 function renote(viaKeyboard = false) {
-	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
+	pleaseLogin(undefined, pleaseLoginContext.value);
 	showMovedDialog();
 
 	const { menu } = getRenoteMenu({ note: note.value, renoteButton, mock: props.mock });
@@ -435,7 +430,7 @@ function renote(viaKeyboard = false) {
 }
 
 function reply(): void {
-	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
+	pleaseLogin(undefined, pleaseLoginContext.value);
 	if (props.mock) {
 		return;
 	}
@@ -448,7 +443,7 @@ function reply(): void {
 }
 
 function react(): void {
-	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
+	pleaseLogin(undefined, pleaseLoginContext.value);
 	showMovedDialog();
 	if (appearNote.value.reactionAcceptance === 'likeOnly') {
 		sound.playMisskeySfx('reaction');
@@ -568,24 +563,15 @@ function showRenoteMenu(): void {
 		};
 	}
 
-	const renoteDetailsMenu: MenuItem = {
-		type: 'link',
-		text: i18n.ts.renoteDetails,
-		icon: 'ti ti-info-circle',
-		to: notePage(note.value),
-	};
-
 	if (isMyRenote) {
-		pleaseLogin({ openOnRemote: pleaseLoginContext.value });
+		pleaseLogin(undefined, pleaseLoginContext.value);
 		os.popupMenu([
-			renoteDetailsMenu,
 			getCopyNoteLinkMenu(note.value, i18n.ts.copyLinkRenote),
 			{ type: 'divider' },
 			getUnrenote(),
 		], renoteTime.value);
 	} else {
 		os.popupMenu([
-			renoteDetailsMenu,
 			getCopyNoteLinkMenu(note.value, i18n.ts.copyLinkRenote),
 			{ type: 'divider' },
 			getAbuseNoteMenu(note.value, i18n.ts.reportAbuseRenote),

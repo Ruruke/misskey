@@ -23,9 +23,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
-	<div v-if="showInstance">
-		<img v-if="faviconUrl" :class="$style.instanceIcon" :src="faviconUrl" :title="instance.name ?? undefined"/>
-	</div>
 	<template v-if="showDecoration">
 		<img
 			v-for="decoration in decorations ?? user.avatarDecorations"
@@ -38,6 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			}"
 			alt=""
 		>
+		<MkInstanceIcon v-if="showInstance" :class="$style.instanceicon" :instance="user.instance"/>
 	</template>
 </component>
 </template>
@@ -45,15 +43,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { watch, ref, computed } from 'vue';
 import * as Misskey from 'misskey-js';
-import { instanceName } from '@@/js/config.js';
 import { extractAvgColorFromBlurhash } from '@@/js/extract-avg-color-from-blurhash.js';
 import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
 import MkA from './MkA.vue';
-import { instance as Instance } from '@/instance.js';
-import { getStaticImageUrl, getProxiedImageUrlNullable } from '@/scripts/media-proxy.js';
+import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { acct, userPage } from '@/filters/user.js';
 import MkUserOnlineIndicator from '@/components/MkUserOnlineIndicator.vue';
 import { defaultStore } from '@/store.js';
+import MkInstanceIcon from '@/components/MkInstanceIcon.vue';
 
 const animation = ref(defaultStore.state.animation);
 const squareAvatars = ref(defaultStore.state.squareAvatars);
@@ -68,10 +65,6 @@ const props = withDefaults(defineProps<{
 	decorations?: (Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'> & { blink?: boolean; })[];
 	forceShowDecoration?: boolean;
 	showInstance?: boolean;
-	instance?: {
-		faviconUrl?: string | null,
-		name?: string | null,
-	};
 }>(), {
 	target: null,
 	link: false,
@@ -80,7 +73,6 @@ const props = withDefaults(defineProps<{
 	decorations: undefined,
 	forceShowDecoration: false,
 	showInstance: false,
-	instance: undefined,
 });
 
 const emit = defineEmits<{
@@ -88,12 +80,6 @@ const emit = defineEmits<{
 }>();
 
 const showDecoration = props.forceShowDecoration || defaultStore.state.showAvatarDecorations;
-
-const instance = props.instance ?? {
-	name: instanceName,
-};
-
-const faviconUrl = computed(() => props.instance ? getProxiedImageUrlNullable(props.instance.faviconUrl, 'preview') : getProxiedImageUrlNullable(Instance.iconUrl, 'preview') ?? '/favicon.ico');
 
 const bound = computed(() => props.link
 	? { to: userPage(props.user), target: props.target }
@@ -362,30 +348,28 @@ watch(() => props.user.avatarBlurhash, () => {
 	}
 }
 
-.instanceIcon {
-	width: 25px;
+.instanceicon {
 	height: 25px;
-	border-radius: 50%;
-	opacity: 0.65;
 	z-index: 2;
 	position: absolute;
 	left: 0;
 	bottom: 0;
-	background: var(--MI_THEME-panel);
-	box-shadow: 0 0 0 2px var(--MI_THEME-panel);
+}
 
-	@container (max-width: 580px) {
-		width: 21px;
+@container (max-width: 580px) {
+	.instanceicon {
 		height: 21px;
 	}
+}
 
-	@container (max-width: 450px) {
-		width: 19px;
+@container (max-width: 450px) {
+	.instanceicon {
 		height: 19px;
 	}
+}
 
-	@container (max-width: 300px) {
-		width: 17px;
+@container (max-width: 300px) {
+	.instanceicon {
 		height: 17px;
 	}
 }
