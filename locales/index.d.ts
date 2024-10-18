@@ -2799,6 +2799,10 @@ export interface Locale extends ILocale {
      */
     "userSaysSomething": ParameterizedString<"name">;
     /**
+     * {name}が「{word}」について何かを言いました
+     */
+    "userSaysSomethingAbout": ParameterizedString<"name" | "word">;
+    /**
      * アクティブにする
      */
     "makeActive": string;
