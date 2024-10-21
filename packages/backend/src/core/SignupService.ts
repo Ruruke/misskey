@@ -127,8 +127,7 @@ export class SignupService {
 				host: this.utilityService.toPunyNullable(host),
 				token: secret,
 				isRoot: isTheFirstUser,
-				// signupReason: opts.reason,
-				// approved: isTheFirstUser || (opts.approved ?? !this.meta.approvalRequiredForSignup),
+				signupReason: opts.reason,
 			}));
 
 			await transactionalEntityManager.save(new MiUserKeypair({

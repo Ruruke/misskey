@@ -87,6 +87,10 @@ export const packedMetaLiteSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
+		approvalRequiredForSignup: {
+			type: 'boolean',
+			optional: false, default: false,
+		},
 		enableHcaptcha: {
 			type: 'boolean',
 			optional: false, nullable: false,
