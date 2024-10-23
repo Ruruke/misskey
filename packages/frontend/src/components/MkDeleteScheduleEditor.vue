@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and misskey-project
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div :class="[$style.root, { [$style.padding]: !afterOnly }]">
 	<div v-if="!afterOnly" :class="[$style.label, { [$style.withAccent]: !showDetail }]" @click="showDetail = !showDetail"><i class="ti" :class="showDetail ? 'ti-chevron-up' : 'ti-chevron-down'"></i> {{ summaryText }}</div>
@@ -47,15 +52,15 @@ export type DeleteScheduleEditorModelValue = {
 		deleteAt: number | null;
 		deleteAfter: number | null;
 		isValid: boolean;
-};
+	};
 
 const props = defineProps<{
 		modelValue: DeleteScheduleEditorModelValue;
 		afterOnly?: boolean;
-}>();
+	}>();
 const emit = defineEmits<{
-			(ev: 'update:modelValue', v: DeleteScheduleEditorModelValue): void;
-		}>();
+		(ev: 'update:modelValue', v: DeleteScheduleEditorModelValue): void;
+	}>();
 
 const expiration = ref<'at' | 'after'>('after');
 const atDate = ref(formatDateTimeString(addTime(new Date(), 1, 'day'), 'yyyy-MM-dd'));
@@ -163,17 +168,17 @@ watch([expiration, atDate, atTime, after, unit, isValid], () => {
 	<style lang="scss" module>
 	.root {
 		display: flex;
-	flex-direction: column;
-	gap: 8px;
-	padding: 8px 0px;
+		flex-direction: column;
+		gap: 8px;
+		padding: 8px 0px;
 
 			>span {
 				opacity: 0.7;
 			}
 
 		>section {
-				>div {
-					display: flex;
+			>div {
+				display: flex;
 				flex-direction: row;
 				flex-wrap: wrap;
 				gap: 12px;
@@ -222,22 +227,21 @@ watch([expiration, atDate, atTime, after, unit, isValid], () => {
 			}
 		}
 
+	.padding {
+		padding: 8px 24px;
+	}
 
-.padding {
-	padding: 8px 24px;
-}
+	.label {
+		font-size: 0.85em;
+		padding: 0 0 8px 0;
+		user-select: none;
+	}
 
-.label {
-	font-size: 0.85em;
-	padding: 0 0 8px 0;
-	user-select: none;
-}
+	.withAccent {
+		color: var(--MI_THEME-accent);
+	}
 
-.withAccent {
-	color: var(--accent);
-}
-
-.chevronOpening {
-	transform: rotateX(180deg);
-}
-</style>
+	.chevronOpening {
+		transform: rotateX(180deg);
+	}
+	</style>
