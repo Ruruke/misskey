@@ -141,27 +141,26 @@ export class ApPersonService implements OnModuleInit {
 		const expectHost = this.utilityService.punyHost(uri);
 
 		if (!isActor(x)) {
-			throw new UnrecoverableError(`invalid Actor type '${x.type}' in ${uri}`);
+			throw new UnrecoverableError(`invalid Actor type '${x.type}': ${uri}`);
 		}
 
 		if (!(typeof x.id === 'string' && x.id.length > 0)) {
-			throw new UnrecoverableError(`invalid Actor ${uri} - wrong id type`);
+			throw new UnrecoverableError(`invalid Actor - wrong id: ${uri}`);
 		}
 
 		if (!(typeof x.inbox === 'string' && x.inbox.length > 0)) {
-			throw new UnrecoverableError(`invalid Actor ${uri} - wrong inbox type`);
+			throw new UnrecoverableError(`invalid Actor - wrong inbox: ${uri}`);
 		}
 
-		const inboxHost = this.utilityService.punyHost(x.inbox);
-		if (inboxHost !== expectHost) {
-			throw new UnrecoverableError(`invalid Actor ${uri} - wrong inbox ${inboxHost}`);
+		if (this.utilityService.punyHost(x.inbox) !== expectHost) {
+			throw new UnrecoverableError(`invalid Actor - inbox has different host: ${uri}`);
 		}
 
 		const sharedInboxObject = x.sharedInbox ?? (x.endpoints ? x.endpoints.sharedInbox : undefined);
 		if (sharedInboxObject != null) {
 			const sharedInbox = getApId(sharedInboxObject);
 			if (!(typeof sharedInbox === 'string' && sharedInbox.length > 0 && this.utilityService.punyHost(sharedInbox) === expectHost)) {
-				throw new UnrecoverableError(`invalid Actor ${uri} - wrong shared inbox ${sharedInbox}`);
+				throw new Error('invalid Actor: wrong shared inbox');
 			}
 		}
 
@@ -171,16 +170,16 @@ export class ApPersonService implements OnModuleInit {
 				const collectionUri = getApId(xCollection);
 				if (typeof collectionUri === 'string' && collectionUri.length > 0) {
 					if (this.utilityService.punyHost(collectionUri) !== expectHost) {
-						throw new UnrecoverableError(`invalid Actor ${uri} - wrong ${collection} ${collectionUri}`);
+						throw new UnrecoverableError(`invalid Actor - ${collection} has different host: ${uri}`);
 					}
 				} else if (collectionUri != null) {
-					throw new UnrecoverableError(`invalid Actor ${uri}: wrong ${collection} type`);
+					throw new UnrecoverableError(`invalid Actor: wrong ${collection} in ${uri}`);
 				}
 			}
 		}
 
 		if (!(typeof x.preferredUsername === 'string' && x.preferredUsername.length > 0 && x.preferredUsername.length <= 128 && /^\w([\w-.]*\w)?$/.test(x.preferredUsername))) {
-			throw new UnrecoverableError(`invalid Actor ${uri} - wrong username`);
+			throw new UnrecoverableError(`invalid Actor - wrong username: ${uri}`);
 		}
 
 		// These fields are only informational, and some AP software allows these
@@ -188,7 +187,7 @@ export class ApPersonService implements OnModuleInit {
 		// we can at least see these users and their activities.
 		if (x.name) {
 			if (!(typeof x.name === 'string' && x.name.length > 0)) {
-				throw new UnrecoverableError(`invalid Actor ${uri} - wrong name`);
+				throw new UnrecoverableError(`invalid Actor - wrong name: ${uri}`);
 			}
 			x.name = truncate(x.name, nameLength);
 		} else if (x.name === '') {
@@ -197,24 +196,24 @@ export class ApPersonService implements OnModuleInit {
 		}
 		if (x.summary) {
 			if (!(typeof x.summary === 'string' && x.summary.length > 0)) {
-				throw new UnrecoverableError(`invalid Actor ${uri} - wrong summary`);
+				throw new UnrecoverableError(`invalid Actor - wrong summary: ${uri}`);
 			}
 			x.summary = truncate(x.summary, summaryLength);
 		}
 
 		const idHost = this.utilityService.punyHost(x.id);
 		if (idHost !== expectHost) {
-			throw new UnrecoverableError(`invalid Actor ${uri} - wrong id ${x.id}`);
+			throw new UnrecoverableError(`invalid Actor - id has different host: ${uri}`);
 		}
 
 		if (x.publicKey) {
 			if (typeof x.publicKey.id !== 'string') {
-				throw new UnrecoverableError(`invalid Actor ${uri} - wrong publicKey.id type`);
+				throw new UnrecoverableError(`invalid Actor - publicKey.id is not a string: ${uri}`);
 			}
 
 			const publicKeyIdHost = this.utilityService.punyHost(x.publicKey.id);
 			if (publicKeyIdHost !== expectHost) {
-				throw new UnrecoverableError(`invalid Actor ${uri} - wrong publicKey.id ${x.publicKey.id}`);
+				throw new UnrecoverableError(`invalid Actor - publicKey.id has different host: ${uri}`);
 			}
 		}
 
@@ -251,10 +250,10 @@ export class ApPersonService implements OnModuleInit {
 		return null;
 	}
 
-	private async resolveAvatarAndBanner(user: MiRemoteUser, icon: any, image: any): Promise<Partial<Pick<MiRemoteUser, 'avatarId' | 'bannerId' | 'avatarUrl' | 'bannerUrl' | 'avatarBlurhash' | 'bannerBlurhash'>>> {
+	private async resolveAvatarAndBanner(user: MiRemoteUser, icon: any, image: any, bgimg: any): Promise<Partial<Pick<MiRemoteUser, 'avatarId' | 'bannerId' | 'backgroundId' | 'avatarUrl' | 'bannerUrl' | 'backgroundUrl' | 'avatarBlurhash' | 'bannerBlurhash' | 'backgroundBlurhash'>>> {
 		if (user == null) throw new Error('failed to create user: user is null');
 
-		const [avatar, banner, background] = await Promise.all([icon, image].map(img => {
+		const [avatar, banner, background] = await Promise.all([icon, image, bgimg].map(img => {
 			// if we have an explicitly missing image, return an
 			// explicitly-null set of values
 			if ((img == null) || (typeof img === 'object' && img.url == null)) {
@@ -311,7 +310,7 @@ export class ApPersonService implements OnModuleInit {
 		if (resolver == null) resolver = this.apResolverService.createResolver();
 
 		const object = await resolver.resolve(uri);
-		if (object.id == null) throw new UnrecoverableError(`null object.id in ${uri}`);
+		if (object.id == null) throw new UnrecoverableError(`null object.id: ${uri}`);
 
 		const person = this.validateActor(object, uri);
 
@@ -348,11 +347,11 @@ export class ApPersonService implements OnModuleInit {
 
 		if (url != null) {
 			if (!checkHttps(url)) {
-				throw new UnrecoverableError(`unexpected schema of person url ${url} in ${uri}`);
+				throw new UnrecoverableError(`unexpected schema of person url ${url}: ${uri}`);
 			}
 
 			if (this.utilityService.punyHost(url) !== this.utilityService.punyHost(person.id)) {
-				throw new UnrecoverableError(`person url <> uri host mismatch: ${url} <> ${person.id} in ${uri}`);
+				throw new UnrecoverableError(`person url <> uri host mismatch: ${url} <> ${person.id}`);
 			}
 		}
 
@@ -381,34 +380,31 @@ export class ApPersonService implements OnModuleInit {
 					id: this.idService.gen(),
 					avatarId: null,
 					bannerId: null,
-					// backgroundId: null,
+					backgroundId: null,
 					lastFetchedAt: new Date(),
 					name: truncate(person.name, nameLength),
-					// noindex: (person as any).noindex ?? false,
+					noindex: (person as any).noindex ?? false,
 					isLocked: person.manuallyApprovesFollowers,
 					movedToUri: person.movedTo,
 					movedAt: person.movedTo ? new Date() : null,
 					alsoKnownAs: person.alsoKnownAs,
 					isExplorable: person.discoverable,
 					username: person.preferredUsername,
-					// approved: true,
+					approved: true,
 					usernameLower: person.preferredUsername?.toLowerCase(),
 					host,
 					inbox: person.inbox,
 					sharedInbox: person.sharedInbox ?? person.endpoints?.sharedInbox,
-					// notesCount: outboxcollection?.totalItems ?? 0,
-					// followersCount: followerscollection?.totalItems ?? 0,
-					// followingCount: followingcollection?.totalItems ?? 0,
+					notesCount: outboxcollection?.totalItems ?? 0,
+					followersCount: followerscollection?.totalItems ?? 0,
+					followingCount: followingcollection?.totalItems ?? 0,
 					followersUri: person.followers ? getApId(person.followers) : undefined,
 					featured: person.featured ? getApId(person.featured) : undefined,
 					uri: person.id,
 					tags,
 					isBot,
 					isCat: (person as any).isCat === true,
-					requireSigninToViewContents: (person as any).requireSigninToViewContents === true,
-					makeNotesFollowersOnlyBefore: (person as any).makeNotesFollowersOnlyBefore ?? null,
-					makeNotesHiddenBefore: (person as any).makeNotesHiddenBefore ?? null,
-
+					speakAsCat: (person as any).speakAsCat != null ? (person as any).speakAsCat === true : (person as any).isCat === true,
 					emojis,
 				})) as MiRemoteUser;
 
@@ -431,6 +427,7 @@ export class ApPersonService implements OnModuleInit {
 					birthday: bday?.[0] ?? null,
 					location: person['vcard:Address'] ?? null,
 					userHost: host,
+					listenbrainz: person.listenbrainz ?? null,
 				}));
 
 				if (person.publicKey) {
@@ -462,10 +459,10 @@ export class ApPersonService implements OnModuleInit {
 
 		// Register host
 		this.federatedInstanceService.fetch(host).then(i => {
-			this.instancesRepository.increment({ id: i?.id }, 'usersCount', 1);
-			this.fetchInstanceMetadataService.fetchInstanceMetadata(i!);
+			this.instancesRepository.increment({ id: i.id }, 'usersCount', 1);
+			this.fetchInstanceMetadataService.fetchInstanceMetadata(i);
 			if (this.meta.enableChartsForFederatedInstances) {
-				this.instanceChart.newUser(i!.host);
+				this.instanceChart.newUser(i.host);
 			}
 		});
 
@@ -476,7 +473,7 @@ export class ApPersonService implements OnModuleInit {
 
 		//#region アバターとヘッダー画像をフェッチ
 		try {
-			const updates = await this.resolveAvatarAndBanner(user, person.icon, person.image);
+			const updates = await this.resolveAvatarAndBanner(user, person.icon, person.image, person.backgroundUrl);
 			await this.usersRepository.update(user.id, updates);
 			user = { ...user, ...updates };
 
@@ -562,11 +559,11 @@ export class ApPersonService implements OnModuleInit {
 
 		if (url != null) {
 			if (!checkHttps(url)) {
-				throw new UnrecoverableError(`unexpected schema of person url ${url} in ${uri}`);
+				throw new UnrecoverableError(`unexpected schema of person url ${url}: ${uri}`);
 			}
 
 			if (this.utilityService.punyHost(url) !== this.utilityService.punyHost(person.id)) {
-				throw new UnrecoverableError(`person url <> uri host mismatch: ${url} <> ${person.id} in ${uri}`);
+				throw new UnrecoverableError(`person url <> uri host mismatch: ${url} <> ${person.id}`);
 			}
 		}
 
@@ -579,17 +576,17 @@ export class ApPersonService implements OnModuleInit {
 			emojis: emojiNames,
 			name: truncate(person.name, nameLength),
 			tags,
-			// approved: true,
+			approved: true,
 			isBot: getApType(object) === 'Service' || getApType(object) === 'Application',
 			isCat: (person as any).isCat === true,
-			// speakAsCat: (person as any).speakAsCat != null ? (person as any).speakAsCat === true : (person as any).isCat === true,
-			// noindex: (person as any).noindex ?? false,
+			speakAsCat: (person as any).speakAsCat != null ? (person as any).speakAsCat === true : (person as any).isCat === true,
+			noindex: (person as any).noindex ?? false,
 			isLocked: person.manuallyApprovesFollowers,
 			movedToUri: person.movedTo ?? null,
 			alsoKnownAs: person.alsoKnownAs ?? null,
 			isExplorable: person.discoverable,
-			...(await this.resolveAvatarAndBanner(exist, person.icon, person.image).catch(() => ({}))),
-		} as Partial<MiRemoteUser> & Pick<MiRemoteUser, 'isBot' | 'isCat' | 'isLocked' | 'movedToUri' | 'alsoKnownAs' | 'isExplorable'>;
+			...(await this.resolveAvatarAndBanner(exist, person.icon, person.image, person.backgroundUrl).catch(() => ({}))),
+		} as Partial<MiRemoteUser> & Pick<MiRemoteUser, 'isBot' | 'isCat' | 'speakAsCat' | 'isLocked' | 'movedToUri' | 'alsoKnownAs' | 'isExplorable'>;
 
 		const moving = ((): boolean => {
 			// 移行先がない→ある
@@ -638,6 +635,7 @@ export class ApPersonService implements OnModuleInit {
 			followersVisibility,
 			birthday: bday?.[0] ?? null,
 			location: person['vcard:Address'] ?? null,
+			listenbrainz: person.listenbrainz ?? null,
 		});
 
 		this.globalEventService.publishInternalEvent('remoteUserUpdated', { id: exist.id });
@@ -676,7 +674,7 @@ export class ApPersonService implements OnModuleInit {
 				});
 		}
 
-		return 'skip: too soon to migrate accounts';
+		return 'skip';
 	}
 
 	/**
@@ -735,7 +733,7 @@ export class ApPersonService implements OnModuleInit {
 		});
 		if (!collection) return;
 
-		if (!isCollectionOrOrderedCollection(collection)) throw new UnrecoverableError(`featured ${user.featured} is not Collection or OrderedCollection in ${user.uri}`);
+		if (!isCollectionOrOrderedCollection(collection)) throw new UnrecoverableError(`featured ${user.featured} is not Collection or OrderedCollection: ${user.uri}`);
 
 		// Resolve to Object(may be Note) arrays
 		const unresolvedItems = isCollection(collection) ? collection.items : collection.orderedItems;

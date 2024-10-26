@@ -429,7 +429,7 @@ export class ApInboxService {
 		if (isPost(object)) {
 			await this.createNote(resolver, actor, object, false);
 		} else {
-			return `skip: Unsupported type for Create: ${getApType(object)} (object ${getNullableApId(object)})`;
+			return `skip: Unsupported type for Create: ${getApType(object)} ${getNullableApId(object)}`;
 		}
 	}
 
@@ -548,7 +548,7 @@ export class ApInboxService {
 			const note = await this.apDbResolverService.getNoteFromApId(uri);
 
 			if (note == null) {
-				return 'message not found';
+				return 'skip: ignoring deleted note on both ends';
 			}
 
 			if (note.userId !== actor.id) {
@@ -565,10 +565,6 @@ export class ApInboxService {
 	@bindThis
 	private async flag(actor: MiRemoteUser, activity: IFlag): Promise<string> {
 		// Make sure the source instance is allowed to send reports.
-		const instance = await this.federatedInstanceService.fetch(actor.host);
-		if (instance.rejectReports) {
-			throw new Bull.UnrecoverableError(`Rejecting report from instance: ${actor.host}`);
-		}
 
 		// objectは `(User|Note) | (User|Note)[]` だけど、全パターンDBスキーマと対応させられないので
 		// 対象ユーザーは一番最初のユーザー として あとはコメントとして格納する
@@ -687,7 +683,7 @@ export class ApInboxService {
 		if (isAnnounce(object)) return await this.undoAnnounce(actor, object);
 		if (isAccept(object)) return await this.undoAccept(actor, object);
 
-		return `skip: unknown object type ${getApType(object)}`;
+		return `skip: unknown activity type ${getApType(object)}`;
 	}
 
 	@bindThis
@@ -821,18 +817,10 @@ export class ApInboxService {
 				return await this.create(actor, activity, resolver);
 			}
 
-			await this.apQuestionService.updateQuestion(object, actor, resolver).catch(err => console.error(err));
+			await this.apQuestionService.updateQuestion(object, actor, resolver);
 			return 'ok: Question updated';
-		} else if (isPost(object)) {
-			// If we get an Update(Note) for a note that doesn't exist, then create it instead
-			if (!await this.apNoteService.hasNote(object)) {
-				return await this.create(actor, activity, resolver);
-			}
-
-			await this.apNoteService.updateNote(object, actor, resolver).catch(err => console.error(err));
-			return 'ok: Note updated';
 		} else {
-			return `skip: Unsupported type for Update: ${getApType(object)} (object ${getNullableApId(object)})`;
+			return `skip: Unsupported type for Update: ${getApType(object)} ${getNullableApId(object)}`;
 		}
 	}
 

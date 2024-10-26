@@ -180,7 +180,7 @@ export class ApNoteService {
 		}
 
 		if (!checkHttps(note.id)) {
-			throw new UnrecoverableError(`unexpected schema of note note.id ${note.id}: ${entryUri}`);
+			throw new UnrecoverableError(`unexpected schema of note url ${url}: ${entryUri}`);
 		}
 
 		const url = getOneApHrefNullable(note.url);
@@ -320,7 +320,7 @@ export class ApNoteService {
 			quote = results.filter((x): x is { status: 'ok', res: MiNote, uri: string } => x.status === 'ok').map(x => x.res).at(0);
 			if (!quote) {
 				if (results.some(x => x.status === 'temperror')) {
-					throw new Error(`failed to resolve quote for ${entryUri}`);
+					throw new Error(`quote resolve failed: ${entryUri}`);
 				}
 			}
 		}
