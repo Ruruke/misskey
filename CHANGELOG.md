@@ -32,6 +32,7 @@
 - Enhance: 依存関係の更新
 - Enhance: l10nの更新
 - Fix: お知らせ作成時に画像URL入力欄を空欄に変更できないのを修正 ( #14976 )
+- Enhance: プロキシアカウントには専用のバッジが表示されるように
 
 ### Client
 - Enhance: Bull DashboardでRelationship Queueの状態も確認できるように  
