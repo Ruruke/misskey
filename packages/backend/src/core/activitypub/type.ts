@@ -215,8 +215,18 @@ export interface IActor extends IObject {
 	'vcard:bday'?: string;
 	'vcard:Address'?: string;
 	noindex?: boolean;
-	listenbrainz?: string;
 	backgroundUrl?: string;
+	listenbrainz?: string;
+	banner?: {
+		sectionName?: string | null;
+		_misskey_sectionName?: string | null;
+		entrys: {
+				description?: string | null;
+				_misskey_description: string | null;
+				image: string | IObject | null;//ap image
+				url: string | null;//link to
+		}[] | [];
+	}[];
 }
 
 export const isCollection = (object: IObject): object is ICollection =>
