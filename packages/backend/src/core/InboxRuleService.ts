@@ -22,6 +22,10 @@ export class InboxRuleService {
 	constructor(
 		@Inject(DI.instancesRepository)
 		private instancesRepository: InstancesRepository,
+
+		@Inject(DI.meta)
+		private meta: MiMeta,
+
 		private idService: IdService,
 		private utilityService: UtilityService,
 		private instanceEntityService: InstanceEntityService,
@@ -40,17 +44,16 @@ export class InboxRuleService {
 		const instance = await this.instanceEntityService.pack(instanceUnpack, user);
 		try {
 			switch (value.type) {
-				// ～かつ～
 				case 'and': {
-					return value.values.every(async v => await this.evalCond(activity, user, v));
+					const results = await Promise.all(value.values.map(v => this.evalCond(activity, user, v)));
+					return results.every(result => result);
 				}
-				// ～または～
 				case 'or': {
-					return value.values.some(async v => await this.evalCond(activity, user, v));
+					const results = await Promise.all(value.values.map(v => this.evalCond(activity, user, v)));
+					return results.some(result => result);
 				}
-				// ～ではない
 				case 'not': {
-					return !await this.evalCond(activity, user, value.value);
+					return !(await this.evalCond(activity, user, value.value));
 				}
 				// サスペンド済みユーザである
 				case 'isSuspended': {
@@ -102,27 +105,25 @@ export class InboxRuleService {
 				}
 				// メンション数が指定値以上
 				case 'maxMentionsMoreThanOrEq': {
-					if (isNote(activity)) {
-						const apMentions = await this.apMentionService.extractApMentions(activity.tag as unknown as IPost, this.apResolverService.createResolver());
-
-						return apMentions.length ? apMentions.length >= value.value : false;
+					if (isNote(activity.object)) {
+						return activity.object?.tag ? activity.object?.tag?.length >= value.value : false;
 					}
 					return false;
 				}
 				// 添付ファイル数が指定値以上
 				case 'attachmentFileMoreThanOrEq': {
-					if (isNote(activity)) {
-						return activity.attachment?.length ? activity.attachment.length >= value.value : false;
+					if (isNote(activity.object)) {
+						return activity.object?.attachment?.length ? activity.object?.attachment.length >= value.value : false;
 					}
 					return false;
 				}
 				case 'thisActivityIsNote': {
-					return isNote(activity);
+					return isNote(activity.object);
 				}
 				// 指定されたワードが含まれている
 				case 'isIncludeThisWord': {
-					if (isNote(activity)) {
-						return this.utilityService.isKeyWordIncluded(typeof activity.content === 'string' ? activity.content : '', [value.value]);
+					if (isNote(activity.object)) {
+						return this.utilityService.isKeyWordIncluded(typeof activity.object?.content === 'string' ? activity.object.content : '', [value.value]);
 					}
 					return false;
 				}
