@@ -15,6 +15,7 @@ import { InstanceEntityService } from '@/core/entities/InstanceEntityService.js'
 import type { InboxRuleCondFormulaValue } from '@/models/InboxRule.js';
 import { ApMentionService } from '@/core/activitypub/models/ApMentionService.js';
 import { ApResolverService } from '@/core/activitypub/ApResolverService.js';
+import type { MiMeta } from '@/models/Meta.js';
 
 @Injectable()
 export class InboxRuleService {
@@ -127,7 +128,8 @@ export class InboxRuleService {
 				}
 				// 指定されたサーバーホスト
 				case 'serverHost': {
-					return user.host === value.value;
+					// eslint-disable-next-line eqeqeq
+					return user.host == value.value;
 				}
 				// 指定されたサーバーソフトウェア
 				case 'serverSoftware': {
