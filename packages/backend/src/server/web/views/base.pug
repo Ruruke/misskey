@@ -2,7 +2,9 @@ block vars
 
 block loadClientEntry
 	- const entry = config.frontendEntry;
-	- const baseUrl = config.url;
+	- const styleCSS = config.cspPrerenderedContent.get('style.css');
+	- const jsPrelude = config.cspPrerenderedContent.get('.prelude.js');
+	- const bootJS = config.cspPrerenderedContent.get('boot.js');
 
 
 doctype html
@@ -65,16 +67,14 @@ html
 			meta(property='og:image'       content= img)
 			meta(property='twitter:card'   content='summary')
 
-		style
-			include ../style.css
+		style(integrity=styleCSS.integrity) !{styleCSS.content}
 
-		script.
-			var VERSION = "#{version}";
-			var CLIENT_ENTRY = "#{entry.file}";
+		script(integrity=jsPrelude.integrity) !{jsPrelude.content}
 
 		script(type='application/json' id='misskey_meta' data-generated-at=now)
 			!= metaJson
 
+		script(integrity=bootJS.integrity) !{bootJS.content}
 		script(type='application/json' id='misskey_clientCtx' data-generated-at=now)
 			!= clientCtx
 

@@ -21,8 +21,12 @@
 - Fix: チャートエンジン・キュープロセッサが起動する前にサーバーがリクエストを受け付ける可能性がある問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/788)
 
+
 ## 2024.11.0
 
+- Security: CSPの設定を強化
+- Fix: flaky testの修正
+ 
 ### Note
 - Node.js 20.xは非推奨になりました。Node.js 22.x (LTS)の利用を推奨します。
   - なお、Node.js 23.xは対応していません。

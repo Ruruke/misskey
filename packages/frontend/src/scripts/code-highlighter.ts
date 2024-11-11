@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { createHighlighterCore, loadWasm } from 'shiki/core';
+import { createHighlighterCore } from 'shiki/core';
+import { loadWasm } from 'shiki/engine/oniguruma';
 import darkPlus from 'shiki/themes/dark-plus.mjs';
 import { bundledThemesInfo } from 'shiki/themes';
 import { bundledLanguagesInfo } from 'shiki/langs';

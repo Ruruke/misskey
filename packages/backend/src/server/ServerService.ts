@@ -31,6 +31,7 @@ import { HealthServerService } from './HealthServerService.js';
 import { ClientServerService } from './web/ClientServerService.js';
 import { OpenApiServerService } from './api/openapi/OpenApiServerService.js';
 import { OAuth2ProviderService } from './oauth/OAuth2ProviderService.js';
+import { generateCSP } from './csp.js';
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -85,6 +86,18 @@ export class ServerService implements OnApplicationShutdown {
 		if (this.config.url.startsWith('https') && !this.config.disableHsts) {
 			fastify.addHook('onRequest', (request, reply, done) => {
 				reply.header('strict-transport-security', 'max-age=15552000; preload');
+				done();
+			});
+		}
+
+		// CSP
+		if (process.env.NODE_ENV === 'production') {
+			console.debug('cspPrerenderedContent', this.config.cspPrerenderedContent);
+			const generatedCSP = generateCSP(this.config.cspPrerenderedContent, {
+				mediaProxy: this.config.mediaProxy ? `https://${new URL(this.config.mediaProxy).host}` : undefined,
+			});
+			fastify.addHook('onRequest', (_, reply, done) => {
+				reply.header('Content-Security-Policy', generatedCSP);
 				done();
 			});
 		}

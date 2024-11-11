@@ -9,6 +9,7 @@ import { dirname, resolve } from 'node:path';
 import * as yaml from 'js-yaml';
 import * as Sentry from '@sentry/node';
 import type { RedisOptions } from 'ioredis';
+import { type CSPHashed, hashResource, hashSourceFile } from './server/csp.js';
 
 type RedisOptionsSource = Partial<RedisOptions> & {
 	host: string;
@@ -152,6 +153,8 @@ export type Config = {
 	proxyRemoteFiles: boolean | undefined;
 	signToActivityPubGet: boolean | undefined;
 
+	cspPrerenderedContent: Map<string, CSPHashed>,
+
 	version: string;
 	publishTarballInsteadOfProvideRepositoryUrl: boolean;
 	setupPassword: string | undefined;
@@ -231,6 +234,15 @@ export function loadConfig(): Config {
 		: null;
 	const internalMediaProxy = `${scheme}://${host}/proxy`;
 	const redis = convertRedisOptions(config.redis, host);
+	const htmlScriptPrelude = `var VERSION = ${JSON.stringify(version)}; var CLIENT_ENTRY = ${JSON.stringify(frontendManifest['src/_boot_.ts'].file)};`;
+	const cspPrerenderedContent = new Map([
+		[
+			'.prelude.js', hashResource(htmlScriptPrelude)
+		],
+		...['boot.js', 'style.css', 'style.embed.css', 'boot.embed.js',
+			'bios.css', 'bios.js', 'cli.css', 'cli.js', 'error.css'
+		].map((file) => [file, hashSourceFile(`${_dirname}/server/web/${file}`)] as [string, CSPHashed]),
+	]);
 
 	return {
 		version,
@@ -241,6 +253,7 @@ export function loadConfig(): Config {
 		socket: config.socket,
 		chmodSocket: config.chmodSocket,
 		disableHsts: config.disableHsts,
+		cspPrerenderedContent,
 		host,
 		hostname,
 		scheme,

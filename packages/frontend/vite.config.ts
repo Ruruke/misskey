@@ -140,7 +140,7 @@ export function getConfig(): UserConfig {
 				input: {
 					app: './src/_boot_.ts',
 				},
-				external: externalPackages.map(p => p.match),
+				// external: externalPackages.map(p => p.match),
 				output: {
 					manualChunks: {
 						vue: ['vue'],

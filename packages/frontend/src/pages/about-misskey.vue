@@ -145,6 +145,7 @@ import * as os from '@/os.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js';
 import { $i } from '@/account.js';
+import { getProxiedImageUrl } from '@/scripts/media-proxy.js';
 
 const patronsWithIcon = [{
 	name: 'カイヤン',
@@ -275,7 +276,10 @@ const patronsWithIcon = [{
 }, {
 	name: '秋瀬カヲル',
 	icon: 'https://assets.misskey-hub.net/patrons/0f22aeb866484f4fa51db6721e3f9847.jpg',
-}];
+}].map(patron => ({
+	...patron,
+	icon: getProxiedImageUrl(patron.icon, 'avatar'),
+}));
 
 const patrons = [
 	'まっちゃとーにゅ',
@@ -557,6 +561,7 @@ definePageMetadata(() => ({
 }
 
 .contributorAvatar {
+	display: none; // CSP
 	width: 30px;
 	border-radius: 100%;
 }

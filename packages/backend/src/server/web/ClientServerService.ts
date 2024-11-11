@@ -66,6 +66,8 @@ import { FeedService } from './FeedService.js';
 import { UrlPreviewService } from './UrlPreviewService.js';
 import { ClientLoggerService } from './ClientLoggerService.js';
 import type { FastifyInstance, FastifyPluginOptions, FastifyReply } from 'fastify';
+import { generateCSP } from '../csp.js';
+import { appendQuery, query } from '@/misc/prelude/url.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -204,15 +206,26 @@ export class ClientServerService {
 	}
 
 	@bindThis
+	private getProxiedUrl(url: string, mode?: 'static' | 'avatar'): string {
+		return appendQuery(
+			`${this.config.mediaProxy}/${mode ?? 'image'}.webp`,
+			query({
+				url,
+				...(mode ? { [mode]: '1' } : {}),
+			}),
+		);
+	}
+
+	@bindThis
 	private async generateCommonPugData(meta: MiMeta) {
 		return {
 			instanceName: meta.name ?? 'Misskey',
 			icon: meta.iconUrl,
 			appleTouchIcon: meta.app512IconUrl,
 			themeColor: meta.themeColor,
-			serverErrorImageUrl: meta.serverErrorImageUrl ?? 'https://xn--931a.moe/assets/error.jpg',
-			infoImageUrl: meta.infoImageUrl ?? 'https://xn--931a.moe/assets/info.jpg',
-			notFoundImageUrl: meta.notFoundImageUrl ?? 'https://xn--931a.moe/assets/not-found.jpg',
+			serverErrorImageUrl: meta.serverErrorImageUrl ?? this.getProxiedUrl('https://xn--931a.moe/assets/error.jpg'),
+			infoImageUrl: meta.infoImageUrl ?? this.getProxiedUrl('https://xn--931a.moe/assets/info.jpg'),
+			notFoundImageUrl: meta.notFoundImageUrl ?? this.getProxiedUrl('https://xn--931a.moe/assets/not-found.jpg'),
 			instanceUrl: this.config.url,
 			metaJson: htmlSafeJsonStringify(await this.metaEntityService.packDetailed(meta)),
 			now: Date.now(),
@@ -225,6 +238,18 @@ export class ClientServerService {
 
 		//#region Bull Dashboard
 		const bullBoardPath = '/queue';
+
+		// CSP
+		if (process.env.NODE_ENV === 'production') {
+			console.debug('cspPrerenderedContent', this.config.cspPrerenderedContent);
+			const generatedCSP = generateCSP(this.config.cspPrerenderedContent, {
+				mediaProxy: this.config.mediaProxy ? `https://${new URL(this.config.mediaProxy).host}` : undefined,
+			});
+			fastify.addHook('onRequest', (_, reply, done) => {
+				reply.header('Content-Security-Policy', generatedCSP);
+				done();
+			});
+		}
 
 		// Authenticate
 		fastify.addHook('onRequest', async (request, reply) => {
@@ -288,6 +313,20 @@ export class ClientServerService {
 				version: this.config.version,
 				config: this.config,
 			},
+			options: {
+				filters: {
+					dataTag: (data: string, options: { tagName: string, mimeType: string }) => {
+						if (!/^[a-z]+$/.test(options.tagName)) {
+							throw new Error('Invalid tagName');
+						}
+						if (/[;'"]/.test(options.mimeType)) {
+							throw new Error('Invalid mimeType');
+						}
+						const dataURI = `data:${options.mimeType};base64,${Buffer.from(data).toString('base64')}`;
+						return `<${options.tagName} data="${dataURI}"></${options.tagName}>`;
+					}
+				}
+			}
 		});
 
 		fastify.addHook('onRequest', (request, reply, done) => {

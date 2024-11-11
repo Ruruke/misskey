@@ -1,7 +1,10 @@
 block vars
 
 block loadClientEntry
-	- const entry = config.frontendEmbedEntry;
+	- const entry = config.frontendEntry
+	- const styleCSS = config.cspPrerenderedContent['style.embed.css']
+	- const bootJS = config.cspPrerenderedContent['boot.embed.js']
+	- const jsPrelude = config.cspPrerenderedContent['baseHtmlJSPrelude']
 
 doctype html
 
@@ -35,12 +38,9 @@ html(class='embed')
 		block meta
 			meta(name='robots' content='noindex')
 
-		style
-			include ../style.embed.css
+		style(integrity=styleCSS.integrity) !{styleCSS.content}
 
-		script.
-			var VERSION = "#{version}";
-			var CLIENT_ENTRY = "#{entry.file}";
+		script(integrity=jsPrelude.integrity) !{jsPrelude.content}
 
 		script(type='application/json' id='misskey_meta' data-generated-at=now)
 			!= metaJson
@@ -48,8 +48,7 @@ html(class='embed')
 		script(type='application/json' id='misskey_embedCtx' data-generated-at=now)
 			!= embedCtx
 
-		script
-			include ../boot.embed.js
+		script(integrity=bootJS.integrity) !{bootJS.content}
 
 	body
 		noscript: p
