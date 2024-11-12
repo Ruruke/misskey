@@ -34,6 +34,7 @@ import Logger from '@/logger.js';
 import { StatusError } from '@/misc/status-error.js';
 import type { ServerResponse } from 'node:http';
 import type { FastifyInstance } from 'fastify';
+import { commonPugFilters } from '../pug-filters.js';
 
 // TODO: Consider migrating to @node-oauth/oauth2-server once
 // https://github.com/node-oauth/node-oauth2-server/issues/180 is figured out.
@@ -390,6 +391,9 @@ export class OAuth2ProviderService {
 			defaultContext: {
 				version: this.config.version,
 				config: this.config,
+			},
+			options: {
+				filters: commonPugFilters,
 			},
 		});
 

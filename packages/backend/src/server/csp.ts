@@ -24,9 +24,9 @@ export function generateCSP(hashedMap: Map<string, CSPHashed>, options: {
 
     return ([
         ['default-src', ['\'self\'']],
-        ['img-src', 
-            [   
-                '\'self\'', 
+        ['img-src',
+            [
+                '\'self\'',
                 'data:',
                 // 'https://avatars.githubusercontent.com', // uncomment this for contributor avatars to work
                 options.mediaProxy
@@ -41,7 +41,7 @@ export function generateCSP(hashedMap: Map<string, CSPHashed>, options: {
         // Since you can not write CSS selectors or cascading rules in the inline style attributes.
         //
         // ref: https://github.com/shikijs/shiki/issues/671
-        ['style-src-attr', ['\'self\'', '\'unsafe-inline\'']], 
+        ['style-src-attr', ['\'self\'', '\'unsafe-inline\'']],
         ['script-src', ['\'self\'', '\'wasm-unsafe-eval\'', ...scripts]],
         ['object-src', ['\'none\'']],
         ['frame-src', ['\'none\'']],

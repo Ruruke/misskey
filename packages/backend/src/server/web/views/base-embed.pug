@@ -2,9 +2,9 @@ block vars
 
 block loadClientEntry
 	- const entry = config.frontendEntry
-	- const styleCSS = config.cspPrerenderedContent['style.embed.css']
-	- const bootJS = config.cspPrerenderedContent['boot.embed.js']
-	- const jsPrelude = config.cspPrerenderedContent['baseHtmlJSPrelude']
+	- const styleCSS = config.cspPrerenderedContent.get('style.css');
+	- const jsPrelude = config.cspPrerenderedContent.get('.prelude.js');
+	- const bootJS = config.cspPrerenderedContent.get('boot.js');
 
 doctype html
 

@@ -68,6 +68,7 @@ import { ClientLoggerService } from './ClientLoggerService.js';
 import type { FastifyInstance, FastifyPluginOptions, FastifyReply } from 'fastify';
 import { generateCSP } from '../csp.js';
 import { appendQuery, query } from '@/misc/prelude/url.js';
+import { commonPugFilters } from '../pug-filters.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
@@ -314,19 +315,8 @@ export class ClientServerService {
 				config: this.config,
 			},
 			options: {
-				filters: {
-					dataTag: (data: string, options: { tagName: string, mimeType: string }) => {
-						if (!/^[a-z]+$/.test(options.tagName)) {
-							throw new Error('Invalid tagName');
-						}
-						if (/[;'"]/.test(options.mimeType)) {
-							throw new Error('Invalid mimeType');
-						}
-						const dataURI = `data:${options.mimeType};base64,${Buffer.from(data).toString('base64')}`;
-						return `<${options.tagName} data="${dataURI}"></${options.tagName}>`;
-					}
-				}
-			}
+				filters: commonPugFilters,
+			},
 		});
 
 		fastify.addHook('onRequest', (request, reply, done) => {
