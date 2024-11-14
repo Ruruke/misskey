@@ -1342,6 +1342,7 @@ useUsername: "ユーザー名を使う"
 useEmail: "メールアドレスを使う"
 federationSpecified: "このサーバーはホワイトリスト連合で運用されています。管理者が指定したサーバー以外とやり取りすることはできません。"
 federationDisabled: "このサーバーは連合が無効化されています。他のサーバーのユーザーとやり取りすることはできません。"
+youCannotPlayGames: "このアカウントにはMisskey Gamesをプレイする権限がありません。"
 
 _accountSettings:
   requireSigninToViewContents: "コンテンツの表示にログインを必須にする"
@@ -1907,6 +1908,7 @@ _role:
     canImportMuting: "ミュートのインポートを許可"
     canImportUserLists: "リストのインポートを許可"
     scheduleNoteMax: "予約投稿の最大数"
+    canPlayGames: "Misskey Gamesの利用"
   _condition:
     roleAssignedTo: "マニュアルロールにアサイン済み"
     isLocal: "ローカルユーザー"

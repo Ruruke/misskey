@@ -296,6 +296,9 @@ export const packedRolePoliciesSchema = {
 			type: 'integer',
 			optional: false, nullable: false,
 		},
+		canPlayGames: {
+			type: 'boolean',
+		},
 	},
 } as const;
 

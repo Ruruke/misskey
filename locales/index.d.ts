@@ -5386,6 +5386,10 @@ export interface Locale extends ILocale {
      * このサーバーは連合が無効化されています。他のサーバーのユーザーとやり取りすることはできません。
      */
     "federationDisabled": string;
+    /**
+     * このアカウントにはMisskey Gamesをプレイする権限がありません。
+     */
+    "youCannotPlayGames": string;
     "_accountSettings": {
         /**
          * コンテンツの表示にログインを必須にする
@@ -7379,6 +7383,10 @@ export interface Locale extends ILocale {
              * 予約投稿の最大数
              */
             "scheduleNoteMax": string;
+            /**
+             * Misskey Gamesの利用
+             */
+            "canPlayGames": string;
         };
         "_condition": {
             /**

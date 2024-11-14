@@ -67,6 +67,10 @@ const toggle = () => {
 	&.disabled {
 		opacity: 0.6;
 		cursor: not-allowed;
+
+		.label {
+			cursor: not-allowed;
+		}
 	}
 }
 

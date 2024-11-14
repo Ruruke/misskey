@@ -112,6 +112,7 @@ export const ROLE_POLICIES = [
 	'canImportFollowing',
 	'canImportMuting',
 	'canImportUserLists',
+	'canPlayGames',
 ] as const;
 
 // なんか動かない
