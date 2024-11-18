@@ -1047,6 +1047,10 @@ export interface Locale extends ILocale {
      */
     "blockedUsers": string;
     /**
+     * リアクションをブロックしたユーザー
+     */
+    "reactionBlockedUsers": string;
+    /**
      * ユーザーはいません
      */
     "noUsers": string;
