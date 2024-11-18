@@ -160,6 +160,12 @@ import type {
 	AuthSessionShowResponse,
 	AuthSessionUserkeyRequest,
 	AuthSessionUserkeyResponse,
+	BlockingReactionUserCreateRequest,
+	BlockingReactionUserCreateResponse,
+	BlockingReactionUserDeleteRequest,
+	BlockingReactionUserDeleteResponse,
+	BlockingReactionUserListRequest,
+	BlockingReactionUserListResponse,
 	BlockingCreateRequest,
 	BlockingCreateResponse,
 	BlockingDeleteRequest,
@@ -711,6 +717,9 @@ export type Endpoints = {
 	'auth/session/generate': { req: AuthSessionGenerateRequest; res: AuthSessionGenerateResponse };
 	'auth/session/show': { req: AuthSessionShowRequest; res: AuthSessionShowResponse };
 	'auth/session/userkey': { req: AuthSessionUserkeyRequest; res: AuthSessionUserkeyResponse };
+	'blocking-reaction-user/create': { req: BlockingReactionUserCreateRequest; res: BlockingReactionUserCreateResponse };
+	'blocking-reaction-user/delete': { req: BlockingReactionUserDeleteRequest; res: BlockingReactionUserDeleteResponse };
+	'blocking-reaction-user/list': { req: BlockingReactionUserListRequest; res: BlockingReactionUserListResponse };
 	'blocking/create': { req: BlockingCreateRequest; res: BlockingCreateResponse };
 	'blocking/delete': { req: BlockingDeleteRequest; res: BlockingDeleteResponse };
 	'blocking/list': { req: BlockingListRequest; res: BlockingListResponse };

@@ -5387,7 +5387,7 @@ export interface Locale extends ILocale {
      */
     "federationDisabled": string;
     /**
-     * このアカウントにはMisskey Gamesをプレイする権限がありません。
+     * このアカウントではMisskey Gamesをプレイできません。
      */
     "youCannotPlayGames": string;
     "_accountSettings": {
@@ -10870,7 +10870,7 @@ export interface Locale extends ILocale {
          */
         "useAvatarAsStone": string;
         /**
-         * 相手のユーザーにはMisskey Gamesをプレイする権限がありません。
+         * 相手はMisskey Gamesをプレイできません。
          */
         "targetUserIsNotAvailable": string;
         /**
