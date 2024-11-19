@@ -28,6 +28,7 @@ export function generateCSP(hashedMap: Map<string, CSPHashed>, options: {
             [
                 '\'self\'',
                 'data:',
+                'blob:',
                 // 'https://avatars.githubusercontent.com', // uncomment this for contributor avatars to work
                 options.mediaProxy
             ].filter(Boolean)],
