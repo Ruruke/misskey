@@ -26,32 +26,35 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkButton>
 	</div>
 </template>
-<div
-	v-else-if="isSteam"
-	class="steam-preview"
-	@click.stop
->
-	<div class="steam-row steam-header">
-		<img :src="icon || defaultIcon" class="favicon" />
-		<span class="steam-game-name">
+<template v-else-if="isSteam">
+	<div
+		v-if="thumbnail"
+		:class="$style.steam_thumbnail"
+		:style="`background-image: url('${thumbnail}')`"
+	/>
+	<div :class="$style.steam_preview" @click.stop style="padding-left: 205px">
+		<div :class="[$style.steam_row, $style.steam_header]">
+			<img :src="icon || defaultIcon" :class="$style.favicon" />
+			<span :class="$style.steam_game_name">
 			<span v-if="steamAgeLimit">[{{ steamAgeLimit }}+] </span>{{ steamGameName }}
 			</span>
-	</div>
-	<div v-if="steamDeveloper" class="steam-row steam-developer">
-		{{ steamDeveloper }}
-	</div>
-	<div class="steam-row steam-pricing">
-			<span v-if="steamOnSale" class="steam-discount">
+		</div>
+		<div v-if="steamDeveloper" :class="[$style.steam_row, $style.steam_developer]">
+			{{ steamDeveloper }}
+		</div>
+		<div :class="[$style.steam_row, $style.steam_pricing]">
+			<span v-if="steamOnSale" :class="$style.steam_discount">
 			-{{ Math.floor(steamDiscount * 10) / 10 }}%
 			</span>
-		<span v-if="steamOnSale" class="steam-original-price">
+			<span v-if="steamOnSale" :class="$style.steam_original_price">
 			{{ steamOriginalPrice }}
 			</span>
-		<span class="steam-current-price">
+			<span :class="$style.steam_current_price">
 			{{ steamCurrentPrice }}
 			</span>
+		</div>
 	</div>
-</div>
+</template>
 <template v-else-if="tweetId && postExpanded">
 	<div>
 		<iframe
@@ -130,7 +133,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, onDeactivated, onUnmounted, ref } from 'vue';
-import { url as local } from '@@/js/config.js';
+import { url as local, lang } from '@@/js/config.js';
 import { versatileLang } from '@@/js/intl-const.js';
 import type { summaly } from '@misskey-dev/summaly';
 import { i18n } from '@/i18n.js';
@@ -162,8 +165,8 @@ const target = self ? null : '_blank';
 let fetching = ref(true);
 const title = ref<string | null>(null);
 const description = ref<string | null>(null);
-const thumbnail = ref<string | null>(null);
-const icon = ref<string | null>(null);
+let thumbnail = ref<string | null>(null);
+let icon = ref<string | null>(null);
 const sitename = ref<string | null>(null);
 const sensitive = ref<boolean>(false);
 const player = ref({
@@ -189,73 +192,26 @@ let steamDiscount = ref<number>(0);
 let steamOriginalPrice = ref<string>("");
 let steamCurrentPrice = ref<string>("");
 const defaultIcon = "https://store.steampowered.com/favicon.ico"; // デフォルトのファビコンURL
-// Steamゲームデータを取得する関数
-const fetchSteamData = async (steamAppId: string) => {
-	try {
-		const response = await fetch(
-			`https://store.steampowered.com/api/appdetails?appids=${steamAppId}&cc=jp&l=ja`
-		);
-		console.log(response);
-		const data = await response.json();
-		const gameData = data[steamAppId]?.data;
-		if (gameData && data[steamAppId].success) {
-			steamGameName = gameData.name;
-			// ファビコンを通常の処理で取得
-			icon = `https://store.steampowered.com/favicon.ico`;
-			// 年齢制限の取得
-			if (gameData.required_age && gameData.required_age !== "0") {
-				steamAgeLimit = gameData.required_age;
-			}
-			// 開発者情報の取得
-			if (gameData.developers && gameData.developers.length > 0) {
-				steamDeveloper = gameData.developers.join(", ");
-			}
-			// 価格情報
-			if (gameData.price_overview) {
-				const priceOverview = gameData.price_overview;
-				steamCurrentPrice = priceOverview.final_formatted;
-				if (priceOverview.discount_percent > 0) {
-					steamOnSale = true;
-					steamDiscount = priceOverview.discount_percent;
-					steamOriginalPrice = priceOverview.initial_formatted;
-				}
-			} else if (gameData.is_free) {
-				steamCurrentPrice = "無料プレイ";
-			} else {
-				steamCurrentPrice = "価格情報なし";
-			}
-			fetching = false;
-		}
-	} catch (error) {
-		console.error("Steamデータの取得中にエラーが発生しました:", error);
-		fetching = false;
-	}
-};
-// URLがSteamストアのものかどうかを判定し、App IDを抽出
-const parseSteamUrl = (url: string): string | null => {
-	return null
-	//TODO: CORSを何とかする。
-	// try {
-	// 	const parsedUrl = new URL(url);
-	// 	if (
-	// 		parsedUrl.hostname === "store.steampowered.com" ||
-	// 		parsedUrl.hostname.endsWith(".steampowered.com")
-	// 	) {
-	// 		const pathSegments = parsedUrl.pathname.split("/");
-	// 		const appIndex = pathSegments.indexOf("app");
-	// 		if (appIndex !== -1 && pathSegments.length > appIndex + 1) {
-	// 			return pathSegments[appIndex + 1];
-	// 		}
-	// 	}
-	// 	return null;
-	// } catch (error) {
-	// 	console.error("無効なURLです:", error);
-	// 	return null;
-	// }
-};
-const steamAppId = parseSteamUrl(props.url);
-if (steamAppId) {
+const requestLang = (lang || "ja-JP")
+	.replace("ja-KS", "ja-JP")
+	.replace("ja-KK", "ja-JP");
+const response = await fetch(`/url?url=${encodeURIComponent(props.url)}&lang=${requestLang}`);
+const info = await response.json();
+// Steamの場合の処理
+if (info.steam) {
 	isSteam = true;
+	steamGameName = info.title;
+	icon = info.icon;
+	thumbnail = info.thumbnail;
+	steamAgeLimit = info.steam.ageLimit;
+	steamDeveloper = info.steam.developer;
+	steamOnSale = info.steam.onSale;
+	steamDiscount = info.steam.discountPercent;
+	steamOriginalPrice = info.steam.originalPrice;
+	steamCurrentPrice = info.steam.currentPrice ||
+		(info.steam.isFree
+			? "無料プレイ"
+			: "価格情報なし");
 }
 
 const bskyHandleOrDid = ref<string | null>(null);
@@ -295,9 +251,7 @@ if (requestUrl.hostname === 'music.youtube.com' && requestUrl.pathname.match('^/
 
 requestUrl.hash = '';
 
-// Steamでない場合は一般的なURL情報を取得
-if (!isSteam) {
-	console.log("Not Steam.")
+if(!info.steam) {
 	window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
 		.then(res => {
 			if (!res.ok) {
@@ -327,11 +281,8 @@ if (!isSteam) {
 			player.value = info.player;
 			sensitive.value = info.sensitive ?? false;
 		});
-
-} else {
-	// Steamの場合はSteamデータを取得
-	fetchSteamData(steamAppId!);
 }
+
 async function openBskyEmbed() {
 	if (bskyHandleOrDid.value == null || bskyPostRecordKey.value == null) return;
 
@@ -388,6 +339,62 @@ onUnmounted(() => {
 	position: relative;
 	width: 100%;
 }
+.steam_preview {
+	border: 1px solid var(--divider);
+	border-radius: 0.5rem;
+	padding: 0.5rem 1rem;
+	background-color: var(--background);
+	display: flex;
+	flex-direction: column;
+	pointer-events: auto;
+
+	.steam_row {
+		display: flex;
+		align-items: center;
+		margin-bottom: 0.25rem;
+		&.steam_header {
+			justify-content: flex-start;
+			.favicon {
+				width: 24px;
+				height: 24px;
+				margin-right: 0.5rem;
+			}
+			.steam_game_name {
+				font-size: 1em;
+				font-weight: bold;
+			}
+		}
+		&.steam_developer {
+			justify-content: flex-start;
+			font-size: 0.9em;
+			//color: rgba(0, 0, 0, 0.6);
+			margin-left: 2.5rem;
+			margin-bottom: 0.5rem;
+		}
+		&.steam_pricing {
+			justify-content: flex-end;
+			align-items: center;
+			.steam_discount {
+				background-color: green;
+				color: white;
+				padding: 0.2rem 0.5rem;
+				border-radius: 0.25rem;
+				margin-right: 0.5rem;
+				font-weight: bold;
+			}
+			.steam_original_price {
+				text-decoration: line-through;
+				color: rgba(0, 0, 0, 0.7
+				);
+				margin-right: 0.5rem;
+			}
+			.steam_current_price {
+				font-size: 1em;
+				font-weight: bold;
+			}
+		}
+	}
+}
 
 .disablePlayer {
 	position: absolute;
@@ -443,6 +450,22 @@ onUnmounted(() => {
 	}
 }
 
+.steam_thumbnail {
+	position: absolute;
+	width: 200px;
+	height: 45%;
+	background-position: center;
+	background-size: cover;
+	background-color: var(--MI_THEME-bg);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	& + .body {
+		left: 100px;
+		width: calc(100% - 100px);
+	}
+}
 .thumbnail {
 	position: absolute;
 	width: 100px;
@@ -459,62 +482,6 @@ onUnmounted(() => {
 		width: calc(100% - 100px);
 	}
 }
-.steam-preview {
-	border: 1px solid var(--divider);
-	border-radius: 0.5rem;
-	padding: 0.5rem 1rem;
-	background-color: var(--background);
-	display: flex;
-	flex-direction: column;
-	pointer-events: auto;
-	.steam-row {
-		display: flex;
-		align-items: center;
-		margin-bottom: 0.25rem;
-		&.steam-header {
-			justify-content: flex-start;
-			.favicon {
-				width: 24px;
-				height: 24px;
-				margin-right: 0.5rem;
-			}
-			.steam-game-name {
-				font-size: 1em;
-				font-weight: bold;
-			}
-		}
-		&.steam-developer {
-			justify-content: flex-start;
-			font-size: 0.9em;
-			color: rgba(0, 0, 0, 0.6);
-			margin-left: 2.5rem;
-			margin-bottom: 0.5rem;
-		}
-		&.steam-pricing {
-			justify-content: flex-end;
-			align-items: center;
-			.steam-discount {
-				background-color: green;
-				color: white;
-				padding: 0.2rem 0.5rem;
-				border-radius: 0.25rem;
-				margin-right: 0.5rem;
-				font-weight: bold;
-			}
-			.steam-original-price {
-				text-decoration: line-through;
-				color: rgba(0, 0, 0, 0.7
-				);
-				margin-right: 0.5rem;
-			}
-			.steam-current-price {
-				font-size: 1em;
-				font-weight: bold;
-			}
-		}
-	}
-}
-
 .body {
 	position: relative;
 	box-sizing: border-box;

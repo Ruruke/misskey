@@ -16,6 +16,7 @@ import { bindThis } from '@/decorators.js';
 import { ApiError } from '@/server/api/error.js';
 import { MiMeta } from '@/models/Meta.js';
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import { fetchJson } from "@/misc/fetchJson.js";
 
 @Injectable()
 export class UrlPreviewService {
@@ -78,6 +79,55 @@ export class UrlPreviewService {
 			? `(Proxy) Getting preview of ${url}@${lang} ...`
 			: `Getting preview of ${url}@${lang} ...`);
 
+		// SteamのApp IDを取得
+		const steamAppId = this.isSteamUrl(url);
+		if (steamAppId) {
+			// Steamの場合の処理
+			try {
+				const steamApiUrl = `https://store.steampowered.com/api/appdetails?appids=${steamAppId}&cc=jp&l=${lang ?? 'ja'}`;
+				// getJsonを使用してSteamデータを取得
+				const data = await fetchJson(steamApiUrl);
+				const appData = data[steamAppId]?.data;
+				if (appData && data[steamAppId].success) {
+					// summaryオブジェクトを構築
+					const summary = {
+						url: url,
+						title: appData.name,
+						description: '', // 後で設定
+						thumbnail: appData.header_image,
+						icon: 'https://store.steampowered.com/favicon.ico',
+						sitename: 'Steam',
+						player: null,
+						// 追加のSteam専用データ
+						steam: {
+							ageLimit: appData.required_age && appData.required_age !== '0' ? appData.required_age : null,
+							developer: appData.developers ? appData.developers.join(', ') : '',
+							onSale: appData.price_overview ? appData.price_overview.discount_percent > 0 : false,
+							discountPercent: appData.price_overview ? appData.price_overview.discount_percent : 0,
+							originalPrice: appData.price_overview ? appData.price_overview.initial_formatted : null,
+							currentPrice: appData.price_overview ? appData.price_overview.final_formatted : null,
+							isFree: appData.is_free,
+						},
+					};
+					// 開発者情報を説明に設定
+					summary.description = summary.steam.developer;
+					// サムネイルとアイコンをラップ
+					summary.icon = this.wrap(summary.icon) ?? "";
+					summary.thumbnail = this.wrap(summary.thumbnail);
+					// Cache 7days
+					reply.header("Cache-Control", "max-age=604800, immutable");
+					return summary;
+				} else {
+					throw new Error('Failed to get Steam app data');
+				}
+			} catch (err) {
+				this.logger.warn(`Failed to get Steam data for ${url}: ${err}`);
+				reply.code(200);
+				reply.header("Cache-Control", "max-age=86400, immutable");
+				return;
+			}
+		}
+
 		try {
 			const summary = this.meta.urlPreviewSummaryProxyUrl
 				? await this.fetchSummaryFromProxy(url, this.meta, lang)
@@ -112,6 +162,28 @@ export class UrlPreviewService {
 					id: '09d01cb5-53b9-4856-82e5-38a50c290a3b',
 				}),
 			};
+		}
+	}
+
+
+	// SteamのURLを判定し、App IDを取得する関数
+	private isSteamUrl(url: string): string | null {
+		try {
+			const parsedUrl = new URL(url);
+			if (
+				parsedUrl.hostname === "store.steampowered.com" ||
+				parsedUrl.hostname.endsWith(".steampowered.com")
+			) {
+				const pathSegments = parsedUrl.pathname.split("/");
+				const appIndex = pathSegments.indexOf("app");
+				if (appIndex !== -1 && pathSegments.length > appIndex + 1) {
+					return pathSegments[appIndex + 1];
+				}
+			}
+			return null;
+		} catch (error) {
+			this.logger.warn("Invalid URL:", error);
+			return null;
 		}
 	}
 
