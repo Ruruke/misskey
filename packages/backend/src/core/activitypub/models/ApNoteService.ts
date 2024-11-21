@@ -182,18 +182,18 @@ export class ApNoteService {
 		}
 
 		if (!checkHttps(note.id)) {
-			throw new UnrecoverableError(`unexpected schema of note.id ${note.id} in ${entryUri}`);
+			throw new UnrecoverableError(`unexpected schema of note note.id ${note.id}: ${entryUri}`);
 		}
 
 		const url = getOneApHrefNullable(note.url);
 
 		if (url != null) {
 			if (!checkHttps(url)) {
-				throw new UnrecoverableError(`unexpected schema of note.url ${url} in ${entryUri}`);
+				throw new UnrecoverableError('unexpected schema of note url: ' + url);
 			}
 
 			if (this.utilityService.punyHost(url) !== this.utilityService.punyHost(note.id)) {
-				throw new Error(`note url <> uri host mismatch: ${url} <> ${note.id} in ${entryUri}`);
+				throw new Error(`note url <> uri host mismatch: ${url} <> ${note.id}`);
 			}
 		}
 
@@ -201,7 +201,7 @@ export class ApNoteService {
 
 		// 投稿者をフェッチ
 		if (note.attributedTo == null) {
-			throw new UnrecoverableError(`invalid note.attributedTo ${note.attributedTo} in ${entryUri}`);
+			throw new UnrecoverableError(`invalid note.attributedTo ${note.attributedTo}: ${entryUri}`);
 		}
 
 		const uri = getOneApId(note.attributedTo);
@@ -276,13 +276,13 @@ export class ApNoteService {
 				.then(x => {
 					if (x == null) {
 						this.logger.warn('Specified inReplyTo, but not found');
-						throw new Error(`could not fetch inReplyTo ${note.inReplyTo} for note ${entryUri}`);
+						throw new Error(`could not fetch inReplyTo ${note.inReplyTo}: ${entryUri}`);
 					}
 
 					return x;
 				})
 				.catch(async err => {
-					this.logger.warn(`error ${err.statusCode ?? err} fetching inReplyTo ${note.inReplyTo} for note ${entryUri}`);
+					this.logger.warn(`error ${err.statusCode ?? err} fetching inReplyTo ${note.inReplyTo}: ${entryUri}`);
 					throw err;
 				})
 			: null;
@@ -319,7 +319,7 @@ export class ApNoteService {
 			const uris = unique([note._misskey_quote, note.quoteUrl, note.quoteUri].filter(x => x != null));
 			const results = await Promise.all(uris.map(tryResolveNote));
 
-			quote = results.filter((x): x is { status: 'ok', res: MiNote } => x.status === 'ok').map(x => x.res).at(0);
+			quote = results.filter((x): x is { status: 'ok', res: MiNote, uri: string } => x.status === 'ok').map(x => x.res).at(0);
 			if (!quote) {
 				if (results.some(x => x.status === 'temperror')) {
 					throw new Error(`temporary error resolving quote for ${entryUri}`);
@@ -382,7 +382,7 @@ export class ApNoteService {
 			this.logger.info('The note is already inserted while creating itself, reading again');
 			const duplicate = await this.fetchNote(value);
 			if (!duplicate) {
-				throw new Error(`The note creation failed with duplication error even when there is no duplication: ${entryUri}`);
+				throw new Error(`The note creation failed with duplication error even when there is no duplication, ${entryUri}`);
 			}
 			return duplicate;
 		}
@@ -400,10 +400,10 @@ export class ApNoteService {
 
 		//#region このサーバーに既に登録されているか
 		const updatedNote = await this.notesRepository.findOneBy({ uri: noteUri });
-		if (updatedNote == null) throw new Error(`Note is not registered (no note): ${noteUri}`);
+		if (updatedNote == null) throw new Error(`Note is not registered: ${noteUri}`);
 
 		const user = await this.usersRepository.findOneBy({ id: updatedNote.userId }) as MiRemoteUser | null;
-		if (user == null) throw new Error(`Note is not registered (no user): ${noteUri}`);
+		if (user == null) throw new Error('Note is not registered');
 
 		// eslint-disable-next-line no-param-reassign
 		if (resolver == null) resolver = this.apResolverService.createResolver();
@@ -434,7 +434,7 @@ export class ApNoteService {
 		}
 
 		if (!checkHttps(note.id)) {
-			throw new UnrecoverableError(`unexpected schema of note.id ${note.id} in ${noteUri}`);
+			throw new UnrecoverableError(`unexpected schema of note.id ${note.id}: ${noteUri}`);
 		}
 
 		const url = getOneApHrefNullable(note.url);
@@ -445,11 +445,11 @@ export class ApNoteService {
 
 		if (url != null) {
 			if (!checkHttps(url)) {
-				throw new UnrecoverableError(`unexpected schema of note.url ${url} in ${noteUri}`);
+				throw new Error('unexpected schema of note url: ' + url);
 			}
 
 			if (this.utilityService.punyHost(url) !== this.utilityService.punyHost(note.id)) {
-				throw new UnrecoverableError(`note url <> id host mismatch: ${url} <> ${note.id} in ${noteUri}`);
+				throw new Error(`note url <> id host mismatch: ${url} <> ${note.id}`);
 			}
 		}
 
@@ -557,7 +557,7 @@ export class ApNoteService {
 			const uris = unique([note._misskey_quote, note.quoteUrl, note.quoteUri].filter(x => x != null));
 			const results = await Promise.all(uris.map(tryResolveNote));
 
-			quote = results.filter((x): x is { status: 'ok', res: MiNote } => x.status === 'ok').map(x => x.res).at(0);
+			quote = results.filter((x): x is { status: 'ok', res: MiNote, uri: string } => x.status === 'ok').map(x => x.res).at(0);
 			if (!quote) {
 				if (results.some(x => x.status === 'temperror')) {
 					throw new Error(`temporary error resolving quote for ${entryUri}`);
