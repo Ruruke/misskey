@@ -58,6 +58,9 @@ export type ModerationLog = {
 	type: 'unsuspend';
 	info: ModerationLogPayloads['unsuspend'];
 } | {
+	type: 'updateUser';
+	info: ModerationLogPayloads['updateUser'];
+} | {
 	type: 'updateUserNote';
 	info: ModerationLogPayloads['updateUserNote'];
 } | {

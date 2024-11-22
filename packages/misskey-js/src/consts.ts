@@ -73,6 +73,7 @@ export const permissions = [
 	'read:admin:table-stats',
 	'read:admin:user-ips',
 	'read:admin:meta',
+	'write:admin:update-proxy-account',
 	'write:admin:reset-password',
 	'write:admin:resolve-abuse-user-report',
 	'write:admin:send-email',
@@ -122,6 +123,7 @@ export const moderationLogTypes = [
 	'suspend',
 	'approve',
 	'unsuspend',
+	'updateUser',
 	'updateUserNote',
 	'addCustomEmoji',
 	'updateCustomEmoji',
@@ -211,6 +213,13 @@ export type ModerationLogPayloads = {
 		userId: string;
 		userUsername: string;
 		userHost: string | null;
+	};
+	updateUser: {
+		userId: string;
+		userUsername: string;
+		userHost: string | null;
+		before: MetaDetailed | null;
+		after: MetaDetailed | null;
 	};
 	updateUserNote: {
 		userId: string;

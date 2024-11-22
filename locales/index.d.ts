@@ -10346,6 +10346,10 @@ export interface Locale extends ILocale {
          */
         "updateServerSettings": string;
         /**
+         * ユーザーを更新
+         */
+        "updateUser": string;
+        /**
          * ユーザーのモデレーションノート更新
          */
         "updateUserNote": string;
