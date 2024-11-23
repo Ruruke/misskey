@@ -190,8 +190,8 @@ export class ApNoteService {
 				throw new UnrecoverableError('unexpected schema of note url: ' + url);
 			}
 
-			if (this.utilityService.punyHost(url) !== this.utilityService.punyHost(note.id)) {
-				throw new Error(`note url <> uri host mismatch: ${url} <> ${note.id}`);
+			if (this.utilityService.punyHostPSLDomain(url) !== this.utilityService.punyHostPSLDomain(note.id)) {
+				throw new Error(`note url <> uri host mismatch: ${url} <> ${note.id} in ${entryUri}`);
 			}
 		}
 
