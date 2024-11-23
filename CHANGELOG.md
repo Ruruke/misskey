@@ -11,6 +11,7 @@
 - Fix: 公開範囲がホームのノートの埋め込みウィジェットが読み込まれない問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/803)
 - Fix: ノート作成画面でファイルの添付可能個数を超えてもノートボタンが押せていた問題を修正
+- Enhance: Blueskyの投稿埋め込みプレビューに対応
 
 ### Server
 - Fix: ユーザーのプロフィール画面をアドレス入力などで直接表示した際に概要タブの描画に失敗する問題の修正( #15032 )
@@ -53,7 +54,6 @@
 - Enhance: サイドバーを簡単に展開・折りたたみできるように ( #14981 )
 - Enhance: リノートメニューに「リノートの詳細」を追加
 - Enhance: 非ログイン状態でMisskeyを開いた際のパフォーマンスを向上
-- Enhance: Blueskyの投稿埋め込みプレビューに対応
 - Fix: 通知の範囲指定の設定項目が必要ない通知設定でも範囲指定の設定がでている問題を修正
 - Fix: Turnstileが失敗・期限切れした際にも成功扱いとなってしまう問題を修正  
   (Cherry-picked from https://github.com/MisskeyIO/misskey/pull/768)
