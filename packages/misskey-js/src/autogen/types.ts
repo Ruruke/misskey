@@ -26709,6 +26709,7 @@ export type operations = {
           communityOnly?: boolean;
           communityPublicOnly?: boolean;
           ownerOnly?: boolean;
+          assignedOnly?: boolean;
         };
       };
     };
