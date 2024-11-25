@@ -12165,6 +12165,10 @@ export interface Locale extends ILocale {
      * コミュニティー
      */
     "community": string;
+		/**
+		 * コミュニティロール
+		 */
+		"communityRole": string;
     /**
      * コミュニティーロール
      */
