@@ -16,7 +16,7 @@ import type { MiEmoji } from '@/models/Emoji.js';
 import { AppLockService } from '@/core/AppLockService.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import { NoteCreateService } from '@/core/NoteCreateService.js';
-import { NoteEditService } from '@/core/NoteEditService.js';
+// import { NoteEditService } from '@/core/NoteEditService.js';
 import type Logger from '@/logger.js';
 import { IdService } from '@/core/IdService.js';
 import { PollService } from '@/core/PollService.js';
@@ -78,7 +78,7 @@ export class ApNoteService {
 		private appLockService: AppLockService,
 		private pollService: PollService,
 		private noteCreateService: NoteCreateService,
-		private noteEditService: NoteEditService,
+		// private noteEditService: NoteEditService,
 		private apDbResolverService: ApDbResolverService,
 		private apLoggerService: ApLoggerService,
 	) {
@@ -591,7 +591,7 @@ export class ApNoteService {
 		const apEmojis = emojis.map(emoji => emoji.name);
 
 		try {
-			return await this.noteEditService.edit(actor, updatedNote.id, {
+			return await this.noteCreateService.create(actor, {
 				createdAt: note.published ? new Date(note.published) : null,
 				files,
 				reply,

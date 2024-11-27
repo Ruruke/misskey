@@ -421,7 +421,6 @@ function chooseFileFrom(ev) {
 	if (props.mock) return;
 
 	selectFiles(ev.currentTarget ?? ev.target, i18n.ts.attachFile).then(files_ => {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		for (const file of files_.filter(f => f?.id)) {
 			files.value.push(file);
 		}
@@ -677,7 +676,7 @@ function saveDraft() {
 			cw: cw.value,
 			visibility: visibility.value,
 			localOnly: localOnly.value,
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 			files: files.value.filter(f => f?.id && f.type && f.name),
 			poll: poll.value,
 		},
@@ -749,7 +748,7 @@ async function post(ev?: MouseEvent) {
 
 	let postData = {
 		text: text.value === '' ? null : text.value,
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 		fileIds: files.value.length > 0 ? files.value.filter(f => f?.id).map(f => f.id) : undefined,
 		replyId: props.reply ? props.reply.id : undefined,
 		renoteId: props.renote ? props.renote.id : quoteId.value ? quoteId.value : undefined,
@@ -878,7 +877,7 @@ async function insertEmoji(ev: MouseEvent) {
 	os.openEmojiPicker(
 		(ev.currentTarget ?? ev.target) as HTMLElement,
 		{ asReactionPicker: false },
-		textareaEl.value
+		textareaEl.value,
 	);
 }
 
@@ -949,7 +948,7 @@ onMounted(() => {
 				cw.value = draft.data.cw;
 				visibility.value = draft.data.visibility;
 				localOnly.value = draft.data.localOnly;
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 				files.value = draft.data.files?.filter(f => f?.id && f.type && f.name) || [];
 				if (draft.data.poll) {
 					poll.value = draft.data.poll;
@@ -961,7 +960,7 @@ onMounted(() => {
 		if (props.initialNote) {
 			const init = props.initialNote;
 			text.value = init.text ? init.text : '';
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 			files.value = init.files?.filter(f => f?.id && f.type && f.name) ?? [];
 			cw.value = init.cw ?? null;
 			useCw.value = init.cw != null;
