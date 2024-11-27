@@ -203,6 +203,7 @@ const makeNotesFollowersOnlyBefore = ref($i.makeNotesFollowersOnlyBefore ?? null
 const makeNotesHiddenBefore = ref($i.makeNotesHiddenBefore ?? null);
 const hideOnlineStatus = ref($i.hideOnlineStatus);
 const publicReactions = ref($i.publicReactions);
+const hideActivity = ref($i.hideActivity);
 const followingVisibility = ref($i.followingVisibility);
 const followersVisibility = ref($i.followersVisibility);
 
@@ -262,6 +263,7 @@ function save() {
 		makeNotesHiddenBefore: makeNotesHiddenBefore.value,
 		hideOnlineStatus: !!hideOnlineStatus.value,
 		publicReactions: !!publicReactions.value,
+		hideActivity: !!hideActivity.value,
 		followingVisibility: followingVisibility.value,
 		followersVisibility: followersVisibility.value,
 	});

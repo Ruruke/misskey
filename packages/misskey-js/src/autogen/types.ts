@@ -904,7 +904,7 @@ export type paths = {
      * announcements
      * @description No description provided.
      *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes*
      */
     post: operations['announcements'];
   };
@@ -3810,7 +3810,7 @@ export type paths = {
      * users/search-by-username-and-host
      * @description Search for a user by username and/or host.
      *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes*
      */
     post: operations['users___search-by-username-and-host'];
   };
@@ -11376,7 +11376,7 @@ export type operations = {
    * announcements
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes*
    */
   announcements: {
     requestBody: {
@@ -21793,6 +21793,7 @@ export type operations = {
           isExplorable?: boolean;
           hideOnlineStatus?: boolean;
           publicReactions?: boolean;
+          hideActivity?: boolean;
           carefulBot?: boolean;
           autoAcceptFollowed?: boolean;
           noCrawle?: boolean;
@@ -29078,7 +29079,7 @@ export type operations = {
    * users/search-by-username-and-host
    * @description Search for a user by username and/or host.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes*
    */
   'users___search-by-username-and-host': {
     requestBody: {

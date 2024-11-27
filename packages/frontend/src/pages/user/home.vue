@@ -33,10 +33,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</div>
 						</div>
 						<span v-if="$i && $i.id != user.id && user.isFollowed" class="followed">{{ i18n.ts.followsYou }}</span>
-						<div class="actions">
-							<button class="menu _button" @click="menu"><i class="ti ti-dots"></i></button>
-							<MkFollowButton v-if="$i?.id != user.id" v-model:user="user" :inline="true" :transparent="false" :full="true" class="koudoku"/>
-						</div>
+						<template v-if="$i || !user.requireSigninToViewContents">
+							<div class="actions">
+								<button class="menu _button" @click="menu"><i class="ti ti-dots"></i></button>
+								<MkFollowButton v-if="$i?.id != user.id" v-model:user="user" :inline="true" :transparent="false" :full="true" class="koudoku"/>
+							</div>
+						</template>
 					</div>
 					<MkAvatar class="avatar" :user="user" indicator/>
 					<div class="title">
@@ -48,6 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<span v-if="user.isBot" :title="i18n.ts.isBot"><i class="ti ti-robot"></i></span>
 						</div>
 					</div>
+					<template v-if="$i || !user.requireSigninToViewContents">
 					<div v-if="user.followedMessage != null" class="followedMessage">
 						<MkFukidashi class="fukidashi" :tail="narrow ? 'none' : 'left'" negativeMargin shadow>
 							<div class="messageHeader">{{ i18n.ts.messageToFollower }}</div>
@@ -145,44 +148,67 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<span>{{ i18n.ts.followers }}</span>
 						</MkA>
 					</div>
+					</template>
+					<div v-else class="_fullinfo">
+						<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.pleaseLogin }}</div>
+						<div style="opacity: 0.7">{{ i18n.ts.pleaseLoginToViewProfile }}</div>
+					</div>
 				</div>
 			</div>
 
 			<div class="contents _gaps">
-				<div v-if="user.pinnedNotes.length > 0" class="_gaps">
-					<MkNote v-for="note in user.pinnedNotes" :key="note.id" class="note _panel" :note="note" :pinned="true"/>
-				</div>
-				<MkInfo v-else-if="$i && $i.id === user.id">{{ i18n.ts.userPagePinTip }}</MkInfo>
-				<template v-if="narrow">
+				<div v-if="$i || !user.requireSigninToViewContents">
+					<div v-if="!hiddenPinnedNotes">
+						<div v-if="user.pinnedNotes.length > 0 && !user.isBlocked" class="_gaps">
+							<MkNote v-for="note in user.pinnedNotes" :key="note.id" class="note _panel" :note="note" :pinned="true"/>
+						</div>
+					</div>
+					<MkInfo v-else-if="$i && $i.id === user.id">{{ i18n.ts.userPagePinTip }}</MkInfo>
+					<div v-if="!hiddenActivity">
+						<template v-if="narrow && !user.isBlocked">
+							<MkLazy>
+								<XFiles :key="user.id" :user="user"/>
+							</MkLazy>
+						</template>
+					</div>
+					<div v-if="!hiddenFiles">
+						<template v-if="narrow">
+							<MkLazy>
+								<XActivity v-if="!user.hideActivity" :key="user.id" :user="user"/>
+							</MkLazy>
+						</template>
+					</div>
 					<MkLazy>
-						<XFiles :key="user.id" :user="user" @unfold="emit('unfoldFiles')"/>
+						<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user" :collapsed="true"/>
 					</MkLazy>
-					<MkLazy>
-						<XActivity :key="user.id" :user="user"/>
-					</MkLazy>
-					<template v-if="narrow && !user.isBlocked">
-						<MkLazy v-if="user.listenbrainz && listenbrainzdata">
-							<XListenBrainz :key="user.id" :user="user" :collapsed="true"/>
+					<div v-if="!disableNotes && !user.isBlocked">
+						<MkLazy>
+							<XTimeline :user="user"/>
 						</MkLazy>
-					</template>
-				</template>
-				<div v-if="!disableNotes">
-					<MkLazy>
-						<XTimeline :user="user"/>
-					</MkLazy>
+					</div>
+					<div v-if="user.isBlocked" class="_fullinfo">
+						<img :src="youBlockedImageUrl" class="_ghost"/>
+						<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.youBlocked }}</div>
+						<div style="opacity: 0.7">{{ i18n.tsx.youBlockedDescription({ user: `@${ user.username }` }) }}</div>
+					</div>
+				</div>
+				<div v-else class="_fullinfo">
+					<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.pleaseLogin }}</div>
+					<div style="opacity: 0.7">{{ i18n.ts.pleaseLoginToViewProfile }}</div>
 				</div>
 			</div>
 		</div>
-		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
-			<XFiles :key="user.id" :user="user" @unfold="emit('unfoldFiles')"/>
-			<XActivity v-if="!user.hideActivity" :key="user.id" :user="user"/>
-			<XListenBrainz
+		<template v-if="$i || !user.requireSigninToViewContents">
+			<div v-if="!narrow && !user.isBlocked" class="sub _gaps" style="container-type: inline-size;">
+				<XFiles :key="user.id" :user="user"/>
+				<XActivity v-if="!user.hideActivity" :key="user.id" :user="user"/>
+				<XListenBrainz
 					v-if="user.listenbrainz && listenbrainzdata"
 					:key="user.id"
 					:user="user"
 					style="margin-top: var(--margin)"
-				/>
-		</div>
+				/>			</div>
+		</template>
 	</div>
 </MkSpacer>
 </template>
@@ -213,7 +239,10 @@ import { confetti } from '@/scripts/confetti.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
 import { useRouter } from '@/router/supplier.js';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { getStaticImageUrl, getProxiedImageUrl } from '@/scripts/media-proxy.js';
+// import { editNickname } from "@/scripts/edit-nickname";
+import MkLink from '@/components/MkLink.vue';
+import MkContainer from '@/components/MkContainer.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
 
 function calcAge(birthdate: string): number {
@@ -234,7 +263,7 @@ function calcAge(birthdate: string): number {
 const XFiles = defineAsyncComponent(() => import('./index.files.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
-const XListenBrainz = defineAsyncComponent(() => import("./index.listenbrainz.vue")); ;
+const XListenBrainz = defineAsyncComponent(() => import('./index.listenbrainz.vue')); ;
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed;
