@@ -10986,6 +10986,10 @@ export interface Locale extends ILocale {
      * Show warning when opening external URLs
      */
     "warnExternalUrl": string;
+    /**
+     * Confirm
+     */
+    "confirm": string;
     "_mfm": {
         /**
          * 警告
