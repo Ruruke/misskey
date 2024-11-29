@@ -6,7 +6,8 @@
 import { createPublicKey, randomUUID } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import { In } from 'typeorm';
-import * as mfm from 'mfm-js';
+import * as mfm from '@transfem-org/sfm-js';
+import { UnrecoverableError } from 'bullmq';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import type { MiPartialLocalUser, MiLocalUser, MiPartialRemoteUser, MiRemoteUser, MiUser } from '@/models/User.js';
@@ -23,13 +24,14 @@ import { MfmService } from '@/core/MfmService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DriveFileEntityService } from '@/core/entities/DriveFileEntityService.js';
 import type { MiUserKeypair } from '@/models/UserKeypair.js';
-import type { UsersRepository, UserProfilesRepository, NotesRepository, DriveFilesRepository, PollsRepository } from '@/models/_.js';
+import type { UsersRepository, UserProfilesRepository, NotesRepository, DriveFilesRepository, PollsRepository, InstancesRepository, MiMeta } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { IdService } from '@/core/IdService.js';
 import { JsonLdService } from './JsonLdService.js';
 import { ApMfmService } from './ApMfmService.js';
 import { CONTEXT } from './misc/contexts.js';
+import { getApId } from './type.js';
 import type { IAccept, IActivity, IAdd, IAnnounce, IApDocument, IApEmoji, IApHashtag, IApImage, IApMention, IBlock, ICreate, IDelete, IFlag, IFollow, IKey, ILike, IMove, IObject, IPost, IQuestion, IReject, IRemove, ITombstone, IUndo, IUpdate } from './type.js';
 
 @Injectable()
@@ -37,6 +39,9 @@ export class ApRendererService {
 	constructor(
 		@Inject(DI.config)
 		private config: Config,
+
+		@Inject(DI.meta)
+		private meta: MiMeta,
 
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
@@ -52,6 +57,9 @@ export class ApRendererService {
 
 		@Inject(DI.pollsRepository)
 		private pollsRepository: PollsRepository,
+
+		@Inject(DI.instancesRepository)
+		private instancesRepository: InstancesRepository,
 
 		private customEmojiService: CustomEmojiService,
 		private userEntityService: UserEntityService,
@@ -100,7 +108,7 @@ export class ApRendererService {
 			to = [`${attributedTo}/followers`];
 			cc = [];
 		} else {
-			throw new Error('renderAnnounce: cannot render non-public note');
+			throw new UnrecoverableError(`renderAnnounce: cannot render non-public note: ${getApId(object)}`);
 		}
 
 		return {
@@ -166,6 +174,7 @@ export class ApRendererService {
 			mediaType: file.webpublicType ?? file.type,
 			url: this.driveFileEntityService.getPublicUrl(file),
 			name: file.comment,
+			summary: file.comment,
 			sensitive: file.isSensitive,
 		};
 	}
@@ -193,7 +202,8 @@ export class ApRendererService {
 			type: 'Flag',
 			actor: this.userEntityService.genLocalUserUri(user.id),
 			content,
-			object,
+			// This MUST be an array for Pleroma compatibility: https://activitypub.software/TransFem-org/Sharkey/-/issues/641#note_7301
+			object: [object],
 		};
 	}
 
@@ -266,14 +276,28 @@ export class ApRendererService {
 	@bindThis
 	public async renderLike(noteReaction: MiNoteReaction, note: { uri: string | null }): Promise<ILike> {
 		const reaction = noteReaction.reaction;
+		let isMastodon = false;
+
+		if (this.meta.defaultLike && reaction.replaceAll(':', '') === this.meta.defaultLike.replaceAll(':', '')) {
+			const note = await this.notesRepository.findOneBy({ id: noteReaction.noteId });
+
+			if (note && note.userHost) {
+				const instance = await this.instancesRepository.findOneBy({ host: note.userHost });
+
+				if (instance && instance.softwareName === 'mastodon') isMastodon = true;
+				if (instance && instance.softwareName === 'akkoma')	isMastodon = true;
+				if (instance && instance.softwareName === 'pleroma') isMastodon = true;
+				if (instance && instance.softwareName === 'iceshrimp.net') isMastodon = true;
+			}
+		}
 
 		const object: ILike = {
 			type: 'Like',
 			id: `${this.config.url}/likes/${noteReaction.id}`,
 			actor: `${this.config.url}/users/${noteReaction.userId}`,
 			object: note.uri ? note.uri : `${this.config.url}/notes/${noteReaction.noteId}`,
-			content: reaction,
-			_misskey_reaction: reaction,
+			content: isMastodon ? undefined : reaction,
+			_misskey_reaction: isMastodon ? undefined : reaction,
 		};
 
 		if (reaction.startsWith(':')) {
@@ -356,7 +380,7 @@ export class ApRendererService {
 
 		const attributedTo = this.userEntityService.genLocalUserUri(note.userId);
 
-		const mentions = (JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers).map(x => x.uri);
+		const mentions = note.mentionedRemoteUsers ? (JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers).map(x => x.uri) : [];
 
 		let to: string[] = [];
 		let cc: string[] = [];
@@ -374,7 +398,7 @@ export class ApRendererService {
 			to = mentions;
 		}
 
-		const mentionedUsers = note.mentions.length > 0 ? await this.usersRepository.findBy({
+		const mentionedUsers = note.mentions && note.mentions.length > 0 ? await this.usersRepository.findBy({
 			id: In(note.mentions),
 		}) : [];
 
@@ -398,7 +422,7 @@ export class ApRendererService {
 
 		const summary = note.cw === '' ? String.fromCharCode(0x200B) : note.cw;
 
-		const { content, noMisskeyContent } = this.apMfmService.getNoteHtml(note, apAppend);
+		const { content } = this.apMfmService.getNoteHtml(note, apAppend);
 
 		const emojis = await this.getEmojis(note.emojis);
 		const apemojis = emojis.filter(emoji => !emoji.localOnly).map(emoji => this.renderEmoji(emoji));
@@ -428,15 +452,14 @@ export class ApRendererService {
 			attributedTo,
 			summary: summary ?? undefined,
 			content: content ?? undefined,
-			...(noMisskeyContent ? {} : {
-				_misskey_content: text,
-				source: {
-					content: text,
-					mediaType: 'text/x.misskeymarkdown',
-				},
-			}),
+			_misskey_content: text,
+			source: {
+				content: text,
+				mediaType: 'text/x.misskeymarkdown',
+			},
 			_misskey_quote: quote,
 			quoteUrl: quote,
+			quoteUri: quote,
 			published: this.idService.parse(note.id).date.toISOString(),
 			to,
 			cc,
@@ -448,14 +471,16 @@ export class ApRendererService {
 		};
 	}
 
+	// if you change this, also change `server/api/endpoints/i/update.ts`
 	@bindThis
 	public async renderPerson(user: MiLocalUser) {
 		const id = this.userEntityService.genLocalUserUri(user.id);
 		const isSystem = user.username.includes('.');
 
-		const [avatar, banner, profile] = await Promise.all([
+		const [avatar, banner, background, profile] = await Promise.all([
 			user.avatarId ? this.driveFilesRepository.findOneBy({ id: user.avatarId }) : undefined,
 			user.bannerId ? this.driveFilesRepository.findOneBy({ id: user.bannerId }) : undefined,
+			user.backgroundId ? this.driveFilesRepository.findOneBy({ id: user.backgroundId }) : undefined,
 			this.userProfilesRepository.findOneByOrFail({ userId: user.id }),
 		]);
 
@@ -495,16 +520,17 @@ export class ApRendererService {
 			summary: profile.description ? this.mfmService.toHtml(mfm.parse(profile.description)) : null,
 			_misskey_summary: profile.description,
 			_misskey_followedMessage: profile.followedMessage,
-			_misskey_requireSigninToViewContents: user.requireSigninToViewContents,
-			_misskey_makeNotesFollowersOnlyBefore: user.makeNotesFollowersOnlyBefore,
-			_misskey_makeNotesHiddenBefore: user.makeNotesHiddenBefore,
 			icon: avatar ? this.renderImage(avatar) : null,
 			image: banner ? this.renderImage(banner) : null,
+			backgroundUrl: background ? this.renderImage(background) : null,
 			tag,
 			manuallyApprovesFollowers: user.isLocked,
 			discoverable: user.isExplorable,
 			publicKey: this.renderKey(user, keypair, '#main-key'),
 			isCat: user.isCat,
+			noindex: user.noindex,
+			indexable: !user.noindex,
+			speakAsCat: user.speakAsCat,
 			attachment: attachment.length ? attachment : undefined,
 		};
 
@@ -522,6 +548,10 @@ export class ApRendererService {
 
 		if (profile.location) {
 			person['vcard:Address'] = profile.location;
+		}
+
+		if (profile.listenbrainz) {
+			person.listenbrainz = profile.listenbrainz;
 		}
 
 		return person;
@@ -598,6 +628,143 @@ export class ApRendererService {
 	}
 
 	@bindThis
+	public async renderUpNote(note: MiNote, dive = true): Promise<IPost> {
+		const getPromisedFiles = async (ids: string[]): Promise<MiDriveFile[]> => {
+			if (ids.length === 0) return [];
+			const items = await this.driveFilesRepository.findBy({ id: In(ids) });
+			return ids.map(id => items.find(item => item.id === id)).filter((item): item is MiDriveFile => item != null);
+		};
+
+		let inReplyTo;
+		let inReplyToNote: MiNote | null;
+
+		if (note.replyId) {
+			inReplyToNote = await this.notesRepository.findOneBy({ id: note.replyId });
+
+			if (inReplyToNote != null) {
+				const inReplyToUserExist = await this.usersRepository.exists({ where: { id: inReplyToNote.userId } });
+
+				if (inReplyToUserExist) {
+					if (inReplyToNote.uri) {
+						inReplyTo = inReplyToNote.uri;
+					} else {
+						if (dive) {
+							inReplyTo = await this.renderUpNote(inReplyToNote, false);
+						} else {
+							inReplyTo = `${this.config.url}/notes/${inReplyToNote.id}`;
+						}
+					}
+				}
+			}
+		} else {
+			inReplyTo = null;
+		}
+
+		let quote;
+
+		if (note.renoteId) {
+			const renote = await this.notesRepository.findOneBy({ id: note.renoteId });
+
+			if (renote) {
+				quote = renote.uri ? renote.uri : `${this.config.url}/notes/${renote.id}`;
+			}
+		}
+
+		const attributedTo = this.userEntityService.genLocalUserUri(note.userId);
+
+		const mentions = note.mentionedRemoteUsers ? (JSON.parse(note.mentionedRemoteUsers) as IMentionedRemoteUsers).map(x => x.uri) : [];
+
+		let to: string[] = [];
+		let cc: string[] = [];
+
+		if (note.visibility === 'public') {
+			to = ['https://www.w3.org/ns/activitystreams#Public'];
+			cc = [`${attributedTo}/followers`].concat(mentions);
+		} else if (note.visibility === 'home') {
+			to = [`${attributedTo}/followers`];
+			cc = ['https://www.w3.org/ns/activitystreams#Public'].concat(mentions);
+		} else if (note.visibility === 'followers') {
+			to = [`${attributedTo}/followers`];
+			cc = mentions;
+		} else {
+			to = mentions;
+		}
+
+		const mentionedUsers = note.mentions && note.mentions.length > 0 ? await this.usersRepository.findBy({
+			id: In(note.mentions),
+		}) : [];
+
+		const hashtagTags = note.tags.map(tag => this.renderHashtag(tag));
+		const mentionTags = mentionedUsers.map(u => this.renderMention(u as MiLocalUser | MiRemoteUser));
+
+		const files = await getPromisedFiles(note.fileIds);
+
+		const text = note.text ?? '';
+		let poll: MiPoll | null = null;
+
+		if (note.hasPoll) {
+			poll = await this.pollsRepository.findOneBy({ noteId: note.id });
+		}
+
+		let apAppend = '';
+
+		if (quote) {
+			apAppend += `\n\nRE: ${quote}`;
+		}
+
+		const summary = note.cw === '' ? String.fromCharCode(0x200B) : note.cw;
+
+		const { content } = this.apMfmService.getNoteHtml(note, apAppend);
+
+		const emojis = await this.getEmojis(note.emojis);
+		const apemojis = emojis.filter(emoji => !emoji.localOnly).map(emoji => this.renderEmoji(emoji));
+
+		const tag = [
+			...hashtagTags,
+			...mentionTags,
+			...apemojis,
+		];
+
+		const asPoll = poll ? {
+			type: 'Question',
+			[poll.expiresAt && poll.expiresAt < new Date() ? 'closed' : 'endTime']: poll.expiresAt,
+			[poll.multiple ? 'anyOf' : 'oneOf']: poll.choices.map((text, i) => ({
+				type: 'Note',
+				name: text,
+				replies: {
+					type: 'Collection',
+					totalItems: poll!.votes[i],
+				},
+			})),
+		} as const : {};
+
+		return {
+			id: `${this.config.url}/notes/${note.id}`,
+			type: 'Note',
+			attributedTo,
+			summary: summary ?? undefined,
+			content: content ?? undefined,
+			updated: note.updatedAt?.toISOString(),
+			_misskey_content: text,
+			source: {
+				content: text,
+				mediaType: 'text/x.misskeymarkdown',
+			},
+			_misskey_quote: quote,
+			quoteUrl: quote,
+			quoteUri: quote,
+			published: this.idService.parse(note.id).date.toISOString(),
+			to,
+			cc,
+			inReplyTo,
+			attachment: files.map(x => this.renderDocument(x)),
+			sensitive: note.cw != null || files.some(file => file.isSensitive),
+			tag,
+			...asPoll,
+		};
+	}
+
+	@bindThis
 	public renderVote(user: { id: MiUser['id'] }, vote: MiPollVote, note: MiNote, poll: MiPoll, pollOwner: MiRemoteUser): ICreate {
 		return {
 			id: `${this.config.url}/users/${user.id}#votes/${vote.id}/activity`,
@@ -627,6 +794,13 @@ export class ApRendererService {
 
 	@bindThis
 	public async attachLdSignature(activity: any, user: { id: MiUser['id']; host: null; }): Promise<IActivity> {
+		// Linked Data signatures are cryptographic signatures attached to each activity to provide proof of authenticity.
+		// When using authorized fetch, this is often undesired as any signed activity can be forwarded to a blocked instance by relays and other instances.
+		// This setting allows admins to disable LD signatures for increased privacy, at the expense of fewer relayed activities and additional inbound fetch (GET) requests.
+		if (!this.config.attachLdSignatureForRelays) {
+			return activity;
+		}
+
 		const keypair = await this.userKeypairService.getUserKeypair(user.id);
 
 		const jsonLd = this.jsonLdService.use();
