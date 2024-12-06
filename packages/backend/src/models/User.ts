@@ -274,10 +274,6 @@ export class MiUser {
 		comment: 'The native access token of the User. It will be null if the origin of the user is local.',
 	})
 	public token: string | null;
-
-	@Column('boolean', {
-		default: false,
-	})
 	public approved: boolean;
 
 	constructor(data: Partial<MiUser>) {
