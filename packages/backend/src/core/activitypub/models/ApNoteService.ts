@@ -591,7 +591,7 @@ export class ApNoteService {
 		const apEmojis = emojis.map(emoji => emoji.name);
 
 		try {
-			return await this.noteCreateService.create(actor, updatedNote.id, {
+			return await this.noteCreateService.create(actor, {
 				createdAt: note.published ? new Date(note.published) : null,
 				files,
 				reply,
