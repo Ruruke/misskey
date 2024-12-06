@@ -19,16 +19,13 @@ const menuName = ref<string | null>(null);
 const canonicalMenuCode = ref<string | null>(null);
 
 async function fetchMenuName() {
-	const response = await fetch(
-		`https://saize-static-assets.misskey.flowers/${props.menuCode.toUpperCase()}.json`,
-		{
-			mode: 'no-cors',
-		},
-	);
-	if (!response.ok) return;
-	const data = await response.json() as { id: number; name: string; };
-	menuName.value = data.name;
-	canonicalMenuCode.value = data.id.toString().padStart(4, '0');
+	// const response = await fetch(
+	// 	`https://saize-static-assets.misskey.flowers/${props.menuCode.toUpperCase()}.json`,
+	// );
+	// if (!response.ok) return;
+	// const data = await response.json() as { id: number; name: string; };
+	// menuName.value = data.name;
+	// canonicalMenuCode.value = data.id.toString().padStart(4, '0');
 }
 
 watch(() => props.menuCode, (to) => {
