@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - develop
+      - ruru
       - improve-misskey-js-autogen-check
     paths:
       - packages/backend/**

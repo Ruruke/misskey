@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - develop
+      - ruru
     paths:
       - packages/backend/**
       - .github/workflows/validate-api-json.yml
