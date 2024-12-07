@@ -25,7 +25,6 @@ services:
       test: "redis-cli ping"
       interval: 5s
       retries: 20
-
   db:
     restart: unless-stopped
     image: postgres:15-alpine
