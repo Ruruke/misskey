@@ -420,7 +420,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	selectReaction: {
 		where: 'device',
-		default: '🤍' as string,
+		default: '🩵' as string,
 	},
 	hideReactionCount: {
 		where: 'account',
