@@ -11426,6 +11426,10 @@ export interface Locale extends ILocale {
      * テキストエリアの高さを自動で調整します。
      */
     "textAreaAutoResizeDescription": string;
+		/**
+		 * ミュートしたユーザーを匿名にする
+		 */
+		"anonymizeMutedUsers": string;
     "_customizeFeature": {
         /**
          * 独自機能
