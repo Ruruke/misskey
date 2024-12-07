@@ -16,13 +16,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div class="_panel" style="padding: 16px;">
-				<MkSwitch v-model="enableEnhancedServerStats" @change="onChange_enableEnhancedServerStats">
-					<template #label>{{ i18n.ts.enableEnhancedServerStats }}</template>
-					<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
-				</MkSwitch>
-			</div>
-
-			<div class="_panel" style="padding: 16px;">
 				<MkSwitch v-model="enableIdenticonGeneration" @change="onChange_enableIdenticonGeneration">
 					<template #label>{{ i18n.ts.enableIdenticonGeneration }}</template>
 					<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
@@ -132,7 +125,6 @@ import MkFormFooter from '@/components/MkFormFooter.vue';
 const meta = await misskeyApi('admin/meta');
 
 const enableServerMachineStats = ref(meta.enableServerMachineStats);
-const enableEnhancedServerStats = ref(meta.enableEnhancedServerStats);
 const enableIdenticonGeneration = ref(meta.enableIdenticonGeneration);
 const enableChartsForRemoteUser = ref(meta.enableChartsForRemoteUser);
 const enableStatsForFederatedInstances = ref(meta.enableStatsForFederatedInstances);
@@ -141,14 +133,6 @@ const enableChartsForFederatedInstances = ref(meta.enableChartsForFederatedInsta
 function onChange_enableServerMachineStats(value: boolean) {
 	os.apiWithDialog('admin/update-meta', {
 		enableServerMachineStats: value,
-	}).then(() => {
-		fetchInstance(true);
-	});
-}
-
-function onChange_enableEnhancedServerStats(value: boolean) {
-	os.apiWithDialog('admin/update-meta', {
-		enableEnhancedServerStats: value,
 	}).then(() => {
 		fetchInstance(true);
 	});
