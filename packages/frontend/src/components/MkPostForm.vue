@@ -423,7 +423,7 @@ function chooseFileFrom(ev) {
 	if (props.mock) return;
 
 	selectFiles(ev.currentTarget ?? ev.target, i18n.ts.attachFile).then(files_ => {
-		for (const file of files_.filter(f => f?.id)) {
+		for (const file of files_.filter(f => f.id)) {
 			files.value.push(file);
 		}
 	});
@@ -679,7 +679,7 @@ function saveDraft() {
 			visibility: visibility.value,
 			localOnly: localOnly.value,
 
-			files: files.value.filter(f => f?.id && f.type && f.name),
+			files: files.value.filter(f => f.id && f.type && f.name),
 			poll: poll.value,
 		},
 	};
@@ -751,7 +751,7 @@ async function post(ev?: MouseEvent) {
 	let postData = {
 		text: text.value === '' ? null : text.value,
 
-		fileIds: files.value.length > 0 ? files.value.filter(f => f?.id).map(f => f.id) : undefined,
+		fileIds: files.value.length > 0 ? files.value.filter(f => f.id).map(f => f.id) : undefined,
 		replyId: props.reply ? props.reply.id : undefined,
 		renoteId: props.renote ? props.renote.id : quoteId.value ? quoteId.value : undefined,
 		channelId: props.channel ? props.channel.id : undefined,
@@ -862,9 +862,9 @@ async function post(ev?: MouseEvent) {
 			type: 'error',
 			text: err.message + '\n' + (err as any).id,
 		});
-		emit("postError");
+		emit('postError');
 	});
-	emit("posting");
+	emit('posting');
 }
 
 function cancel() {
@@ -878,10 +878,31 @@ function insertMention() {
 }
 
 async function insertEmoji(ev: MouseEvent) {
-	os.openEmojiPicker(
-		(ev.currentTarget ?? ev.target) as HTMLElement,
-		{ asReactionPicker: false },
-		textareaEl.value,
+	textAreaReadOnly.value = true;
+	const target = ev.currentTarget ?? ev.target;
+	if (target == null) return;
+
+	// emojiPickerはダイアログが閉じずにtextareaとやりとりするので、
+	// focustrapをかけているとinsertTextAtCursorが効かない
+	// そのため、投稿フォームのテキストに直接注入する
+	// See: https://github.com/misskey-dev/misskey/pull/14282
+	//      https://github.com/misskey-dev/misskey/issues/14274
+
+	let pos = textareaEl.value?.selectionStart ?? 0;
+	let posEnd = textareaEl.value?.selectionEnd ?? text.value.length;
+	emojiPicker.show(
+		target as HTMLElement,
+		emoji => {
+			const textBefore = text.value.substring(0, pos);
+			const textAfter = text.value.substring(posEnd);
+			text.value = textBefore + emoji + textAfter;
+			pos += emoji.length;
+			posEnd += emoji.length;
+		},
+		() => {
+			textAreaReadOnly.value = false;
+			nextTick(() => focus());
+		},
 	);
 }
 
@@ -965,7 +986,7 @@ onMounted(() => {
 			const init = props.initialNote;
 			text.value = init.text ? init.text : '';
 
-			files.value = init.files?.filter(f => f?.id && f.type && f.name) ?? [];
+			files.value = init.files?.filter(f => f.id && f.type && f.name) ?? [];
 			cw.value = init.cw ?? null;
 			useCw.value = init.cw != null;
 			if (init.poll) {

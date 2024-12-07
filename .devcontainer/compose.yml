@@ -29,12 +29,15 @@ services:
   db:
     restart: unless-stopped
     image: postgres:15-alpine
+    ports:
+      - 5432:5432
     networks:
       - internal_network
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: misskey
+
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
