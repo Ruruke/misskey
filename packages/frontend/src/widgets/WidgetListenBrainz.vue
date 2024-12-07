@@ -123,15 +123,11 @@ watch(() => widgetProps.userId, fetchPlayingNow, { immediate: true });
 
 watch(() => widgetProps.refreshIntervalSec, (newInterval) => {
 	if (intervalId) clearInterval(intervalId);
-	if (newInterval > 0) {
-		intervalId = setInterval(fetchPlayingNow, newInterval * 1000);
-	}
+	intervalId = setInterval(fetchPlayingNow, newInterval * 1000);
 }, { immediate: true });
 
 onMounted(() => {
-	if (widgetProps.refreshIntervalSec > 0) {
-		intervalId = setInterval(fetchPlayingNow, widgetProps.refreshIntervalSec * 1000);
-	}
+	intervalId = setInterval(fetchPlayingNow, widgetProps.refreshIntervalSec * 1000);
 });
 
 onUnmounted(() => {
