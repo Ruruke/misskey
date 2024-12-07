@@ -29,6 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps_s">
 			<MkSwitch v-model="showFixedPostForm">{{ i18n.ts.showFixedPostForm }}</MkSwitch>
 			<MkSwitch v-model="showFixedPostFormInChannel">{{ i18n.ts.showFixedPostFormInChannel }}</MkSwitch>
+			<FormLink to="/settings/post-form">{{ i18n.ts.postForm }}</FormLink>
 			<MkFolder>
 				<template #label>{{ i18n.ts.pinnedList }}</template>
 				<!-- 複数ピン止め管理できるようにしたいけどめんどいので一旦ひとつのみ -->
@@ -69,10 +70,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="none">{{ i18n.ts._instanceTicker.none }}</option>
 				<option value="remote">{{ i18n.ts._instanceTicker.remote }}</option>
 				<option value="always">{{ i18n.ts._instanceTicker.always }}</option>
-				<option value="remoteIcon">{{ i18n.ts._instanceTicker.remoteIcon }}</option>
-				<option value="alwaysIcon">{{ i18n.ts._instanceTicker.alwaysIcon }}</option>
 			</MkSelect>
-
+			<MkSwitch v-if="instanceTicker !== 'none'" v-model="instanceIcon">{{ i18n.ts.instanceIcon }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></MkSwitch>
 			<MkSelect v-model="nsfw">
 				<template #label>{{ i18n.ts.displayOfSensitiveMedia }}</template>
 				<option value="respect">{{ i18n.ts._displayOfSensitiveMedia.respect }}</option>
@@ -89,6 +88,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkRadios>
 
 			<MkSwitch v-model="disableNoteNyaize">{{ i18n.ts.disableNoteNyaize }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></MkSwitch>
+
+			<MkRadios v-model="selectReaction">
+				<template #label>{{ i18n.ts.selectReaction }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+				<option value="❤️">❤️</option>
+				<option value="⭐">⭐</option>
+				<option value="🍮">🍮</option>
+				<option value="💩">💩</option>
+			</MkRadios>
+
+			<!-- <MkSwitch v-model="selectReaction">
+				<template #label>{{ i18n.ts.selectReaction }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+				<button class="_button" :class="$style.emojisAdd" @click="chooseReaction">
+					<i class="ti ti-plus"></i>
+				</button>
+			</MkSwitch> -->
 		</div>
 	</FormSection>
 
@@ -308,6 +322,7 @@ const showFixedPostForm = computed(defaultStore.makeGetterSetter('showFixedPostF
 const showFixedPostFormInChannel = computed(defaultStore.makeGetterSetter('showFixedPostFormInChannel'));
 const numberOfPageCache = computed(defaultStore.makeGetterSetter('numberOfPageCache'));
 const instanceTicker = computed(defaultStore.makeGetterSetter('instanceTicker'));
+const instanceIcon = computed(defaultStore.makeGetterSetter('instanceIcon'));
 const enableInfiniteScroll = computed(defaultStore.makeGetterSetter('enableInfiniteScroll'));
 const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('useReactionPickerForContextMenu'));
 const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
@@ -325,6 +340,7 @@ const useNativeUIForVideoAudioPlayer = computed(defaultStore.makeGetterSetter('u
 const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfirmFollow'));
 const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
 const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
+const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -358,6 +374,7 @@ watch([
 	showNoteActionsOnlyHover,
 	showGapBetweenNotesInTimeline,
 	instanceTicker,
+	instanceIcon,
 	overridedDeviceKind,
 	mediaListWithOneImageAppearance,
 	reactionsDisplaySize,
@@ -369,9 +386,32 @@ watch([
 	alwaysConfirmFollow,
 	confirmWhenRevealingSensitiveMedia,
 	contextMenu,
+	selectReaction,
 ], async () => {
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
+
+// const chooseReaction = (ev: MouseEvent) => {
+//     pickEmoji(selectReaction, ev); // selectReaction は文字列
+// };
+
+// async function pickEmoji(currentReaction: string, ev: MouseEvent) {
+//     const selectedEmoji = await os.pickEmoji(getHTMLElement(ev), {
+//         showPinned: false,
+//     });
+
+//     // selectedEmoji が定義されているか確認
+//     if (selectedEmoji && selectedEmoji !== currentReaction) {
+//         // selectReaction を更新
+//         defaultStore.state.selectReaction = selectedEmoji;
+//     }
+// }
+
+// function getHTMLElement(ev: MouseEvent): HTMLElement {
+//     const target = ev.currentTarget ?? ev.target;
+//     return target as HTMLElement;
+// }
+
 
 const emojiIndexLangs = ['en-US', 'ja-JP', 'ja-JP_hira'] as const;
 
