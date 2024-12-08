@@ -35,8 +35,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" :placeholder="i18n.ts.driveSearchbarPlaceholder" @enter="fetch">
 				<template #prefix><i class="ph-magnifying-glass ph-bold ph-lg"></i></template>
 			</MkInput>
-
-			<button class="_button" :class="$style.navMenu" @click="showMenu"><i class="ti ti-dots"></i></button>
+			<p>  </p>
+			<div :class="$style.driveUsage">
+				<MkA style="padding-right: 10px" :to="`/settings/drive`">
+					{{ i18n.ts.free }}: {{ bytes( capacity - usage, 1) }}/{{ bytes(capacity, 1) }}
+				</MkA>
+				<div :class="$style.meter"><div :class="$style.meterValue" :style="meterStyle"></div></div>
+			</div>
+			<button class="_button" @click="showMenu"><i class="ti ti-dots"></i></button>
 		</div>
 	</nav>
 	<div
@@ -102,8 +108,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onActivated, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue';
+import { nextTick, onActivated, onBeforeUnmount, onMounted, ref, shallowRef, watch, computed } from 'vue';
 import * as Misskey from 'misskey-js';
+import tinycolor from 'tinycolor2';
 import MkButton from './MkButton.vue';
 import type { MenuItem } from '@/types/menu.js';
 import XNavFolder from '@/components/MkDrive.navFolder.vue';
@@ -116,6 +123,7 @@ import { useStream } from '@/stream.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { uploadFile, uploads } from '@/scripts/upload.js';
+import bytes from "@/filters/bytes.js";
 import { claimAchievement } from '@/scripts/achievements.js';
 
 const searchQuery = ref('');
@@ -167,6 +175,27 @@ const ilFilesObserver = new IntersectionObserver(
 );
 
 watch(folder, () => emit('cd', folder.value));
+
+// ドライブ情報表示
+const usage = ref<number | null>(null);
+const capacity = ref<number | null>(null);
+
+misskeyApi('drive').then(info => {
+  capacity.value = info.capacity;
+  usage.value = info.usage;
+});
+
+const meterStyle = computed(() => {
+	if (!capacity.value || !usage.value) return {};
+	return {
+		width: `${usage.value / capacity.value * 100}%`,
+		background: tinycolor({
+			h: 180 - (usage.value / capacity.value * 180),
+			s: 0.7,
+			l: 0.5,
+		}).toHslString(),
+	};
+});
 
 function onStreamDriveFileCreated(file: Misskey.entities.DriveFile) {
 	addFile(file, true);
@@ -822,5 +851,24 @@ onBeforeUnmount(() => {
 	height: calc(100% - 38px);
 	border: dashed 2px var(--focus);
 	pointer-events: none;
+}
+
+.driveUsage {
+	display: flex;
+	flex-direction: column;
+	margin-right: 10px;
+}
+
+.meter {
+	height: 10px;
+	width: 155px;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 999px;
+	overflow: clip;
+}
+
+.meterValue {
+	height: 100%;
+	border-radius: 999px;
 }
 </style>
