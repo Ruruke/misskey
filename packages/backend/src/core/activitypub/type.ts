@@ -6,6 +6,8 @@
 export type Obj = { [x: string]: any };
 export type ApObject = IObject | string | (IObject | string)[];
 
+import { fromTuple } from '@/misc/from-tuple.js';
+
 export interface IObject {
 	'@context'?: string | string[] | Obj | Obj[];
 	type: string | string[];
@@ -60,6 +62,18 @@ export function getApId(value: string | IObject): string {
 	if (typeof value === 'string') return value;
 	if (typeof value.id === 'string') return value.id;
 	throw new Error('cannot detemine id');
+}
+
+/**
+ * Get ActivityStreams Object id, or null if not present
+ */
+export function getNullableApId(value: string | IObject | [string | IObject]): string | null {
+	// eslint-disable-next-line no-param-reassign
+	value = fromTuple(value);
+
+	if (typeof value === 'string') return value;
+	if (typeof value.id === 'string') return value.id;
+	return null;
 }
 
 /**
@@ -329,7 +343,7 @@ export interface IMove extends IActivity {
 	type: 'Move';
 	target: IObject | string;
 }
-
+export const isApObject = (object: string | IObject): object is IObject => typeof(object) === 'object';
 export const isCreate = (object: IObject): object is ICreate => getApType(object) === 'Create';
 export const isDelete = (object: IObject): object is IDelete => getApType(object) === 'Delete';
 export const isUpdate = (object: IObject): object is IUpdate => getApType(object) === 'Update';

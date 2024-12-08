@@ -251,10 +251,10 @@ export class ApPersonService implements OnModuleInit {
 		return null;
 	}
 
-	private async resolveAvatarAndBanner(user: MiRemoteUser, icon: any, image: any, bgimg: any): Promise<Partial<Pick<MiRemoteUser, 'avatarId' | 'bannerId' | 'backgroundId' | 'avatarUrl' | 'bannerUrl' | 'backgroundUrl' | 'avatarBlurhash' | 'bannerBlurhash' | 'backgroundBlurhash'>>> {
+	private async resolveAvatarAndBanner(user: MiRemoteUser, icon: any, image: any): Promise<Partial<Pick<MiRemoteUser, 'avatarId' | 'bannerId' | 'avatarUrl' | 'bannerUrl' | 'avatarBlurhash' | 'bannerBlurhash'>>> {
 		if (user == null) throw new Error('failed to create user: user is null');
 
-		const [avatar, banner, background] = await Promise.all([icon, image, bgimg].map(img => {
+		const [avatar, banner, background] = await Promise.all([icon, image].map(img => {
 			// if we have an explicitly missing image, return an
 			// explicitly-null set of values
 			if ((img == null) || (typeof img === 'object' && img.url == null)) {
@@ -381,31 +381,34 @@ export class ApPersonService implements OnModuleInit {
 					id: this.idService.gen(),
 					avatarId: null,
 					bannerId: null,
-					backgroundId: null,
+					// backgroundId: null,
 					lastFetchedAt: new Date(),
 					name: truncate(person.name, nameLength),
-					noindex: (person as any).noindex ?? false,
+					// noindex: (person as any).noindex ?? false,
 					isLocked: person.manuallyApprovesFollowers,
 					movedToUri: person.movedTo,
 					movedAt: person.movedTo ? new Date() : null,
 					alsoKnownAs: person.alsoKnownAs,
 					isExplorable: person.discoverable,
 					username: person.preferredUsername,
-					approved: true,
+					// approved: true,
 					usernameLower: person.preferredUsername?.toLowerCase(),
 					host,
 					inbox: person.inbox,
 					sharedInbox: person.sharedInbox ?? person.endpoints?.sharedInbox,
-					notesCount: outboxcollection?.totalItems ?? 0,
-					followersCount: followerscollection?.totalItems ?? 0,
-					followingCount: followingcollection?.totalItems ?? 0,
+					// notesCount: outboxcollection?.totalItems ?? 0,
+					// followersCount: followerscollection?.totalItems ?? 0,
+					// followingCount: followingcollection?.totalItems ?? 0,
 					followersUri: person.followers ? getApId(person.followers) : undefined,
 					featured: person.featured ? getApId(person.featured) : undefined,
 					uri: person.id,
 					tags,
 					isBot,
 					isCat: (person as any).isCat === true,
-					speakAsCat: (person as any).speakAsCat != null ? (person as any).speakAsCat === true : (person as any).isCat === true,
+					requireSigninToViewContents: (person as any).requireSigninToViewContents === true,
+					makeNotesFollowersOnlyBefore: (person as any).makeNotesFollowersOnlyBefore ?? null,
+					makeNotesHiddenBefore: (person as any).makeNotesHiddenBefore ?? null,
+
 					emojis,
 				})) as MiRemoteUser;
 
@@ -428,7 +431,6 @@ export class ApPersonService implements OnModuleInit {
 					birthday: bday?.[0] ?? null,
 					location: person['vcard:Address'] ?? null,
 					userHost: host,
-					listenbrainz: person.listenbrainz ?? null,
 				}));
 
 				if (person.publicKey) {
@@ -460,10 +462,10 @@ export class ApPersonService implements OnModuleInit {
 
 		// Register host
 		this.federatedInstanceService.fetch(host).then(i => {
-			this.instancesRepository.increment({ id: i.id }, 'usersCount', 1);
-			this.fetchInstanceMetadataService.fetchInstanceMetadata(i);
+			this.instancesRepository.increment({ id: i?.id }, 'usersCount', 1);
+			this.fetchInstanceMetadataService.fetchInstanceMetadata(i!);
 			if (this.meta.enableChartsForFederatedInstances) {
-				this.instanceChart.newUser(i.host);
+				this.instanceChart.newUser(i!.host);
 			}
 		});
 
@@ -474,7 +476,7 @@ export class ApPersonService implements OnModuleInit {
 
 		//#region アバターとヘッダー画像をフェッチ
 		try {
-			const updates = await this.resolveAvatarAndBanner(user, person.icon, person.image, person.backgroundUrl);
+			const updates = await this.resolveAvatarAndBanner(user, person.icon, person.image);
 			await this.usersRepository.update(user.id, updates);
 			user = { ...user, ...updates };
 
@@ -586,8 +588,8 @@ export class ApPersonService implements OnModuleInit {
 			movedToUri: person.movedTo ?? null,
 			alsoKnownAs: person.alsoKnownAs ?? null,
 			isExplorable: person.discoverable,
-			...(await this.resolveAvatarAndBanner(exist, person.icon, person.image, person.backgroundUrl).catch(() => ({}))),
-		} as Partial<MiRemoteUser> & Pick<MiRemoteUser, 'isBot' | 'isCat' | 'speakAsCat' | 'isLocked' | 'movedToUri' | 'alsoKnownAs' | 'isExplorable'>;
+			...(await this.resolveAvatarAndBanner(exist, person.icon, person.image).catch(() => ({}))),
+		} as Partial<MiRemoteUser> & Pick<MiRemoteUser, 'isBot' | 'isCat' | 'isLocked' | 'movedToUri' | 'alsoKnownAs' | 'isExplorable'>;
 
 		const moving = ((): boolean => {
 			// 移行先がない→ある
@@ -636,7 +638,6 @@ export class ApPersonService implements OnModuleInit {
 			followersVisibility,
 			birthday: bday?.[0] ?? null,
 			location: person['vcard:Address'] ?? null,
-			listenbrainz: person.listenbrainz ?? null,
 		});
 
 		this.globalEventService.publishInternalEvent('remoteUserUpdated', { id: exist.id });
