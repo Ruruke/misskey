@@ -7,7 +7,7 @@ import { UnrecoverableError } from 'bullmq';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
-import type { UsersRepository, PollsRepository, EmojisRepository, NotesRepository, MiMeta } from '@/models/_.js';
+import type { PollsRepository, EmojisRepository, MiMeta } from '@/models/_.js';
 import type { Config } from '@/config.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import type { MiNote } from '@/models/Note.js';
@@ -49,14 +49,8 @@ export class ApNoteService {
 		@Inject(DI.meta)
 		private meta: MiMeta,
 
-		@Inject(DI.usersRepository)
-		private usersRepository: UsersRepository,
-
 		@Inject(DI.pollsRepository)
 		private pollsRepository: PollsRepository,
-
-		@Inject(DI.notesRepository)
-		private notesRepository: NotesRepository,
 
 		@Inject(DI.emojisRepository)
 		private emojisRepository: EmojisRepository,
@@ -84,13 +78,7 @@ export class ApNoteService {
 	}
 
 	@bindThis
-	public validateNote(
-		object: IObject,
-		uri: string,
-		actor?: MiRemoteUser,
-		user?: MiRemoteUser,
-		note?: MiNote,
-	): Error | null {
+	public validateNote(object: IObject, uri: string, actor?: MiRemoteUser): Error | null {
 		const expectHost = this.utilityService.extractDbHost(uri);
 		const apType = getApType(object);
 
@@ -107,24 +95,15 @@ export class ApNoteService {
 			return new IdentifiableError('d450b8a9-48e4-4dab-ae36-f4db763fda7c', `invalid Note: attributedTo has different host. expected: ${expectHost}, actual: ${actualHost}`);
 		}
 
-		if (actor) {
-			const attribution = (object.attributedTo) ? getOneApId(object.attributedTo) : actor.uri;
-			if (attribution !== actor.uri) {
-				return new IdentifiableError('d450b8a9-48e4-4dab-ae36-f4db763fda7c', `invalid Note: attribution does not match the actor that send it. attribution: ${attribution}, actor: ${actor.uri}`);
-			}
-			if (user && attribution !== user.uri) {
-				return new IdentifiableError('d450b8a9-48e4-4dab-ae36-f4db763fda7c', `invalid Note: updated attribution does not match original attribution. updated attribution: ${user.uri}, original attribution: ${attribution}`);
-			}
-		}
-
 		if (object.published && !this.idService.isSafeT(new Date(object.published).valueOf())) {
 			return new IdentifiableError('d450b8a9-48e4-4dab-ae36-f4db763fda7c', 'invalid Note: published timestamp is malformed');
 		}
 
-		if (note) {
-			const url = (object.url) ? getOneApId(object.url) : note.url;
-			if (url && url !== note.url) {
-				return new IdentifiableError('d450b8a9-48e4-4dab-ae36-f4db763fda7c', `invalid Note: updated url does not match original url. updated url: ${url}, original url: ${note.url}`);
+		if (actor) {
+			const attribution = (object.attributedTo) ? getOneApId(object.attributedTo) : actor.uri;
+
+			if (attribution !== actor.uri) {
+				return new IdentifiableError('d450b8a9-48e4-4dab-ae36-f4db763fda7c', `invalid Note: attribution does not match the actor that send it. attribution: ${attribution}, actor: ${actor.uri}`);
 			}
 		}
 
@@ -139,15 +118,6 @@ export class ApNoteService {
 	@bindThis
 	public async fetchNote(object: string | IObject): Promise<MiNote | null> {
 		return await this.apDbResolverService.getNoteFromApId(object);
-	}
-
-	/**
-	 * Returns true if the provided object / ID exists in the local database.
-	 */
-	@bindThis
-	public async hasNote(object: string | IObject | [string | IObject]): Promise<boolean> {
-		const uri = getApId(object);
-		return await this.notesRepository.existsBy({ uri });
 	}
 
 	/**
@@ -176,22 +146,22 @@ export class ApNoteService {
 		this.logger.debug(`Note fetched: ${JSON.stringify(note, null, 2)}`);
 
 		if (note.id == null) {
-			throw new UnrecoverableError(`Refusing to create note without id: ${entryUri}`);
+			throw new Error('Refusing to create note without id');
 		}
 
 		if (!checkHttps(note.id)) {
-			throw new UnrecoverableError(`unexpected schema of note note.id ${note.id}: ${entryUri}`);
+			throw new Error('unexpected schema of note.id: ' + note.id);
 		}
 
 		const url = getOneApHrefNullable(note.url);
 
 		if (url != null) {
 			if (!checkHttps(url)) {
-				throw new UnrecoverableError('unexpected schema of note url: ' + url);
+				throw new Error('unexpected schema of note url: ' + url);
 			}
 
 			if (this.utilityService.punyHost(url) !== this.utilityService.punyHost(note.id)) {
-				throw new Error(`note url <> uri host mismatch: ${url} <> ${note.id}`);
+				throw new Error(`note url & uri host mismatch: note url: ${url}, note uri: ${note.id}`);
 			}
 		}
 
@@ -199,7 +169,7 @@ export class ApNoteService {
 
 		// 投稿者をフェッチ
 		if (note.attributedTo == null) {
-			throw new UnrecoverableError(`invalid note.attributedTo ${note.attributedTo}: ${entryUri}`);
+			throw new Error('invalid note.attributedTo: ' + note.attributedTo);
 		}
 
 		const uri = getOneApId(note.attributedTo);
@@ -208,7 +178,7 @@ export class ApNoteService {
 		// eslint-disable-next-line no-param-reassign
 		actor ??= await this.apPersonService.fetchPerson(uri) as MiRemoteUser | undefined;
 		if (actor && actor.isSuspended) {
-			throw new IdentifiableError('85ab9bd7-3a41-4530-959d-f07073900109', `actor ${uri} has been suspended: ${entryUri}`);
+			throw new IdentifiableError('85ab9bd7-3a41-4530-959d-f07073900109', 'actor has been suspended');
 		}
 
 		const apMentions = await this.apMentionService.extractApMentions(note.tag, resolver);
@@ -235,7 +205,7 @@ export class ApNoteService {
 		 */
 		const hasProhibitedWords = this.noteCreateService.checkProhibitedWordsContain({ cw, text, pollChoices: poll?.choices });
 		if (hasProhibitedWords) {
-			throw new IdentifiableError('689ee33f-f97c-479a-ac49-1b9f8140af99', `Note contains prohibited words: ${entryUri}`);
+			throw new IdentifiableError('689ee33f-f97c-479a-ac49-1b9f8140af99', 'Note contains prohibited words');
 		}
 		//#endregion
 
@@ -244,7 +214,7 @@ export class ApNoteService {
 
 		// 解決した投稿者が凍結されていたらスキップ
 		if (actor.isSuspended) {
-			throw new IdentifiableError('85ab9bd7-3a41-4530-959d-f07073900109', `actor has been suspended: ${entryUri}`);
+			throw new IdentifiableError('85ab9bd7-3a41-4530-959d-f07073900109', 'actor has been suspended');
 		}
 
 		const noteAudience = await this.apAudienceService.parseAudience(actor, note.to, note.cc, resolver);
@@ -274,13 +244,13 @@ export class ApNoteService {
 				.then(x => {
 					if (x == null) {
 						this.logger.warn('Specified inReplyTo, but not found');
-						throw new Error(`could not fetch inReplyTo ${note.inReplyTo}: ${entryUri}`);
+						throw new Error('inReplyTo not found');
 					}
 
 					return x;
 				})
 				.catch(async err => {
-					this.logger.warn(`error ${err.statusCode ?? err} fetching inReplyTo ${note.inReplyTo}: ${entryUri}`);
+					this.logger.warn(`Error in inReplyTo ${note.inReplyTo} - ${err.statusCode ?? err}`);
 					throw err;
 				})
 			: null;
@@ -288,26 +258,17 @@ export class ApNoteService {
 		// 引用
 		let quote: MiNote | undefined | null = null;
 
-		if (note._misskey_quote ?? note.quoteUrl ) {
-			const tryResolveNote = async (uri: unknown): Promise<
+		if (note._misskey_quote ?? note.quoteUrl) {
+			const tryResolveNote = async (uri: string): Promise<
 				| { status: 'ok'; res: MiNote }
 				| { status: 'permerror' | 'temperror' }
 			> => {
-				if (typeof uri !== 'string' || !/^https?:/.test(uri)) {
-					this.logger.warn(`Failed to resolve quote ${uri} for note ${entryUri}: URI is invalid`);
-					return { status: 'permerror' };
-				}
+				if (!/^https?:/.test(uri)) return { status: 'permerror' };
 				try {
-					const res = await this.resolveNote(uri, { resolver });
-					if (res == null) {
-						this.logger.warn(`Failed to resolve quote ${uri} for note ${entryUri}: resolution error`);
-						return { status: 'permerror' };
-					}
+					const res = await this.resolveNote(uri);
+					if (res == null) return { status: 'permerror' };
 					return { status: 'ok', res };
 				} catch (e) {
-					const error = e instanceof Error ? `${e.name}: ${e.message}` : String(e);
-					this.logger.warn(`Failed to resolve quote ${uri} for note ${entryUri}: ${error}`);
-
 					return {
 						status: (e instanceof StatusError && !e.isRetryable) ? 'permerror' : 'temperror',
 					};
@@ -317,10 +278,10 @@ export class ApNoteService {
 			const uris = unique([note._misskey_quote, note.quoteUrl].filter(x => x != null));
 			const results = await Promise.all(uris.map(tryResolveNote));
 
-			quote = results.filter((x): x is { status: 'ok', res: MiNote, uri: string } => x.status === 'ok').map(x => x.res).at(0);
+			quote = results.filter((x): x is { status: 'ok', res: MiNote } => x.status === 'ok').map(x => x.res).at(0);
 			if (!quote) {
 				if (results.some(x => x.status === 'temperror')) {
-					throw new Error(`temporary error resolving quote for ${entryUri}`);
+					throw new Error('quote resolve failed');
 				}
 			}
 		}
@@ -380,7 +341,7 @@ export class ApNoteService {
 			this.logger.info('The note is already inserted while creating itself, reading again');
 			const duplicate = await this.fetchNote(value);
 			if (!duplicate) {
-				throw new Error(`The note creation failed with duplication error even when there is no duplication, ${entryUri}`);
+				throw new Error('The note creation failed with duplication error even when there is no duplication');
 			}
 			return duplicate;
 		}
@@ -397,7 +358,7 @@ export class ApNoteService {
 		const uri = getApId(value);
 
 		if (!this.utilityService.isFederationAllowedUri(uri)) {
-			throw new StatusError(`blocked host: ${uri}`, 451, 'blocked host');
+			throw new StatusError('blocked host', 451);
 		}
 
 		const unlock = await this.appLockService.getApLock(uri);
@@ -409,7 +370,7 @@ export class ApNoteService {
 			//#endregion
 
 			if (this.utilityService.isUriLocal(uri)) {
-				throw new StatusError(`cannot resolve local note: ${uri}`, 400, 'cannot resolve local note');
+				throw new StatusError('cannot resolve local note', 400, 'cannot resolve local note');
 			}
 
 			// リモートサーバーからフェッチしてきて登録
@@ -457,7 +418,7 @@ export class ApNoteService {
 					});
 
 					const emoji = await this.emojisRepository.findOneBy({ host, name });
-					if (emoji == null) throw new Error(`emoji update failed: ${name}:${host}`);
+					if (emoji == null) throw new Error('emoji update failed');
 					return emoji;
 				}
 
