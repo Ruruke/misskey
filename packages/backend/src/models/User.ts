@@ -274,6 +274,7 @@ export class MiUser {
 		length: 16, nullable: true, unique: true,
 		comment: 'The native access token of the User. It will be null if the origin of the user is local.',
 	})
+
 	public token: string | null;
 
 	constructor(data: Partial<MiUser>) {
