@@ -823,14 +823,6 @@ export class ApInboxService {
 
 			await this.apQuestionService.updateQuestion(object, actor, resolver);
 			return 'ok: Question updated';
-		} else if (isPost(object)) {
-			// If we get an Update(Note) for a note that doesn't exist, then create it instead
-			if (!await this.apNoteService.hasNote(object)) {
-				return await this.create(actor, activity, resolver);
-			}
-
-			await this.apNoteService.updateNote(object, actor, resolver);
-			return 'ok: Note updated';
 		} else {
 			return `skip: Unsupported type for Update: ${getApType(object)} ${getNullableApId(object)}`;
 		}
