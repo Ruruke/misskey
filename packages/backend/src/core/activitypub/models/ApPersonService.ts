@@ -579,7 +579,7 @@ export class ApPersonService implements OnModuleInit {
 			emojis: emojiNames,
 			name: truncate(person.name, nameLength),
 			tags,
-			approved: true,
+			// approved: true,
 			isBot: getApType(object) === 'Service' || getApType(object) === 'Application',
 			isCat: (person as any).isCat === true,
 			speakAsCat: (person as any).speakAsCat != null ? (person as any).speakAsCat === true : (person as any).isCat === true,
