@@ -52,6 +52,17 @@ export function getOneApId(value: ApObject): string {
 	const firstOne = Array.isArray(value) ? value[0] : value;
 	return getApId(firstOne);
 }
+/**
+ * Get ActivityStreams Object id, or null if not present
+ */
+export function getNullableApId(value: string | IObject | [string | IObject]): string | null {
+	// eslint-disable-next-line no-param-reassign
+	value = fromTuple(value);
+
+	if (typeof value === 'string') return value;
+	if (typeof value.id === 'string') return value.id;
+	return null;
+}
 
 /**
  * Get ActivityStreams Object id
