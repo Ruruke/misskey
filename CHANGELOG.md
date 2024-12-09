@@ -23,6 +23,8 @@
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/737)
 - Fix: チャートエンジン・キュープロセッサが起動する前にサーバーがリクエストを受け付ける可能性がある問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/788)
+- Fix: URLとURIが異なるエンティティの照会に失敗する問題を修正  
+	(Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/773)
 
 ## 2024.11.0
 
