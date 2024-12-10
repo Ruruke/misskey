@@ -203,23 +203,30 @@ export class ApInboxService {
 		const object = fromTuple(activity.object);
 		if (!object) return 'skip: activity has no object property';
 
-		const note = await this.apNoteService.resolveNote(object, { resolver });
-		if (!note) return `skip: target note not found ${targetUri}`;
-
-		await this.apNoteService.extractEmojis(activity.tag ?? [], actor.host).catch(() => null);
-
 		try {
-			await this.reactionService.create(actor, note, activity._misskey_reaction ?? activity.content ?? activity.name);
-			return 'ok';
-		} catch (err) {
-			if (err instanceof IdentifiableError && err.id === '51c42bb4-931a-456b-bff7-e5a8a70dd298') {
-				return 'skip: already reacted';
-			} else {
-				return 'skip: etc.';
+			const note = await this.apNoteService.resolveNote(object, { resolver });
+			if (!note) return `skip: target note not found ${targetUri}`;
+
+			await this.apNoteService.extractEmojis(activity.tag ?? [], actor.host).catch(() => null);
+
+			try {
+				await this.reactionService.create(actor, note, activity._misskey_reaction ?? activity.content ?? activity.name);
+				return 'ok';
+			} catch (err) {
+				if (err instanceof IdentifiableError && err.id === '51c42bb4-931a-456b-bff7-e5a8a70dd298') {
+					return 'skip: already reacted';
+				} else if (err instanceof StatusError) {
+					return 'skip: status error.';
+				} else {
+					throw err;
+				}
 			}
-			//  else {
-			// 	throw err;
-			// }
+		} catch (err ) {
+			if (err instanceof StatusError) {
+				return 'skip: status error.';
+			} else {
+				throw err;
+			}
 		}
 	}
 
