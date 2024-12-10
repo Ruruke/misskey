@@ -7,6 +7,7 @@ import { reactive, ref } from 'vue';
 import * as Misskey from 'misskey-js';
 import { v4 as uuid } from 'uuid';
 import { readAndCompressImage } from '@misskey-dev/browser-image-resizer';
+import heicDecode from 'heic-decode';
 import { getCompressionConfig } from './upload/compress-config.js';
 import { defaultStore } from '@/store.js';
 import { apiUrl } from '@@/js/config.js';
@@ -71,8 +72,15 @@ export function uploadFile(
 			let resizedImage: Blob | undefined;
 			if (config) {
 				try {
-					const resized = await readAndCompressImage(file, config);
-					if (resized.size < file.size || file.type === 'image/webp') {
+					let itemToResize: File | ImageData = file;
+					if (file.type === 'image/heic') {
+						const buffer = new Uint8Array(await file.arrayBuffer());
+						const { width, height, data } = await heicDecode({ buffer });
+						const imageData = new ImageData(data, width, height);
+						itemToResize = imageData;
+					}
+					const resized = await readAndCompressImage(itemToResize, config);
+					if (resized.size < file.size || ['image/webp', 'image/heic'].includes(file.type)) {
 						// The compression may not always reduce the file size
 						// (and WebP is not browser safe yet)
 						resizedImage = resized;
