@@ -214,8 +214,8 @@ export class ApInboxService {
 		} catch (err) {
 			if (err instanceof IdentifiableError && err.id === '51c42bb4-931a-456b-bff7-e5a8a70dd298') {
 				return 'skip: already reacted';
-			} else if (err instanceof StatusError && err.message == '404 Not Found') {
-				return 'skip: 404 not found.';
+			} else if (err instanceof StatusError) {
+				return 'skip: status error.';
 			} else {
 				throw err;
 			}
