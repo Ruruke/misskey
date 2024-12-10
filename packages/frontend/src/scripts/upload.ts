@@ -76,8 +76,7 @@ export function uploadFile(
 					if (file.type === 'image/heic') {
 						const buffer = new Uint8Array(await file.arrayBuffer());
 						const { width, height, data } = await heicDecode({ buffer });
-						const imageData = new ImageData(data, width, height);
-						itemToResize = imageData;
+						itemToResize = new ImageData(data, width, height);
 					}
 					const resized = await readAndCompressImage(itemToResize, config);
 					if (resized.size < file.size || ['image/webp', 'image/heic'].includes(file.type)) {
