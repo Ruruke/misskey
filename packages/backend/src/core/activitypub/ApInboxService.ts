@@ -311,15 +311,19 @@ export class ApInboxService {
 		if (!activityObject) return 'skip: activity has no object property';
 		const targetUri = getApId(activityObject);
 		if (targetUri.startsWith('bear:')) return 'skip: bearcaps url not supported.';
+		try {
+			const target = await resolver.resolve(activityObject).catch(e => {
+				this.logger.error(`Resolution failed: ${e}`);
+				throw e;
+			});
+			if (isPost(target)) return await this.announceNote(actor, activity, target);
 
-		const target = await resolver.resolve(activityObject).catch(e => {
-			this.logger.error(`Resolution failed: ${e}`);
-			throw e;
-		});
-
-		if (isPost(target)) return await this.announceNote(actor, activity, target);
-
-		return `skip: unknown object type ${getApType(target)}`;
+			return `skip: unknown object type ${getApType(target)}`;
+		} catch (err) {
+			if (err instanceof StatusError) {
+				return 'skip: status error.';
+			}
+		}
 	}
 
 	@bindThis
