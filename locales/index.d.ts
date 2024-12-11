@@ -10621,6 +10621,9 @@ export interface Locale extends ILocale {
          */
         "sent": string;
     };
+		//Custom.
+
+		"originalFeature": string;
 }
 declare const locales: {
     [lang: string]: Locale;
