@@ -21,6 +21,9 @@ import { bindThis } from '@/decorators.js';
 import UsersChart from '@/core/chart/charts/users.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import { UserService } from '@/core/UserService.js';
+import { UserFollowingService } from '@/core/UserFollowingService.js';
+import { NotificationService } from '@/core/NotificationService.js';
+import { RoleService } from '@/core/RoleService.js';
 
 @Injectable()
 export class SignupService {
@@ -39,10 +42,13 @@ export class SignupService {
 
 		private utilityService: UtilityService,
 		private userService: UserService,
+		private userFollowingService: UserFollowingService,
 		private userEntityService: UserEntityService,
 		private idService: IdService,
 		private instanceActorService: InstanceActorService,
 		private usersChart: UsersChart,
+		private notificationService: NotificationService,
+		private roleService: RoleService,
 	) {
 	}
 
@@ -53,12 +59,16 @@ export class SignupService {
 		passwordHash?: MiUserProfile['password'] | null;
 		host?: string | null;
 		ignorePreservedUsernames?: boolean;
+		reason?: string | null;
+		approved?: boolean;
 	}) {
 		const { username, password, passwordHash, host } = opts;
 		let hash = passwordHash;
 
 		// Validate username
-		if (!this.userEntityService.validateLocalUsername(username)) {
+		if (
+			(!opts.ignorePreservedUsernames && username.length < this.meta.validateMinimumUsernameLength) || !this.userEntityService.validateLocalUsername(username)
+		) {
 			throw new Error('INVALID_USERNAME');
 		}
 
@@ -130,6 +140,8 @@ export class SignupService {
 				host: this.utilityService.toPunyNullable(host),
 				token: secret,
 				isRoot: isTheFirstUser,
+				signupReason: opts.reason,
+				approved: isTheFirstUser || (opts.approved ?? !this.meta.approvalRequiredForSignup),
 			}));
 
 			await transactionalEntityManager.save(new MiUserKeypair({
@@ -151,7 +163,34 @@ export class SignupService {
 		});
 
 		this.usersChart.update(account, true);
+
+		//#region Default following
+		if (
+			!isTheFirstUser &&
+			(this.meta.defaultFollowedUsers.length > 0 || this.meta.forciblyFollowedUsers.length > 0)
+		) {
+			const userIdsToFollow = [
+				...this.meta.defaultFollowedUsers,
+				...this.meta.forciblyFollowedUsers,
+			];
+
+			await Promise.allSettled(userIdsToFollow.map(async userId => {
+				await this.userFollowingService.follow(account, { id: userId });
+			}));
+		}
+		//#endregion
+
 		this.userService.notifySystemWebhook(account, 'userCreated');
+
+		const adminIds = await this.roleService.getAdministratorIds();
+		await Promise.all(adminIds.map(async adminId => {
+			this.notificationService.createNotification(adminId, 'app', {
+				appAccessTokenId: null,
+				customBody: `新しいユーザー @${account.username} が作成されました。`,
+				customHeader: '[システム] 通知',
+				customIcon: null,
+			});
+		}));
 
 		return { account, secret };
 	}
