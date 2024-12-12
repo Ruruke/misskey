@@ -259,7 +259,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<div class="_gaps">
 						<MkSwitch v-model="customFeatureForm.state.disableSignup">
-							<template #label>{{ i18n.ts._customizeFeature.disableSignup }}<span v-if="customFeatureForm.state.disableSignup" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #label>{{ i18n.ts._customizeFeature.disableSignup }}<span v-if="customFeatureForm.modifiedStates.disableSignup" class="_modified">{{ i18n.ts.modified }}</span></template>
 							<template #caption>Wip.</template>
 						</MkSwitch>
 					</div>
