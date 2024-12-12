@@ -4974,6 +4974,7 @@ export type components = {
       defaultDarkTheme: string | null;
       defaultLightTheme: string | null;
       disableRegistration: boolean;
+      disableSignup: boolean;
       emailRequiredForSignup: boolean;
       enableHcaptcha: boolean;
       hcaptchaSiteKey: string | null;
@@ -5103,6 +5104,7 @@ export type operations = {
       200: {
         content: {
           'application/json': {
+            disableSignup: boolean;
             cacheRemoteFiles: boolean;
             cacheRemoteSensitiveFiles: boolean;
             emailRequiredForSignup: boolean;
@@ -9601,6 +9603,7 @@ export type operations = {
           /** @enum {string} */
           federation?: 'all' | 'none' | 'specified';
           federationHosts?: string[];
+          disableSignup?: boolean;
         };
       };
     };

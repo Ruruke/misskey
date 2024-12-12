@@ -21,6 +21,10 @@ export const meta = {
 		type: 'object',
 		optional: false, nullable: false,
 		properties: {
+			disableSignup: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 			cacheRemoteFiles: {
 				type: 'boolean',
 				optional: false, nullable: false,
@@ -559,6 +563,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				impressumUrl: instance.impressumUrl,
 				privacyPolicyUrl: instance.privacyPolicyUrl,
 				inquiryUrl: instance.inquiryUrl,
+				disableSignup: instance.disableSignup,
 				disableRegistration: instance.disableRegistration,
 				emailRequiredForSignup: instance.emailRequiredForSignup,
 				enableHcaptcha: instance.enableHcaptcha,

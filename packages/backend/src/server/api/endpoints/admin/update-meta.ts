@@ -185,6 +185,7 @@ export const paramDef = {
 				type: 'string',
 			},
 		},
+		disableSignup: { type: 'boolean' },
 	},
 	required: [],
 } as const;
@@ -305,6 +306,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.cacheRemoteFiles !== undefined) {
 				set.cacheRemoteFiles = ps.cacheRemoteFiles;
+			}
+
+			if (ps.disableSignup !== undefined) {
+				set.disableSignup = ps.disableSignup;
 			}
 
 			if (ps.cacheRemoteSensitiveFiles !== undefined) {

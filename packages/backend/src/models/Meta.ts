@@ -658,4 +658,9 @@ export class MiMeta {
 		default: '{}',
 	})
 	public federationHosts: string[];
+
+	@Column('boolean', {
+		default: false,
+	})
+	public disableSignup: boolean;
 }
