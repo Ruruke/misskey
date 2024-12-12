@@ -252,14 +252,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<MkFolder>
 					<template #icon><i class="ti ti-cloud"></i></template>
-					<template #label>独自機能</template>
-					<template v-if="filesForm.modified.value" #footer>
-						<MkFormFooter :form="filesForm"/>
+					<template #label>{{ i18n.ts._customizeFeature.title }}</template>
+					<template v-if="customFeatureForm.modified.value" #footer>
+						<MkFormFooter :form="customFeatureForm"/>
 					</template>
 
 					<div class="_gaps">
-						<MkSwitch v-model="customFeatureForm.state.disableSingin">
-							<template #label>SignInを無効化する<span v-if="customFeatureForm.state.disableSingin" class="_modified">{{ i18n.ts.modified }}</span></template>
+						<MkSwitch v-model="customFeatureForm.state.disableSignup">
+							<template #label>{{ i18n.ts._customizeFeature.disableSignup }}<span v-if="customFeatureForm.state.disableSignup" class="_modified">{{ i18n.ts.modified }}</span></template>
 							<template #caption>Wip.</template>
 						</MkSwitch>
 					</div>
@@ -342,10 +342,10 @@ const filesForm = useForm({
 });
 
 const customFeatureForm = useForm({
-	disableSingin: meta.disableSingin,
+	disableSignup: meta.disableSignup,
 }, async (state) => {
 	await os.apiWithDialog('admin/update-meta', {
-		disableSingin: state.disableSingin,
+		disableSignup: state.disableSignup,
 	});
 	fetchInstance(true);
 });

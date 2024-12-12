@@ -662,5 +662,5 @@ export class MiMeta {
 	@Column('boolean', {
 		default: false,
 	})
-	public disableSingin: boolean;
+	public disableSignup: boolean;
 }

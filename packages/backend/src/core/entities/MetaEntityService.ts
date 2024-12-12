@@ -99,6 +99,7 @@ export class MetaEntityService {
 			enableTestcaptcha: instance.enableTestcaptcha,
 			swPublickey: instance.swPublicKey,
 			themeColor: instance.themeColor,
+			disableSignup: instance.disableSignup,
 			mascotImageUrl: instance.mascotImageUrl ?? '/assets/ai.png',
 			bannerUrl: instance.bannerUrl,
 			infoImageUrl: instance.infoImageUrl,

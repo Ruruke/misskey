@@ -10629,6 +10629,16 @@ export interface Locale extends ILocale {
          */
         "sent": string;
     };
+    "_customizeFeature": {
+        /**
+         * 独自機能
+         */
+        "title": string;
+        /**
+         * Signupの無効化
+         */
+        "disableSignup": string;
+    };
 }
 declare const locales: {
     [lang: string]: Locale;

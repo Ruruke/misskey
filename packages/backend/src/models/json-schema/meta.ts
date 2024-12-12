@@ -75,6 +75,10 @@ export const packedMetaLiteSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
+		disableSignup: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
 		emailRequiredForSignup: {
 			type: 'boolean',
 			optional: false, nullable: false,
