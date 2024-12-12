@@ -3830,6 +3830,7 @@ export type components = {
           offsetX?: number;
           offsetY?: number;
         }[];
+      enableRss: boolean;
       isBot?: boolean;
       isCat?: boolean;
       isProxy?: boolean;
@@ -20462,6 +20463,7 @@ export type operations = {
           requireSigninToViewContents?: boolean;
           makeNotesFollowersOnlyBefore?: number | null;
           makeNotesHiddenBefore?: number | null;
+          enableRss?: boolean;
           isBot?: boolean;
           isCat?: boolean;
           injectFeaturedNote?: boolean;

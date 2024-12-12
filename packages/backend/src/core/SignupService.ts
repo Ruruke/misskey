@@ -128,6 +128,7 @@ export class SignupService {
 				token: secret,
 				isRoot: isTheFirstUser,
 				signupReason: opts.reason,
+				enableRss: false,
 			}));
 
 			await transactionalEntityManager.save(new MiUserKeypair({

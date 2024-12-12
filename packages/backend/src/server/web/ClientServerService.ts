@@ -514,6 +514,7 @@ export class ClientServerService {
 				usernameLower: username.toLowerCase(),
 				host: host ?? IsNull(),
 				isSuspended: false,
+				enableRss: true,
 			});
 
 			return user && await this.feedService.packFeed(user);

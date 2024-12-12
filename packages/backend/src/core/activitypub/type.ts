@@ -215,6 +215,7 @@ export interface IActor extends IObject {
 	'vcard:bday'?: string;
 	'vcard:Address'?: string;
 	noindex?: boolean;
+	enableRss?: boolean;
 	backgroundUrl?: string;
 	listenbrainz?: string;
 	banner?: {

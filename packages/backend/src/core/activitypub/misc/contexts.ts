@@ -213,7 +213,7 @@ const activitystreams = {
 		'IsFollowedBy': 'as:IsFollowedBy',
 		'IsContact': 'as:IsContact',
 		'IsMember': 'as:IsMember',
-		'listenbrainz': "sharkey:listenbrainz",
+		'listenbrainz': 'sharkey:listenbrainz',
 		'subject': {
 			'@id': 'as:subject',
 			'@type': '@id',
@@ -560,6 +560,7 @@ const extension_context_definition = {
 	'_misskey_makeNotesFollowersOnlyBefore': 'misskey:_misskey_makeNotesFollowersOnlyBefore',
 	'_misskey_makeNotesHiddenBefore': 'misskey:_misskey_makeNotesHiddenBefore',
 	'isCat': 'misskey:isCat',
+	enableRss: 'sharkey:enableRss',
 	// vcard
 	vcard: 'http://www.w3.org/2006/vcard/ns#',
 } satisfies Context;

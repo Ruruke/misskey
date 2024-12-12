@@ -91,6 +91,7 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		uri: null,
 		followersUri: null,
 		token: null,
+		enableRss: true,
 		...override,
 	};
 }
@@ -202,6 +203,7 @@ function toPackedUserLite(user: MiUser, override?: Packed<'UserLite'>): Packed<'
 		emojis: user.emojis,
 		onlineStatus: 'active',
 		badgeRoles: [],
+		enableRss: true,
 		...override,
 	};
 }
