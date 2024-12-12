@@ -9601,6 +9601,7 @@ export type operations = {
           /** @enum {string} */
           federation?: 'all' | 'none' | 'specified';
           federationHosts?: string[];
+          disableSingin?: boolean;
         };
       };
     };

@@ -249,6 +249,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkButton primary @click="chooseProxyAccount">{{ i18n.ts.selectAccount }}</MkButton>
 					</div>
 				</MkFolder>
+
+				<MkFolder>
+					<template #icon><i class="ti ti-cloud"></i></template>
+					<template #label>独自機能</template>
+					<template v-if="filesForm.modified.value" #footer>
+						<MkFormFooter :form="filesForm"/>
+					</template>
+
+					<div class="_gaps">
+						<MkSwitch v-model="customFeatureForm.state.disableSingin">
+							<template #label>SignInを無効化する<span v-if="customFeatureForm.state.disableSingin" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>Wip.</template>
+						</MkSwitch>
+					</div>
+				</MkFolder>
 			</div>
 		</MkSpacer>
 	</MkStickyContainer>
@@ -322,6 +337,15 @@ const filesForm = useForm({
 	await os.apiWithDialog('admin/update-meta', {
 		cacheRemoteFiles: state.cacheRemoteFiles,
 		cacheRemoteSensitiveFiles: state.cacheRemoteSensitiveFiles,
+	});
+	fetchInstance(true);
+});
+
+const customFeatureForm = useForm({
+	disableSingin: meta.disableSingin,
+}, async (state) => {
+	await os.apiWithDialog('admin/update-meta', {
+		disableSingin: state.disableSingin,
 	});
 	fetchInstance(true);
 });

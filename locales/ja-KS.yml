@@ -1323,6 +1323,8 @@ _bubbleGame:
     section1: "位置を調整してハコにモノを落とすで。"
     section2: "同じもんがくっついたら別のやつになって、スコアがもらえるで。"
     section3: "モノがハコからあふれたらゲームオーバーや。ハコからあふれんようにしながらモノを融合させてハイスコアを目指しいや！"
+disableNoteNyaize: "nayizeしなくする"
+originalFeature: "独自機能"
 _announcement:
   forExistingUsers: "もうおるユーザーのみ"
   forExistingUsersDescription: "オンにしたらこのお知らせができた時点でおる人らにだけお知らせが行くで。切ったらこの知らせが行ったあとにアカウント作った人にもちゃんとお知らせが行くで。"
@@ -2709,5 +2711,3 @@ _embedCodeGen:
   generateCode: "埋め込みコード作る"
   codeGenerated: "コード作ったで"
   codeGeneratedDescription: "作ったコードはウェブサイトに貼っつけて使ってや。"
-disableNoteNyaize: "nayizeしなくする"
-originalFeature: "独自機能"
