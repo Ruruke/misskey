@@ -252,7 +252,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<MkFolder>
 					<template #icon><i class="ti ti-cloud"></i></template>
-					<template #label>{{ i18n.ts._customizeFeature.title }}</template>
+					<template #label>{{ i18n.ts._customizeFeature.title }} <span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
 					<template v-if="customFeatureForm.modified.value" #footer>
 						<MkFormFooter :form="customFeatureForm"/>
 					</template>
