@@ -5390,6 +5390,14 @@ export interface Locale extends ILocale {
         };
     };
     /**
+     * by しゃふすきー
+     */
+    "featureByShafu": string;
+    /**
+     * 独自機能
+     */
+    "originalFeature": string;
+    /**
      * nayizeを無効化する
      */
     "disableNoteNyaize": string;
@@ -10621,9 +10629,6 @@ export interface Locale extends ILocale {
          */
         "sent": string;
     };
-		//Custom.
-
-		"originalFeature": string;
 }
 declare const locales: {
     [lang: string]: Locale;

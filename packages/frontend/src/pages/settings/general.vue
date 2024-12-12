@@ -88,10 +88,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="2_3">{{ i18n.tsx.limitTo({ x: '2:3' }) }}</option>
 			</MkRadios>
 
-			<MkSwitch v-model="disableNoteNyaize">{{ i18n.ts.disableNoteNyaize }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></MkSwitch>
+			<MkSwitch v-model="disableNoteNyaize">{{ i18n.ts.disableNoteNyaize }}<span class="_beta">{{ i18n.ts.originalFeature }}</span><span class="_beta">{{ i18n.ts.featureByShafu }}</span></MkSwitch>
 
 			<FromSlot v-model="selectReaction">
-				<template #label>{{ i18n.ts.selectReaction }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+				<template #label>{{ i18n.ts.selectReaction }}<span class="_beta">{{ i18n.ts.originalFeature }}</span> <span class="_beta">{{ i18n.ts.featureByShafu }}</span></template>
 				<MkCustomEmoji v-if="selectReaction && selectReaction.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :name="selectReaction" :normal="true" :noStyle="true"/>
 				<MkEmoji v-else-if="selectReaction && !selectReaction.startsWith(':')" :emoji="selectReaction" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
 				<span v-else-if="!selectReaction">{{ i18n.ts.notSet }}</span>

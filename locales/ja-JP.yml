@@ -1352,6 +1352,10 @@ _bubbleGame:
     section2: "同じ種類のモノがくっつくと別のモノに変化して、スコアが得られます。"
     section3: "モノがハコからあふれるとゲームオーバーです。ハコからあふれないようにしつつモノを融合させてハイスコアを目指そう！"
 
+featureByShafu: "by しゃふすきー"
+originalFeature: "独自機能"
+disableNoteNyaize: "nayizeを無効化する"
+
 _announcement:
   forExistingUsers: "既存ユーザーのみ"
   forExistingUsersDescription: "有効にすると、このお知らせ作成時点で存在するユーザーにのみお知らせが表示されます。無効にすると、このお知らせ作成後にアカウントを作成したユーザーにもお知らせが表示されます。"
@@ -2832,5 +2836,3 @@ _followRequest:
   recieved: "受け取った申請"
   sent: "送った申請"
 
-originalFeature: "独自機能"
-disableNoteNyaize: "nayizeを無効化する"
