@@ -56,6 +56,10 @@ const routes: RouteDef[] = [{
 		name: 'profile',
 		component: page(() => import('@/pages/settings/profile.vue')),
 	}, {
+		name: 'ruru-settings',
+		path: '/ruru-settings',
+		component: page(() => import('@/pages/settings/ruru-settings.vue')),
+	}, {
 		path: '/avatar-decoration',
 		name: 'avatarDecoration',
 		component: page(() => import('@/pages/settings/avatar-decoration.vue')),

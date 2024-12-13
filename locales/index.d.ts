@@ -10871,6 +10871,12 @@ export interface Locale extends ILocale {
          * 非ログイン時の画面でTLを表示しない
          */
         "disableNotloginToShowTL": string;
+        "_sidebar": {
+            /**
+             * るるすきー独自機能
+             */
+            "title": string;
+        };
     };
 }
 declare const locales: {
