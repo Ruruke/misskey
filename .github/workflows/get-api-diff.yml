@@ -6,6 +6,7 @@ on:
     branches:
       - master
       - develop
+      - ruru
     paths:
       - packages/backend/**
       - .github/workflows/get-api-diff.yml

@@ -1,6 +1,7 @@
 # Visual Studio Code
 /.vscode
 !/.vscode/extensions.json
+/.history
 
 # Intelij-IDEA
 /.idea

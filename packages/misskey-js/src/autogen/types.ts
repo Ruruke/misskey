@@ -13974,6 +13974,8 @@ export type operations = {
           type?: string | null;
           /** @enum {string|null} */
           sort?: '+createdAt' | '-createdAt' | '+name' | '-name' | '+size' | '-size' | null;
+          /** @default */
+          searchQuery?: string;
         };
       };
     };
@@ -14573,6 +14575,8 @@ export type operations = {
            * @default null
            */
           folderId?: string | null;
+          /** @default */
+          searchQuery?: string;
         };
       };
     };

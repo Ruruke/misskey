@@ -20,7 +20,7 @@ import type { OnModuleInit } from '@nestjs/common';
 import type { UserEntityService } from './UserEntityService.js';
 import type { NoteEntityService } from './NoteEntityService.js';
 
-const NOTE_REQUIRED_NOTIFICATION_TYPES = new Set(['note', 'mention', 'reply', 'renote', 'renote:grouped', 'quote', 'reaction', 'reaction:grouped', 'pollEnded'] as (typeof groupedNotificationTypes[number])[]);
+const NOTE_REQUIRED_NOTIFICATION_TYPES = new Set(['note', 'mention', 'reply', 'renote', 'renote:grouped', 'quote', 'reaction', 'reaction:grouped', 'pollEnded', 'scheduledNotePosted'] as (typeof groupedNotificationTypes[number])[]);
 
 @Injectable()
 export class NotificationEntityService implements OnModuleInit {
@@ -59,7 +59,7 @@ export class NotificationEntityService implements OnModuleInit {
 	async #packInternal <T extends MiNotification | MiGroupedNotification> (
 		src: T,
 		meId: MiUser['id'],
-		 
+
 		options: {
 			checkValidNotifier?: boolean;
 		},
@@ -136,6 +136,27 @@ export class NotificationEntityService implements OnModuleInit {
 				note: noteIfNeed,
 				users,
 			});
+		} else if (notification.type === 'note:grouped') {
+			const users = (await Promise.all(notification.notifierIds.map(notifier => {
+				const packedUser = hint?.packedUsers != null ? hint.packedUsers.get(notifier) : null;
+				if (packedUser) {
+					return packedUser;
+				}
+
+				return this.userEntityService.pack(notifier, { id: meId });
+			}))).filter(x => x != null);
+			// if all users have been deleted, don't show this notification
+			if (users.length === 0) {
+				return null;
+			}
+
+			return await awaitAll({
+				id: notification.id,
+				createdAt: new Date(notification.createdAt).toISOString(),
+				type: notification.type,
+				noteIds: notification.noteIds,
+				users,
+			});
 		}
 		// #endregion
 
@@ -162,12 +183,21 @@ export class NotificationEntityService implements OnModuleInit {
 			...(notification.type === 'followRequestAccepted' ? {
 				message: notification.message,
 			} : {}),
+			...(notification.type === 'followRequestRejected' ? {
+				message: notification.message,
+			} : {}),
 			...(notification.type === 'achievementEarned' ? {
 				achievement: notification.achievement,
 			} : {}),
 			...(notification.type === 'exportCompleted' ? {
 				exportedEntity: notification.exportedEntity,
 				fileId: notification.fileId,
+			} : {}),
+			...(notification.type === 'scheduledNoteFailed' ? {
+				reason: notification.reason,
+			} : {}),
+			...(notification.type === 'login' ? {
+				ip: notification.userIp,
 			} : {}),
 			...(notification.type === 'app' ? {
 				body: notification.customBody,
@@ -204,6 +234,7 @@ export class NotificationEntityService implements OnModuleInit {
 			if ('notifierId' in notification) userIds.push(notification.notifierId);
 			if (notification.type === 'reaction:grouped') userIds.push(...notification.reactions.map(x => x.userId));
 			if (notification.type === 'renote:grouped') userIds.push(...notification.userIds);
+			if (notification.type === 'note:grouped') userIds.push(...notification.notifierIds);
 		}
 		const users = userIds.length > 0 ? await this.usersRepository.find({
 			where: { id: In(userIds) },
@@ -236,7 +267,7 @@ export class NotificationEntityService implements OnModuleInit {
 	public async pack(
 		src: MiNotification | MiGroupedNotification,
 		meId: MiUser['id'],
-		 
+
 		options: {
 			checkValidNotifier?: boolean;
 		},

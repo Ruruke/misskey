@@ -65,7 +65,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
-	<input v-show="useCw" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown" @keyup="onKeyup" @compositionend="onCompositionEnd">
+	<div v-show="useCw" :class="$style.cwOuter">
+		<input ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown" @keyup="onKeyup" @compositionend="onCompositionEnd">
+		<div v-if="maxCwTextLength - cwTextLength < 20" :class="['_acrylic', $style.cwTextCount, { [$style.cwTextOver]: cwTextLength > maxCwTextLength }]">{{ maxCwTextLength - cwTextLength }}</div>
+	</div>
 	<div :class="[$style.textOuter, { [$style.withCw]: useCw }]">
 		<div v-if="channel" :class="$style.colorBar" :style="{ background: channel.color }"></div>
 		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :readonly="textAreaReadOnly" :placeholder="placeholder" data-cy-post-form-text @keydown="onKeydown" @keyup="onKeyup" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
@@ -106,6 +109,7 @@ import * as Misskey from 'misskey-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { toASCII } from 'punycode/';
 import { host, url } from '@@/js/config.js';
+import type { PostFormProps } from '@/types/post-form.js';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
@@ -129,7 +133,6 @@ import { miLocalStorage } from '@/local-storage.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { emojiPicker } from '@/scripts/emoji-picker.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
-import type { PostFormProps } from '@/types/post-form.js';
 
 const $i = signinRequired();
 
@@ -150,7 +153,9 @@ const props = withDefaults(defineProps<PostFormProps & {
 provide('mock', props.mock);
 
 const emit = defineEmits<{
+	(ev: 'posting'): void;
 	(ev: 'posted'): void;
+	(ev: 'postError'): void;
 	(ev: 'cancel'): void;
 	(ev: 'esc'): void;
 
@@ -241,6 +246,14 @@ const maxTextLength = computed((): number => {
 	return instance ? instance.maxNoteTextLength : 1000;
 });
 
+const cwTextLength = computed((): number => {
+	return cw.value?.length ?? 0;
+});
+
+const maxCwTextLength = computed((): number => {
+	return 100;
+});
+
 const canPost = computed((): boolean => {
 	return !props.mock && !posting.value && !posted.value &&
 		(
@@ -251,6 +264,7 @@ const canPost = computed((): boolean => {
 			quoteId.value != null
 		) &&
 		(textLength.value <= maxTextLength.value) &&
+		(cwTextLength.value <= maxCwTextLength.value) &&
 		(!poll.value || poll.value.choices.length >= 2);
 });
 
@@ -885,7 +899,9 @@ async function post(ev?: MouseEvent) {
 			type: 'error',
 			text: err.message + '\n' + (err as any).id,
 		});
+		emit('postError');
 	});
+	emit('posting');
 }
 
 function cancel() {
@@ -1265,10 +1281,32 @@ html[data-color-scheme=light] .preview {
 	}
 }
 
+.cwOuter {
+	width: 100%;
+	position: relative;
+}
+
 .cw {
 	z-index: 1;
 	padding-bottom: 8px;
 	border-bottom: solid 0.5px var(--MI_THEME-divider);
+}
+
+.cwTextCount {
+	position: absolute;
+	top: 0;
+	right: 2px;
+	padding: 2px 6px;
+	font-size: .9em;
+	color: var(--MI_THEME-warn);
+	border-radius: 6px;
+	max-width: 100%;
+	min-width: 1.6em;
+	text-align: center;
+
+	&.cwTextOver {
+		color: #ff2a2a;
+	}
 }
 
 .hashtags {

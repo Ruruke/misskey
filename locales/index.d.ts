@@ -1323,6 +1323,10 @@ export interface Locale extends ILocale {
      */
     "drive": string;
     /**
+     * 検索ドライブ
+     */
+    "driveSearchbarPlaceholder": string;
+    /**
      * ファイル名
      */
     "fileName": string;
@@ -5327,6 +5331,10 @@ export interface Locale extends ILocale {
             "autoSuspendedForNotResponding": string;
         };
     };
+    /**
+     * いいねボタンで使うリアクションを選択
+     */
+    "selectReaction": string;
     "_bubbleGame": {
         /**
          * 遊び方
@@ -5381,6 +5389,18 @@ export interface Locale extends ILocale {
             "section3": string;
         };
     };
+    /**
+     * by しゃふすきー
+     */
+    "featureByShafu": string;
+    /**
+     * 独自機能
+     */
+    "originalFeature": string;
+    /**
+     * nayizeを無効化する
+     */
+    "disableNoteNyaize": string;
     "_announcement": {
         /**
          * 既存ユーザーのみ
@@ -7458,6 +7478,14 @@ export interface Locale extends ILocale {
          * 常に表示
          */
         "always": string;
+        /**
+         * リモートユーザーに表示(アイコンのみ)
+         */
+        "remoteIcon": string;
+        /**
+         * 常に表示(アイコンのみ)
+         */
+        "alwaysIcon": string;
     };
     "_serverDisconnectedBehavior": {
         /**

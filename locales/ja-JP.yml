@@ -326,6 +326,7 @@ lightThemes: "明るいテーマ"
 darkThemes: "暗いテーマ"
 syncDeviceDarkMode: "デバイスのダークモードと同期する"
 drive: "ドライブ"
+driveSearchbarPlaceholder: "検索ドライブ"
 fileName: "ファイル名"
 selectFile: "ファイルを選択"
 selectFiles: "ファイルを選択"
@@ -1333,6 +1334,8 @@ _delivery:
     goneSuspended: "サーバー削除のため停止中"
     autoSuspendedForNotResponding: "サーバー応答なしのため停止中"
 
+selectReaction: "いいねボタンで使うリアクションを選択"
+
 _bubbleGame:
   howToPlay: "遊び方"
   hold: "ホールド"
@@ -1348,6 +1351,10 @@ _bubbleGame:
     section1: "位置を調整してハコにモノを落とします。"
     section2: "同じ種類のモノがくっつくと別のモノに変化して、スコアが得られます。"
     section3: "モノがハコからあふれるとゲームオーバーです。ハコからあふれないようにしつつモノを融合させてハイスコアを目指そう！"
+
+featureByShafu: "by しゃふすきー"
+originalFeature: "独自機能"
+disableNoteNyaize: "nayizeを無効化する"
 
 _announcement:
   forExistingUsers: "既存ユーザーのみ"
@@ -1947,6 +1954,8 @@ _instanceTicker:
   none: "表示しない"
   remote: "リモートユーザーに表示"
   always: "常に表示"
+  remoteIcon: "リモートユーザーに表示(アイコンのみ)"
+  alwaysIcon: "常に表示(アイコンのみ)"
 
 _serverDisconnectedBehavior:
   reload: "自動でリロード"
@@ -2495,6 +2504,7 @@ _notification:
   flushNotification: "通知の履歴をリセットする"
   exportOfXCompleted: "{x}のエクスポートが完了しました"
   login: "ログインがありました"
+  loginDescription: "{ip}でログインされました。\n承認されていない機器であれば、セキュリティのために「{text}」を通じてすべての機器でログアウトを行ってください。"
 
   _types:
     all: "すべて"
