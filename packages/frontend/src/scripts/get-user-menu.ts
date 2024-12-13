@@ -115,7 +115,9 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		os.apiWithDialog('federation/update-remote-user', {
 			userId: user.id,
 		});
-		location.reload();
+		setTimeout(() => {
+			location.reload();
+		}, 3000);
 	}
 
 	async function invalidateFollow() {
