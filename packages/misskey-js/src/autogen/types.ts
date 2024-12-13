@@ -5106,11 +5106,8 @@ export type operations = {
       200: {
         content: {
           'application/json': {
-<<<<<<< Updated upstream
-=======
             disableSignup: boolean;
             disableNotloginToShowTL: boolean;
->>>>>>> Stashed changes
             cacheRemoteFiles: boolean;
             cacheRemoteSensitiveFiles: boolean;
             emailRequiredForSignup: boolean;
