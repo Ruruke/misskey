@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
+<MkStickyContainer v-if="(miLocalStorage.getItem('account') === null ? !instance.disableNotloginToShowTL : true)">
 	<template #header>
 		<MkTab v-model="tab" :class="$style.tab">
 			<option value="featured">{{ i18n.ts.featured }}</option>
@@ -23,6 +23,8 @@ import * as Misskey from 'misskey-js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkTab from '@/components/MkTab.vue';
 import { i18n } from '@/i18n.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { instance } from '@/instance';
 
 const props = defineProps<{
 	user: Misskey.entities.UserDetailed;

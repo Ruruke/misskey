@@ -249,6 +249,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkButton primary @click="chooseProxyAccount">{{ i18n.ts.selectAccount }}</MkButton>
 					</div>
 				</MkFolder>
+
+				<MkFolder>
+					<template #icon><i class="ti ti-cloud"></i></template>
+					<template #label>{{ i18n.ts._customizeFeature.title }} <span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+					<template v-if="customFeatureForm.modified.value" #footer>
+						<MkFormFooter :form="customFeatureForm"/>
+					</template>
+
+					<div class="_gaps">
+						<MkSwitch v-model="customFeatureForm.state.disableSignup">
+							<template #label>{{ i18n.ts._customizeFeature.disableSignup }}<span v-if="customFeatureForm.modifiedStates.disableSignup" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>Wip.</template>
+						</MkSwitch>
+					</div>
+
+					<div class="_gaps">
+						<MkSwitch v-model="customFeatureForm.state.disableNotloginToShowTL">
+							<template #label>{{ i18n.ts._customizeFeature.disableNotloginToShowTL }}<span v-if="customFeatureForm.modifiedStates.disableNotloginToShowTL" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>Wip.</template>
+						</MkSwitch>
+					</div>
+				</MkFolder>
 			</div>
 		</MkSpacer>
 	</MkStickyContainer>
@@ -322,6 +344,17 @@ const filesForm = useForm({
 	await os.apiWithDialog('admin/update-meta', {
 		cacheRemoteFiles: state.cacheRemoteFiles,
 		cacheRemoteSensitiveFiles: state.cacheRemoteSensitiveFiles,
+	});
+	fetchInstance(true);
+});
+
+const customFeatureForm = useForm({
+	disableSignup: meta.disableSignup,
+	disableNotloginToShowTL: meta.disableNotloginToShowTL,
+}, async (state) => {
+	await os.apiWithDialog('admin/update-meta', {
+		disableSignup: state.disableSignup,
+		disableNotloginToShowTL: state.disableNotloginToShowTL,
 	});
 	fetchInstance(true);
 });

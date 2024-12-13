@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.statsItemCount"><MkNumber :value="stats.originalNotesCount"/></div>
 		</div>
 	</div>
-	<div v-if="instance.policies.ltlAvailable" :class="[$style.tl, $style.panel]">
+	<div v-if="(instance.policies.ltlAvailable && !instance.disableNotloginToShowTL)" :class="[$style.tl, $style.panel]">
 		<div :class="$style.tlHeader">{{ i18n.ts.letsLookAtTimeline }}</div>
 		<div :class="$style.tlBody">
 			<MkTimeline src="local"/>

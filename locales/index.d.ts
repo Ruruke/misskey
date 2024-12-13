@@ -9452,6 +9452,11 @@ export interface Locale extends ILocale {
          * ログインがありました
          */
         "login": string;
+        /**
+         * {ip}でログインされました。
+         * 承認されていない機器であれば、セキュリティのために「{text}」を通じてすべての機器でログアウトを行ってください。
+         */
+        "loginDescription": ParameterizedString<"ip" | "text">;
         "_types": {
             /**
              * すべて
@@ -10600,6 +10605,20 @@ export interface Locale extends ILocale {
          * 送った申請
          */
         "sent": string;
+    };
+    "_customizeFeature": {
+        /**
+         * 独自機能
+         */
+        "title": string;
+        /**
+         * Signupの無効化
+         */
+        "disableSignup": string;
+        /**
+         * 非ログイン時の画面でTLを表示しない
+         */
+        "disableNotloginToShowTL": string;
     };
 }
 declare const locales: {

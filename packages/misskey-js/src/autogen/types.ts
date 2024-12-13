@@ -4328,6 +4328,7 @@ export type components = {
       createdAt: string;
       /** @enum {string} */
       type: 'login';
+      ip: string;
     } | ({
       /** Format: id */
       id: string;
@@ -4974,6 +4975,8 @@ export type components = {
       defaultDarkTheme: string | null;
       defaultLightTheme: string | null;
       disableRegistration: boolean;
+      disableSignup: boolean;
+      disableNotloginToShowTL: boolean;
       emailRequiredForSignup: boolean;
       enableHcaptcha: boolean;
       hcaptchaSiteKey: string | null;
@@ -5103,6 +5106,11 @@ export type operations = {
       200: {
         content: {
           'application/json': {
+<<<<<<< Updated upstream
+=======
+            disableSignup: boolean;
+            disableNotloginToShowTL: boolean;
+>>>>>>> Stashed changes
             cacheRemoteFiles: boolean;
             cacheRemoteSensitiveFiles: boolean;
             emailRequiredForSignup: boolean;
@@ -9601,6 +9609,8 @@ export type operations = {
           /** @enum {string} */
           federation?: 'all' | 'none' | 'specified';
           federationHosts?: string[];
+          disableSignup?: boolean;
+          disableNotloginToShowTL?: boolean;
         };
       };
     };
