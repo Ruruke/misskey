@@ -83,6 +83,10 @@ export interface Locale extends ILocale {
      */
     "gotIt": string;
     /**
+     * 確認
+     */
+    "confirm": string;
+    /**
      * キャンセル
      */
     "cancel": string;
