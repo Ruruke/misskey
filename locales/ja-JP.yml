@@ -2826,11 +2826,8 @@ _selfXssPrevention:
 _followRequest:
   recieved: "受け取った申請"
   sent: "送った申請"
-<<<<<<< Updated upstream
-=======
 
 _customizeFeature:
   title: "独自機能"
   disableSignup: "Signupの無効化"
   disableNotloginToShowTL: "非ログイン時の画面でTLを表示しない"
->>>>>>> Stashed changes
