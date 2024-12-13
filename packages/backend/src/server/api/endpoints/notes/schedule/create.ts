@@ -389,6 +389,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				apMentions: ps.noExtractMentions ? [] : undefined,
 				apHashtags: ps.noExtractHashtags ? [] : undefined,
 				apEmojis: ps.noExtractEmojis ? [] : undefined,
+				deleteAt: ps.scheduledDelete && ps.scheduledDelete.deleteAt
+					? new Date(ps.scheduledDelete.deleteAt).toISOString()
+					: null,
 			};
 
 			if (ps.scheduleNote.scheduledAt) {
