@@ -2840,3 +2840,4 @@ _followRequest:
 _customizeFeature:
   title: "独自機能"
   disableSignup: "Signupの無効化"
+  disableNotloginToShowTL: "非ログイン時の画面でTLを表示しない"

@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div v-if="meta" class="rsqzvsbo">
 	<MkFeaturedPhotos class="bg"/>
-	<XTimeline class="tl"/>
+	<XTimeline v-if="!instance.disableNotloginToShowTL" class="tl"/>
 	<div class="shape1"></div>
 	<div class="shape2"></div>
 	<div class="logo-wrapper">
@@ -45,7 +45,7 @@ import misskeysvg from '/client-assets/misskey.svg';
 import { misskeyApiGet } from '@/scripts/misskey-api.js';
 import MkVisitorDashboard from '@/components/MkVisitorDashboard.vue';
 import { getProxiedImageUrl } from '@/scripts/media-proxy.js';
-import { instance as meta } from '@/instance.js';
+import { instance, instance as meta } from '@/instance.js';
 
 const instances = ref<Misskey.entities.FederationInstance[]>();
 

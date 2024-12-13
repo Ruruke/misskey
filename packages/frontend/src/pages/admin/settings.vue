@@ -263,6 +263,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<template #caption>Wip.</template>
 						</MkSwitch>
 					</div>
+
+					<div class="_gaps">
+						<MkSwitch v-model="customFeatureForm.state.disableNotloginToShowTL">
+							<template #label>{{ i18n.ts._customizeFeature.disableNotloginToShowTL }}<span v-if="customFeatureForm.modifiedStates.disableNotloginToShowTL" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>Wip.</template>
+						</MkSwitch>
+					</div>
 				</MkFolder>
 			</div>
 		</MkSpacer>
@@ -343,9 +350,11 @@ const filesForm = useForm({
 
 const customFeatureForm = useForm({
 	disableSignup: meta.disableSignup,
+	disableNotloginToShowTL: meta.disableNotloginToShowTL,
 }, async (state) => {
 	await os.apiWithDialog('admin/update-meta', {
 		disableSignup: state.disableSignup,
+		disableNotloginToShowTL: state.disableNotloginToShowTL,
 	});
 	fetchInstance(true);
 });

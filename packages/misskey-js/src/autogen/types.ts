@@ -4328,6 +4328,7 @@ export type components = {
       createdAt: string;
       /** @enum {string} */
       type: 'login';
+      ip: string;
     } | ({
       /** Format: id */
       id: string;
@@ -4975,6 +4976,7 @@ export type components = {
       defaultLightTheme: string | null;
       disableRegistration: boolean;
       disableSignup: boolean;
+      disableNotloginToShowTL: boolean;
       emailRequiredForSignup: boolean;
       enableHcaptcha: boolean;
       hcaptchaSiteKey: string | null;
@@ -5105,6 +5107,7 @@ export type operations = {
         content: {
           'application/json': {
             disableSignup: boolean;
+            disableNotloginToShowTL: boolean;
             cacheRemoteFiles: boolean;
             cacheRemoteSensitiveFiles: boolean;
             emailRequiredForSignup: boolean;
@@ -9604,6 +9607,7 @@ export type operations = {
           federation?: 'all' | 'none' | 'specified';
           federationHosts?: string[];
           disableSignup?: boolean;
+          disableNotloginToShowTL?: boolean;
         };
       };
     };

@@ -186,6 +186,7 @@ export const paramDef = {
 			},
 		},
 		disableSignup: { type: 'boolean' },
+		disableNotloginToShowTL: { type: 'boolean' },
 	},
 	required: [],
 } as const;
@@ -310,6 +311,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.disableSignup !== undefined) {
 				set.disableSignup = ps.disableSignup;
+			}
+
+			if (ps.disableNotloginToShowTL !== undefined) {
+				set.disableNotloginToShowTL = ps.disableNotloginToShowTL;
 			}
 
 			if (ps.cacheRemoteSensitiveFiles !== undefined) {
