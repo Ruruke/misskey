@@ -106,7 +106,7 @@ const headerTabs = computed(() => user.value ? [{
 	icon: 'ti ti-pencil',
 }, {
 	key: 'files',
-	title: i18n.ts.files,
+	title: i18n.ts.files+" "+i18n.ts._featureBy.earlyImplementation,
 	icon: 'ti ti-photo',
 }, {
 	key: 'activity',

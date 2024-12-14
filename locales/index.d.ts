@@ -5414,7 +5414,11 @@ export interface Locale extends ILocale {
          * by misskey-temp
          */
         "temp": string;
-    };
+				/**
+				 * 先行実装
+				 */
+				"earlyImplementation": string;
+		};
     /**
      * 独自機能
      */
