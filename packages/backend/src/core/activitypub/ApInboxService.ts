@@ -165,10 +165,11 @@ export class ApInboxService {
 		for (const rule of rules) {
 			const result = await this.inboxRuleService.evalCond(activity, actor, rule.condFormula);
 			if (result && rule.action.type === 'reject') {
-				await this.moderationLogService.log(actor, 'inboxRejected', {
-					activity,
-					rule: rule,
-				});
+				//TODO: なんか管理者がOn/Off出来たらいいよね。
+				// await this.moderationLogService.log(actor, 'inboxRejected', {
+				// 	activity,
+				// 	rule: rule,
+				// });
 				return 'skip: rejected by rule' + rule.id;
 			}
 		}
