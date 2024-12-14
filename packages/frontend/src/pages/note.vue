@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
+<MkStickyContainer v-if="(miLocalStorage.getItem('account') === null ? !instance.disableNotloginToShowTL : true)">
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
 		<div>
@@ -64,6 +64,8 @@ import MkClipPreview from '@/components/MkClipPreview.vue';
 import { defaultStore } from '@/store.js';
 import { pleaseLogin } from '@/scripts/please-login.js';
 import { getServerContext } from '@/server-context.js';
+import {instance} from "@/instance.js";
+import {miLocalStorage} from "@/local-storage.js";
 
 const CTX_NOTE = getServerContext('note');
 
