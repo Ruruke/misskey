@@ -108,17 +108,21 @@ export class CustomEmojiService implements OnApplicationShutdown {
 	}, moderator?: MiUser): Promise<MiEmoji> {
 		const originalDriveData: MiDriveFile = data.driveFile;
 
-		// システムユーザーとして再アップロード
-		if (!data.driveFile !== undefined && !data.driveFile.user?.isRoot) {
-			data.driveFile = await this.driveService.uploadFromUrl({
-				url: data.driveFile.url,
-				user: null,
-				force: true,
-			});
-
-			// 元データの削除
-			this.driveService.deleteFile(originalDriveData);
-		}
+		//TODO: なんかエラー出る。
+		// Endpoint: admin/emoji/copy
+		// Info: {"e":{"message":"Cannot read properties of undefined (reading 'user')","code":"TypeError","id":"078be3aa-cbae-42a1-8d88-3310524032fb"}}
+		// Date: 2024-12-14T17:02:00.906Z
+		// // システムユーザーとして再アップロード
+		// if (!data.driveFile !== undefined && !data.driveFile.user?.isRoot) {
+		// 	data.driveFile = await this.driveService.uploadFromUrl({
+		// 		url: data.driveFile.url,
+		// 		user: null,
+		// 		force: true,
+		// 	});
+		//
+		// 	// 元データの削除
+		// 	this.driveService.deleteFile(originalDriveData);
+		// }
 		const emoji = await this.emojisRepository.insertOne({
 			id: this.idService.gen(),
 			updatedAt: new Date(),
