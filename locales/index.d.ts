@@ -5405,10 +5405,16 @@ export interface Locale extends ILocale {
             "section3": string;
         };
     };
-    /**
-     * by しゃふすきー
-     */
-    "featureByShafu": string;
+    "_featureBy": {
+        /**
+         * by しゃふすきー
+         */
+        "shafu": string;
+        /**
+         * by misskey-temp
+         */
+        "temp": string;
+    };
     /**
      * 独自機能
      */
