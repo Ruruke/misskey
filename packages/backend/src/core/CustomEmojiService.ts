@@ -11,6 +11,7 @@ import { IdService } from '@/core/IdService.js';
 import { EmojiEntityService } from '@/core/entities/EmojiEntityService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import type { MiEmoji } from '@/models/Emoji.js';
+import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { EmojisRepository, MiRole, MiUser } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import { MemoryKVCache, RedisSingleCache } from '@/misc/cache.js';
@@ -92,6 +93,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 
 	@bindThis
 	public async add(data: {
+		driveFile: MiDriveFile;
 		originalUrl: string;
 		publicUrl: string;
 		fileType: string;
