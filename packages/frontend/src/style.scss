@@ -18,7 +18,7 @@
 	--MI-minBottomSpacing: var(--MI-minBottomSpacingMobile);
 
 	font-family: "あんずもじ2020";
-
+	//font-size: 1.2em;		//TODO: WebFontを設置したら。
 	@media (max-width: 500px) {
 		--MI-margin: var(--MI-marginHalf);
 	}
