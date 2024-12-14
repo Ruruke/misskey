@@ -66,6 +66,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #key>URL</template>
 				<template #value>{{ file.url }}</template>
 			</MkKeyValue>
+			<MkKeyValue :class="$style.fileMetaDataChildren" :copy="file.thumbnailUrl">
+				<template #key>thumbnailURL</template>
+				<template #value>{{ file.thumbnailUrl }}</template>
+			</MkKeyValue>
 		</div>
 	</div>
 	<div v-else class="_fullinfo">
