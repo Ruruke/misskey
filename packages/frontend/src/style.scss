@@ -17,6 +17,8 @@
 	--MI-minBottomSpacingMobile: calc(72px + max(12px, env(safe-area-inset-bottom, 0px)));
 	--MI-minBottomSpacing: var(--MI-minBottomSpacingMobile);
 
+	font-family: "あんずもじ2020";
+
 	@media (max-width: 500px) {
 		--MI-margin: var(--MI-marginHalf);
 	}
@@ -33,7 +35,7 @@ html {
 	accent-color: var(--MI_THEME-accent);
 	overflow: auto;
 	overflow-wrap: break-word;
-	font-family: 'Hiragino Maru Gothic Pro', "BIZ UDGothic", Roboto, HelveticaNeue, Arial, sans-serif;
+	font-family: "あんずもじ2020", 'Hiragino Maru Gothic Pro', "BIZ UDGothic", Roboto, HelveticaNeue, Arial, sans-serif;
 	font-size: 14px;
 	line-height: 1.35;
 	text-size-adjust: 100%;
