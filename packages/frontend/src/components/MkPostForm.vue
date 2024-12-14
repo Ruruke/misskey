@@ -264,7 +264,7 @@ const canPost = computed((): boolean => {
 			quoteId.value != null
 		) &&
 		(textLength.value <= maxTextLength.value) &&
-		(files.value.length > 16) &&
+		(files.value.length <= 16) &&
 		(cwTextLength.value <= maxCwTextLength.value) &&
 		(!poll.value || poll.value.choices.length >= 2);
 });
