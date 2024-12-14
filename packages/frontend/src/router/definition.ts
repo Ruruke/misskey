@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-FileCopyrightText: syuilo and misskey-project, Type4ny-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -454,6 +454,10 @@ const routes: RouteDef[] = [{
 		path: '/moderation',
 		name: 'moderation',
 		component: page(() => import('@/pages/admin/moderation.vue')),
+	}, {
+		path: '/inbox-moderation',
+		name: 'inbox-moderation',
+		component: page(() => import('@/pages/admin/inboxModeration.vue')),
 	}, {
 		path: '/email-settings',
 		name: 'email-settings',

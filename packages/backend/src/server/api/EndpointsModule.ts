@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-FileCopyrightText: syuilo and misskey-project, Type4ny-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -20,6 +20,10 @@ import * as ep___admin_ad_create from './endpoints/admin/ad/create.js';
 import * as ep___admin_ad_delete from './endpoints/admin/ad/delete.js';
 import * as ep___admin_ad_list from './endpoints/admin/ad/list.js';
 import * as ep___admin_ad_update from './endpoints/admin/ad/update.js';
+import * as ep___admin_inbox_rule_list from './endpoints/admin/inbox-rule/list.js';
+import * as ep___admin_inbox_rule_edit from './endpoints/admin/inbox-rule/edit.js';
+import * as ep___admin_inbox_rule_set from './endpoints/admin/inbox-rule/set.js';
+import * as ep___admin_inbox_rule_delete from './endpoints/admin/inbox-rule/delete.js';
 import * as ep___admin_announcements_create from './endpoints/admin/announcements/create.js';
 import * as ep___admin_announcements_delete from './endpoints/admin/announcements/delete.js';
 import * as ep___admin_announcements_list from './endpoints/admin/announcements/list.js';
@@ -409,6 +413,10 @@ const $admin_ad_create: Provider = { provide: 'ep:admin/ad/create', useClass: ep
 const $admin_ad_delete: Provider = { provide: 'ep:admin/ad/delete', useClass: ep___admin_ad_delete.default };
 const $admin_ad_list: Provider = { provide: 'ep:admin/ad/list', useClass: ep___admin_ad_list.default };
 const $admin_ad_update: Provider = { provide: 'ep:admin/ad/update', useClass: ep___admin_ad_update.default };
+const $admin_inbox_rule_set: Provider = { provide: 'ep:admin/inbox-rule/set', useClass: ep___admin_inbox_rule_set.default };
+const $admin_inbox_rule_list: Provider = { provide: 'ep:admin/inbox-rule/list', useClass: ep___admin_inbox_rule_list.default };
+const $admin_inbox_rule_edit: Provider = { provide: 'ep:admin/inbox-rule/edit', useClass: ep___admin_inbox_rule_edit.default };
+const $admin_inbox_rule_delete: Provider = { provide: 'ep:admin/inbox-rule/delete', useClass: ep___admin_inbox_rule_delete.default };
 const $admin_announcements_create: Provider = { provide: 'ep:admin/announcements/create', useClass: ep___admin_announcements_create.default };
 const $admin_announcements_delete: Provider = { provide: 'ep:admin/announcements/delete', useClass: ep___admin_announcements_delete.default };
 const $admin_announcements_list: Provider = { provide: 'ep:admin/announcements/list', useClass: ep___admin_announcements_list.default };
@@ -802,6 +810,10 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$admin_ad_delete,
 		$admin_ad_list,
 		$admin_ad_update,
+		$admin_inbox_rule_set,
+		$admin_inbox_rule_list,
+		$admin_inbox_rule_edit,
+		$admin_inbox_rule_delete,
 		$admin_announcements_create,
 		$admin_announcements_delete,
 		$admin_announcements_list,
@@ -1189,6 +1201,10 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$admin_ad_delete,
 		$admin_ad_list,
 		$admin_ad_update,
+		$admin_inbox_rule_set,
+		$admin_inbox_rule_list,
+		$admin_inbox_rule_edit,
+		$admin_inbox_rule_delete,
 		$admin_announcements_create,
 		$admin_announcements_delete,
 		$admin_announcements_list,

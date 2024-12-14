@@ -181,6 +181,9 @@ export type ModerationLog = {
 	type: 'updateAbuseReportNotificationRecipient';
 	info: ModerationLogPayloads['updateAbuseReportNotificationRecipient'];
 } | {
+	type: 'inboxRejected';
+	info: ModerationLogPayloads['inboxRejected'];
+} | {
 	type: 'deleteAbuseReportNotificationRecipient';
 	info: ModerationLogPayloads['deleteAbuseReportNotificationRecipient'];
 } | {

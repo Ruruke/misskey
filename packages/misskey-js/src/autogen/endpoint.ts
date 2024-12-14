@@ -24,6 +24,13 @@ import type {
 	AdminAdListRequest,
 	AdminAdListResponse,
 	AdminAdUpdateRequest,
+	AdminInboxRuleListResponse,
+	AdminInboxRuleSetRequest,
+	AdminInboxRuleSetResponse,
+	AdminInboxRuleEditRequest,
+	AdminInboxRuleEditResponse,
+	AdminInboxRuleDeleteRequest,
+	AdminInboxRuleDeleteResponse,
 	AdminAnnouncementsCreateRequest,
 	AdminAnnouncementsCreateResponse,
 	AdminAnnouncementsDeleteRequest,
@@ -598,6 +605,10 @@ export type Endpoints = {
 	'admin/ad/delete': { req: AdminAdDeleteRequest; res: EmptyResponse };
 	'admin/ad/list': { req: AdminAdListRequest; res: AdminAdListResponse };
 	'admin/ad/update': { req: AdminAdUpdateRequest; res: EmptyResponse };
+	'admin/inbox-rule/list': { req: EmptyRequest; res: AdminInboxRuleListResponse };
+	'admin/inbox-rule/set': { req: AdminInboxRuleSetRequest; res: AdminInboxRuleSetResponse };
+	'admin/inbox-rule/edit': { req: AdminInboxRuleEditRequest; res: AdminInboxRuleEditResponse };
+	'admin/inbox-rule/delete': { req: AdminInboxRuleDeleteRequest; res: AdminInboxRuleDeleteResponse };
 	'admin/announcements/create': { req: AdminAnnouncementsCreateRequest; res: AdminAnnouncementsCreateResponse };
 	'admin/announcements/delete': { req: AdminAnnouncementsDeleteRequest; res: EmptyResponse };
 	'admin/announcements/list': { req: AdminAnnouncementsListRequest; res: AdminAnnouncementsListResponse };
@@ -970,6 +981,7 @@ export type Endpoints = {
 	'reversi/surrender': { req: ReversiSurrenderRequest; res: EmptyResponse };
 	'reversi/verify': { req: ReversiVerifyRequest; res: ReversiVerifyResponse };
 }
+
 /**
  * NOTE: The content-type for all endpoints not listed here is application/json.
  */

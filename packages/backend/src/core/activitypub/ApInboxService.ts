@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-FileCopyrightText: syuilo and misskey-project, Type4ny-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -24,7 +24,15 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueService } from '@/core/QueueService.js';
-import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta } from '@/models/_.js';
+import type {
+	UsersRepository,
+	NotesRepository,
+	FollowingsRepository,
+	AbuseUserReportsRepository,
+	FollowRequestsRepository,
+	InboxRuleRepository,
+	MiMeta
+} from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
@@ -33,6 +41,8 @@ import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { fromTuple } from '@/misc/from-tuple.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
 import { getApHrefNullable, getApId, getApIds, getApType, getNullableApId, isAccept, isActor, isAdd, isAnnounce, isApObject, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isMove, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
+import { InboxRuleService } from '@/core/InboxRuleService.js';
+import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { ApNoteService } from './models/ApNoteService.js';
 import { ApLoggerService } from './ApLoggerService.js';
 import { ApDbResolverService } from './ApDbResolverService.js';
@@ -66,6 +76,9 @@ export class ApInboxService {
 		@Inject(DI.followRequestsRepository)
 		private followRequestsRepository: FollowRequestsRepository,
 
+		@Inject(DI.inboxRuleRepository)
+		private inboxRuleRepository: InboxRuleRepository,
+
 		private userEntityService: UserEntityService,
 		private noteEntityService: NoteEntityService,
 		private utilityService: UtilityService,
@@ -88,6 +101,8 @@ export class ApInboxService {
 		private apQuestionService: ApQuestionService,
 		private queueService: QueueService,
 		private globalEventService: GlobalEventService,
+		private inboxRuleService: InboxRuleService,
+		private moderationLogService: ModerationLogService,
 		private federatedInstanceService: FederatedInstanceService,
 	) {
 		this.logger = this.apLoggerService.logger;
@@ -145,6 +160,18 @@ export class ApInboxService {
 	@bindThis
 	public async performOneActivity(actor: MiRemoteUser, activity: IObject, resolver?: Resolver): Promise<string | void> {
 		if (actor.isSuspended) return;
+		console.log('performOneActivity', activity);
+		const rules = await this.inboxRuleRepository.find();
+		for (const rule of rules) {
+			const result = await this.inboxRuleService.evalCond(activity, actor, rule.condFormula);
+			if (result && rule.action.type === 'reject') {
+				await this.moderationLogService.log(actor, 'inboxRejected', {
+					activity,
+					rule: rule,
+				});
+				return 'skip: rejected by rule' + rule.id;
+			}
+		}
 
 		if (isCreate(activity)) {
 			return await this.create(actor, activity, resolver);

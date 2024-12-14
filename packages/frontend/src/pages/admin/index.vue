@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and misskey-project
+SPDX-FileCopyrightText: syuilo and misskey-project, Type4ny-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -184,6 +184,11 @@ const menuDef = computed(() => [{
 		text: i18n.ts.moderation,
 		to: '/admin/moderation',
 		active: currentPage.value?.route.name === 'moderation',
+	}, {
+		icon: 'ti ti-inbox',
+		text: i18n.ts.inboxModeration,
+		to: '/admin/inbox-moderation',
+		active: currentPage.value?.route.name === 'inbox-moderation',
 	}, {
 		icon: 'ti ti-mail',
 		text: i18n.ts.emailServer,

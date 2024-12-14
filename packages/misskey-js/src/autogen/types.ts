@@ -143,6 +143,42 @@ export type paths = {
      */
     post: operations['admin___ad___update'];
   };
+  '/admin/inbox-rule/list': {
+    /**
+     * admin/inbox-rule/list
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *read:admin:inbox-rule*
+     */
+    post: operations['admin___inbox-rule___list'];
+  };
+  '/admin/inbox-rule/set': {
+    /**
+     * admin/inbox-rule/set
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+     */
+    post: operations['admin___inbox-rule___set'];
+  };
+  '/admin/inbox-rule/edit': {
+    /**
+     * admin/inbox-rule/edit
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+     */
+    post: operations['admin___inbox-rule___edit'];
+  };
+  '/admin/inbox-rule/delete': {
+    /**
+     * admin/inbox-rule/delete
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+     */
+    post: operations['admin___inbox-rule___delete'];
+  };
   '/admin/announcements/create': {
     /**
      * admin/announcements/create
@@ -6037,6 +6073,218 @@ export type operations = {
       /** @description OK (without any results) */
       204: {
         content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/inbox-rule/list
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *read:admin:inbox-rule*
+   */
+  'admin___inbox-rule___list': {
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': Record<string, never>[];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/inbox-rule/set
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+   */
+  'admin___inbox-rule___set': {
+    requestBody: {
+      content: {
+        'application/json': {
+          name?: string | null;
+          condFormula: Record<string, never>;
+          action: Record<string, never>;
+          description?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/inbox-rule/edit
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+   */
+  'admin___inbox-rule___edit': {
+    requestBody: {
+      content: {
+        'application/json': {
+          id: string;
+          name?: string | null;
+          condFormula?: Record<string, never> | null;
+          action?: Record<string, never>;
+          description?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/inbox-rule/delete
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+   */
+  'admin___inbox-rule___delete': {
+    requestBody: {
+      content: {
+        'application/json': {
+          id: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
       };
       /** @description Client error */
       400: {

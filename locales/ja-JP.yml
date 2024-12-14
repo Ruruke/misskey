@@ -1327,6 +1327,7 @@ _abuseUserReport:
   accept: "是認"
   reject: "否認"
   resolveTutorial: "内容が正当である通報に対応した場合は「是認」を選択し、肯定的にケースが解決されたことをマークします。\n内容が正当でない通報の場合は「否認」を選択し、否定的にケースが解決されたことをマークします。"
+inboxModeration: "Inboxのモデレーション"
 
 _delivery:
   status: "配信状態"
@@ -1752,6 +1753,34 @@ _achievements:
       title: "ダブル🤯"
       description: "バブルゲームで最も大きいモノを2つ同時に出した"
       flavor: "これくらいの　おべんとばこに　🤯　🤯　ちょっとつめて"
+    _markedAsGorilla:
+      title: "うほうほうほうほほ！？？！？！"
+      description: "アカウントをGorillaとして設定した"
+
+_inboxRule:
+  add: "ルールを追加"
+  name: "ルール名"
+  description: "ルールの説明"
+  thisActivityIsNote: "このアクティビティが投稿なら"
+  action: "アクション"
+  then: "だったら"
+  reject: "拒否"
+  serverPubLessThanOrEq: "このサーバーのユーザーからフォローされているユーザーの数が～以下"
+  serverPubMoreThanOrEq: "このサーバーのユーザーからフォローされているユーザーの数が～以上"
+  serverSubLessThanOrEq: "このサーバーのユーザーをフォローしているユーザーの数が～以下"
+  serverSubMoreThanOrEq: "このサーバーのユーザーをフォローしているユーザーの数が～以上"
+  maxMentionsMoreThanOrEq: "ノート内のメンション数が～以上"
+  attachmentFileMoreThanOrEq: "添付ファイルの数が～以上"
+  isIncludeThisWord: "この単語を含む"
+  and: "かつ"
+  or: "または"
+  not: "でない"
+  notes: "投稿"
+  conditions: "条件"
+  rewrite: "一致した部分を書き換える"
+  serverHost: "サーバーのホスト"
+  serverSoftware: "サーバーのソフトウェア"
+  serverIsSilenced: "サーバーサイレンスされているか"
 
 _role:
   new: "ロールの作成"
