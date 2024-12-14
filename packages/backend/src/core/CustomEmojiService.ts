@@ -109,7 +109,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		const originalDriveData: MiDriveFile = data.driveFile;
 
 		// システムユーザーとして再アップロード
-		if (!data.driveFile.user !== null && !data.driveFile.user?.isRoot) {
+		if (!data.driveFile.user !== undefined && !data.driveFile.user?.isRoot) {
 			data.driveFile = await this.driveService.uploadFromUrl({
 				url: data.driveFile.url,
 				user: null,
