@@ -153,8 +153,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
 			<XFiles :key="user.id" :user="user" @unfold="emit('unfoldFiles')"/>
 			<XActivity :key="user.id" :user="user"/>
-			<XFiles :key="user.id" :user="user"/>
-			<XActivity v-if="!user.hideActivity" :key="user.id" :user="user"/>
 			<XListenBrainz
 					v-if="user.listenbrainz && listenbrainzdata"
 					:key="user.id"
@@ -255,6 +253,7 @@ if (props.user.listenbrainz) {
 	} catch(err) {
 		listenbrainzdata = false;
 	}
+	console.log("listenbrainzdata > "+listenbrainzdata)
 }
 
 watch(moderationNote, async () => {
