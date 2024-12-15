@@ -2783,6 +2783,10 @@ export interface Locale extends ILocale {
      */
     "hardWordMute": string;
     /**
+     * ミュートされたワードを表示
+     */
+    "showMutedWord": string;
+    /**
      * 正規表現エラー
      */
     "regexpError": string;
