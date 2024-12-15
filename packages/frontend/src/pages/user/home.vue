@@ -148,7 +148,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkLazy>
 					</template>
 				</template>
-				<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user"/>
 				<div v-if="!disableNotes">
 					<MkLazy>
 						<XTimeline :user="user"/>
