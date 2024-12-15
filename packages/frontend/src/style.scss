@@ -5,6 +5,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Yomogi&display=swap');
 
 :root {
 	--MI-radius: 12px;
@@ -17,7 +18,9 @@
 	--MI-minBottomSpacingMobile: calc(72px + max(12px, env(safe-area-inset-bottom, 0px)));
 	--MI-minBottomSpacing: var(--MI-minBottomSpacingMobile);
 
-	font-family: "あんずもじ2020";
+	font-family: "Yomogi", cursive;
+	font-weight: 400;
+	font-style: normal;
 	//font-size: 1.2em;		//TODO: WebFontを設置したら。
 	@media (max-width: 500px) {
 		--MI-margin: var(--MI-marginHalf);
@@ -35,7 +38,9 @@ html {
 	accent-color: var(--MI_THEME-accent);
 	overflow: auto;
 	overflow-wrap: break-word;
-	font-family: "あんずもじ2020", 'Hiragino Maru Gothic Pro', "BIZ UDGothic", Roboto, HelveticaNeue, Arial, sans-serif;
+	font-family: "Yomogi", 'Hiragino Maru Gothic Pro', "BIZ UDGothic", Roboto, HelveticaNeue, Arial, sans-serif;
+	font-weight: 400;
+	font-style: normal;
 	font-size: 14px;
 	line-height: 1.35;
 	text-size-adjust: 100%;
