@@ -5418,7 +5418,11 @@ export interface Locale extends ILocale {
          * by misskey-temp
          */
         "temp": string;
-        /**
+				/**
+				 * by type4ny
+				 */
+				"type4ny": string;
+				/**
          * 先行実装
          */
         "earlyImplementation": string;

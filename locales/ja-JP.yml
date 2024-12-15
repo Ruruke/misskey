@@ -1359,6 +1359,7 @@ _bubbleGame:
 _featureBy:
   shafu: "by しゃふすきー"
   temp: "by misskey-temp"
+  type4ny: "by Type4ny"
   earlyImplementation: "先行実装"
 originalFeature: "独自機能"
 disableNoteNyaize: "nayizeを無効化する"
