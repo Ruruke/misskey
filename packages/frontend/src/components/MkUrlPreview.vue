@@ -180,7 +180,7 @@ const postHeight = ref(150);
 const tweetId = ref<string | null>(null);
 
 // Steam専用のリアクティブ変数
-let isSteam = ref(false);
+let isSteam = false;
 let steamAgeLimit = ref<string | null>(null);
 let steamGameName = ref<string>("");
 let steamDeveloper = ref<string>("");
@@ -195,6 +195,7 @@ const fetchSteamData = async (steamAppId: string) => {
 		const response = await fetch(
 			`https://store.steampowered.com/api/appdetails?appids=${steamAppId}&cc=jp&l=ja`
 		);
+		console.log(response);
 		const data = await response.json();
 		const gameData = data[steamAppId]?.data;
 		if (gameData && data[steamAppId].success) {
@@ -294,6 +295,7 @@ requestUrl.hash = '';
 
 // Steamでない場合は一般的なURL情報を取得
 if (!isSteam) {
+	console.log("Not Steam.")
 	window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
 		.then(res => {
 			if (!res.ok) {
