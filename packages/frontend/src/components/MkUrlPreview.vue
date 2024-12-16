@@ -200,15 +200,15 @@ const info = await response.json();
 // Steamの場合の処理
 if (info.steam) {
 	isSteam = true;
-	steamGameName = info.title;
-	icon = info.icon;
-	thumbnail = info.thumbnail;
-	steamAgeLimit = info.steam.ageLimit;
-	steamDeveloper = info.steam.developer;
-	steamOnSale = info.steam.onSale;
-	steamDiscount = info.steam.discountPercent;
-	steamOriginalPrice = info.steam.originalPrice;
-	steamCurrentPrice = info.steam.currentPrice ||
+	steamGameName.value = info.title;
+	icon.value = info.icon;
+	thumbnail.value = info.thumbnail;
+	steamAgeLimit.value = info.steam.ageLimit;
+	steamDeveloper.value = info.steam.developer;
+	steamOnSale.value = info.steam.onSale;
+	steamDiscount.value = info.steam.discountPercent;
+	steamOriginalPrice.value = info.steam.originalPrice;
+	steamCurrentPrice.value = info.steam.currentPrice ||
 		(info.steam.isFree
 			? "無料プレイ"
 			: "価格情報なし");

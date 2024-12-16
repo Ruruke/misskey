@@ -243,6 +243,7 @@ const moderationNote = ref(props.user.moderationNote);
 const editModerationNote = ref(false);
 
 let listenbrainzdata = false;
+//TODO: ここをコメントアウトしたらうごいた。あのテスト。
 if (props.user.listenbrainz) {
 	try {
 		const response = await fetch(`https://api.listenbrainz.org/1/user/${props.user.listenbrainz}/playing-now`, {

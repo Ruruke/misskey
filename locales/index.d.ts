@@ -8843,9 +8843,9 @@ export interface Locale extends ILocale {
          */
         "birthdayFollowings": string;
         /**
-         * ListenBrainz
+         * listenbrainz
          */
-        "listenBrainz": string;
+        "listenbrainz": string;
     };
     "_cw": {
         /**

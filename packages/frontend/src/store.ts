@@ -150,6 +150,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: [] as string[],
 	},
+	listenbrainz: {
+		where: 'account',
+		default: null,
+	},
 
 	menu: {
 		where: 'deviceAccount',
