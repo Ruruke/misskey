@@ -453,7 +453,7 @@ onUnmounted(() => {
 .steam_thumbnail {
 	position: absolute;
 	width: 200px;
-	height: 45%;
+	height: 93px;
 	background-position: center;
 	background-size: cover;
 	background-color: var(--MI_THEME-bg);
