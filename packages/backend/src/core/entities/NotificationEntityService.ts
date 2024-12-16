@@ -183,9 +183,9 @@ export class NotificationEntityService implements OnModuleInit {
 			...(notification.type === 'followRequestAccepted' ? {
 				message: notification.message,
 			} : {}),
-			...(notification.type === 'followRequestRejected' ? {
-				message: notification.message,
-			} : {}),
+			// ...(notification.type === 'followRequestRejected' ? {
+			// 	message: notification.message,
+			// } : {}),
 			...(notification.type === 'achievementEarned' ? {
 				achievement: notification.achievement,
 			} : {}),
@@ -193,9 +193,9 @@ export class NotificationEntityService implements OnModuleInit {
 				exportedEntity: notification.exportedEntity,
 				fileId: notification.fileId,
 			} : {}),
-			...(notification.type === 'scheduledNoteFailed' ? {
-				reason: notification.reason,
-			} : {}),
+			// ...(notification.type === 'scheduledNoteFailed' ? {
+			// 	reason: notification.reason,
+			// } : {}),
 			...(notification.type === 'login' ? {
 				ip: notification.userIp,
 			} : {}),
