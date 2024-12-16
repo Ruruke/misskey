@@ -76,7 +76,7 @@ export async function getResponse(args: {
 			...(bearcaps?.token ? { Authorization: `Bearer ${bearcaps.token}` } : {}),
 		},
 		body: args.body,
-		timeout,
+		// timeout: timeout,
 		size: args.size || 10 * 1024 * 1024,
 		agent: getAgentByUrl,
 		signal: controller.signal,

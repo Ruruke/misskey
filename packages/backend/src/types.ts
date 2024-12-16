@@ -9,7 +9,6 @@ import type { MiChannel } from '@/models/Channel.js';
 import type { MiApp } from '@/models/App.js';
 import type { MiUser } from '@/models/User.js';
 import type { MiNote } from '@/models/Note.js';
-import type { MiScheduledNote } from '@/models/ScheduledNote.js';
 import { MiInboxRule } from '@/models/InboxRule.js';
 
 /**

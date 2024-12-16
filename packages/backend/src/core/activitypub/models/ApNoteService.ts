@@ -179,11 +179,11 @@ export class ApNoteService {
 			throw new UnrecoverableError(`Refusing to create note without id: ${entryUri}`);
 		}
 
+		const url = getOneApHrefNullable(note.url);
+
 		if (!checkHttps(note.id)) {
 			throw new UnrecoverableError(`unexpected schema of note url ${url}: ${entryUri}`);
 		}
-
-		const url = getOneApHrefNullable(note.url);
 
 		if (url != null) {
 			if (!checkHttps(url)) {

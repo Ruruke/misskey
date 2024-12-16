@@ -93,7 +93,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 
 	@bindThis
 	public async add(data: {
-		driveFile: MiDriveFile;
+		// driveFile: MiDriveFile;
 		originalUrl: string;
 		publicUrl: string;
 		fileType: string;
@@ -106,7 +106,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		localOnly: boolean;
 		roleIdsThatCanBeUsedThisEmojiAsReaction: MiRole['id'][];
 	}, moderator?: MiUser): Promise<MiEmoji> {
-		const originalDriveData: MiDriveFile = data.driveFile;
+		// const originalDriveData: MiDriveFile = data.driveFile;
 
 		//TODO: なんかエラー出る。
 		// Endpoint: admin/emoji/copy

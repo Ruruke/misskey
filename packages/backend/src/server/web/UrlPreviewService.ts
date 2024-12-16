@@ -86,7 +86,7 @@ export class UrlPreviewService {
 			try {
 				const steamApiUrl = `https://store.steampowered.com/api/appdetails?appids=${steamAppId}&cc=jp&l=${lang ?? 'ja'}`;
 				// getJsonを使用してSteamデータを取得
-				const data = await fetchJson(steamApiUrl);
+				const data: any = await fetchJson(steamApiUrl);
 				const appData = data[steamAppId]?.data;
 				if (appData && data[steamAppId].success) {
 					// summaryオブジェクトを構築
@@ -181,7 +181,7 @@ export class UrlPreviewService {
 				}
 			}
 			return null;
-		} catch (error) {
+		} catch (error: any) {
 			this.logger.warn("Invalid URL:", error);
 			return null;
 		}
