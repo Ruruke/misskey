@@ -233,23 +233,25 @@ const fetchSteamData = async (steamAppId: string) => {
 };
 // URLがSteamストアのものかどうかを判定し、App IDを抽出
 const parseSteamUrl = (url: string): string | null => {
-	try {
-		const parsedUrl = new URL(url);
-		if (
-			parsedUrl.hostname === "store.steampowered.com" ||
-			parsedUrl.hostname.endsWith(".steampowered.com")
-		) {
-			const pathSegments = parsedUrl.pathname.split("/");
-			const appIndex = pathSegments.indexOf("app");
-			if (appIndex !== -1 && pathSegments.length > appIndex + 1) {
-				return pathSegments[appIndex + 1];
-			}
-		}
-		return null;
-	} catch (error) {
-		console.error("無効なURLです:", error);
-		return null;
-	}
+	return null
+	//TODO: CORSを何とかする。
+	// try {
+	// 	const parsedUrl = new URL(url);
+	// 	if (
+	// 		parsedUrl.hostname === "store.steampowered.com" ||
+	// 		parsedUrl.hostname.endsWith(".steampowered.com")
+	// 	) {
+	// 		const pathSegments = parsedUrl.pathname.split("/");
+	// 		const appIndex = pathSegments.indexOf("app");
+	// 		if (appIndex !== -1 && pathSegments.length > appIndex + 1) {
+	// 			return pathSegments[appIndex + 1];
+	// 		}
+	// 	}
+	// 	return null;
+	// } catch (error) {
+	// 	console.error("無効なURLです:", error);
+	// 	return null;
+	// }
 };
 const steamAppId = parseSteamUrl(props.url);
 if (steamAppId) {
