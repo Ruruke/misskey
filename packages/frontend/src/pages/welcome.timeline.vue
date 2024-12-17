@@ -4,17 +4,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="$style.root" class="_gaps">
-	<div
-		ref="notesMainContainerEl"
-		class="_gaps"
-		:class="[$style.scrollBoxMain, { [$style.scrollIntro]: (scrollState === 'intro'), [$style.scrollLoop]: (scrollState === 'loop') }]"
-		@animationend="changeScrollState"
-	>
-		<XNote v-for="note in notes" :key="`${note.id}_1`" :class="$style.note" :note="note"/>
-	</div>
-	<div v-if="isScrolling" class="_gaps" :class="[$style.scrollBoxSub, { [$style.scrollIntro]: (scrollState === 'intro'), [$style.scrollLoop]: (scrollState === 'loop') }]">
-		<XNote v-for="note in notes" :key="`${note.id}_2`" :class="$style.note" :note="note"/>
+<div :class="$style.root">
+	<div ref="scrollEl" :class="[$style.scrollbox, { [$style.scroll]: isScrolling }]">
+		<div v-for="note in notes" :key="note.id" :class="$style.note">
+			<div class="_panel" :class="$style.content">
+				<div>
+					<MkA v-if="note.replyId" class="reply" :to="`/notes/${note.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
+					<Mfm v-if="note.text" :text="note.text" :author="note.user"/>
+					<MkA v-if="note.renoteId" class="rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
+				</div>
+				<div v-if="note.files.length > 0" :class="$style.richcontent">
+					<MkMediaList :mediaList="note.files" :user="note.user"/>
+				</div>
+				<div v-if="note.poll">
+					<MkPoll :noteId="note.id" :poll="note.poll" :readOnly="true"/>
+				</div>
+			</div>
+			<MkReactionsViewer ref="reactionsViewer" :note="note"/>
+		</div>
 	</div>
 </div>
 </template>

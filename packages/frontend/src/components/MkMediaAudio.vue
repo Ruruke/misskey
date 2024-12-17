@@ -74,15 +74,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i v-else class="ti ti-volume"></i>
 			</button>
 			<MkMediaRange
-				v-model="volume"
-				:class="$style.volumeSeekbar"
+				v-model="rangePercent"
+				:class="$style.seekbarRoot"
+				:buffer="bufferedDataRatio"
 			/>
 		</div>
-		<MkMediaRange
-			v-model="rangePercent"
-			:class="$style.seekbarRoot"
-			:buffer="bufferedDataRatio"
-		/>
 	</div>
 </div>
 </template>
@@ -97,11 +93,13 @@ import * as os from '@/os.js';
 import { type Keymap } from '@/scripts/hotkey.js';
 import bytes from '@/filters/bytes.js';
 import { hms } from '@/filters/hms.js';
+import MkAudioVisualizer from '@/components/MkAudioVisualizer.vue';
 import MkMediaRange from '@/components/MkMediaRange.vue';
 import { $i, iAmModerator } from '@/account.js';
 
 const props = defineProps<{
 	audio: Misskey.entities.DriveFile;
+	user?: Misskey.entities.UserLite;
 }>();
 
 const keymap = {
@@ -152,6 +150,7 @@ function hasFocus() {
 
 const playerEl = shallowRef<HTMLDivElement>();
 const audioEl = shallowRef<HTMLAudioElement>();
+const audioVisualizer = ref<InstanceType<typeof MkAudioVisualizer>>();
 
 // eslint-disable-next-line vue/no-setup-props-reactivity-loss
 const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.dataSaver.media) ? true : (props.audio.isSensitive && defaultStore.state.nsfw !== 'ignore'));
@@ -250,6 +249,11 @@ const isPlaying = ref(false);
 const isActuallyPlaying = ref(false);
 const elapsedTimeMs = ref(0);
 const durationMs = ref(0);
+const audioContext = ref<AudioContext | null>(null);
+const sourceNode = ref<MediaElementAudioSourceNode | null>(null);
+const gainNode = ref<GainNode | null>(null);
+const analyserGainNode = ref<GainNode | null>(null);
+const analyserNode = ref<AnalyserNode | null>(null);
 const rangePercent = computed({
 	get: () => {
 		return (elapsedTimeMs.value / durationMs.value) || 0;
@@ -272,11 +276,33 @@ const bufferedDataRatio = computed(() => {
 function togglePlayPause() {
 	if (!isReady.value || !audioEl.value) return;
 
+	if (!sourceNode.value) {
+		audioContext.value = new (window.AudioContext || window.webkitAudioContext)();
+		sourceNode.value = audioContext.value.createMediaElementSource(audioEl.value);
+
+		analyserGainNode.value = audioContext.value.createGain();
+		gainNode.value = audioContext.value.createGain();
+		analyserNode.value = audioContext.value.createAnalyser();
+
+		sourceNode.value.connect(analyserGainNode.value);
+		analyserGainNode.value.connect(analyserNode.value);
+		analyserNode.value.connect(gainNode.value);
+		gainNode.value.connect(audioContext.value.destination);
+
+		analyserNode.value.fftSize = 2048;
+
+		analyserGainNode.value.gain.setValueAtTime(0.8, audioContext.value.currentTime);
+
+		gainNode.value.gain.setValueAtTime(volume.value, audioContext.value.currentTime);
+	}
+
 	if (isPlaying.value) {
 		audioEl.value.pause();
+		audioVisualizer.value?.pauseAnimation();
 		isPlaying.value = false;
 	} else {
 		audioEl.value.play();
+		audioVisualizer.value?.resumeAnimation();
 		isPlaying.value = true;
 		oncePlayed.value = true;
 	}
@@ -334,6 +360,7 @@ function init() {
 				oncePlayed.value = false;
 				isActuallyPlaying.value = false;
 				isPlaying.value = false;
+				audioVisualizer.value?.pauseAnimation();
 			});
 
 			durationMs.value = audioEl.value.duration * 1000;
@@ -342,8 +369,7 @@ function init() {
 					durationMs.value = audioEl.value.duration * 1000;
 				}
 			});
-
-			audioEl.value.volume = volume.value;
+			gainNode.value?.gain.setValueAtTime(volume.value, audioContext.value?.currentTime);
 		}
 	}, {
 		immediate: true,
@@ -351,7 +377,7 @@ function init() {
 }
 
 watch(volume, (to) => {
-	if (audioEl.value) audioEl.value.volume = to;
+	if (audioEl.value) gainNode.value?.gain.setValueAtTime(to, audioContext.value?.currentTime);
 });
 
 watch(speed, (to) => {
