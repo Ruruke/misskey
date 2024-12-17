@@ -40,7 +40,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
-import { serverContext, assertServerContext } from '@/server-context.js';
+import { getServerContext } from '@/server-context.js';
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
@@ -55,8 +55,7 @@ const XFlashs = defineAsyncComponent(() => import('./flashs.vue'));
 const XGallery = defineAsyncComponent(() => import('./gallery.vue'));
 const XRaw = defineAsyncComponent(() => import('./raw.vue'));
 
-// contextは非ログイン状態の情報しかないためログイン時は利用できない
-const CTX_USER = $i && assertServerContext(serverContext, 'user') ? serverContext.user : null;
+const CTX_USER = getServerContext('user');
 
 const props = withDefaults(defineProps<{
 	acct: string;

@@ -67,8 +67,7 @@ import { getServerContext } from '@/server-context.js';
 import {instance} from "@/instance.js";
 import {miLocalStorage} from "@/local-storage.js";
 
-// contextは非ログイン状態の情報しかないためログイン時は利用できない
-const CTX_NOTE = $i && assertServerContext(serverContext, 'note') ? serverContext.note : null;
+const CTX_NOTE = getServerContext('note');
 
 const props = defineProps<{
 	noteId: string;
