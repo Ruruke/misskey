@@ -63,7 +63,7 @@ import { dateString } from '@/filters/date.js';
 import MkClipPreview from '@/components/MkClipPreview.vue';
 import { defaultStore } from '@/store.js';
 import { pleaseLogin } from '@/scripts/please-login.js';
-import { getServerContext } from '@/server-context.js';
+import { assertServerContext } from '@/server-context.js';
 import {instance} from "@/instance.js";
 import {miLocalStorage} from "@/local-storage.js";
 
