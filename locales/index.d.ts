@@ -8843,7 +8843,7 @@ export interface Locale extends ILocale {
          */
         "birthdayFollowings": string;
         /**
-         * ListenBrainz
+         * listenbrainz
          */
         "listenbrainz": string;
     };
