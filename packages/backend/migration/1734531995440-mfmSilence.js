@@ -32,7 +32,6 @@ export class MfmSilence1734531995440 {
         await queryRunner.query(`ALTER TABLE "abuse_report_notification_recipient" ALTER COLUMN "updatedAt" SET DEFAULT now()`);
         await queryRunner.query(`ALTER TABLE "abuse_report_notification_recipient" ALTER COLUMN "userId" DROP DEFAULT`);
         await queryRunner.query(`ALTER TABLE "abuse_report_notification_recipient" ALTER COLUMN "systemWebhookId" DROP DEFAULT`);
-        await queryRunner.query(`ALTER TABLE "avatar_decoration" ALTER COLUMN "remoteId" SET NOT NULL`);
         await queryRunner.query(`ALTER TABLE "note" DROP COLUMN "cw"`);
         await queryRunner.query(`ALTER TABLE "note" ADD "cw" character varying(512)`);
         await queryRunner.query(`ALTER TABLE "meta" ALTER COLUMN "disableRegistration" SET DEFAULT false`);
@@ -66,7 +65,6 @@ export class MfmSilence1734531995440 {
         await queryRunner.query(`ALTER TABLE "meta" ALTER COLUMN "disableRegistration" SET DEFAULT true`);
         await queryRunner.query(`ALTER TABLE "note" DROP COLUMN "cw"`);
         await queryRunner.query(`ALTER TABLE "note" ADD "cw" text`);
-        await queryRunner.query(`ALTER TABLE "avatar_decoration" ALTER COLUMN "remoteId" DROP NOT NULL`);
         await queryRunner.query(`ALTER TABLE "abuse_report_notification_recipient" ALTER COLUMN "systemWebhookId" SET DEFAULT NULL`);
         await queryRunner.query(`ALTER TABLE "abuse_report_notification_recipient" ALTER COLUMN "userId" SET DEFAULT NULL`);
         await queryRunner.query(`ALTER TABLE "abuse_report_notification_recipient" ALTER COLUMN "updatedAt" SET DEFAULT CURRENT_TIMESTAMP`);
