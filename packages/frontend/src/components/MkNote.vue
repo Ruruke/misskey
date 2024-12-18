@@ -222,6 +222,7 @@ import { isEnabledUrlPreview } from '@/instance.js';
 import { type Keymap } from '@/scripts/hotkey.js';
 import { focusPrev, focusNext } from '@/scripts/focus.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
+import { WorkerMultiDispatch } from '@/scripts/worker-multi-dispatch';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
@@ -304,7 +305,9 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 }));
 
 function mfmParse() {
-	console.log(appearNote.value.user.host);
+	if(appearNote.value.user.instance instanceof String && appearNote.value.user.instance?.name === "なすきー") {
+		return computed(() => appearNote.value.text);
+	}
 	return computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
 }
 
