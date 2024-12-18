@@ -4871,6 +4871,7 @@ export type components = {
       /** Format: date-time */
       latestRequestReceivedAt: string | null;
       moderationNote?: string | null;
+      isQuarantineLimited: boolean;
     };
     GalleryPost: {
       /**
@@ -8109,6 +8110,7 @@ export type operations = {
           host: string;
           isSuspended?: boolean;
           moderationNote?: string;
+          isQuarantineLimit?: boolean;
         };
       };
     };
@@ -16483,6 +16485,7 @@ export type operations = {
           notResponding?: boolean | null;
           suspended?: boolean | null;
           silenced?: boolean | null;
+          quarantine?: boolean | null;
           federating?: boolean | null;
           subscribing?: boolean | null;
           publishing?: boolean | null;

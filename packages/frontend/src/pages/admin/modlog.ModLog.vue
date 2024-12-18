@@ -24,7 +24,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					'markSensitiveDriveFile',
 					'resetPassword',
 					'suspendRemoteInstance',
-				].includes(log.type),
+					'quarantineRemoteInstance',
+				, 'regenerateUserToken', 'updateUserName', 'unsetUserAvatar', 'unsetUserBanner', 'unsetUserMutualLink', 'notificationSend'].includes(log.type),
 				[$style.logRed]: [
 					'suspend',
 					'approve',
@@ -85,6 +86,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-else-if="log.type === 'deletePage'">: @{{ log.info.pageUserUsername }}</span>
 		<span v-else-if="log.type === 'deleteFlash'">: @{{ log.info.flashUserUsername }}</span>
 		<span v-else-if="log.type === 'deleteGalleryPost'">: @{{ log.info.postUserUsername }}</span>
+		<span v-else-if="log.type === 'quarantineRemoteInstance'">: {{ log.info.host }}</span>
+		<span v-else-if="log.type === 'unquarantineRemoteInstance'">: {{ log.info.host }}</span>
 	</template>
 	<template #icon>
 		<MkAvatar :user="log.user" :class="$style.avatar"/>

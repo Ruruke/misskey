@@ -777,16 +777,16 @@ export class MiMeta {
 	})
 	public entranceMarginTop: number;
 
-	@Column('integer', {
-		default: 0,
-	})
-	public deeplFreeMode: boolean;
+	// @Column('integer', {
+	// 	default: 0,
+	// })
+	// public deeplFreeMode: boolean;
 
-	@Column('varchar', {
-		length: 1024,
-		nullable: true,
-	})
-	public deeplFreeInstance: string | null;
+	// @Column('varchar', {
+	// 	length: 1024,
+	// 	nullable: true,
+	// })
+	// public deeplFreeInstance: string | null;
 
 	@Column('boolean', {
 		default: false,
