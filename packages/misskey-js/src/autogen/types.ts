@@ -5207,6 +5207,7 @@ export type operations = {
             translatorAvailable: boolean;
             silencedHosts?: string[];
             mediaSilencedHosts: string[];
+            mfmSilencedHosts: string[];
             pinnedUsers: string[];
             hiddenTags: string[];
             blockedHosts: string[];
@@ -9971,6 +9972,7 @@ export type operations = {
           notesPerOneAd?: number;
           silencedHosts?: string[] | null;
           mediaSilencedHosts?: string[] | null;
+          mfmSilencedHosts?: string[] | null;
           /** @description [Deprecated] Use "urlPreviewSummaryProxyUrl" instead. */
           summalyProxy?: string | null;
           urlPreviewEnabled?: boolean;

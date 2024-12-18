@@ -166,6 +166,13 @@ export const paramDef = {
 				type: 'string',
 			},
 		},
+		mfmSilencedHosts: {
+			type: 'array',
+			nullable: true,
+			items: {
+				type: 'string',
+			},
+		},
 		summalyProxy: {
 			type: 'string', nullable: true,
 			description: '[Deprecated] Use "urlPreviewSummaryProxyUrl" instead.',
@@ -237,6 +244,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (Array.isArray(ps.mediaSilencedHosts)) {
 				let lastValue = '';
 				set.mediaSilencedHosts = ps.mediaSilencedHosts.sort().filter((h) => {
+					const lv = lastValue;
+					lastValue = h;
+					return h !== '' && h !== lv && !set.blockedHosts?.includes(h);
+				});
+			}
+			if (Array.isArray(ps.mfmSilencedHosts)) {
+				let lastValue = '';
+				set.mfmSilencedHosts = ps.mfmSilencedHosts.sort().filter((h) => {
 					const lv = lastValue;
 					lastValue = h;
 					return h !== '' && h !== lv && !set.blockedHosts?.includes(h);

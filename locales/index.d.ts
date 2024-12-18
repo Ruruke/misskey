@@ -887,13 +887,17 @@ export interface Locale extends ILocale {
      */
     "stopActivityDelivery": string;
     /**
-     * このサーバーをブロック
+     * サーバーをブロック
      */
     "blockThisInstance": string;
     /**
      * サーバーをサイレンス
      */
     "silenceThisInstance": string;
+    /**
+     * サーバーをMFMサイレンス
+     */
+    "mfmSilenceThisInstance": string;
     /**
      * サーバーをメディアサイレンス
      */
