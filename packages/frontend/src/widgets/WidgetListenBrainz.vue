@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkContainer :showHeader="widgetProps.showHeader" class="mkw-listenBrainz">
 	<template #icon><i class="ti ti-music"></i></template>
-	<template #header>{{ i18n.ts._widgets.listenBrainz }} <span class="_beta">{{ i18n.ts._featureBy.temp }}</span></template>
+	<template #header>{{ i18n.ts._widgets.listenbrainz }} <span class="_beta">{{ i18n.ts._featureBy.temp }}</span></template>
 	<template #func="{ buttonStyleClass }">
 		<button class="_button" :class="buttonStyleClass" @click="fetchPlayingNow()"><i class="ti ti-refresh"></i></button>
 		<button class="_button" :class="buttonStyleClass" @click="configure()"><i class="ti ti-settings"></i></button>
@@ -37,7 +37,7 @@ import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 
-const name = i18n.ts._widgets.listenBrainz;
+const name = i18n.ts._widgets.listenbrainz;
 
 const widgetPropsDef = {
 	showHeader: {
