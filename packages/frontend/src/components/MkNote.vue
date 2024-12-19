@@ -61,7 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:enableEmojiMenu="true"
 						:enableEmojiMenuReaction="true"
 					/>
-					<MkCwButton v-model="showContent" :text="text" :renote="appearNote.renote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;"/>
+					<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote.renote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;"/>
 				</p>
 				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
 					<div :class="$style.text">
@@ -70,7 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<Mfm
 							v-if="appearNote.text"
 							:parsedNodes="parsed"
-							:text="text"
+							:text="appearNote.text"
 							:author="appearNote.user"
 							:nyaize="'respect'"
 							:emojiUrls="appearNote.emojis"
@@ -299,15 +299,13 @@ const renoteCollapsed = ref(
 	),
 );
 
-let text = `${appearNote.value.text}`;
-text = `<plain>${text}</plain>`;
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
 	url: `https://${host}/notes/${appearNote.value.id}`,
 }));
 
 function mfmParse() {
-	return computed(() => text ? mfm.parse(text) : null);
+	return computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
 	// if(appearNote.value.user.host) {
 	// 	return computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
 	// }

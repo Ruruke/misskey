@@ -21,7 +21,6 @@ const props = defineProps<{
 		faviconUrl?: string | null
 		name?: string | null
 		themeColor?: string | null
-		isSilenced?: boolean | null
 	}
 }>();
 
