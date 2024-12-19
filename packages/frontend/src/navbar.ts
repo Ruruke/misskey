@@ -146,6 +146,13 @@ export const navbarItemDef = reactive({
 					miLocalStorage.setItem('ui', 'classic');
 					unisonReload();
 				},
+			}, {
+				text: i18n.ts.note,
+				active: ui === 'note',
+				action: () => {
+					miLocalStorage.setItem('ui', 'note');
+					unisonReload();
+				}
 			}], ev.currentTarget ?? ev.target);
 		},
 	},
