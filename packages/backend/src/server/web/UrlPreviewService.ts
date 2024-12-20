@@ -124,7 +124,7 @@ export class UrlPreviewService {
 				this.logger.warn(`Failed to get Steam data for ${url}: ${err}`);
 				reply.code(200);
 				reply.header("Cache-Control", "max-age=86400, immutable");
-				return;
+				return new Error('unsupported schema included');
 			}
 		}
 

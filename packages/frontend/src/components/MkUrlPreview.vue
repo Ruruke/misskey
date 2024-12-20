@@ -142,6 +142,7 @@ import { deviceKind } from '@/scripts/device-kind.js';
 import MkButton from '@/components/MkButton.vue';
 import { transformPlayerUrl } from '@/scripts/player-url-transform.js';
 import { defaultStore } from '@/store.js';
+import {popup} from "@/os.js";
 
 type SummalyResult = Awaited<ReturnType<typeof summaly>>;
 
@@ -150,10 +151,12 @@ const props = withDefaults(defineProps<{
 	detail?: boolean;
 	compact?: boolean;
 	showActions?: boolean;
+	popup?: boolean;
 }>(), {
 	detail: false,
 	compact: false,
 	showActions: true,
+	popup: true
 });
 
 const MOBILE_THRESHOLD = 500;
@@ -191,29 +194,6 @@ let steamOnSale = ref(false);
 let steamDiscount = ref<number>(0);
 let steamOriginalPrice = ref<string>("");
 let steamCurrentPrice = ref<string>("");
-const defaultIcon = "https://store.steampowered.com/favicon.ico"; // デフォルトのファビコンURL
-const requestLang = (lang || "ja-JP")
-	.replace("ja-KS", "ja-JP")
-	.replace("ja-KK", "ja-JP");
-const response = await fetch(`/url?url=${encodeURIComponent(props.url)}&lang=${requestLang}`);
-const info = await response.json();
-// Steamの場合の処理
-if (info.steam) {
-	isSteam = true;
-	steamGameName.value = info.title;
-	icon.value = info.icon;
-	thumbnail.value = info.thumbnail;
-	steamAgeLimit.value = info.steam.ageLimit;
-	steamDeveloper.value = info.steam.developer;
-	steamOnSale.value = info.steam.onSale;
-	steamDiscount.value = info.steam.discountPercent;
-	steamOriginalPrice.value = info.steam.originalPrice;
-	steamCurrentPrice.value = info.steam.currentPrice ||
-		(info.steam.isFree
-			? "無料プレイ"
-			: "価格情報なし");
-}
-
 const bskyHandleOrDid = ref<string | null>(null);
 const bskyDid = ref<string | null>(null);
 const bskyPostRecordKey = ref<string | null>(null);
@@ -251,37 +231,65 @@ if (requestUrl.hostname === 'music.youtube.com' && requestUrl.pathname.match('^/
 
 requestUrl.hash = '';
 
-if(!info.steam) {
-	window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
-		.then(res => {
-			if (!res.ok) {
-				if (_DEV_) {
-					console.warn(`[HTTP${res.status}] Failed to fetch url preview`);
-				}
-				return null;
-			}
+//TODO: Summaryの方を変える。
+// if(!props.popup){
+// 	console.log("Steam Preview Generate")
+// 	const defaultIcon = "https://store.steampowered.com/favicon.ico"; // デフォルトのファビコンURL
+// 	const requestLang = (lang || "ja-JP")
+// 		.replace("ja-KS", "ja-JP")
+// 		.replace("ja-KK", "ja-JP");
+// 	const response = await fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`);
+// 	if(response.ok){
+// 		const info = await response.json();
+// 		//Steamの場合の処理
+//
+// 		if ( info.steam) {
+// 			isSteam = true;
+// 			steamGameName.value = info.title;
+// 			icon.value = info.icon;
+// 			thumbnail.value = info.thumbnail;
+// 			steamAgeLimit.value = info.steam.ageLimit;
+// 			steamDeveloper.value = info.steam.developer;
+// 			steamOnSale.value = info.steam.onSale;
+// 			steamDiscount.value = info.steam.discountPercent;
+// 			steamOriginalPrice.value = info.steam.originalPrice;
+// 			steamCurrentPrice.value = info.steam.currentPrice ||
+// 				(info.steam.isFree
+// 					? "無料プレイ"
+// 					: "価格情報なし");
+// 		}
+// 	}
+// }
 
-			return res.json();
-		})
-		.then((info: SummalyResult | null) => {
-			if (!info || info.url == null) {
-				fetching.value = false;
-				unknownUrl.value = true;
-				return;
-			}
 
+window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
+	.then(res => {
+		if (!res.ok) {
+			if (_DEV_) {
+				console.warn(`[HTTP${res.status}] Failed to fetch url preview`);
+			}
+			return null;
+		}
+		return res.json();
+	})
+	.then((info: SummalyResult | null) => {
+		if (!info || info.url == null) {
 			fetching.value = false;
-			unknownUrl.value = false;
+			unknownUrl.value = true;
+			return;
+		}
 
-			title.value = info.title;
-			description.value = info.description;
-			thumbnail.value = info.thumbnail;
-			icon.value = info.icon;
-			sitename.value = info.sitename;
-			player.value = info.player;
-			sensitive.value = info.sensitive ?? false;
-		});
-}
+		fetching.value = false;
+		unknownUrl.value = false;
+
+		title.value = info.title;
+		description.value = info.description;
+		thumbnail.value = info.thumbnail;
+		icon.value = info.icon;
+		sitename.value = info.sitename;
+		player.value = info.player;
+		sensitive.value = info.sensitive ?? false;
+	});
 
 async function openBskyEmbed() {
 	if (bskyHandleOrDid.value == null || bskyPostRecordKey.value == null) return;
