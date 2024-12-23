@@ -314,7 +314,9 @@ const renoteCollapsed = ref(
 );
 
 //TODO: これはAPI側でFlagを用意するべきでは。
-text = `<plain>${text}</plain>`;
+if(isMFMSilence) {
+	text = `<plain>${text}</plain>`;
+}
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
 	url: `https://${host}/notes/${appearNote.value.id}`,
