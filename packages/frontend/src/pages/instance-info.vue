@@ -236,7 +236,7 @@ async function toggleMFMSilenced(): Promise<void> {
 	const { host } = instance.value;
 	const mfmSilencedHosts = meta.value.mfmSilencedHosts ?? [];
 	await misskeyApi('admin/update-meta', {
-		silencedHosts: isMfmSilenced.value ? mfmSilencedHosts.concat([host]) : mfmSilencedHosts.filter(x => x !== host),
+		mfmSilencedHosts: isMfmSilenced.value ? mfmSilencedHosts.concat([host]) : mfmSilencedHosts.filter(x => x !== host),
 	});
 }
 
