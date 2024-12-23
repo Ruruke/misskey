@@ -222,7 +222,6 @@ import { isEnabledUrlPreview } from '@/instance.js';
 import { type Keymap } from '@/scripts/hotkey.js';
 import { focusPrev, focusNext } from '@/scripts/focus.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
-import { WorkerMultiDispatch } from '@/scripts/worker-multi-dispatch';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
@@ -279,6 +278,21 @@ const appearNote = computed(() => getAppearNote(note.value));
 const galleryEl = shallowRef<InstanceType<typeof MkMediaList>>();
 const isMyRenote = $i && ($i.id === note.value.userId);
 const showContent = ref(false);
+let isMFMSilence = false;
+
+let text = `${appearNote.value.text}`;
+// const instance = await misskeyApi('federation/show-instance', {
+// 	host: "https://example.com",
+// });
+if(appearNote.value.user.host !== null ) {
+	const instance = await misskeyApi('federation/show-instance', {
+		host: appearNote.value.user.host,
+	});
+	if (instance === null || instance.isMFMSilenced === null) {
+		return;
+	}
+	isMFMSilence = instance?.isMFMSilenced as boolean;
+}
 const parsed = mfmParse();
 const urls = computed(() => parsed.value ? extractUrlFromMfm(parsed.value).filter((url) => appearNote.value.renote?.url !== url && appearNote.value.renote?.uri !== url) : null);
 const isLong = shouldCollapsed(appearNote.value, urls.value ?? []);
@@ -299,7 +313,7 @@ const renoteCollapsed = ref(
 	),
 );
 
-let text = `${appearNote.value.text}`;
+//TODO: これはAPI側でFlagを用意するべきでは。
 text = `<plain>${text}</plain>`;
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
@@ -307,7 +321,8 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 }));
 
 function mfmParse() {
-	return computed(() => text ? mfm.parse(text) : null);
+	// return computed(() => null)
+	return computed(() => !isMFMSilence ? mfm.parse(text) : null);
 	// if(appearNote.value.user.host) {
 	// 	return computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
 	// }
@@ -320,7 +335,7 @@ function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string 
 function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly = false): Array<string | string[]> | false | 'sensitiveMute' {
 	if (mutedWords == null) return false;
 
-	const result = checkWordMute(noteToCheck, $i, mutedWords);
+	const result = checkWordMute(noteToCheck, $i, mutedWords	);
 	if (Array.isArray(result)) return result;
 
 	const replyResult = noteToCheck.reply && checkWordMute(noteToCheck.reply, $i, mutedWords);

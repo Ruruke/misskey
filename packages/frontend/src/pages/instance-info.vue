@@ -200,10 +200,10 @@ async function fetch(): Promise<void> {
 	instance.value = await misskeyApi('federation/show-instance', {
 		host: props.host,
 	});
+	isMfmSilenced.value = instance.value?.isMfmSilenced ?? false;
 	suspensionState.value = instance.value?.suspensionState ?? 'none';
 	isBlocked.value = instance.value?.isBlocked ?? false;
 	isSilenced.value = instance.value?.isSilenced ?? false;
-	isMfmSilenced.value = instance.value?.isMfmSilenced ?? false;
 	isMediaSilenced.value = instance.value?.isMediaSilenced ?? false;
 	faviconUrl.value = getProxiedImageUrlNullable(instance.value?.faviconUrl, 'preview') ?? getProxiedImageUrlNullable(instance.value?.iconUrl, 'preview');
 	moderationNote.value = instance.value?.moderationNote ?? '';
