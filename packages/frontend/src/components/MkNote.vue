@@ -222,6 +222,7 @@ import { isEnabledUrlPreview } from '@/instance.js';
 import { type Keymap } from '@/scripts/hotkey.js';
 import { focusPrev, focusNext } from '@/scripts/focus.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
+import { WorkerMultiDispatch } from '@/scripts/worker-multi-dispatch';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
@@ -288,10 +289,9 @@ if(appearNote.value.user.host !== null ) {
 	const instance = await misskeyApi('federation/show-instance', {
 		host: appearNote.value.user.host,
 	});
-	if (instance === null || instance.isMFMSilenced === null) {
-		return;
+	if (!(instance === null || instance.isMFMSilenced === null)) {
+		isMFMSilence = instance?.isMFMSilenced as boolean;
 	}
-	isMFMSilence = instance?.isMFMSilenced as boolean;
 }
 const parsed = mfmParse();
 const urls = computed(() => parsed.value ? extractUrlFromMfm(parsed.value).filter((url) => appearNote.value.renote?.url !== url && appearNote.value.renote?.uri !== url) : null);
