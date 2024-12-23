@@ -57,11 +57,6 @@ export class UtilityService {
 		if (!silencedHosts || host == null) return false;
 		return silencedHosts.some(x => host.toLowerCase() === x);
 	}
-	@bindThis
-	public isMFMSilencedHost(silencedHosts: string[] | undefined, host: string | null): boolean {
-		if (!silencedHosts || host == null) return false;
-		return silencedHosts.some(x => host.toLowerCase() === x);
-	}
 
 	@bindThis
 	public concatNoteContentsForKeyWordCheck(content: {

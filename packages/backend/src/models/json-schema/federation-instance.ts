@@ -92,10 +92,6 @@ export const packedFederationInstanceSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
-		isMFMSilenced: {
-			type: 'boolean',
-			optional: false, nullable: false,
-		},
 		iconUrl: {
 			type: 'string',
 			optional: false, nullable: true,
