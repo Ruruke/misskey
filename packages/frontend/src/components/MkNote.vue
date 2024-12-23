@@ -288,18 +288,30 @@ let text = `${appearNote.value.text}`;
 // });
 if(instanceName !== null ) {
 	let temp: string | null = sessionStorage.getItem("isMFMMuteServer")
+	let muted = sessionStorage.getItem("isMFMMutedServer")
 	if (temp === null) {
 		temp = ""
 	}
-	var temp2 = temp.split(",")
+	if (muted === null) {
+		muted = ""
+	}
+	muted = muted.split(",")
+	var temp2= temp.split(",")
 	if(!temp2.includes(instanceName)) {
 		const instance = await misskeyApi('federation/show-instance', {
 			host: appearNote.value.user.host,
 		});
 		if (!(instance === null || instance.isMFMSilenced === null)) {
 			isMFMSilence = instance?.isMFMSilenced as boolean;
+			//TODO: 後で絶対書き直す。
+			if (isMFMSilence) {
+				sessionStorage.setItem("isMFMMutedServer", temp ? temp + "," + instanceName : instanceName);
+			}
 			sessionStorage.setItem("isMFMMuteServer", temp ? temp + "," + instanceName : instanceName);
 		}
+
+	}else {
+		isMFMSilence = muted[instanceName];
 	}
 }
 const parsed = mfmParse();
