@@ -305,7 +305,7 @@ if(instanceName !== null ) {
 			isMFMSilence = instance?.isMFMSilenced as boolean;
 			//TODO: 後で絶対書き直す。
 			if (isMFMSilence) {
-				sessionStorage.setItem("isMFMMutedServer", temp ? temp + "," + instanceName : instanceName);
+				sessionStorage.setItem("isMFMMutedServer", sessionStorage.getItem("isMFMMutedServer") ? sessionStorage.getItem("isMFMMutedServer") + "," + instanceName : instanceName);
 			}
 			sessionStorage.setItem("isMFMMuteServer", temp ? temp + "," + instanceName : instanceName);
 		}
