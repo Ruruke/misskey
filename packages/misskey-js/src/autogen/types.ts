@@ -4724,6 +4724,7 @@ export type components = {
       maintainerEmail: string | null;
       isSilenced: boolean;
       isMediaSilenced: boolean;
+      isMFMSilenced: boolean;
       /** Format: url */
       iconUrl: string | null;
       /** Format: url */
