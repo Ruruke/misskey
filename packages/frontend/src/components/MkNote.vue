@@ -292,7 +292,7 @@ if(instanceName !== null ) {
 		temp = ""
 	}
 	var temp2 = temp.split(",")
-	if(temp2.includes(instanceName)) {
+	if(!temp2.includes(instanceName)) {
 		const instance = await misskeyApi('federation/show-instance', {
 			host: appearNote.value.user.host,
 		});
