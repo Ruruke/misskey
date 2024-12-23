@@ -279,18 +279,27 @@ const appearNote = computed(() => getAppearNote(note.value));
 const galleryEl = shallowRef<InstanceType<typeof MkMediaList>>();
 const isMyRenote = $i && ($i.id === note.value.userId);
 const showContent = ref(false);
+const instanceName = appearNote.value.user.host;
 let isMFMSilence = false;
 
 let text = `${appearNote.value.text}`;
 // const instance = await misskeyApi('federation/show-instance', {
 // 	host: "https://example.com",
 // });
-if(appearNote.value.user.host !== null ) {
-	const instance = await misskeyApi('federation/show-instance', {
-		host: appearNote.value.user.host,
-	});
-	if (!(instance === null || instance.isMFMSilenced === null)) {
-		isMFMSilence = instance?.isMFMSilenced as boolean;
+if(instanceName !== null ) {
+	let temp: string | null = sessionStorage.getItem("isMFMMuteServer")
+	if (temp === null) {
+		temp = ""
+	}
+	var temp2 = temp.split(",")
+	if(temp2.includes(instanceName)) {
+		const instance = await misskeyApi('federation/show-instance', {
+			host: appearNote.value.user.host,
+		});
+		if (!(instance === null || instance.isMFMSilenced === null)) {
+			isMFMSilence = instance?.isMFMSilenced as boolean;
+			sessionStorage.setItem("isMFMMuteServer", temp ? temp + "," + instanceName : instanceName);
+		}
 	}
 }
 const parsed = mfmParse();
