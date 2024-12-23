@@ -311,7 +311,7 @@ if(instanceName !== null ) {
 		}
 
 	}else {
-		isMFMSilence = muted[instanceName];
+		isMFMSilence = muted.includes(instanceName);
 	}
 }
 const parsed = mfmParse();
