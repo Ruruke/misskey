@@ -335,14 +335,14 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 }));
 
 function filterText(){
-	if(isMFMSilence) {
+	if(isMFMSilence.value) {
 		text.value = `<plain>${text.value}</plain>`;
 	}
 }
 
 function mfmParse() {
 	// return computed(() => null)
-	return computed(() => !isMFMSilence ? mfm.parse(text.value) : null);
+	return computed(() => !isMFMSilence.value ? mfm.parse(text.value!) : null);
 	// if(appearNote.value.user.host) {
 	// 	return computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
 	// }
