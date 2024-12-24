@@ -286,36 +286,26 @@ let text = `${appearNote.value.text}`;
 // const instance = await misskeyApi('federation/show-instance', {
 // 	host: "https://example.com",
 // });
+// TODO: TLの動作が怪しくなる。
+if(instanceName !== null ) {
 
-//TODO: TLの動作が怪しくなる。
-// if(instanceName !== null ) {
-// 	let temp: string | null = sessionStorage.getItem("isMFMMuteServer")
-// 	let muted = sessionStorage.getItem("isMFMMutedServer")
-// 	if (temp === null) {
-// 		temp = ""
-// 	}
-// 	if (muted === null) {
-// 		muted = ""
-// 	}
-// 	muted = muted.split(",")
-// 	var temp2= temp.split(",")
-// 	if(!temp2.includes(instanceName)) {
-// 		const instance = await misskeyApi('federation/show-instance', {
-// 			host: appearNote.value.user.host,
-// 		});
-// 		if (!(instance === null || instance.isMFMSilenced === null)) {
-// 			isMFMSilence = instance?.isMFMSilenced as boolean;
-// 			//TODO: 後で絶対書き直す。
-// 			if (isMFMSilence) {
-// 				sessionStorage.setItem("isMFMMutedServer", sessionStorage.getItem("isMFMMutedServer") ? sessionStorage.getItem("isMFMMutedServer") + "," + instanceName : instanceName);
-// 			}
-// 			sessionStorage.setItem("isMFMMuteServer", temp ? temp + "," + instanceName : instanceName);
-// 		}
-//
-// 	}else {
-// 		isMFMSilence = muted.includes(instanceName);
-// 	}
-// }
+	const cache = JSON.parse(sessionStorage.getItem('mfmSilence') || '{}');
+
+	if (cache[instanceName] == undefined) {
+		const instance = await misskeyApi('federation/show-instance', {
+			host: appearNote.value.user.host,
+		});
+		if (!(instance === null || instance.isMFMSilenced === null)) {
+			isMFMSilence = instance?.isMFMSilenced as boolean;
+			cache[instanceName] = instance.isMFMSilenced;
+		}else {
+			cache[instanceName] = false;
+		}
+		sessionStorage.setItem('mfmSilence', JSON.stringify(cache));
+	}else{
+		isMFMSilence = cache[instanceName]　
+	}
+}
 const parsed = mfmParse();
 const urls = computed(() => parsed.value ? extractUrlFromMfm(parsed.value).filter((url) => appearNote.value.renote?.url !== url && appearNote.value.renote?.uri !== url) : null);
 const isLong = shouldCollapsed(appearNote.value, urls.value ?? []);
