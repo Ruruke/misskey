@@ -339,7 +339,6 @@ function filterText(){
 		text.value = `<plain>${text.value}</plain>`;
 	}
 }
-filterText()
 
 function mfmParse() {
 	// return computed(() => null)
