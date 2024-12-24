@@ -342,7 +342,7 @@ function filterText(){
 
 function mfmParse() {
 	// return computed(() => null)
-	return computed(() => !isMFMSilence ? mfm.parse(text) : null);
+	return computed(() => !isMFMSilence ? mfm.parse(text.value) : null);
 	// if(appearNote.value.user.host) {
 	// 	return computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
 	// }
