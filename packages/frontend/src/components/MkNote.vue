@@ -229,10 +229,13 @@ const props = withDefaults(defineProps<{
 	pinned?: boolean;
 	mock?: boolean;
 	withHardMute?: boolean;
+	allowNetwork?: boolean;
 }>(), {
 	mock: false,
+	allowNetwork: false,
 });
 
+console.log(`allowNetwork > ${props.allowNetwork}`);
 provide('mock', props.mock);
 
 const emit = defineEmits<{
@@ -280,31 +283,29 @@ const galleryEl = shallowRef<InstanceType<typeof MkMediaList>>();
 const isMyRenote = $i && ($i.id === note.value.userId);
 const showContent = ref(false);
 const instanceName = appearNote.value.user.host;
-let isMFMSilence = false;
+const isMFMSilence = ref(false);
+const text = ref(appearNote.value.text);
 
-let text = `${appearNote.value.text}`;
-// const instance = await misskeyApi('federation/show-instance', {
-// 	host: "https://example.com",
-// });
-// TODO: TLの動作が怪しくなる。
-if(instanceName !== null ) {
-
+if (instanceName !== null && props.allowNetwork) {
 	const cache = JSON.parse(sessionStorage.getItem('mfmSilence') || '{}');
 
-	if (cache[instanceName] == undefined) {
-		const instance = await misskeyApi('federation/show-instance', {
-			host: appearNote.value.user.host,
-		});
-		if (!(instance === null || instance.isMFMSilenced === null)) {
-			isMFMSilence = instance?.isMFMSilenced as boolean;
-			cache[instanceName] = instance.isMFMSilenced;
-		}else {
-			cache[instanceName] = false;
+	onMounted(async () => {
+		if (cache[instanceName] === undefined) {
+			const instance = await misskeyApi('federation/show-instance', {
+				host: appearNote.value.user.host,
+			});
+			if (instance !== null && instance.isMFMSilenced !== null) {
+				isMFMSilence.value = instance.isMFMSilenced;
+				cache[instanceName] = instance.isMFMSilenced;
+			} else {
+				cache[instanceName] = false;
+			}
+			sessionStorage.setItem('mfmSilence', JSON.stringify(cache));
+		} else {
+			isMFMSilence.value = cache[instanceName];
 		}
-		sessionStorage.setItem('mfmSilence', JSON.stringify(cache));
-	}else{
-		isMFMSilence = cache[instanceName]　
-	}
+		filterText()
+	});
 }
 const parsed = mfmParse();
 const urls = computed(() => parsed.value ? extractUrlFromMfm(parsed.value).filter((url) => appearNote.value.renote?.url !== url && appearNote.value.renote?.uri !== url) : null);
@@ -327,13 +328,18 @@ const renoteCollapsed = ref(
 );
 
 //TODO: これはAPI側でFlagを用意するべきでは。
-if(isMFMSilence) {
-	text = `<plain>${text}</plain>`;
-}
+
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
 	url: `https://${host}/notes/${appearNote.value.id}`,
 }));
+
+function filterText(){
+	if(isMFMSilence) {
+		text.value = `<plain>${text.value}</plain>`;
+	}
+}
+filterText()
 
 function mfmParse() {
 	// return computed(() => null)
