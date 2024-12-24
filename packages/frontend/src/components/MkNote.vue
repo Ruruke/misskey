@@ -235,7 +235,6 @@ const props = withDefaults(defineProps<{
 	allowNetwork: false,
 });
 
-console.log(`allowNetwork > ${props.allowNetwork}`);
 provide('mock', props.mock);
 
 const emit = defineEmits<{
