@@ -54,6 +54,11 @@ export function openInstanceMenu(ev: MouseEvent) {
 			text: i18n.ts.instanceInfo,
 			icon: 'ti ti-info-circle',
 			to: '/about',
+		}, {
+			type: 'link',
+			text: i18n.ts.customEmojis,
+			icon: 'ti ti-icons',
+			to: '/about#emojis',
 		}, { type: 'divider' }, {
 			type: 'link',
 			text: i18n.ts.ads,
