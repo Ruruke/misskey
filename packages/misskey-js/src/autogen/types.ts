@@ -4186,7 +4186,7 @@ export type components = {
       renote?: components['schemas']['Note'] | null;
       isHidden?: boolean;
       /** @enum {string} */
-      visibility: 'public' | 'home' | 'followers' | 'specified';
+      visibility: 'public' | 'public_non_ltl' | 'home' | 'followers' | 'specified';
       mentions?: string[];
       visibleUserIds?: string[];
       fileIds?: string[];
