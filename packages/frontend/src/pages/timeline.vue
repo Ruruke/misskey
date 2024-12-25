@@ -17,6 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.tl">
 					<MkTimeline
 						ref="tlComponent"
+						v-if="miLocalStorage !== null"
 						:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
 						:src="src.split(':')[0]"
 						:list="src.split(':')[1]"
