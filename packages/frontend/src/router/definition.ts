@@ -223,9 +223,11 @@ const routes: RouteDef[] = [{
 }, {
 	path: '/roles/:roleId',
 	component: page(() => import('@/pages/role.vue')),
+	loginRequired: true,
 }, {
 	path: '/user-tags/:tag',
 	component: page(() => import('@/pages/user-tag.vue')),
+	loginRequired: true,
 }, {
 	path: '/explore',
 	component: page(() => import('@/pages/explore.vue')),
