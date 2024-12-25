@@ -4,10 +4,13 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
+import got, * as Got from 'got';
+import * as Redis from 'ioredis';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { ClipsRepository } from '@/models/_.js';
+import type { ClipFavoritesRemoteRepository, ClipsRepository } from '@/models/_.js';
 import { ClipEntityService } from '@/core/entities/ClipEntityService.js';
 import { DI } from '@/di-symbols.js';
+import { ClipService } from '@/core/ClipService.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
@@ -23,6 +26,16 @@ export const meta = {
 			code: 'NO_SUCH_CLIP',
 			id: 'c3c5fe33-d62c-44d2-9ea5-d997703f5c20',
 		},
+		invalidIdFormat: {
+			message: 'Invalid id format.',
+			code: 'INVALID_ID_FORMAT',
+			id: 'df45c7d1-cd15-4a35-b3e1-8c9f987c4f5c',
+		},
+		failedToResolveRemoteUser: {
+			message: 'failedToResolveRemoteUser.',
+			code: 'FAILED_TO_RESOLVE_REMOTE_USER',
+			id: '56d5e552-d55a-47e3-9f37-6dc85a93ecf9',
+		},
 	},
 
 	res: {
@@ -35,7 +48,7 @@ export const meta = {
 export const paramDef = {
 	type: 'object',
 	properties: {
-		clipId: { type: 'string', format: 'misskey:id' },
+		clipId: { type: 'string' },
 	},
 	required: ['clipId'],
 } as const;
@@ -45,10 +58,36 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	constructor(
 		@Inject(DI.clipsRepository)
 		private clipsRepository: ClipsRepository,
+		@Inject(DI.clipFavoritesRemoteRepository)
+		private clipFavoritesRemoteRepository: ClipFavoritesRemoteRepository,
 
+		private clipService: ClipService,
 		private clipEntityService: ClipEntityService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const parsed_id = ps.clipId.split('@');
+			if (parsed_id.length === 2 ) {//is remote
+				const clip = await clipService.showRemote(parsed_id[0], parsed_id[1], true).catch(err => {
+					console.error(err);
+					throw new ApiError(meta.errors.failedToResolveRemoteUser);
+				});
+				if (me) {
+					const exist = await this.clipFavoritesRemoteRepository.exists({
+						where: {
+							clipId: parsed_id[0],
+							host: parsed_id[1],
+							userId: me.id,
+						},
+					});
+					if (exist) {
+						clip.isFavorited = true;
+					}
+				}
+				return clip;
+			}
+			if (parsed_id.length !== 1 ) {//is not local
+				throw new ApiError(meta.errors.invalidIdFormat);
+			}
 			// Fetch the clip
 			const clip = await this.clipsRepository.findOneBy({
 				id: ps.clipId,
@@ -66,3 +105,4 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		});
 	}
 }
+

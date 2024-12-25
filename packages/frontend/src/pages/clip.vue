@@ -7,11 +7,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkStickyContainer>
 	<template #header><MkPageHeader :actions="headerActions"/></template>
 	<MkSpacer :contentMax="800">
+		<MkRemoteCaution v-if="remoteUrl != null" :href="remoteUrl" class="warn" :class="$style.remote_caution"/>
 		<div v-if="clip" class="_gaps">
 			<div class="_panel">
 				<div class="_gaps_s" :class="$style.description">
 					<div v-if="clip.description">
-						<Mfm :text="clip.description" :isNote="false"/>
+						<Mfm :text="clip.description" :isNote="false" :author="clip.user" :emojiUrls="clip.emojis"/>
 					</div>
 					<div v-else>({{ i18n.ts.noDescription }})</div>
 					<div>
@@ -36,6 +37,7 @@ import * as Misskey from 'misskey-js';
 import { url } from '@@/js/config.js';
 import type { MenuItem } from '@/types/menu.js';
 import MkNotes from '@/components/MkNotes.vue';
+import MkRemoteCaution from '@/components/MkRemoteCaution.vue';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
@@ -64,7 +66,13 @@ const pagination = {
 		clipId: props.clipId,
 	})),
 };
-
+const remoteUrl = ref<string | null>(null);
+(() => {
+	let remote_split = props.clipId.split('@');
+	if (remote_split.length === 2 ) {
+		remoteUrl.value = 'https://' + remote_split[1] + '/clips/' + remote_split[0];
+	}
+})();
 const isOwned = computed<boolean | null>(() => $i && clip.value && ($i.id === clip.value.userId));
 
 watch(() => props.clipId, async () => {
@@ -200,6 +208,9 @@ definePageMetadata(() => ({
 </script>
 
 <style lang="scss" module>
+.remote_caution{
+	margin-bottom: 10px;
+}
 .description {
 	padding: 16px;
 }
