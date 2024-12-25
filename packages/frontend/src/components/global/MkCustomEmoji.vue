@@ -84,7 +84,9 @@ const url = computed(() => {
 				false,
 				true,
 			);
-	return defaultStore.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>defaultStore.reactiveState.showingAnimatedImages.value) && !playAnimation.value)
+		return defaultStore.reactiveState.disableShowingAnimatedImages.value
+			//TODO: Reactionはcherrypickの方の仕組みに移行してもいいかも？
+			// return defaultStore.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>defaultStore.reactiveState.showingAnimatedImages.value) && !playAnimation.value)
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
