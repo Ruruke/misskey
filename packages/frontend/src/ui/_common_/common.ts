@@ -10,6 +10,7 @@ import { instance } from '@/instance.js';
 import { host } from '@@/js/config.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
+import {miLocalStorage} from "@/local-storage.js";
 
 function toolsMenuItems(): MenuItem[] {
 	return [{
@@ -43,35 +44,53 @@ function toolsMenuItems(): MenuItem[] {
 export function openInstanceMenu(ev: MouseEvent) {
 	const menuItems: MenuItem[] = [];
 
-	menuItems.push({
-		text: instance.name ?? host,
-		type: 'label',
-	}, {
-		type: 'link',
-		text: i18n.ts.instanceInfo,
-		icon: 'ti ti-info-circle',
-		to: '/about',
-	}, {
-		type: 'link',
-		text: i18n.ts.customEmojis,
-		icon: 'ti ti-icons',
-		to: '/about#emojis',
-	}, {
-		type: 'link',
-		text: i18n.ts.federation,
-		icon: 'ti ti-whirl',
-		to: '/about#federation',
-	}, {
-		type: 'link',
-		text: i18n.ts.charts,
-		icon: 'ti ti-chart-line',
-		to: '/about#charts',
-	}, { type: 'divider' }, {
-		type: 'link',
-		text: i18n.ts.ads,
-		icon: 'ti ti-ad',
-		to: '/ads',
-	});
+
+	if(miLocalStorage.getItem('account') === null){
+		menuItems.push({
+			text: instance.name ?? host,
+			type: 'label',
+		}, {
+			type: 'link',
+			text: i18n.ts.instanceInfo,
+			icon: 'ti ti-info-circle',
+			to: '/about',
+		}, { type: 'divider' }, {
+			type: 'link',
+			text: i18n.ts.ads,
+			icon: 'ti ti-ad',
+			to: '/ads',
+		});
+	}else{
+		menuItems.push({
+			text: instance.name ?? host,
+			type: 'label',
+		}, {
+			type: 'link',
+			text: i18n.ts.instanceInfo,
+			icon: 'ti ti-info-circle',
+			to: '/about',
+		}, {
+			type: 'link',
+			text: i18n.ts.customEmojis,
+			icon: 'ti ti-icons',
+			to: '/about#emojis',
+		}, {
+			type: 'link',
+			text: i18n.ts.federation,
+			icon: 'ti ti-whirl',
+			to: '/about#federation',
+		}, {
+			type: 'link',
+			text: i18n.ts.charts,
+			icon: 'ti ti-chart-line',
+			to: '/about#charts',
+		}, { type: 'divider' }, {
+			type: 'link',
+			text: i18n.ts.ads,
+			icon: 'ti ti-ad',
+			to: '/ads',
+		});
+	}
 
 	if ($i && ($i.isAdmin || $i.policies.canInvite) && instance.disableRegistration) {
 		menuItems.push({

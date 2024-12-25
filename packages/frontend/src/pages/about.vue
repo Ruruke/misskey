@@ -43,7 +43,10 @@ const props = withDefaults(defineProps<{
 	initialTab: 'overview',
 });
 
-const tab = ref(props.initialTab);
+let tab = ref(props.initialTab);
+if(miLocalStorage.getItem('account') === null){
+	tab = ref("overview");
+}
 
 watch(tab, () => {
 	if (tab.value === 'charts') {
