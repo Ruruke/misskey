@@ -1,3 +1,4 @@
+//TODO: 出来ればサーバー側に持って行きたい。
 export async function importEmojiMeta(emoji, host:string) {
 	emoji.category = '取得失敗';
 	try {
