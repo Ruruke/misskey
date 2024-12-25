@@ -10,13 +10,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer v-if="tab === 'overview'" :contentMax="600" :marginMin="20">
 			<XOverview/>
 		</MkSpacer>
-		<MkSpacer v-else-if="tab === 'emojis'" :contentMax="1000" :marginMin="20">
+		<MkSpacer v-else-if="tab === 'emojis' || miLocalStorage.getItem('account') === null" :contentMax="1000" :marginMin="20">
 			<XEmojis/>
 		</MkSpacer>
 		<MkSpacer v-else-if="tab === 'federation' || miLocalStorage.getItem('account') === null " :contentMax="1000" :marginMin="20">
 			<XFederation/>
 		</MkSpacer>
-		<MkSpacer v-else-if="tab === 'charts'" :contentMax="1000" :marginMin="20">
+		<MkSpacer v-else-if="tab === 'charts' || miLocalStorage.getItem('account') === null" :contentMax="1000" :marginMin="20">
 			<MkInstanceStats/>
 		</MkSpacer>
 	</MkHorizontalSwipe>
@@ -74,14 +74,6 @@ if (miLocalStorage.getItem('account') === null) {
 	headerTabs = computed(() => [{
 		key: 'overview',
 		title: i18n.ts.overview,
-	}, {
-		key: 'emojis',
-		title: i18n.ts.customEmojis,
-		icon: 'ti ti-icons',
-	}, {
-		key: 'charts',
-		title: i18n.ts.charts,
-		icon: 'ti ti-chart-line',
 	}]);
 
 }
