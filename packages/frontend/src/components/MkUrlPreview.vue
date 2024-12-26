@@ -132,7 +132,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, onDeactivated, onUnmounted, ref } from 'vue';
+import { defineAsyncComponent, onDeactivated, onUnmounted,onMounted, ref } from 'vue';
 import { url as local, lang } from '@@/js/config.js';
 import { versatileLang } from '@@/js/intl-const.js';
 import type { summaly } from '@misskey-dev/summaly';
@@ -198,15 +198,45 @@ const postHeight = ref(150);
 
 const tweetId = ref<string | null>(null);
 
-// Steam専用のリアクティブ変数
-let isSteam = false;
-let steamAgeLimit = ref<string | null>(null);
-let steamGameName = ref<string>("");
-let steamDeveloper = ref<string>("");
-let steamOnSale = ref(false);
-let steamDiscount = ref<number>(0);
-let steamOriginalPrice = ref<string>("");
-let steamCurrentPrice = ref<string>("");
+const isSteam = ref<boolean>(false);
+const steamAgeLimit = ref<string | null>(null);
+const steamGameName = ref<string>("");
+const steamDeveloper = ref<string>("");
+const steamOnSale = ref<boolean>(false);
+const steamDiscount = ref<number>(0);
+const steamOriginalPrice = ref<string>("");
+const steamCurrentPrice = ref<string>("");
+
+onMounted(async () => {
+	// propsの値を直接使用する場合は、必要に応じて引数を追加してください
+	const requestUrl = ""; // ここにリクエストURLを設定
+	const lang = "ja-JP"; // ここに言語を設定
+	const versatileLang = "ja-JP"; // ここにバイリンガル言語を設定
+
+	const requestLang = (lang || "ja-JP")
+		.replace("ja-KS", "ja-JP")
+		.replace("ja-KK", "ja-JP");
+
+	const response = await fetch(`/url?url=${encodeURIComponent(requestUrl)}&lang=${versatileLang}`);
+	if (response.ok) {
+		const info = await response.json();
+		// Steamの場合の処理
+		if (info.steam) {
+			isSteam.value = true;
+			steamGameName.value = info.title;
+			icon.value = info.icon;
+			thumbnail.value = info.thumbnail;
+			steamAgeLimit.value = info.steam.ageLimit;
+			steamDeveloper.value = info.steam.developer;
+			steamOnSale.value = info.steam.onSale;
+			steamDiscount.value = info.steam.discountPercent;
+			steamOriginalPrice.value = info.steam.originalPrice;
+			steamCurrentPrice.value = info.steam.currentPrice ||
+				(info.steam.isFree ? "無料プレイ" : "価格情報なし");
+		}
+	}
+});
+
 const bskyHandleOrDid = ref<string | null>(null);
 const bskyDid = ref<string | null>(null);
 const bskyPostRecordKey = ref<string | null>(null);
@@ -244,35 +274,6 @@ if (requestUrl.hostname === 'music.youtube.com' && requestUrl.pathname.match('^/
 
 requestUrl.hash = '';
 
-//TODO: Summaryの方を変える。
-// if(!props.popup){
-// 	console.log("Steam Preview Generate")
-// 	const defaultIcon = "https://store.steampowered.com/favicon.ico"; // デフォルトのファビコンURL
-// 	const requestLang = (lang || "ja-JP")
-// 		.replace("ja-KS", "ja-JP")
-// 		.replace("ja-KK", "ja-JP");
-// 	const response = await fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`);
-// 	if(response.ok){
-// 		const info = await response.json();
-// 		//Steamの場合の処理
-//
-// 		if ( info.steam) {
-// 			isSteam = true;
-// 			steamGameName.value = info.title;
-// 			icon.value = info.icon;
-// 			thumbnail.value = info.thumbnail;
-// 			steamAgeLimit.value = info.steam.ageLimit;
-// 			steamDeveloper.value = info.steam.developer;
-// 			steamOnSale.value = info.steam.onSale;
-// 			steamDiscount.value = info.steam.discountPercent;
-// 			steamOriginalPrice.value = info.steam.originalPrice;
-// 			steamCurrentPrice.value = info.steam.currentPrice ||
-// 				(info.steam.isFree
-// 					? "無料プレイ"
-// 					: "価格情報なし");
-// 		}
-// 	}
-// }
 
 
 window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
