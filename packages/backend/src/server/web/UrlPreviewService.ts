@@ -106,6 +106,7 @@ export class UrlPreviewService {
 							discountPercent: appData.price_overview ? appData.price_overview.discount_percent : 0,
 							originalPrice: appData.price_overview ? appData.price_overview.initial_formatted : null,
 							currentPrice: appData.price_overview ? appData.price_overview.final_formatted : null,
+							description: appData.detailed_description ? appData.detailed_description : "No Desc",
 							isFree: appData.is_free,
 						},
 					};

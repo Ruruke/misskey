@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<template v-if="player.url && playerEnabled">
+<template v-if="playerEnabled && player.url">
 	<div
 		:class="$style.player"
 		:style="player.width ? `padding: ${(player.height || 0) / player.width * 100}% 0 0` : `padding: ${(player.height || 0)}px 0 0`"
@@ -32,25 +32,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:class="$style.steam_thumbnail"
 		:style="`background-image: url('${thumbnail}')`"
 	/>
-	<div :class="$style.steam_preview" @click.stop style="padding-left: 205px">
+	<div :class="$style.steam_preview" style="padding-left: 205px" @click.stop>
 		<div :class="[$style.steam_row, $style.steam_header]">
-			<img :src="icon || defaultIcon" :class="$style.favicon" />
+				<img :src="icon || defaultIcon" :class="$style.favicon"/>
 			<span :class="$style.steam_game_name">
-			<span v-if="steamAgeLimit">[{{ steamAgeLimit }}+] </span>{{ steamGameName }}
+				<span v-if="steamAgeLimit">[{{ steamAgeLimit }}+] </span>{{ steamGameName }}
 			</span>
 		</div>
+		<br>
+		<p v-html="steamDescription"></p>
 		<div v-if="steamDeveloper" :class="[$style.steam_row, $style.steam_developer]">
 			{{ steamDeveloper }}
 		</div>
 		<div :class="[$style.steam_row, $style.steam_pricing]">
 			<span v-if="steamOnSale" :class="$style.steam_discount">
-			-{{ Math.floor(steamDiscount * 10) / 10 }}%
+				-{{ Math.floor(steamDiscount * 10) / 10 }}%
 			</span>
 			<span v-if="steamOnSale" :class="$style.steam_original_price">
-			{{ steamOriginalPrice }}
+				{{ steamOriginalPrice }}
 			</span>
 			<span :class="$style.steam_current_price">
-			{{ steamCurrentPrice }}
+				{{ steamCurrentPrice }}
 			</span>
 		</div>
 	</div>
@@ -132,7 +134,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, onDeactivated, onUnmounted,onMounted, ref } from 'vue';
+import { defineAsyncComponent, onDeactivated, onUnmounted, onMounted, ref } from 'vue';
 import { url as local, lang } from '@@/js/config.js';
 import { versatileLang } from '@@/js/intl-const.js';
 import type { summaly } from '@misskey-dev/summaly';
@@ -142,8 +144,7 @@ import { deviceKind } from '@/scripts/device-kind.js';
 import MkButton from '@/components/MkButton.vue';
 import { transformPlayerUrl } from '@/scripts/player-url-transform.js';
 import { defaultStore } from '@/store.js';
-import {popup} from "@/os.js";
-
+import sanitizeHtml from 'sanitize-html';
 type SummalyResult = Awaited<ReturnType<typeof summaly>>;
 
 const props = withDefaults(defineProps<{
@@ -200,29 +201,26 @@ const tweetId = ref<string | null>(null);
 
 const isSteam = ref<boolean>(false);
 const steamAgeLimit = ref<string | null>(null);
-const steamGameName = ref<string>("");
-const steamDeveloper = ref<string>("");
+const steamGameName = ref<string>('');
+const steamDeveloper = ref<string>('');
 const steamOnSale = ref<boolean>(false);
 const steamDiscount = ref<number>(0);
-const steamOriginalPrice = ref<string>("");
-const steamCurrentPrice = ref<string>("");
-
+const steamDescription = ref<string>('');
+const steamOriginalPrice = ref<string>('');
+const steamCurrentPrice = ref<string>('');
+const defaultIcon = ref<string>('https://store.steampowered.com/favicon.ico');
 onMounted(async () => {
-	// propsの値を直接使用する場合は、必要に応じて引数を追加してください
-	const requestUrl = ""; // ここにリクエストURLを設定
-	const lang = "ja-JP"; // ここに言語を設定
-	const versatileLang = "ja-JP"; // ここにバイリンガル言語を設定
+	const requestLang = (lang || 'ja-JP')
+		.replace('ja-KS', 'ja-JP')
+		.replace('ja-KK', 'ja-JP');
 
-	const requestLang = (lang || "ja-JP")
-		.replace("ja-KS", "ja-JP")
-		.replace("ja-KK", "ja-JP");
-
-	const response = await fetch(`/url?url=${encodeURIComponent(requestUrl)}&lang=${versatileLang}`);
+	const response = await fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`);
 	if (response.ok) {
 		const info = await response.json();
 		// Steamの場合の処理
 		if (info.steam) {
 			isSteam.value = true;
+			playerEnabled.value = false;
 			steamGameName.value = info.title;
 			icon.value = info.icon;
 			thumbnail.value = info.thumbnail;
@@ -230,9 +228,10 @@ onMounted(async () => {
 			steamDeveloper.value = info.steam.developer;
 			steamOnSale.value = info.steam.onSale;
 			steamDiscount.value = info.steam.discountPercent;
+			steamDescription.value = sanitizeHtml(info.steam.description);
 			steamOriginalPrice.value = info.steam.originalPrice;
 			steamCurrentPrice.value = info.steam.currentPrice ||
-				(info.steam.isFree ? "無料プレイ" : "価格情報なし");
+				(info.steam.isFree ? '無料プレイ' : '価格情報なし');
 		}
 	}
 });
@@ -273,37 +272,36 @@ if (requestUrl.hostname === 'music.youtube.com' && requestUrl.pathname.match('^/
 }
 
 requestUrl.hash = '';
-
-
-
-window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
-	.then(res => {
-		if (!res.ok) {
-			if (_DEV_) {
-				console.warn(`[HTTP${res.status}] Failed to fetch url preview`);
+if ( !isSteam.value ) {
+	window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
+		.then(res => {
+			if (!res.ok) {
+				if (_DEV_) {
+					console.warn(`[HTTP${res.status}] Failed to fetch url preview`);
+				}
+				return null;
 			}
-			return null;
-		}
-		return res.json();
-	})
-	.then((info: SummalyResult | null) => {
-		if (!info || info.url == null) {
+			return res.json();
+		})
+		.then((info: SummalyResult | null) => {
+			if (!info || info.url == null) {
+				fetching.value = false;
+				unknownUrl.value = true;
+				return;
+			}
+
 			fetching.value = false;
-			unknownUrl.value = true;
-			return;
-		}
+			unknownUrl.value = false;
 
-		fetching.value = false;
-		unknownUrl.value = false;
-
-		title.value = info.title;
-		description.value = info.description;
-		thumbnail.value = info.thumbnail;
-		icon.value = info.icon;
-		sitename.value = info.sitename;
-		player.value = info.player;
-		sensitive.value = info.sensitive ?? false;
-	});
+			title.value = info.title;
+			description.value = info.description;
+			thumbnail.value = info.thumbnail;
+			icon.value = info.icon;
+			sitename.value = info.sitename;
+			player.value = info.player;
+			sensitive.value = info.sensitive ?? false;
+		});
+}
 
 async function openBskyEmbed() {
 	if (bskyHandleOrDid.value == null || bskyPostRecordKey.value == null) return;
