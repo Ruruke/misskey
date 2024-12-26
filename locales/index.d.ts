@@ -9093,7 +9093,7 @@ export interface Locale extends ILocale {
          */
         "publicDescription": string;
         /**
-         * パブリック（非LTL）
+         * セミパブリック
          */
         "public_non_ltl": string;
         /**
