@@ -92,6 +92,7 @@ export async function fetch_remote_emojis(
 	await redisPipeline.exec();
 	return parsed;
 }
+
 export async function fetch_remote_api(
 	config: Config, httpRequestService: HttpRequestService, host: string, endpoint: string, opts: FetchRemoteApiOpts,
 ) {
