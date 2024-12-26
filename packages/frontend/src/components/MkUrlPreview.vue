@@ -27,33 +27,35 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 </template>
 <template v-else-if="isSteam">
-	<div
-		v-if="thumbnail"
-		:class="$style.steam_thumbnail"
-		:style="`background-image: url('${thumbnail}')`"
-	/>
-	<div :class="$style.steam_preview" style="padding-left: 205px" @click.stop>
-		<div :class="[$style.steam_row, $style.steam_header]">
+	<div :class="$style.player">
+		<div
+			v-if="thumbnail"
+			:class="$style.steam_thumbnail"
+			:style="`background-image: url('${thumbnail}')`"
+		/>
+		<div :class="$style.steam_preview" style="padding-left: 205px" @click.stop>
+			<div :class="[$style.steam_row, $style.steam_header]">
 				<img :src="icon || defaultIcon" :class="$style.favicon"/>
-			<span :class="$style.steam_game_name">
+				<span :class="$style.steam_game_name">
 				<span v-if="steamAgeLimit">[{{ steamAgeLimit }}+] </span>{{ steamGameName }}
 			</span>
-		</div>
-		<br>
-		<p v-html="steamDescription"></p>
-		<div v-if="steamDeveloper" :class="[$style.steam_row, $style.steam_developer]">
-			{{ steamDeveloper }}
-		</div>
-		<div :class="[$style.steam_row, $style.steam_pricing]">
+			</div>
+			<br>
+			<p v-html="steamDescription"></p>
+			<div v-if="steamDeveloper" :class="[$style.steam_row, $style.steam_developer]">
+				{{ steamDeveloper }}
+			</div>
+			<div :class="[$style.steam_row, $style.steam_pricing]">
 			<span v-if="steamOnSale" :class="$style.steam_discount">
 				-{{ Math.floor(steamDiscount * 10) / 10 }}%
 			</span>
-			<span v-if="steamOnSale" :class="$style.steam_original_price">
+				<span v-if="steamOnSale" :class="$style.steam_original_price">
 				{{ steamOriginalPrice }}
 			</span>
-			<span :class="$style.steam_current_price">
+				<span :class="$style.steam_current_price">
 				{{ steamCurrentPrice }}
 			</span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -228,13 +230,19 @@ onMounted(async () => {
 			steamDeveloper.value = info.steam.developer;
 			steamOnSale.value = info.steam.onSale;
 			steamDiscount.value = info.steam.discountPercent;
-			steamDescription.value = sanitizeHtml(info.steam.description);
+			steamDescription.value = truncateString(sanitizeHtml(info.steam.description));
 			steamOriginalPrice.value = info.steam.originalPrice;
 			steamCurrentPrice.value = info.steam.currentPrice ||
 				(info.steam.isFree ? '無料プレイ' : '価格情報なし');
 		}
 	}
 });
+function truncateString(str) {
+	if (str.length > 100) {
+		return str.substring(0, 100) + '...';
+	}
+	return str;
+}
 
 const bskyHandleOrDid = ref<string | null>(null);
 const bskyDid = ref<string | null>(null);
