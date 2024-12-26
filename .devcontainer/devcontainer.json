@@ -12,7 +12,7 @@
 	     		"version": "latest"
 	   	}
 	},
-	"forwardPorts": [3000],
+	"forwardPorts": [3000,5990],
 	"postCreateCommand": "/bin/bash .devcontainer/init.sh",
 	"customizations": {
 		"vscode": {
