@@ -2,7 +2,7 @@
 	"name": "Misskey",
 	"dockerComposeFile": "compose.yml",
 	"service": "app",
-	"workspaceFolder": "/workspace",
+	"workspaceFolder": "/workspace/misskey",
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
 			"version": "22.11.0"
