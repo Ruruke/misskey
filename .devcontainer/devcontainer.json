@@ -2,6 +2,7 @@
 	"name": "Misskey",
 	"dockerComposeFile": "compose.yml",
 	"service": "app",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:0-18",
 	"workspaceFolder": "/workspace",
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
