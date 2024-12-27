@@ -4,7 +4,7 @@
  */
 
 import Redis from 'ioredis';
-import got, * as Got from 'got';
+import got from 'got';
 import type { Config } from '@/config.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { MiUser } from '@/models/User.js';
@@ -26,12 +26,7 @@ export async function emojis(
 ):Promise<{[k: string]: string}> {
 	const emojis = new Map<string, string>();
 	const remote_emojis = await fetch_remote_emojis(config, httpRequestService, redisForRemoteApis, host);
-	for (const [key, value] of remote_emojis) {
-		const name = ':' + key + ':';
-		if (text.indexOf(name) !== -1) {
-			emojis.set(key, value);
-		}
-	}
+	remote_emojis.forEach((value, key) => text.indexOf(`:${key}:`) !== -1 && emojis.set(key, value));
 	return Object.fromEntries(emojis);
 }
 
@@ -43,13 +38,8 @@ export async function fetch_remote_emojis(
 ):Promise<Map<string, string>> {
 	const cache_key = 'emojis:' + host;
 	const cache_value = await redisForRemoteApis.get(cache_key);
-	if (cache_value !== null) {
-		//ステータス格納
-		if (cache_value.startsWith('__')) {
-			if (cache_value === '__SKIP_FETCH') return new Map();
-			//未定義のステータス
-			return new Map();
-		}
+	if (cache_value) {
+		if (cache_value.startsWith('__')) return new Map();
 		return new Map(Object.entries(JSON.parse(cache_value)));
 	}
 	const url = 'https://' + host + '/api/emojis';
@@ -78,14 +68,13 @@ export async function fetch_remote_emojis(
 		},
 		enableUnixSockets: false,
 	});
-	const text = await res.text();
-	const array = JSON.parse(text)?.emojis;
-	const parsed = new Map<string, string>();
-	if (Array.isArray(array)) {
-		for (const entry of array) {
-			parsed.set(entry.name, entry.url);
-		}
-	}
+
+	const array = JSON.parse(await res.text())?.emojis;
+	const parsed = new Map<string, string>(
+		Array.isArray(array)
+			? array.map(entry => [entry.name, entry.url])
+			: [],
+	);
 	const redisPipeline = redisForRemoteApis.pipeline();
 	redisPipeline.set(cache_key, JSON.stringify(Object.fromEntries(parsed)));
 	redisPipeline.expire(cache_key, 60 * 60);
@@ -140,14 +129,12 @@ export async function fetch_remote_user_id(
 	redisForRemoteApis: Redis.Redis,
 	user:MiUser,
 ) {
+	const redisPipeline = redisForRemoteApis.pipeline();
 	//ローカルのIDからリモートのIDを割り出す
 	const cache_key = 'remote-userId:' + user.id;
 	const id = await redisForRemoteApis.get(cache_key);
 	if (id !== null) {
-		if (id === '__NOT_MISSKEY') {
-			return null;
-		}
-		if (id === '__INTERVAL') {
+		if (id === '__NOT_MISSKEY' || id === '__INTERVAL') {
 			return null;
 		}
 		//アクセス時に有効期限を更新
@@ -185,10 +172,8 @@ export async function fetch_remote_user_id(
 				username: user.username,
 			}),
 		});
-		const text = await res.text();
-		const json = JSON.parse(text);
+		const json = JSON.parse(await res.text());
 		if (json.id != null) {
-			const redisPipeline = redisForRemoteApis.pipeline();
 			redisPipeline.set(cache_key, json.id);
 			//キャッシュ期限1週間
 			redisPipeline.expire(cache_key, 7 * 24 * 60 * 60);
@@ -196,7 +181,6 @@ export async function fetch_remote_user_id(
 			return json.id as string;
 		}
 	} catch {
-		const redisPipeline = redisForRemoteApis.pipeline();
 		redisPipeline.set(cache_key, '__INTERVAL');
 		redisPipeline.expire(cache_key, 60 * 60);
 		await redisPipeline.exec();
