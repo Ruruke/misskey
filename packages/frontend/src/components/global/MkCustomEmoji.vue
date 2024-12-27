@@ -96,7 +96,7 @@ const alt = computed(() => `:${customEmojiName.value}:`);
 const errored = ref(url.value == null);
 
 function onClick(ev: MouseEvent) {
-	if (props.menu  && canReact.value ) {
+	if (props.menu && canReact.value ) {
 		os.popupMenu([{
 			type: 'label',
 			text: `:${props.name}:`,
