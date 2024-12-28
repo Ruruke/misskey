@@ -89,11 +89,6 @@ export const fontList = {
 		fontFamily: 'Tsukimi Rounded',
 		importUrl: 'https://fonts.googleapis.com/css2?family=Tsukimi+Rounded&display=swap',
 	},
-	'yomogi': {
-		name: 'Yomogi',
-		fontFamily: 'Yomogi',
-		importUrl: 'https://fonts.googleapis.com/css2?family=Yomogi&display=swap',
-	},
 	'yusei-magic-regular': {
 		name: 'Yusei Magic',
 		fontFamily: 'Yusei Magic',
