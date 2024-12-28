@@ -9,6 +9,18 @@ import type { Config } from '@/config.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { MiUser } from '@/models/User.js';
 
+const timeout = 30 * 1000;
+const operationTimeout = 60 * 1000;
+const _timeout = {
+	lookup: timeout,
+	connect: timeout,
+	secureConnect: timeout,
+	socket: timeout,	// read timeout
+	response: timeout,
+	send: timeout,
+	request: operationTimeout,	// whole operation timeout
+};
+
 export type FetchRemoteApiOpts={
 	/** リモートで割り当てられているid */
 	userId?:string,
@@ -36,28 +48,17 @@ export async function fetch_remote_emojis(
 	redisForRemoteApis: Redis.Redis,
 	host: string,
 ):Promise<Map<string, string>> {
-	const cache_key = 'emojis:' + host;
+	const cache_key = `emojis:${host}`;
 	const cache_value = await redisForRemoteApis.get(cache_key);
 	if (cache_value) {
 		if (cache_value.startsWith('__')) return new Map();
 		return new Map(Object.entries(JSON.parse(cache_value)));
 	}
-	const url = 'https://' + host + '/api/emojis';
-	const timeout = 30 * 1000;
-	const operationTimeout = 60 * 1000;
-	const res = got.get(url, {
+	const res = got.get(`https://${host}/api/emojis`, {
 		headers: {
 			'User-Agent': config.userAgent,
 		},
-		timeout: {
-			lookup: timeout,
-			connect: timeout,
-			secureConnect: timeout,
-			socket: timeout,	// read timeout
-			response: timeout,
-			send: timeout,
-			request: operationTimeout,	// whole operation timeout
-		},
+		timeout: _timeout,
 		agent: {
 			http: httpRequestService.httpAgent,
 			https: httpRequestService.httpsAgent,
@@ -76,34 +77,19 @@ export async function fetch_remote_emojis(
 			: [],
 	);
 	const redisPipeline = redisForRemoteApis.pipeline();
-	redisPipeline.set(cache_key, JSON.stringify(Object.fromEntries(parsed)));
-	redisPipeline.expire(cache_key, 60 * 60);
-	await redisPipeline.exec();
+	await redisPipeline.set(cache_key, JSON.stringify(Object.fromEntries(parsed)), 'EX', 60 * 60).exec();
 	return parsed;
 }
 
 export async function fetch_remote_api(
 	config: Config, httpRequestService: HttpRequestService, host: string, endpoint: string, opts: FetchRemoteApiOpts,
 ) {
-	const url = 'https://' + host + endpoint;
-	const sinceIdRemote = opts.sinceId ? opts.sinceId.split('@')[0] : undefined;
-	const untilIdRemote = opts.untilId ? opts.untilId.split('@')[0] : undefined;
-	const timeout = 30 * 1000;
-	const operationTimeout = 60 * 1000;
-	const res = got.post(url, {
+	const res = got.post(`https://${host}${endpoint}`, {
 		headers: {
 			'User-Agent': config.userAgent,
 			'Content-Type': 'application/json; charset=utf-8',
 		},
-		timeout: {
-			lookup: timeout,
-			connect: timeout,
-			secureConnect: timeout,
-			socket: timeout,	// read timeout
-			response: timeout,
-			send: timeout,
-			request: operationTimeout,	// whole operation timeout
-		},
+		timeout: _timeout,
 		agent: {
 			http: httpRequestService.httpAgent,
 			https: httpRequestService.httpsAgent,
@@ -116,8 +102,8 @@ export async function fetch_remote_api(
 		body: JSON.stringify({
 			userId: opts.userId,
 			limit: opts.limit,
-			sinceId: sinceIdRemote,
-			untilId: untilIdRemote,
+			sinceId: opts.sinceId ? opts.sinceId.split('@')[0] : undefined,
+			untilId: opts.untilId ? opts.untilId.split('@')[0] : undefined,
 		}),
 	});
 	return await res.text();
@@ -131,7 +117,7 @@ export async function fetch_remote_user_id(
 ) {
 	const redisPipeline = redisForRemoteApis.pipeline();
 	//ローカルのIDからリモートのIDを割り出す
-	const cache_key = 'remote-userId:' + user.id;
+	const cache_key = `remote-userId:${user.id}`;
 	const id = await redisForRemoteApis.get(cache_key);
 	if (id !== null) {
 		if (id === '__NOT_MISSKEY' || id === '__INTERVAL') {
@@ -142,23 +128,13 @@ export async function fetch_remote_user_id(
 		return id;
 	}
 	try {
-		const url = 'https://' + user.host + '/api/users/show';
-		const timeout = 30 * 1000;
-		const operationTimeout = 60 * 1000;
+		const url = `https://${user.host}/api/users/show`;
 		const res = got.post(url, {
 			headers: {
 				'User-Agent': config.userAgent,
 				'Content-Type': 'application/json; charset=utf-8',
 			},
-			timeout: {
-				lookup: timeout,
-				connect: timeout,
-				secureConnect: timeout,
-				socket: timeout,	// read timeout
-				response: timeout,
-				send: timeout,
-				request: operationTimeout,	// whole operation timeout
-			},
+			timeout: _timeout,
 			agent: {
 				http: httpRequestService.httpAgent,
 				https: httpRequestService.httpsAgent,
@@ -174,16 +150,11 @@ export async function fetch_remote_user_id(
 		});
 		const json = JSON.parse(await res.text());
 		if (json.id != null) {
-			redisPipeline.set(cache_key, json.id);
-			//キャッシュ期限1週間
-			redisPipeline.expire(cache_key, 7 * 24 * 60 * 60);
-			await redisPipeline.exec();
+			await redisPipeline.set(cache_key, json.id, 'EX', 7 * 24 * 60 * 60).exec();
 			return json.id as string;
 		}
 	} catch {
-		redisPipeline.set(cache_key, '__INTERVAL');
-		redisPipeline.expire(cache_key, 60 * 60);
-		await redisPipeline.exec();
+		await redisPipeline.set(cache_key, '__INTERVAL', 'EX', 7 * 24 * 60 * 60).exec();
 	}
 	return null;
 }
