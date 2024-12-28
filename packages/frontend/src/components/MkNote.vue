@@ -303,7 +303,7 @@ if (instanceName !== null && props.allowNetwork) {
 		} else {
 			isMFMSilence.value = cache[instanceName];
 		}
-		filterText()
+		filterText();
 	});
 }
 const parsed = mfmParse();
@@ -333,14 +333,15 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	url: `https://${host}/notes/${appearNote.value.id}`,
 }));
 
-function filterText(){
-	if(isMFMSilence.value) {
+function filterText() {
+	if (isMFMSilence.value) {
 		text.value = `<plain>${text.value}</plain>`;
 	}
 }
 
 function mfmParse() {
 	// return computed(() => null)
+	if ( text.value === null ) {return computed(() => null);}
 	return computed(() => !isMFMSilence.value ? mfm.parse(text.value!) : null);
 	// if(appearNote.value.user.host) {
 	// 	return computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);
