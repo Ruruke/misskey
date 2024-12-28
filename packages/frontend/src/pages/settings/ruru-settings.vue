@@ -21,6 +21,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkButton rounded :small="true" inline @click="resetReaction"><i class="ph-arrow-clockwise ph-bold ph-lg"></i> Reset</MkButton>
 				</div>
 			</FromSlot>
+			<br>
+			<MkSelect v-model="customFont">
+				<template #label>{{ i18n.ts.customFont }}<span class="_beta">{{ i18n.ts.originalFeature }}</span> <span class="_beta">{{ i18n.ts._featureBy.shafu }}</span></template>
+				<option :value="null">{{ i18n.ts.default }}</option>
+				<option v-for="[name, font] of Object.entries(fontList)" :value="name">{{ font.name }}</option>
+			</MkSelect>
 		</MkFolder>
 	</FormSection>
 </div>
@@ -36,12 +42,14 @@ import MkRadios from '@/components/MkRadios.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
+import { fontList } from '@/scripts/font';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
 
 const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
 const disableNoteNyaize = computed(defaultStore.makeGetterSetter('disableNoteNyaize'));
+const customFont = computed(defaultStore.makeGetterSetter('customFont'));
 
 function getHTMLElement(ev: MouseEvent): HTMLElement {
 	const target = ev.currentTarget ?? ev.target;
