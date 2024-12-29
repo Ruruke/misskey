@@ -9,14 +9,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header>{{ i18n.ts.files }}</template>
 	<div :class="$style.root">
 		<MkLoading v-if="fetching"/>
-		<div v-if="!fetching && medias.length > 0" :class="$style.stream">
-			<template v-for="media in medias" :key="media.note.id + media.file.id">
-				<MkA :to="notePage(media.note)">
-					<XVideo v-if="media.file.type.startsWith('video')" :key="`video:${media.file.id}`" :class="$style.media" :video="media.file" :videoControls="false"/>
-					<XImage v-else-if="media.file.type.startsWith('image')" :key="`image:${media.file.id}`" :class="$style.media" class="image" :data-id="media.file.id" :image="media.file" :disableImageLink="true"/>
-					<XBanner v-else :media="media.file" :user="user"/>
-				</MkA>
-			</template>
+		<div v-if="!fetching && notes.length > 0" :class="$style.stream">
+			<MkNoteMediaGrid v-for="note in notes" :note="note"/>
 		</div>
 		<p v-if="!fetching && notes.length == 0" :class="$style.empty">{{ i18n.ts.nothing }}</p>
 	</div>
