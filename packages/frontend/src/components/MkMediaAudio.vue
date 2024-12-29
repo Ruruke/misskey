@@ -39,7 +39,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<audio
 			ref="audioEl"
 			preload="metadata"
-			crossorigin="anonymous"
 			@keydown.prevent="() => {}"
 		>
 			<source :src="audio.url">
