@@ -25,6 +25,6 @@ export async function importEmojiMeta(emoji, host:string) {
 		console.log(err);
 		//リモートから取得に失敗
 	}
-	emoji.license = (emoji.license ? emoji.license + '\n' : ""); //+ 'import from ' + host;
+	emoji.license = (emoji.license ? emoji.license + '\n' : '') + 'import from ' + host;
 	return emoji;
 }
