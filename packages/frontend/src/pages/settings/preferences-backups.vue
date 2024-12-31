@@ -113,6 +113,8 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'sound_notification',
 	'disableNoteNyaize',
 	'selectReaction',
+	'reactionChecksMuting',
+	'showInstanceTickerSoftwareName',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'lightTheme',

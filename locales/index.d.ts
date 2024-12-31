@@ -11107,6 +11107,15 @@ export interface Locale extends ILocale {
             "description": string;
         };
     };
+
+    /**
+     * インスタンスのソフトウェア名を表示
+     */
+    "showInstanceTickerSoftwareName": string;
+    /**
+     * インスタンスのソフトウェア名をインスタンスの名前の横に表示します。
+     */
+    "showInstanceTickerSoftwareNameDescription": string;
     "_customizeFeature": {
         /**
          * 独自機能

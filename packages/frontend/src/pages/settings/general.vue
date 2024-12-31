@@ -85,6 +85,42 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option value="large">{{ i18n.ts.large }}</option>
 				</MkRadios>
 				<MkSwitch v-model="limitWidthOfReaction">{{ i18n.ts.limitWidthOfReaction }}</MkSwitch>
+<<<<<<< HEAD
+=======
+				<MkSwitch v-model="hideReactionUsers">
+					<template #caption>{{ i18n.ts.hideReactionUsersDescription }}</template>
+					{{ i18n.ts.hideReactionUsers }}
+					<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				</MkSwitch>
+				<MkSwitch v-model="enableReactionConfirm">
+					<template #label>
+						{{ i18n.ts.enableReactionConfirm }}
+						<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+					</template>
+					<template #caption>{{ i18n.ts.enableReactionConfirmDescription }}</template>
+				</MkSwitch>
+				<MkSwitch v-model="enableLikeConfirm">
+					<template #label>
+						{{ i18n.ts.enableLikeConfirm }}
+						<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+					</template>
+					<template #caption>{{ i18n.ts.enableLikeConfirmDescription }}</template>
+				</MkSwitch>
+				<MkSwitch v-model="showInstanceTickerSoftwareName">
+					<template #label>
+						{{ i18n.ts.showInstanceTickerSoftwareName }}
+						<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+					</template>
+					<template #caption>{{ i18n.ts.showInstanceTickerSoftwareNameDescription }}</template>
+				</MkSwitch>
+				<MkSelect v-model="hideReactionCount">
+					<template #label>{{ i18n.ts.hideReactionCount }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+					<option value="none">{{ i18n.ts._hideReactionCount.none }}</option>
+					<option value="self">{{ i18n.ts._hideReactionCount.self }}</option>
+					<option value="others">{{ i18n.ts._hideReactionCount.others }}</option>
+					<option value="all">{{ i18n.ts._hideReactionCount.all }}</option>
+				</MkSelect>
+>>>>>>> 139b0b5f32 (feat(frontend): インスタンスティッカーにソフトウェア名を表示できるように)
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -350,7 +386,27 @@ const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfir
 const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
 const confirmOnReact = computed(defaultStore.makeGetterSetter('confirmOnReact'));
 const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
+<<<<<<< HEAD
 const searchEngine = computed(defaultStore.makeGetterSetter('searchEngine'));
+=======
+const reactionChecksMuting = computed(defaultStore.makeGetterSetter('reactionChecksMuting'));
+const hideLocalTimeLine = computed(defaultStore.makeGetterSetter('hideLocalTimeLine'));
+const hideGlobalTimeLine = computed(defaultStore.makeGetterSetter('hideGlobalTimeLine'));
+const hideSocialTimeLine = computed(defaultStore.makeGetterSetter('hideSocialTimeLine'));
+const hideFollowingsUpdates = computed(defaultStore.makeGetterSetter('hideFollowingsUpdates'));
+const hideFollowFeed = computed(defaultStore.makeGetterSetter('hideFollowFeed'));
+const hideLists = computed(defaultStore.makeGetterSetter('hideLists'));
+const hideAntennas = computed(defaultStore.makeGetterSetter('hideAntennas'));
+const hideChannel = computed(defaultStore.makeGetterSetter('hideChannel'));
+const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
+const showLikeButton = computed(defaultStore.makeGetterSetter('showLikeButton'));
+const disableNoteDrafting = computed(defaultStore.makeGetterSetter('disableNoteDrafting'));
+const enableSnowMode = computed(defaultStore.makeGetterSetter('enableSnowMode'));
+const enableReactionConfirm = computed(defaultStore.makeGetterSetter('enableReactionConfirm'));
+const enableLikeConfirm = computed(defaultStore.makeGetterSetter('enableLikeConfirm'));
+const showInstanceTickerSoftwareName = computed(defaultStore.makeGetterSetter('showInstanceTickerSoftwareName'));
+
+>>>>>>> 139b0b5f32 (feat(frontend): インスタンスティッカーにソフトウェア名を表示できるように)
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
