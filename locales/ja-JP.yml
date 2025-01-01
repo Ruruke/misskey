@@ -2332,7 +2332,8 @@ _widgets:
     chooseList: "リストを選択"
   clicker: "クリッカー"
   birthdayFollowings: "今日誕生日のユーザー"
-  listenbrainz: "ListenBrainz"
+  listenBrainz: "ListenBrainz"
+  weather: "天気予報"
 
 _cw:
   hide: "隠す"

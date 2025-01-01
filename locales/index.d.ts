@@ -8877,7 +8877,11 @@ export interface Locale extends ILocale {
         /**
          * ListenBrainz
          */
-        "listenbrainz": string;
+        "listenBrainz": string;
+        /**
+         * 天気予報
+         */
+        "weather": string;
     };
     "_cw": {
         /**
