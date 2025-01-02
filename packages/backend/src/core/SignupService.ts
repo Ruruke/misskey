@@ -63,24 +63,11 @@ export class SignupService {
 		approved?: boolean;
 	}) {
 		const { username, password, passwordHash, host } = opts;
-		let hash = passwordHash;
+		const hash = passwordHash;
 
 		// Validate username
-		if (
-			(!opts.ignorePreservedUsernames && username.length < this.meta.validateMinimumUsernameLength) || !this.userEntityService.validateLocalUsername(username)
-		) {
+		if (!this.userEntityService.validateLocalUsername(username)) {
 			throw new Error('INVALID_USERNAME');
-		}
-
-		if (password != null && passwordHash == null) {
-			// Validate password
-			if (!this.userEntityService.validatePassword(password)) {
-				throw new Error('INVALID_PASSWORD');
-			}
-
-			// Generate hash of password
-			const salt = await bcrypt.genSalt(8);
-			hash = await bcrypt.hash(password, salt);
 		}
 
 		// Generate secret
@@ -140,8 +127,8 @@ export class SignupService {
 				host: this.utilityService.toPunyNullable(host),
 				token: secret,
 				isRoot: isTheFirstUser,
-				signupReason: opts.reason,
-				approved: isTheFirstUser || (opts.approved ?? !this.meta.approvalRequiredForSignup),
+				// signupReason: opts.reason,
+				// approved: isTheFirstUser || (opts.approved ?? !this.meta.approvalRequiredForSignup),
 			}));
 
 			await transactionalEntityManager.save(new MiUserKeypair({
@@ -164,21 +151,20 @@ export class SignupService {
 
 		this.usersChart.update(account, true);
 
-		//#region Default following
-		if (
-			!isTheFirstUser &&
-			(this.meta.defaultFollowedUsers.length > 0 || this.meta.forciblyFollowedUsers.length > 0)
-		) {
-			const userIdsToFollow = [
-				...this.meta.defaultFollowedUsers,
-				...this.meta.forciblyFollowedUsers,
-			];
+		// //#region Default following
+		// if (
+		// 	!isTheFirstUser && (this.meta.defaultFollowedUsers.length > 0 || this.meta.forciblyFollowedUsers.length > 0)
+		// ) {
+		// 	const userIdsToFollow = [
+		// 		...this.meta.defaultFollowedUsers,
+		// 		...this.meta.forciblyFollowedUsers,
+		// 	];
 
-			await Promise.allSettled(userIdsToFollow.map(async userId => {
-				await this.userFollowingService.follow(account, { id: userId });
-			}));
-		}
-		//#endregion
+		// 	await Promise.allSettled(userIdsToFollow.map(async userId => {
+		// 		await this.userFollowingService.follow(account, { id: userId });
+		// 	}));
+		// }
+		// //#endregion
 
 		this.userService.notifySystemWebhook(account, 'userCreated');
 

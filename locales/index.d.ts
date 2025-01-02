@@ -11111,7 +11111,6 @@ export interface Locale extends ILocale {
             "description": string;
         };
     };
-
     /**
      * インスタンスのソフトウェア名を表示
      */
