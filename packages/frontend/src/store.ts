@@ -94,6 +94,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
+	disableNoteDrafting: {
+		where: 'account',
+		default: false,
+	},
 	draftSavingBehavior: {
 		where: 'account',
 		default: 'auto' as 'auto' | 'manual',
@@ -604,7 +608,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	showInstanceTickerSoftwareName: {
 		where: 'device',
 		default: false,
-	}
+	},
 }));
 
 // TODO: 他のタブと永続化されたstateを同期
