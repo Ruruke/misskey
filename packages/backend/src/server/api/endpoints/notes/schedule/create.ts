@@ -1,24 +1,32 @@
 /*
- * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-FileCopyrightText: syuilo and other misskey contributors
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
 import ms from 'ms';
 import { In } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
+import { isPureRenote } from 'misskey-js/note.js';
 import type { MiUser } from '@/models/User.js';
-import type { UsersRepository, NotesRepository, BlockingsRepository, DriveFilesRepository, ChannelsRepository } from '@/models/_.js';
+import type {
+	UsersRepository,
+	NotesRepository,
+	BlockingsRepository,
+	DriveFilesRepository,
+	ChannelsRepository,
+	NoteScheduleRepository,
+} from '@/models/_.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiNote } from '@/models/Note.js';
 import type { MiChannel } from '@/models/Channel.js';
 import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
-import { NoteCreateService } from '@/core/NoteCreateService.js';
 import { DI } from '@/di-symbols.js';
-import { isQuote, isRenote } from '@/misc/is-renote.js';
-import { IdentifiableError } from '@/misc/identifiable-error.js';
-import { ApiError } from '../../error.js';
+import { QueueService } from '@/core/QueueService.js';
+import { IdService } from '@/core/IdService.js';
+import { MiScheduleNoteType } from '@/models/NoteSchedule.js';
+import { RoleService } from '@/core/RoleService.js';
+import { ApiError } from '../../../error.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -32,21 +40,14 @@ export const meta = {
 		max: 300,
 	},
 
-	kind: 'write:notes',
-
-	res: {
-		type: 'object',
-		optional: false, nullable: false,
-		properties: {
-			createdNote: {
-				type: 'object',
-				optional: false, nullable: false,
-				ref: 'Note',
-			},
-		},
-	},
+	kind: 'write:notes-schedule',
 
 	errors: {
+		scheduleNoteMax: {
+			message: 'Schedule note max.',
+			code: 'SCHEDULE_NOTE_MAX',
+			id: '168707c3-e7da-4031-989e-f42aa3a274b2',
+		},
 		noSuchRenoteTarget: {
 			message: 'No such renote target.',
 			code: 'NO_SUCH_RENOTE_TARGET',
@@ -71,22 +72,10 @@ export const meta = {
 			id: '749ee0f6-d3da-459a-bf02-282e2da4292c',
 		},
 
-		cannotReplyToInvisibleNote: {
-			message: 'You cannot reply to an invisible Note.',
-			code: 'CANNOT_REPLY_TO_AN_INVISIBLE_NOTE',
-			id: 'b98980fa-3780-406c-a935-b6d0eeee10d1',
-		},
-
 		cannotReplyToPureRenote: {
 			message: 'You can not reply to a pure Renote.',
 			code: 'CANNOT_REPLY_TO_A_PURE_RENOTE',
 			id: '3ac74a84-8fd5-4bb0-870f-01804f82ce15',
-		},
-
-		cannotReplyToSpecifiedVisibilityNoteWithExtendedVisibility: {
-			message: 'You cannot reply to a specified visibility note with extended visibility.',
-			code: 'CANNOT_REPLY_TO_SPECIFIED_VISIBILITY_NOTE_WITH_EXTENDED_VISIBILITY',
-			id: 'ed940410-535c-4d5e-bfa3-af798671e93c',
 		},
 
 		cannotCreateAlreadyExpiredPoll: {
@@ -95,16 +84,10 @@ export const meta = {
 			id: '04da457d-b083-4055-9082-955525eda5a5',
 		},
 
-		cannotScheduleDeleteEarlierThanNow: {
-			message: 'Scheduled delete time is earlier than now.',
-			code: 'CANNOT_SCHEDULE_DELETE_EARLIER_THAN_NOW',
-			id: '9576c3c8-d8f3-11ee-ac15-00155d19d35d',
-		},
-
-		cannotScheduleDeleteLaterThanOneYear: {
-			message: 'Scheduled delete time is later than one year.',
-			code: 'CANNOT_SCHEDULE_DELETE_LATER_THAN_ONE_YEAR',
-			id: 'b02b5edb-2741-4841-b692-d9893f1e6515',
+		cannotCreateAlreadyExpiredSchedule: {
+			message: 'Schedule is already expired.',
+			code: 'CANNOT_CREATE_ALREADY_EXPIRED_SCHEDULE',
+			id: '8a9bfb90-fc7e-4878-a3e8-d97faaf5fb07',
 		},
 
 		noSuchChannel: {
@@ -112,7 +95,11 @@ export const meta = {
 			code: 'NO_SUCH_CHANNEL',
 			id: 'b1653923-5453-4edc-b786-7c4f39bb0bbb',
 		},
-
+		noSuchSchedule: {
+			message: 'No such schedule.',
+			code: 'NO_SUCH_SCHEDULE',
+			id: '44dee229-8da1-4a61-856d-e3a4bbc12032',
+		},
 		youHaveBeenBlocked: {
 			message: 'You have been blocked by this user.',
 			code: 'YOU_HAVE_BEEN_BLOCKED',
@@ -130,18 +117,6 @@ export const meta = {
 			code: 'CANNOT_RENOTE_OUTSIDE_OF_CHANNEL',
 			id: '33510210-8452-094c-6227-4a6c05d99f00',
 		},
-
-		containsProhibitedWords: {
-			message: 'Cannot post because it contains prohibited words.',
-			code: 'CONTAINS_PROHIBITED_WORDS',
-			id: 'aa6e01d3-a85c-669d-758a-76aab43af334',
-		},
-
-		containsTooManyMentions: {
-			message: 'Cannot post because it exceeds the allowed number of mentions.',
-			code: 'CONTAINS_TOO_MANY_MENTIONS',
-			id: '4de0363a-3046-481b-9b0f-feff3e211025',
-		},
 	},
 } as const;
 
@@ -153,14 +128,12 @@ export const paramDef = {
 			type: 'string', format: 'misskey:id',
 		} },
 		cw: { type: 'string', nullable: true, minLength: 1, maxLength: 100 },
-		localOnly: { type: 'boolean', default: false },
 		reactionAcceptance: { type: 'string', nullable: true, enum: [null, 'likeOnly', 'likeOnlyForRemote', 'nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote'], default: null },
 		noExtractMentions: { type: 'boolean', default: false },
 		noExtractHashtags: { type: 'boolean', default: false },
 		noExtractEmojis: { type: 'boolean', default: false },
 		replyId: { type: 'string', format: 'misskey:id', nullable: true },
 		renoteId: { type: 'string', format: 'misskey:id', nullable: true },
-		channelId: { type: 'string', format: 'misskey:id', nullable: true },
 
 		// anyOf内にバリデーションを書いても最初の一つしかチェックされない
 		// See https://github.com/misskey-dev/misskey/pull/10082
@@ -201,43 +174,23 @@ export const paramDef = {
 			},
 			required: ['choices'],
 		},
-		scheduledDelete: {
+		scheduleNote: {
 			type: 'object',
-			nullable: true,
+			nullable: false,
 			properties: {
-				deleteAt: { type: 'integer', nullable: true },
-				deleteAfter: { type: 'integer', nullable: true, minimum: 1 },
+				scheduledAt: { type: 'integer', nullable: false },
 			},
 		},
 	},
 	// (re)note with text, files and poll are optional
-	if: {
-		properties: {
-			renoteId: {
-				type: 'null',
-			},
-			fileIds: {
-				type: 'null',
-			},
-			mediaIds: {
-				type: 'null',
-			},
-			poll: {
-				type: 'null',
-			},
-		},
-	},
-	then: {
-		properties: {
-			text: {
-				type: 'string',
-				minLength: 1,
-				maxLength: MAX_NOTE_TEXT_LENGTH,
-				pattern: '[^\\s]+',
-			},
-		},
-		required: ['text'],
-	},
+	anyOf: [
+		{ required: ['text'] },
+		{ required: ['renoteId'] },
+		{ required: ['fileIds'] },
+		{ required: ['mediaIds'] },
+		{ required: ['poll'] },
+	],
+	required: ['scheduleNote'],
 } as const;
 
 @Injectable()
@@ -249,6 +202,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
 
+		@Inject(DI.noteScheduleRepository)
+		private noteScheduleRepository: NoteScheduleRepository,
+
 		@Inject(DI.blockingsRepository)
 		private blockingsRepository: BlockingsRepository,
 
@@ -258,10 +214,16 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		@Inject(DI.channelsRepository)
 		private channelsRepository: ChannelsRepository,
 
-		private noteEntityService: NoteEntityService,
-		private noteCreateService: NoteCreateService,
+		private queueService: QueueService,
+		private roleService: RoleService,
+    private idService: IdService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const scheduleNoteCount = await this.noteScheduleRepository.countBy({ userId: me.id });
+			const scheduleNoteMax = (await this.roleService.getUserPolicies(me.id)).scheduleNoteMax;
+			if (scheduleNoteCount >= scheduleNoteMax) {
+				throw new ApiError(meta.errors.scheduleNoteMax);
+			}
 			let visibleUsers: MiUser[] = [];
 			if (ps.visibleUserIds) {
 				visibleUsers = await this.usersRepository.findBy({
@@ -293,13 +255,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				if (renote == null) {
 					throw new ApiError(meta.errors.noSuchRenoteTarget);
-				} else if (isRenote(renote) && !isQuote(renote)) {
+				} else if (isPureRenote(renote)) {
 					throw new ApiError(meta.errors.cannotReRenote);
 				}
 
 				// Check blocking
 				if (renote.userId !== me.id) {
-					const blockExist = await this.blockingsRepository.exists({
+					const blockExist = await this.blockingsRepository.exist({
 						where: {
 							blockerId: renote.userId,
 							blockeeId: me.id,
@@ -317,19 +279,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					// specified / direct noteはreject
 					throw new ApiError(meta.errors.cannotRenoteDueToVisibility);
 				}
-
-				if (renote.channelId && renote.channelId !== ps.channelId) {
-					// チャンネルのノートに対しリノート要求がきたとき、チャンネル外へのリノート可否をチェック
-					// リノートのユースケースのうち、チャンネル内→チャンネル外は少数だと考えられるため、JOINはせず必要な時に都度取得する
-					const renoteChannel = await this.channelsRepository.findOneBy({ id: renote.channelId });
-					if (renoteChannel == null) {
-						// リノートしたいノートが書き込まれているチャンネルが無い
-						throw new ApiError(meta.errors.noSuchChannel);
-					} else if (!renoteChannel.allowRenoteToExternal) {
-						// リノート作成のリクエストだが、対象チャンネルがリノート禁止だった場合
-						throw new ApiError(meta.errors.cannotRenoteOutsideOfChannel);
-					}
-				}
 			}
 
 			let reply: MiNote | null = null;
@@ -339,12 +288,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				if (reply == null) {
 					throw new ApiError(meta.errors.noSuchReplyTarget);
-				} else if (isRenote(reply) && !isQuote(reply)) {
+				} else if (isPureRenote(reply)) {
 					throw new ApiError(meta.errors.cannotReplyToPureRenote);
-				} else if (!await this.noteEntityService.isVisibleForMe(reply, me.id)) {
-					throw new ApiError(meta.errors.cannotReplyToInvisibleNote);
-				} else if (reply.visibility === 'specified' && ps.visibility !== 'specified') {
-					throw new ApiError(meta.errors.cannotReplyToSpecifiedVisibilityNoteWithExtendedVisibility);
 				}
 
 				// Check blocking
@@ -362,77 +307,66 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			if (ps.poll) {
+				let scheduleNote_scheduledAt = Date.now();
+				if (typeof ps.scheduleNote.scheduledAt === 'number') {
+					scheduleNote_scheduledAt = ps.scheduleNote.scheduledAt;
+				}
 				if (typeof ps.poll.expiresAt === 'number') {
-					if (ps.poll.expiresAt < Date.now()) {
+					if (ps.poll.expiresAt < scheduleNote_scheduledAt) {
 						throw new ApiError(meta.errors.cannotCreateAlreadyExpiredPoll);
 					}
 				} else if (typeof ps.poll.expiredAfter === 'number') {
-					ps.poll.expiresAt = Date.now() + ps.poll.expiredAfter;
+					ps.poll.expiresAt = scheduleNote_scheduledAt + ps.poll.expiredAfter;
 				}
 			}
-
-			if (ps.scheduledDelete) {
-				if (typeof ps.scheduledDelete.deleteAt === 'number') {
-					if (ps.scheduledDelete.deleteAt < Date.now()) {
-						throw new ApiError(meta.errors.cannotScheduleDeleteEarlierThanNow);
-					}
-				} else if (typeof ps.scheduledDelete.deleteAfter === 'number') {
-					ps.scheduledDelete.deleteAt = Date.now() + ps.scheduledDelete.deleteAfter;
+			if (typeof ps.scheduleNote.scheduledAt === 'number') {
+				if (ps.scheduleNote.scheduledAt < Date.now()) {
+					throw new ApiError(meta.errors.cannotCreateAlreadyExpiredSchedule);
 				}
-
-				if (ps.scheduledDelete.deleteAt && ps.scheduledDelete.deleteAt > Date.now() + ms('1year')) {
-					throw new ApiError(meta.errors.cannotScheduleDeleteLaterThanOneYear);
-				}
+			} else {
+				throw new ApiError(meta.errors.cannotCreateAlreadyExpiredSchedule);
 			}
+			const note: MiScheduleNoteType = {
+				files: files.map(f => f.id),
+				poll: ps.poll ? {
+					choices: ps.poll.choices,
+					multiple: ps.poll.multiple ?? false,
+					expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt).toISOString() : null,
+				} : undefined,
+				text: ps.text ?? undefined,
+				reply: reply?.id,
+				renote: renote?.id,
+				cw: ps.cw,
+				localOnly: false,
+				reactionAcceptance: ps.reactionAcceptance,
+				visibility: ps.visibility,
+				visibleUsers,
+				apMentions: ps.noExtractMentions ? [] : undefined,
+				apHashtags: ps.noExtractHashtags ? [] : undefined,
+				apEmojis: ps.noExtractEmojis ? [] : undefined,
+			};
 
-			let channel: MiChannel | null = null;
-			if (ps.channelId != null) {
-				channel = await this.channelsRepository.findOneBy({ id: ps.channelId, isArchived: false });
-
-				if (channel == null) {
-					throw new ApiError(meta.errors.noSuchChannel);
-				}
-			}
-
-			// 投稿を作成
-			try {
-				const note = await this.noteCreateService.create(me, {
-					createdAt: new Date(),
-					files: files,
-					poll: ps.poll ? {
-						choices: ps.poll.choices,
-						multiple: ps.poll.multiple ?? false,
-						expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt) : null,
-					} : undefined,
-					text: ps.text ?? undefined,
-					reply,
-					renote,
-					cw: ps.cw,
-					localOnly: ps.localOnly,
-					reactionAcceptance: ps.reactionAcceptance,
-					visibility: ps.visibility,
-					visibleUsers,
-					channel,
-					apMentions: ps.noExtractMentions ? [] : undefined,
-					apHashtags: ps.noExtractHashtags ? [] : undefined,
-					apEmojis: ps.noExtractEmojis ? [] : undefined,
-					deleteAt: ps.scheduledDelete?.deleteAt ? new Date(ps.scheduledDelete.deleteAt) : null,
+			if (ps.scheduleNote.scheduledAt) {
+				me.token = null;
+				const noteId = this.idService.gen(new Date().getTime());
+				await this.noteScheduleRepository.insert({
+					id: noteId,
+					note: note,
+					userId: me.id,
+					scheduledAt: new Date(ps.scheduleNote.scheduledAt),
 				});
 
-				return {
-					createdNote: await this.noteEntityService.pack(note, me),
-				};
-			} catch (e) {
-				// TODO: 他のErrorもここでキャッチしてエラーメッセージを当てるようにしたい
-				if (e instanceof IdentifiableError) {
-					if (e.id === '689ee33f-f97c-479a-ac49-1b9f8140af99') {
-						throw new ApiError(meta.errors.containsProhibitedWords);
-					} else if (e.id === '9f466dab-c856-48cd-9e65-ff90ff750580') {
-						throw new ApiError(meta.errors.containsTooManyMentions);
-					}
-				}
-				throw e;
+				const delay = new Date(ps.scheduleNote.scheduledAt).getTime() - Date.now();
+				await this.queueService.ScheduleNotePostQueue.add(String(delay), {
+					scheduleNoteId: noteId,
+				}, {
+					delay,
+					removeOnComplete: true,
+					jobId: noteId,
+				});
 			}
+
+			return '';
 		});
 	}
 }

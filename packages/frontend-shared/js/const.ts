@@ -73,6 +73,8 @@ export const notificationTypes = [
 	'app',
 	'test',
 	'pollVote',
+	'scheduledNoteFailed',
+	'scheduledNotePosted',
 ] as const;
 export const obsoleteNotificationTypes = ['pollVote', 'groupInvited'] as const;
 
@@ -80,6 +82,8 @@ export const ROLE_POLICIES = [
 	'gtlAvailable',
 	'ltlAvailable',
 	'canPublicNote',
+	'canEditNote',
+	'scheduleNoteMax',
 	'mentionLimit',
 	'canInvite',
 	'inviteLimit',

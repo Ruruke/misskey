@@ -29,11 +29,12 @@ import type {
 	DeliverQueue,
 	EndedPollNotificationQueue,
 	InboxQueue,
-	ObjectStorageQueue,
 	RelationshipQueue,
+	ObjectStorageQueue, ScheduledNoteDeleteQueue,
 	SystemQueue,
 	UserWebhookDeliverQueue,
 	SystemWebhookDeliverQueue,
+	ScheduleNotePostQueue,
 } from '@/core/QueueModule.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
@@ -136,6 +137,7 @@ export class ClientServerService {
 
 		@Inject('queue:system') public systemQueue: SystemQueue,
 		@Inject('queue:endedPollNotification') public endedPollNotificationQueue: EndedPollNotificationQueue,
+		@Inject('queue:scheduledNoteDelete') public scheduledNoteDeleteQueue: ScheduledNoteDeleteQueue,
 		@Inject('queue:deliver') public deliverQueue: DeliverQueue,
 		@Inject('queue:inbox') public inboxQueue: InboxQueue,
 		@Inject('queue:db') public dbQueue: DbQueue,
@@ -143,6 +145,7 @@ export class ClientServerService {
 		@Inject('queue:objectStorage') public objectStorageQueue: ObjectStorageQueue,
 		@Inject('queue:userWebhookDeliver') public userWebhookDeliverQueue: UserWebhookDeliverQueue,
 		@Inject('queue:systemWebhookDeliver') public systemWebhookDeliverQueue: SystemWebhookDeliverQueue,
+		@Inject('queue:scheduleNotePost') public scheduleNotePostQueue: ScheduleNotePostQueue,
 	) {
 		//this.createServer = this.createServer.bind(this);
 	}
@@ -264,6 +267,7 @@ export class ClientServerService {
 			queues: [
 				this.systemQueue,
 				this.endedPollNotificationQueue,
+				this.scheduledNoteDeleteQueue,
 				this.deliverQueue,
 				this.inboxQueue,
 				this.dbQueue,
@@ -271,6 +275,7 @@ export class ClientServerService {
 				this.objectStorageQueue,
 				this.userWebhookDeliverQueue,
 				this.systemWebhookDeliverQueue,
+				this.scheduleNotePostQueue,
 			].map(q => new BullMQAdapter(q)),
 			serverAdapter: bullBoardServerAdapter,
 		});
