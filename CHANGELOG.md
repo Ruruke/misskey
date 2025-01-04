@@ -21,9 +21,13 @@
 - Fix: プラグイン `register_note_view_interruptor` でノートのサーバー情報の書き換えができない問題を修正
 - Fix: 絵文字管理画面で一部の絵文字が表示されない問題を修正
 <<<<<<< HEAD
+<<<<<<< HEAD
 - Fix: Botプロテクションの設定変更時は実際に検証を通過しないと保存できないように( #15137 )
 =======
 >>>>>>> f4e025170 (fix(frontend/AiScript): Ui:C:selectの値が切り替わらない問題を修正 (#15184))
+=======
+- Fix: ノート検索が使用できない場合でもチャンネルのノート検索欄がでていた問題を修正
+>>>>>>> faea401dc (fix(frontend): ノート検索が使用できない場合でもチャンネルのノート検索欄がでていた問題を修正 (#15082))
 - Fix: `Ui:C:select`で値の変更が画面に反映されない問題を修正
 - Fix: MiAuth認可画面で、認可処理に失敗した場合でもコールバックURLに遷移してしまう問題を修正  
   (Cherry-picked from https://github.com/TeamNijimiss/misskey/commit/800359623e41a662551d774de15b0437b6849bb4)
