@@ -20,7 +20,10 @@
 - Enhance: Blueskyの投稿埋め込みプレビューに対応
 - Fix: プラグイン `register_note_view_interruptor` でノートのサーバー情報の書き換えができない問題を修正
 - Fix: 絵文字管理画面で一部の絵文字が表示されない問題を修正
+<<<<<<< HEAD
 - Fix: Botプロテクションの設定変更時は実際に検証を通過しないと保存できないように( #15137 )
+=======
+>>>>>>> f4e025170 (fix(frontend/AiScript): Ui:C:selectの値が切り替わらない問題を修正 (#15184))
 - Fix: `Ui:C:select`で値の変更が画面に反映されない問題を修正
 
 ### Server
