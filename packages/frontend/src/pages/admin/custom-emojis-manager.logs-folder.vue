@@ -64,7 +64,7 @@ function setupGrid(): GridSetting {
 		},
 		cols: [
 			{ bindTo: 'failed', title: 'failed', type: 'boolean', editable: false, width: 50 },
-			{ bindTo: 'url', icon: 'ti-icons', type: 'image', editable: false, width: 'auto' },
+			{ bindTo: 'url', icon: 'ti ti-icons', type: 'image', editable: false, width: 'auto' },
 			{ bindTo: 'name', title: 'name', type: 'text', editable: false, width: 140 },
 			{ bindTo: 'error', title: 'log', type: 'text', editable: false, width: 'auto' },
 		],

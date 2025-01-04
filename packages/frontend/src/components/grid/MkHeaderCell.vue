@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.left"/>
 		<div :class="$style.wrapper">
 			<div ref="contentEl" :class="$style.contentArea">
-				<span v-if="column.setting.icon" class="ti" :class="column.setting.icon" style="line-height: normal"/>
+				<span v-if="column.setting.icon" :class="column.setting.icon" style="line-height: unset"/>
 				<span v-else>{{ text }}</span>
 			</div>
 		</div>

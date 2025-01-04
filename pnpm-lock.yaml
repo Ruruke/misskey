@@ -712,6 +712,9 @@ importers:
       '@misskey-dev/browser-image-resizer':
         specifier: 2024.1.0
         version: 2024.1.0
+      '@phosphor-icons/web':
+        specifier: ^2.1.1
+        version: 2.1.1
       '@rollup/plugin-json':
         specifier: 6.1.0
         version: 6.1.0(rollup@4.26.0)
@@ -724,9 +727,6 @@ importers:
       '@syuilo/aiscript':
         specifier: 0.19.0
         version: 0.19.0
-      '@tabler/icons-webfont':
-        specifier: 3.3.0
-        version: 3.3.0
       '@twemoji/parser':
         specifier: 15.1.1
         version: 15.1.1
@@ -1061,6 +1061,9 @@ importers:
       '@discordapp/twemoji':
         specifier: 15.1.0
         version: 15.1.0
+      '@phosphor-icons/web':
+        specifier: ^2.1.1
+        version: 2.1.1
       '@rollup/plugin-json':
         specifier: 6.1.0
         version: 6.1.0(rollup@4.26.0)
@@ -1070,9 +1073,6 @@ importers:
       '@rollup/pluginutils':
         specifier: 5.1.3
         version: 5.1.3(rollup@4.26.0)
-      '@tabler/icons-webfont':
-        specifier: 3.3.0
-        version: 3.3.0
       '@twemoji/parser':
         specifier: 15.1.1
         version: 15.1.1
@@ -3306,6 +3306,9 @@ packages:
     resolution: {integrity: sha512-aGQIwo6/sWtyyqhVK4e1MtxYz4N1X8CNt6SOtCc+Wnczs5S5ONaLHDDR8LYaGn0MgOwvGgXyuZ5sJIfd7iyoUw==}
     engines: {node: '>=0.10'}
 
+  '@phosphor-icons/web@2.1.1':
+    resolution: {integrity: sha512-QjrfbItu5Rb2i37GzsKxmrRHfZPTVk3oXSPBnQ2+oACDbQRWGAeB0AsvZw263n1nFouQuff+khOCtRbrc6+k+A==}
+
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -4193,12 +4196,6 @@ packages:
   '@szmarczak/http-timer@5.0.1':
     resolution: {integrity: sha512-+PmQX0PiAYPMeVYe237LJAYvOMYW1j2rH5YROyS3b4CTVJum34HfRvKvAzozHAQG0TnHNdUfY9nCeUyRAs//cw==}
     engines: {node: '>=14.16'}
-
-  '@tabler/icons-webfont@3.3.0':
-    resolution: {integrity: sha512-vMsxtwTXdC4QH4uDajZjBYThILEI0dP+Mn1s4XZkVtnJ793IF31i3596nYetWhAJnrED0UJ0HQWSbmqVxVQbxA==}
-
-  '@tabler/icons@3.3.0':
-    resolution: {integrity: sha512-PLVe9d7b59sKytbx00KgeGhQG3N176Ezv8YMmsnSz4s0ifDzMWlp/h2wEfQZ0ZNe8e377GY2OW6kovUe3Rnd0g==}
 
   '@tensorflow/tfjs-backend-cpu@4.4.0':
     resolution: {integrity: sha512-d4eln500/qNym78z9IrUUzF0ITBoJGLrxV8xd92kLVoXhg35Mm+zqUXShjFcrH8joOHOFuST0qZ0TbDDqcPzPA==}
@@ -10957,6 +10954,9 @@ packages:
   vue-component-type-helpers@2.1.10:
     resolution: {integrity: sha512-lfgdSLQKrUmADiSV6PbBvYgQ33KF3Ztv6gP85MfGaGaSGMTXORVaHT1EHfsqCgzRNBstPKYDmvAV9Do5CmJ07A==}
 
+  vue-component-type-helpers@2.2.0:
+    resolution: {integrity: sha512-cYrAnv2me7bPDcg9kIcGwjJiSB6Qyi08+jLDo9yuvoFQjzHiPTzML7RnkJB1+3P6KMsX/KbCD4QE3Tv/knEllw==}
+
   vue-demi@0.14.7:
     resolution: {integrity: sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==}
     engines: {node: '>=12'}
@@ -13603,6 +13603,8 @@ snapshots:
       jsprim: 1.4.2
       sshpk: 1.17.0
 
+  '@phosphor-icons/web@2.1.1': {}
+
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
@@ -14569,7 +14571,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.12(typescript@5.6.3)
-      vue-component-type-helpers: 2.1.10
+      vue-component-type-helpers: 2.2.0
 
   '@swc/cli@0.3.12(@swc/core@1.9.2)(chokidar@3.5.3)':
     dependencies:
@@ -14701,12 +14703,6 @@ snapshots:
   '@szmarczak/http-timer@5.0.1':
     dependencies:
       defer-to-connect: 2.0.1
-
-  '@tabler/icons-webfont@3.3.0':
-    dependencies:
-      '@tabler/icons': 3.3.0
-
-  '@tabler/icons@3.3.0': {}
 
   '@tensorflow/tfjs-backend-cpu@4.4.0(@tensorflow/tfjs-core@4.4.0(encoding@0.1.13))':
     dependencies:
@@ -22846,6 +22842,8 @@ snapshots:
   vue-component-type-helpers@2.0.16: {}
 
   vue-component-type-helpers@2.1.10: {}
+
+  vue-component-type-helpers@2.2.0: {}
 
   vue-demi@0.14.7(vue@3.5.12(typescript@5.6.3)):
     dependencies:

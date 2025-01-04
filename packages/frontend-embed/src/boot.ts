@@ -6,24 +6,21 @@
 // https://vitejs.dev/config/build-options.html#build-modulepreload
 import 'vite/modulepreload-polyfill';
 
-import '@tabler/icons-webfont/dist/tabler-icons.scss';
-
 import '@/style.scss';
 import { createApp, defineAsyncComponent } from 'vue';
 import defaultLightTheme from '@@/themes/l-light.json5';
 import defaultDarkTheme from '@@/themes/d-dark.json5';
 import { MediaProxy } from '@@/js/media-proxy.js';
+import { url } from '@@/js/config.js';
+import { parseEmbedParams } from '@@/js/embed-page.js';
+import type { Theme } from '@/theme.js';
 import { applyTheme, assertIsTheme } from '@/theme.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
 import { DI } from '@/di.js';
 import { serverMetadata } from '@/server-metadata.js';
-import { url } from '@@/js/config.js';
-import { parseEmbedParams } from '@@/js/embed-page.js';
 import { postMessageToParentWindow, setIframeId } from '@/post-message.js';
 import { serverContext } from '@/server-context.js';
 import { i18n } from '@/i18n.js';
-
-import type { Theme } from '@/theme.js';
 
 console.log('Misskey Embed');
 
@@ -86,7 +83,8 @@ window.addEventListener('message', setIframeIdHandler);
 
 try {
 	await fetchCustomEmojis();
-} catch (err) { /* empty */ }
+} catch (err) { /* empty */
+}
 
 const app = createApp(
 	defineAsyncComponent(() => import('@/ui.vue')),
@@ -147,6 +145,7 @@ console.log(
 	'font-size: 20px; font-weight: 700; color: #f00;',
 );
 console.log(i18n.tsx._selfXssPrevention.description3({ link: 'https://misskey-hub.net/docs/for-users/resources/self-xss/' }));
+
 //#endregion
 
 function removeSplash() {
