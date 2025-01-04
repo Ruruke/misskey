@@ -683,18 +683,18 @@ function onKeydown(ev: KeyboardEvent) {
 	if (ev.key === 'Escape' && !justEndedComposition.value && !ev.isComposing) emit('esc');
 }
 
-function onKeyup(ev: KeyboardEvent) {
+/*function onKeyup(ev: KeyboardEvent) {
 	justEndedComposition.value = false;
-}
+}*/
 
 function onCompositionUpdate(ev: CompositionEvent) {
 	imeText.value = ev.data;
 }
 
-function onCompositionEnd(ev: CompositionEvent) {
+/*function onCompositionEnd(ev: CompositionEvent) {
 	imeText.value = '';
 	justEndedComposition.value = true;
-}
+}*/
 
 async function onPaste(ev: ClipboardEvent) {
 	if (props.mock) return;
