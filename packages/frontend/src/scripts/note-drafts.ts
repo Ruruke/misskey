@@ -87,7 +87,7 @@ export async function set<T extends keyof NoteKeys>(type: T, userId: string, uni
 		auxId: args[0] ?? null,
 		data: JSON.parse(JSON.stringify(draft)) as NoteDraft['data'],
 	};
-	console.log(drafts);
+	// console.log(drafts);
 	await idbSet(`drafts::${userId}`, drafts);
 }
 
