@@ -2799,13 +2799,15 @@ export interface Locale extends ILocale {
      */
     "hardWordMute": string;
     /**
+<<<<<<< HEAD
      * ミュートされたワードを表示
      */
     "showMutedWord": string;
-    /**
+=======
      * 指定した語句を含むノートを隠します。ワードミュートとは異なり、ノートは完全に表示されなくなります。
      */
     "hardWordMuteDescription": string;
+>>>>>>> 6649e58b5 (enhance(frontend): ワードミュート・ハードワードミュートの説明を追加 (#15207))
     /**
      * 正規表現エラー
      */
