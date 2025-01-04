@@ -373,6 +373,7 @@ export function pluginReplaceIcons() {
 				'ti-webhook': 'ph-webhooks-logo ph-bold ph-lg',
 				'ti ti-caret-down': 'ph-caret-down ph-bold ph-lg',
 				'ti ti-chevron-down': 'ph-caret-down ph-bold ph-lg',
+				'ti ti-bomb': 'ph-bomb ph-bold ph-lg',
 			},
 		}),
 	];
