@@ -3,47 +3,47 @@ import { i18n } from '@/i18n.js';
 export const bottomItemDef = {
 	attachFile: {
 		title: i18n.ts.attachFile,
-		icon: 'ti-photo-plus',
+		icon: 'ti ti-photo-plus',
 	},
 	poll: {
 		title: i18n.ts.poll,
-		icon: 'ti-chart-arrows',
+		icon: 'ti ti-chart-arrows',
 	},
 	scheduledNoteDelete: {
 		title: i18n.ts.scheduledNoteDelete,
-		icon: 'ti-bomb',
+		icon: 'ti ti-bomb',
 	},
 	useCw: {
 		title: i18n.ts.useCw,
-		icon: 'ti-eye-off',
+		icon: 'ti ti-eye-off',
 	},
 	mention: {
 		title: i18n.ts.mention,
-		icon: 'ti-at',
+		icon: 'ti ti-at',
 	},
 	hashtags: {
 		title: i18n.ts.hashtags,
-		icon: 'ti-hash',
+		icon: 'ti ti-hash',
 	},
 	plugins: {
 		title: i18n.ts.plugins,
-		icon: 'ti-plug',
+		icon: 'ti ti-plug',
 	},
 	emoji: {
 		title: i18n.ts.emoji,
-		icon: 'ti-mood-happy',
+		icon: 'ti ti-mood-happy',
 	},
 	addMfmFunction: {
 		title: i18n.ts.addMfmFunction,
-		icon: 'ti-palette',
+		icon: 'ti ti-palette',
 	},
 	saveAsDraft: {
 		title: i18n.ts.saveAsDraft,
-		icon: 'ti-note',
+		icon: 'ti ti-note',
 	},
 	clearPost: {
 		title: i18n.ts.clearPost,
-		icon: 'ti-trash',
+		icon: 'ti ti-trash',
 	},
 	scheduleNote: {
 		title: i18n.ts.schedulePost,
