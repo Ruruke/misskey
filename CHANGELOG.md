@@ -31,6 +31,8 @@
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/788)
 - Fix: URLとURIが異なるエンティティの照会に失敗する問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/773)
+- Enhance: pg_bigmが利用できるよう、ノートの検索をILIKE演算子でなくLIKE演算子でLOWER()をかけたテキストに対して行うように
+
 
 ## 2024.11.0
 
