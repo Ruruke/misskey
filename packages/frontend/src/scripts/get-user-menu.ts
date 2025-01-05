@@ -46,6 +46,8 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 				}, {
 					value: 'oneDay', text: i18n.ts.oneDay,
 				}, {
+					value: 'oneThree', text: i18n.ts.onThreeDay,
+				}, {
 					value: 'oneWeek', text: i18n.ts.oneWeek,
 				}],
 				default: 'indefinitely',
@@ -57,6 +59,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 				: period === 'oneHour' ? Date.now() + (1000 * 60 * 60)
 				: period === 'oneHalfDay' ? Date.now() + (1000 * 60 * 60 * 12)
 				: period === 'oneDay' ? Date.now() + (1000 * 60 * 60 * 24)
+				: period === 'oneThree' ? Date.now() + (1000 * 60 * 60 * 24 * 3)
 				: period === 'oneWeek' ? Date.now() + (1000 * 60 * 60 * 24 * 7)
 				: null;
 
