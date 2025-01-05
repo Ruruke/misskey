@@ -684,9 +684,4 @@ export class MiMeta {
 		default: false,
 	})
 	public disableNotloginToShowTL: boolean;
-
-	@Column('boolean', {
-		default: true,
-	})
-	public blockMentionsFromUnfamiliarRemoteUsers: boolean;
 }
