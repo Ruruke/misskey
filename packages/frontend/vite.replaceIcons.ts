@@ -374,7 +374,7 @@ export function pluginReplaceIcons() {
 				'ti ti-caret-down': 'ph-caret-down ph-bold ph-lg',
 				'ti ti-chevron-down': 'ph-caret-down ph-bold ph-lg',
 				'ti ti-bomb': 'ph-bomb ph-bold ph-lg',
-				'ti ti-broadcast': 'ph-radio ph-blod ph-lg',
+				'ti ti-broadcast': 'ph-broadcast ph-bold ph-lg',
 			},
 		}),
 	];
