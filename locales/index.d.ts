@@ -3871,6 +3871,10 @@ export interface Locale extends ILocale {
      */
     "oneHour": string;
     /**
+     * 12時間
+     */
+    "oneHalfHour": string;
+    /**
      * 1日
      */
     "oneDay": string;
