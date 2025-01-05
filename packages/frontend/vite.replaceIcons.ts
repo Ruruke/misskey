@@ -375,6 +375,7 @@ export function pluginReplaceIcons() {
 				'ti ti-chevron-down': 'ph-caret-down ph-bold ph-lg',
 				'ti ti-bomb': 'ph-bomb ph-bold ph-lg',
 				'ti ti-broadcast': 'ph-broadcast ph-bold ph-lg',
+				'ti ti-inbox': 'ph-tray-arrow-down ph-bold ph-lg',
 			},
 		}),
 	];
