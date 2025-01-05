@@ -8981,7 +8981,7 @@ export interface Locale extends ILocale {
         /**
          * ListenBrainz
          */
-        "listenBrainz": string;
+        "listenbrainz": string;
         /**
          * 天気予報
          */
