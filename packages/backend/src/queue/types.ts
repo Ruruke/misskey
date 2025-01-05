@@ -108,6 +108,7 @@ export type EndedPollNotificationJobData = {
 
 export type ScheduledNoteDeleteJobData = {
 	noteId: MiNote['id'];
+	fileIds?: MiDriveFile['id'][];
 }
 
 export type SystemWebhookDeliverJobData = {
