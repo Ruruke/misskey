@@ -38,6 +38,13 @@ import { ApImageService } from './ApImageService.js';
 import type { Resolver } from '../ApResolverService.js';
 import type { IObject, IPost } from '../type.js';
 
+// HTML タグを除去し、HTML エンティティをデコードする関数
+function stripHtmlTags(html: string): string {
+	const tempDiv = document.createElement('div');
+	tempDiv.innerHTML = html;
+	return tempDiv.textContent || tempDiv.innerText || '';
+}
+
 @Injectable()
 export class ApNoteService {
 	private logger: Logger;
@@ -223,7 +230,11 @@ export class ApNoteService {
 		} else if (typeof note._misskey_content !== 'undefined') {
 			text = note._misskey_content;
 		} else if (typeof note.content === 'string') {
-			text = this.apMfmService.htmlToMfm(note.content, note.tag);
+			if (note.tag && this.apMfmService.shouldProcessMfm(note.tag)) {
+				text = this.apMfmService.htmlToMfm(note.content, note.tag);
+			} else {
+				text = stripHtmlTags(note.content);
+			}
 		}
 
 		const poll = await this.apQuestionService.extractPollFromQuestion(note, resolver).catch(() => undefined);
@@ -455,7 +466,7 @@ export class ApNoteService {
 						publicUrl: tag.icon.url,
 						updatedAt: new Date(),
 						// _misskey_license が存在しなければ `null`
-						license: (tag._misskey_license?.freeText ?? null)
+						license: (tag._misskey_license?.freeText ?? null),
 					});
 
 					const emoji = await this.emojisRepository.findOneBy({ host, name });
@@ -478,7 +489,7 @@ export class ApNoteService {
 				updatedAt: new Date(),
 				aliases: [],
 				// _misskey_license が存在しなければ `null`
-				license: (tag._misskey_license?.freeText ?? null)
+				license: (tag._misskey_license?.freeText ?? null),
 			});
 		}));
 	}

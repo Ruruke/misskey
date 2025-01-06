@@ -25,6 +25,15 @@ export class ApMfmService {
 	}
 
 	@bindThis
+	public shouldProcessMfm(tag?: IObject | IObject[]): boolean {
+		if (!tag) return false;
+		if (Array.isArray(tag)) {
+			return tag.length > 0 && tag.every(t => t.mediaType != null);
+		}
+		return tag.mediaType != null;
+	}
+
+	@bindThis
 	public getNoteHtml(note: Pick<MiNote, 'text' | 'mentionedRemoteUsers'>, apAppend?: string) {
 		let noMisskeyContent = false;
 		const srcMfm = (note.text ?? '') + (apAppend ?? '');
