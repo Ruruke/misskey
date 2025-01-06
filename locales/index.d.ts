@@ -3878,10 +3878,10 @@ export interface Locale extends ILocale {
      * 1日
      */
     "oneDay": string;
-    /**
+		/**
      * 3日
      */
-    "onThreeDay": string;
+		"onThreeDay": string;
     /**
      * 1週間
      */
