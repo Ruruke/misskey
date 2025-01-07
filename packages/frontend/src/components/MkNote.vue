@@ -139,6 +139,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<i v-else class="ti ti-plus"></i>
 					<p v-if="(appearNote.reactionAcceptance === 'likeOnly' || defaultStore.state.showReactionsCount) && appearNote.reactionCount > 0" :class="$style.footerButtonCount">{{ number(appearNote.reactionCount) }}</p>
 				</button>
+				<button v-if="defaultStore.state.useAirReply && defaultStore.state.airReplyButtonPlacement === 'noteFooter'" :class="$style.footerButton" class="_button" @click.prevent="airReply()">
+					<i class="ti ti-bubble-text"></i>
+				</button>
 				<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" :class="$style.footerButton" class="_button" @mousedown.prevent="clip()">
 					<i class="ti ti-paperclip"></i>
 				</button>
@@ -509,6 +512,16 @@ function reply(): void {
 		channel: appearNote.value.channel,
 	}).then(() => {
 		focus();
+	});
+}
+
+// Ebisskey
+function airReply(): void {
+	// 公開範囲を引き継いだ投稿フォームを作成
+	os.post({
+		reply: appearNote,
+		channel: appearNote.value.channel,
+		isAirReply: true,
 	});
 }
 

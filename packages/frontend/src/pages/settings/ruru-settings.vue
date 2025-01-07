@@ -34,53 +34,68 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #icon><i class="ti ti-forms"></i></template>
 		<template #label>{{ i18n.ts.postForm }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
 		<div class="_gaps_m">
-	<FormSlot>
-		<template #label>{{ i18n.ts.postForm }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-		<MkContainer :showHeader="false">
-			<Sortable
-				v-model="items"
-				:class="$style.items"
-				:itemKey="items => items"
-				:animation="100"
-				:delay="50"
-				:delayOnTouchOnly="true"
-			>
-				<template #item="{element}">
-					<button v-tooltip="bottomItemDef[element.type].title" class="_button" :class="$style.item" @click="removeItem(element.type, $event)">
-						<i class="ti ti-fw" :class="[$style.itemIcon, bottomItemDef[element.type].icon]"></i>
-					</button>
-				</template>
-			</Sortable>
-		</MkContainer>
-	</FormSlot>
-	<div class="_buttons">
-		<MkButton @click="addItem"><i class="ti ti-plus"></i> {{ i18n.ts.addItem }}</MkButton>
-		<MkButton danger @click="reset"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
-		<MkButton primary class="save" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
-	</div>
-	<div :class="$style.label">{{ i18n.ts.postFormBottomSettingsDescription }}</div>
-	<MkSelect v-model="draftSavingBehavior">
-		<template #label>{{ i18n.ts.draftSavingBehavior }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-		<option value="auto">{{ i18n.ts._draftSavingBehavior.auto }}</option>
-		<option value="manual">{{ i18n.ts._draftSavingBehavior.manual }}</option>
-	</MkSelect>
-	<MkSwitch v-model="disableNoteDrafting">
-		<template #caption>{{ i18n.ts.disableNoteDraftingDescription }}</template>
-		{{ i18n.ts.disableNoteDrafting }}
-		<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-	</MkSwitch>
-	<div>
-		<div :class="$style.label">
-			{{ i18n.ts.defaultScheduledNoteDeleteTime }}
-			<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+			<FormSlot>
+				<template #label>{{ i18n.ts.postForm }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+				<MkContainer :showHeader="false">
+					<Sortable
+						v-model="items"
+						:class="$style.items"
+						:itemKey="items => items"
+						:animation="100"
+						:delay="50"
+						:delayOnTouchOnly="true"
+					>
+						<template #item="{element}">
+							<button v-tooltip="bottomItemDef[element.type].title" class="_button" :class="$style.item" @click="removeItem(element.type, $event)">
+								<i class="ti ti-fw" :class="[$style.itemIcon, bottomItemDef[element.type].icon]"></i>
+							</button>
+						</template>
+					</Sortable>
+				</MkContainer>
+			</FormSlot>
+			<div class="_buttons">
+				<MkButton @click="addItem"><i class="ti ti-plus"></i> {{ i18n.ts.addItem }}</MkButton>
+				<MkButton danger @click="reset"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+				<MkButton primary class="save" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+			</div>
+			<div :class="$style.label">{{ i18n.ts.postFormBottomSettingsDescription }}</div>
+			<MkSelect v-model="draftSavingBehavior">
+				<template #label>{{ i18n.ts.draftSavingBehavior }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+				<option value="auto">{{ i18n.ts._draftSavingBehavior.auto }}</option>
+				<option value="manual">{{ i18n.ts._draftSavingBehavior.manual }}</option>
+			</MkSelect>
+			<MkSwitch v-model="disableNoteDrafting">
+				<template #caption>{{ i18n.ts.disableNoteDraftingDescription }}</template>
+				{{ i18n.ts.disableNoteDrafting }}
+				<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+			</MkSwitch>
+			<div>
+				<div :class="$style.label">
+					{{ i18n.ts.defaultScheduledNoteDeleteTime }}
+					<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				</div>
+				<MkDeleteScheduleEditor v-model="scheduledNoteDelete" :afterOnly="true"/>
+			</div>
+			<MkSwitch v-model="defaultScheduledNoteDelete">
+				{{ i18n.ts.defaultScheduledNoteDelete }}
+				<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+			</MkSwitch>
 		</div>
-		<MkDeleteScheduleEditor v-model="scheduledNoteDelete" :afterOnly="true"/>
-	</div>
-	<MkSwitch v-model="defaultScheduledNoteDelete">
-		{{ i18n.ts.defaultScheduledNoteDelete }}
-		<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-	</MkSwitch>
-</div>
+		<MkFolder open>
+				<template #label><i class="ti ti-bubble-text"/> エアリプ機能</template>
+				<div class="_gaps_m">
+					<div>特定のノートに曖昧な返信を行うための、公開範囲を合わせた投稿ボタンを有効化します。</div>
+					<MkSwitch v-model="useAirReply">
+						エアリプ機能を有効にする
+					</MkSwitch>
+					<MkSelect v-if="useAirReply" v-model="airReplyButtonPlacement">
+						<template #label>ボタンの位置</template>
+						<option value="noteMenu">ノートのメニュー</option>
+						<option value="renoteMenu">リノートボタンのメニュー</option>
+						<option value="noteFooter">ノートの下部</option>
+					</MkSelect>
+				</div>
+			</MkFolder>
 	</MkFolder>
 </div>
 </template>
@@ -108,6 +123,8 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
 const disableNoteNyaize = computed(defaultStore.makeGetterSetter('disableNoteNyaize'));
 const customFont = computed(defaultStore.makeGetterSetter('customFont'));
+const useAirReply = computed(defaultStore.makeGetterSetter('useAirReply'));
+const airReplyButtonPlacement = computed(defaultStore.makeGetterSetter('airReplyButtonPlacement'));
 
 function getHTMLElement(ev: MouseEvent): HTMLElement {
 	const target = ev.currentTarget ?? ev.target;
