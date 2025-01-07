@@ -11,6 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@dragleave="onDragleave"
 	@drop.stop="onDrop"
 >
+	<ShVisibilityColoring v-if="!channel && (visibility !== 'public' || localOnly)" :visibility="visibility" :localOnly="localOnly"/>
 	<header :class="$style.header">
 		<div :class="$style.headerLeft">
 			<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
@@ -111,7 +112,8 @@ import * as Misskey from 'misskey-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { toASCII } from 'punycode/';
 import { host, url } from '@@/js/config.js';
-import type { MenuItem } from '@/types/menu.js';
+import ShVisibilityColoring from './ShVisibilityColoring.vue';
+import type { PostFormProps } from '@/types/post-form.js';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
