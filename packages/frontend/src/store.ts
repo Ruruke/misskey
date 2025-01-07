@@ -605,14 +605,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'https://google.com/search?q=',
 	},
-	useAirReply: {
-		where: 'account',
-		default: false,
-	},
-	airReplyButtonPlacement: {
-		where: 'account',
-		default: 'noteMenu' as 'noteMenu' | 'renoteMenu' | 'noteFooter',
-	},
 	showInstanceTickerSoftwareName: {
 		where: 'device',
 		default: false,
