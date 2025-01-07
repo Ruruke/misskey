@@ -254,20 +254,20 @@ class Systemd {
 	}
 	//#endregion
 
-	// //#media Server Status
-	// const media = await systemd.start('Ping Media', fetch('https://media.ruruke.moe', {
-	// 	method: 'GET',
-	// 	headers: {
-	// 		'Accept': 'application/json',
-	// 		'Content-Type': 'application/json',
-	// 	},
-	// }));
+	//#media Server Status
+	const media = await systemd.start('Ping Media', fetch('https://media.ruruke.moe', {
+		method: 'GET',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		},
+	}));
 
-	// if (media.status !== 200) {
-	// 	renderError('STORAGE_FETCH');
-	// 	return;
-	// }
-	// //#endregion
+	if (media.status !== 200) {
+		renderError('STORAGE_FETCH');
+		return;
+	}
+	//#endregion
 
 	//#media Server Status
 	const storage = await systemd.start('Response Storage', fetch('https://storage.ruruke.moe', {
