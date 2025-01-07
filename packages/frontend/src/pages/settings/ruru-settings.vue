@@ -80,6 +80,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 				{{ i18n.ts.defaultScheduledNoteDelete }}
 				<span class="_beta">{{ i18n.ts.originalFeature }}</span>
 			</MkSwitch>
+			<MkSwitch v-model="useTextAreaAutoSize">
+				<template #caption>{{ i18n.ts.textAreaAutoResizeDescription }}</template>
+				{{ i18n.ts.textAreaAutoResize }}
+				<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+			</MkSwitch>
 		</div>
 	</MkFolder>
 	<MkFolder open>
@@ -141,6 +146,7 @@ const noteVisibilityColorFollowers = computed(defaultStore.makeGetterSetter('not
 const noteVisibilityColorSpecified = computed(defaultStore.makeGetterSetter('noteVisibilityColorSpecified'));
 const noteVisibilityColorLocalOnly = computed(defaultStore.makeGetterSetter('noteVisibilityColorLocalOnly'));
 const noteVisibilityColorChanged = ref(false);
+const useTextAreaAutoSize = computed(defaultStore.makeGetterSetter('useTextAreaAutoSize'));
 
 watch([
 	noteVisibilityColorHome,
@@ -149,6 +155,13 @@ watch([
 	noteVisibilityColorLocalOnly,
 ], () => {
 	noteVisibilityColorChanged.value = true;
+});
+watch([
+	customFont,
+	disableNoteNyaize,
+	useTextAreaAutoSize,
+], async () => {
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 function saveColors() {
