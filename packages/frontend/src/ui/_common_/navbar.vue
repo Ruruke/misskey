@@ -69,7 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<path d="M47.488,7.995C47.79,10.11 47.943,12.266 47.943,14.429C47.997,26.989 47.997,84 47.997,84C47.997,84 44.018,118.246 23.997,133.5C-0.374,152.07 -0.003,192 -0.003,192L-0.003,-96C-0.003,-96 0.151,-56.216 23.997,-37.5C40.861,-24.265 46.043,-1.243 47.488,7.995Z" style="fill:var(--MI_THEME-navBg);"/>
 			</g>
 		</svg>
-		<i :class="'ti ' + `ti-chevron-${ iconOnly ? 'right' : 'left' }`" style="font-size: 12px; margin-left: -8px;"></i>
+		<i :class=" `ph-caret-${ iconOnly ? 'right' : 'left' } ph-bold ph-lg`" style="font-size: 12px; margin-left: -8px;"></i>
 	</button>
 </div>
 </template>

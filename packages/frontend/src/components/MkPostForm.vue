@@ -173,7 +173,6 @@ const props = withDefaults(defineProps<{
 	initialVisibleUsers: () => [],
 	autofocus: true,
 	mock: false,
-	isAirReply: false,
 	initialLocalOnly: undefined,
 });
 
