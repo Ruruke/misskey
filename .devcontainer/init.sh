@@ -12,6 +12,7 @@ corepack enable
 pnpm config set store-dir /home/node/.local/share/pnpm/store
 pnpm install --frozen-lockfile
 cp .devcontainer/devcontainer.yml .config/default.yml
+git remote add sharkey https://activitypub.software/TransFem-org/Sharkey.git && git fetch sharkey
 pnpm build
 pnpm migrate
 pnpm exec cypress install
