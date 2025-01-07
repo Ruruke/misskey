@@ -260,7 +260,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 								listId: list.id,
 								userId: user.id,
 							}).then(() => {
-								list.userIds?.splice(list.userIds?.indexOf(user.id), 1);
+								list.userIds?.splice(list.userIds.indexOf(user.id), 1);
 							});
 						}
 					}));

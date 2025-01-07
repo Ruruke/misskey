@@ -239,6 +239,16 @@ class Systemd {
 	}
 	//#endregion
 
+	//#media Server Status
+	await systemd.start('Response', fetch('https://media.ruruke.moe', {
+		method: 'GET',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		},
+	}));
+	//#endregion
+
 	//#region Theme
 	const theme = localStorage.getItem('theme');
 	if (theme) {
