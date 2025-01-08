@@ -609,6 +609,26 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	useNoteVisibilityColoring: {
+		where: 'account',
+		default: false,
+	},
+	noteVisibilityColorHome: {
+		where: 'account',
+		default: '#FFB900',
+	},
+	noteVisibilityColorFollowers: {
+		where: 'account',
+		default: '#0078D7',
+	},
+	noteVisibilityColorSpecified: {
+		where: 'account',
+		default: '#111111',
+	},
+	noteVisibilityColorLocalOnly: {
+		where: 'account',
+		default: '#B93E43',
+	},
 }));
 
 // TODO: 他のタブと永続化されたstateを同期

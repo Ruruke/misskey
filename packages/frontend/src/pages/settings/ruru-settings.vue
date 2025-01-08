@@ -34,53 +34,79 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #icon><i class="ti ti-forms"></i></template>
 		<template #label>{{ i18n.ts.postForm }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
 		<div class="_gaps_m">
-	<FormSlot>
-		<template #label>{{ i18n.ts.postForm }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-		<MkContainer :showHeader="false">
-			<Sortable
-				v-model="items"
-				:class="$style.items"
-				:itemKey="items => items"
-				:animation="100"
-				:delay="50"
-				:delayOnTouchOnly="true"
-			>
-				<template #item="{element}">
-					<button v-tooltip="bottomItemDef[element.type].title" class="_button" :class="$style.item" @click="removeItem(element.type, $event)">
-						<i class="ti ti-fw" :class="[$style.itemIcon, bottomItemDef[element.type].icon]"></i>
-					</button>
-				</template>
-			</Sortable>
-		</MkContainer>
-	</FormSlot>
-	<div class="_buttons">
-		<MkButton @click="addItem"><i class="ti ti-plus"></i> {{ i18n.ts.addItem }}</MkButton>
-		<MkButton danger @click="reset"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
-		<MkButton primary class="save" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
-	</div>
-	<div :class="$style.label">{{ i18n.ts.postFormBottomSettingsDescription }}</div>
-	<MkSelect v-model="draftSavingBehavior">
-		<template #label>{{ i18n.ts.draftSavingBehavior }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-		<option value="auto">{{ i18n.ts._draftSavingBehavior.auto }}</option>
-		<option value="manual">{{ i18n.ts._draftSavingBehavior.manual }}</option>
-	</MkSelect>
-	<MkSwitch v-model="disableNoteDrafting">
-		<template #caption>{{ i18n.ts.disableNoteDraftingDescription }}</template>
-		{{ i18n.ts.disableNoteDrafting }}
-		<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-	</MkSwitch>
-	<div>
-		<div :class="$style.label">
-			{{ i18n.ts.defaultScheduledNoteDeleteTime }}
-			<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+			<FormSlot>
+				<template #label>{{ i18n.ts.postForm }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+				<MkContainer :showHeader="false">
+					<Sortable
+						v-model="items"
+						:class="$style.items"
+						:itemKey="items => items"
+						:animation="100"
+						:delay="50"
+						:delayOnTouchOnly="true"
+					>
+						<template #item="{element}">
+							<button v-tooltip="bottomItemDef[element.type].title" class="_button" :class="$style.item" @click="removeItem(element.type, $event)">
+								<i class="ti ti-fw" :class="[$style.itemIcon, bottomItemDef[element.type].icon]"></i>
+							</button>
+						</template>
+					</Sortable>
+				</MkContainer>
+			</FormSlot>
+			<div class="_buttons">
+				<MkButton @click="addItem"><i class="ti ti-plus"></i> {{ i18n.ts.addItem }}</MkButton>
+				<MkButton danger @click="reset"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+				<MkButton primary class="save" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+			</div>
+			<div :class="$style.label">{{ i18n.ts.postFormBottomSettingsDescription }}</div>
+			<MkSelect v-model="draftSavingBehavior">
+				<template #label>{{ i18n.ts.draftSavingBehavior }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+				<option value="auto">{{ i18n.ts._draftSavingBehavior.auto }}</option>
+				<option value="manual">{{ i18n.ts._draftSavingBehavior.manual }}</option>
+			</MkSelect>
+			<MkSwitch v-model="disableNoteDrafting">
+				<template #caption>{{ i18n.ts.disableNoteDraftingDescription }}</template>
+				{{ i18n.ts.disableNoteDrafting }}
+				<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+			</MkSwitch>
+			<div>
+				<div :class="$style.label">
+					{{ i18n.ts.defaultScheduledNoteDeleteTime }}
+					<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				</div>
+				<MkDeleteScheduleEditor v-model="scheduledNoteDelete" :afterOnly="true"/>
+			</div>
+			<MkSwitch v-model="defaultScheduledNoteDelete">
+				{{ i18n.ts.defaultScheduledNoteDelete }}
+				<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+			</MkSwitch>
 		</div>
-		<MkDeleteScheduleEditor v-model="scheduledNoteDelete" :afterOnly="true"/>
-	</div>
-	<MkSwitch v-model="defaultScheduledNoteDelete">
-		{{ i18n.ts.defaultScheduledNoteDelete }}
-		<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-	</MkSwitch>
-</div>
+	</MkFolder>
+	<MkFolder open>
+		<template #label><i class="ti ti-tag"/> 公開範囲に応じた色分け</template>
+		<div class="_panel _padding _gaps_m">
+			<MkSwitch v-model="useNoteVisibilityColoring">
+				公開範囲に応じた色分け
+				<template #caption>
+					ノートの公開範囲に応じて、特殊な色付き表示を行います。
+				</template>
+			</MkSwitch>
+			<template v-if="useNoteVisibilityColoring">
+				<MkColorInput v-model="noteVisibilityColorHome">
+					<template #label>{{ i18n.ts._visibility.home }}</template>
+				</MkColorInput>
+				<MkColorInput v-model="noteVisibilityColorFollowers">
+					<template #label>{{ i18n.ts._visibility.followers }}</template>
+				</MkColorInput>
+				<MkColorInput v-model="noteVisibilityColorSpecified">
+					<template #label>{{ i18n.ts._visibility.specified }}</template>
+				</MkColorInput>
+				<MkColorInput v-model="noteVisibilityColorLocalOnly">
+					<template #label>{{ i18n.ts._visibility.public }}（{{ i18n.ts._visibility.disableFederation }}）</template>
+				</MkColorInput>
+				<MkButton v-if="noteVisibilityColorChanged" primary @click="saveColors"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+			</template>
+		</div>
 	</MkFolder>
 </div>
 </template>
@@ -101,6 +127,7 @@ import * as os from '@/os.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
 import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
 import FormSlot from '@/components/form/slot.vue';
+import MkColorInput from '@/components/MkColorInput.vue';
 import MkContainer from '@/components/MkContainer.vue';
 import { bottomItemDef } from '@/scripts/post-form.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -108,6 +135,31 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
 const disableNoteNyaize = computed(defaultStore.makeGetterSetter('disableNoteNyaize'));
 const customFont = computed(defaultStore.makeGetterSetter('customFont'));
+const useNoteVisibilityColoring = computed(defaultStore.makeGetterSetter('useNoteVisibilityColoring'));
+const noteVisibilityColorHome = computed(defaultStore.makeGetterSetter('noteVisibilityColorHome'));
+const noteVisibilityColorFollowers = computed(defaultStore.makeGetterSetter('noteVisibilityColorFollowers'));
+const noteVisibilityColorSpecified = computed(defaultStore.makeGetterSetter('noteVisibilityColorSpecified'));
+const noteVisibilityColorLocalOnly = computed(defaultStore.makeGetterSetter('noteVisibilityColorLocalOnly'));
+const noteVisibilityColorChanged = ref(false);
+
+watch([
+	noteVisibilityColorHome,
+	noteVisibilityColorFollowers,
+	noteVisibilityColorSpecified,
+	noteVisibilityColorLocalOnly,
+], () => {
+	noteVisibilityColorChanged.value = true;
+});
+
+function saveColors() {
+	if (noteVisibilityColorChanged.value) {
+		defaultStore.set('noteVisibilityColorHome', noteVisibilityColorHome.value);
+		defaultStore.set('noteVisibilityColorFollowers', noteVisibilityColorFollowers.value);
+		defaultStore.set('noteVisibilityColorSpecified', noteVisibilityColorSpecified.value);
+		defaultStore.set('noteVisibilityColorLocalOnly', noteVisibilityColorLocalOnly.value);
+		noteVisibilityColorChanged.value = false;
+	}
+}
 
 function getHTMLElement(ev: MouseEvent): HTMLElement {
 	const target = ev.currentTarget ?? ev.target;
