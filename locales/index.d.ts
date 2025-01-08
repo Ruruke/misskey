@@ -11349,6 +11349,14 @@ export interface Locale extends ILocale {
      * 予約投稿一覧
      */
     "schedulePostList": string;
+    /**
+     * テキストエリアの自動リサイズ
+     */
+    "textAreaAutoResize": string;
+    /**
+     * テキストエリアの高さを自動で調整します。
+     */
+    "textAreaAutoResizeDescription": string;
     "_customizeFeature": {
         /**
          * 独自機能

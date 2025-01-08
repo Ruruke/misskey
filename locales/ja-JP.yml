@@ -3033,7 +3033,8 @@ showBots: "タイムラインにbotを表示"
 schedulePost: "予約投稿"
 schedulePostList: "予約投稿一覧"
 
-
+textAreaAutoResize: "テキストエリアの自動リサイズ"
+textAreaAutoResizeDescription: "テキストエリアの高さを自動で調整します。"
 
 _customizeFeature:
   title: "独自機能"
