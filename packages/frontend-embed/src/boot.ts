@@ -18,11 +18,8 @@ import { applyTheme, assertIsTheme } from '@/theme.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
 import { DI } from '@/di.js';
 import { serverMetadata } from '@/server-metadata.js';
-<<<<<<< HEAD
-=======
 import { url, version, locale, lang, updateLocale } from '@@/js/config.js';
 import { parseEmbedParams } from '@@/js/embed-page.js';
->>>>>>> c49a13de65 (fix(frontend-embed): localeのバージョンチェックが抜けており起動に失敗することがある問題を修正 (#15212))
 import { postMessageToParentWindow, setIframeId } from '@/post-message.js';
 import { serverContext } from '@/server-context.js';
 import { i18n, updateI18n } from '@/i18n.js';

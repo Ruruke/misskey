@@ -59,7 +59,7 @@ function getInstanceIcon(instance: Misskey.entities.FederationInstance): string 
 misskeyApiGet('federation/instances', {
 	sort: '+pubSub',
 	limit: 20,
-	blocked: 'false'
+	blocked: 'false',
 }).then(_instances => {
 	instances.value = _instances;
 });
