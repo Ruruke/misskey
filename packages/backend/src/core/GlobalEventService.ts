@@ -133,13 +133,10 @@ export interface NoteEventTypes {
 		reaction: string;
 		userId: MiUser['id'];
 	};
-<<<<<<< HEAD
-=======
 	replied: {
 		id: MiNote['id'];
 		userId: MiUser['id'];
 	};
->>>>>>> 712af44de4 (merge: don't send real-time updates of replies to blocked users #457 #573 (!566))
 }
 type NoteStreamEventTypes = {
 	[key in keyof NoteEventTypes]: {
