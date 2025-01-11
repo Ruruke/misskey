@@ -72,7 +72,6 @@ export class ChartManagementService implements OnApplicationShutdown {
 			for (const chart of this.charts) {
 				await chart.save();
 			}
-			this.logger.info('All charts saved');
 		}
 	}
 
