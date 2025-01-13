@@ -24087,6 +24087,11 @@ export type operations = {
            * @default null
            */
           channelId?: string | null;
+          /**
+           * @default all
+           * @enum {string}
+           */
+          visibility?: 'all' | 'public' | 'home' | 'followers' | 'specified';
         };
       };
     };
