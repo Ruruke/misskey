@@ -19,4 +19,5 @@ git remote add shrimpia https://github.com/shrimpia/misskey.git
 git remote add io https://github.com/MisskeyIO/misskey.git
 git remote add upstream https://github.com/misskey-dev/misskey.git
 git remote add youjo https://github.com/yojo-art/cherrypick.git
+git remote add osamu https://github.com/samunohito/misskey.git
 git fetch --all
