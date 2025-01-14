@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer v-else-if="tab === 'emojis'" :contentMax="1000" :marginMin="20">
 			<XEmojis/>
 		</MkSpacer>
-		<MkSpacer v-else-if="(instance.federation !== 'none' && tab === 'federation') || miLocalStorage.getItem('account') === null" :contentMax="1000" :marginMin="20">
+		<MkSpacer v-else-if="instance.federation !== 'none' && tab === 'federation' || miLocalStorage.getItem('account') === null" :contentMax="1000" :marginMin="20">
 			<XFederation/>
 		</MkSpacer>
 		<MkSpacer v-else-if="tab === 'charts' || miLocalStorage.getItem('account') === null" :contentMax="1000" :marginMin="20">

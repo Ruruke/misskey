@@ -361,7 +361,7 @@ importers:
         version: 2.7.0
       psl:
         specifier: ^1.13.0
-        version: 1.13.0
+        version: 1.15.0
       pug:
         specifier: 3.0.3
         version: 3.0.3
@@ -22073,14 +22073,9 @@ snapshots:
     dependencies:
       nopt: 1.0.10
 
-  tough-cookie@2.5.0:
-    dependencies:
-      psl: 1.13.0
-      punycode: 2.3.1
-
   tough-cookie@4.1.4:
     dependencies:
-      psl: 1.13.0
+      psl: 1.15.0
       punycode: 2.3.1
       universalify: 0.2.0
       url-parse: 1.5.10
