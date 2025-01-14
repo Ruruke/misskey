@@ -39,7 +39,6 @@ export type SearchOpts = {
 	channelId?: MiNote['channelId'] | null;
 	host?: string | null;
 	visibility?: MiNote['visibility'] | 'all';
-
 };
 
 export type SearchPagination = {
