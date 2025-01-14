@@ -144,6 +144,7 @@ import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { infoImageUrl } from '@/instance.js';
 import { signinRequired } from '@/account.js';
+import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { defaultStore } from '@/store';
