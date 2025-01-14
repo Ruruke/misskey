@@ -122,7 +122,7 @@ function onClick(ev: MouseEvent) {
 			},
 		}] : []), ...(props.menuReaction && react ? [{
 			text: i18n.ts.doReaction,
-			icon: 'ti ti-mood-plus',
+			icon: 'ti ti-plus',
 			action: () => {
 				react(`:${props.name}:`);
 				sound.playMisskeySfx('reaction');
