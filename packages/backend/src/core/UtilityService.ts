@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { URL } from 'node:url';
 import punycode from 'punycode/punycode.js';
+import { URL, domainToASCII } from 'node:url';
 import { Inject, Injectable } from '@nestjs/common';
 import RE2 from 're2';
 import psl from 'psl';
@@ -112,13 +112,13 @@ export class UtilityService {
 
 	@bindThis
 	public toPuny(host: string): string {
-		return punycode.toASCII(host.toLowerCase());
+		return domainToASCII(host.toLowerCase());
 	}
 
 	@bindThis
 	public toPunyNullable(host: string | null | undefined): string | null {
 		if (host == null) return null;
-		return punycode.toASCII(host.toLowerCase());
+		return domainToASCII(host.toLowerCase());
 	}
 
 	@bindThis
