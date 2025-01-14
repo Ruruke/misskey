@@ -206,8 +206,8 @@ redis:
 #  # You can specify more ioredis options...
 #  #username: example-username
 
-#   ┌───────────────────────────┐
-#───┘ MeiliSearch configuration └─────────────────────────────
+#   ┌───────────────────────────────┐
+#───┘ Fulltext search configuration └─────────────────────────────
 
 # These are the setting items for the full-text search provider.
 fulltextSearch:
@@ -237,6 +237,7 @@ fulltextSearch:
 #  ssl: true
 #  index: ''
 #  scope: local
+
 
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────
