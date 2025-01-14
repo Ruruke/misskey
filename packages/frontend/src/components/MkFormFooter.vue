@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<{
 		discard: () => void;
 		save: () => void;
 	};
-	canSaving?: boolean
+	canSaving?: boolean;
 }>(), {
 	canSaving: true,
 });
