@@ -4,7 +4,7 @@
  */
 import * as Misskey from 'misskey-js';
 
-export function checkWordMute(note: Record<string, any>, me: Record<string, any> | null | undefined, mutedWords: Array<string | string[]>): Array<string | string[]> | false {
+export function checkWordMute(note: Misskey.entities.Note, me: Misskey.entities.UserLite | null | undefined, mutedWords: Array<string | string[]>): Array<string | string[]> | false {
 	// 自分自身
 	if (me && (note.userId === me.id)) return false;
 

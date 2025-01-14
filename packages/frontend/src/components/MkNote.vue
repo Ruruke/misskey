@@ -172,7 +172,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkA>
 		</template>
 		<template #word>
-			{{ Array.isArray(muted) ? muted.map(words => Array.isArray(words) ? words.join() : words).join(' ') : muted }}
+			{{ Array.isArray(muted) ? muted.map(words => Array.isArray(words) ? words.join() : words).slice(0, 3).join(' ') : muted }}
 		</template>
 	</I18n>
 </div>
@@ -356,12 +356,12 @@ function mfmParse() {
 
 /* Overload FunctionにLintが対応していないのでコメントアウト
 function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly: true): boolean;
-function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly: false): boolean | 'sensitiveMute';
+function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly: false): Array<string | string[]> | false | 'sensitiveMute';
 */
 function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly = false): Array<string | string[]> | false | 'sensitiveMute' {
 	if (mutedWords == null) return false;
 
-	const result = checkWordMute(noteToCheck, $i, mutedWords	);
+	const result = checkWordMute(noteToCheck, $i, mutedWords);
 	if (Array.isArray(result)) return result;
 
 	const replyResult = noteToCheck.reply && checkWordMute(noteToCheck.reply, $i, mutedWords);

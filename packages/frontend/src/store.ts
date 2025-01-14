@@ -559,6 +559,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	showSoftWordMutedWord: {
+		where: 'device',
+		default: false,
+	},
 	confirmOnReact: {
 		where: 'device',
 		default: false,

@@ -11,6 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_m">
 			<MkInfo>{{ i18n.ts.wordMuteDescription }}</MkInfo>
+			<MkSwitch v-model="showSoftWordMutedWord">{{ i18n.ts.showMutedWord }}</MkSwitch>
 			<XWordMute :muted="$i.mutedWords" @save="saveMutedWords"/>
 		</div>
 	</MkFolder>
@@ -149,6 +150,7 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { defaultStore } from '@/store';
 import { unisonReload } from '@/scripts/unison-reload.js';
+import { reloadAsk } from '@/scripts/reload-ask.js';
 
 const $i = signinRequired();
 
@@ -173,20 +175,10 @@ const expandedBlockItems = ref([]);
 
 const showSoftWordMutedWord = computed(defaultStore.makeGetterSetter('showSoftWordMutedWord'));
 
-async function reloadAsk() {
-	const { canceled } = await os.confirm({
-		type: 'info',
-		text: i18n.ts.reloadToApplySetting,
-	});
-	if (canceled) return;
-
-	unisonReload();
-}
-
 watch([
 	showSoftWordMutedWord,
 ], async () => {
-	await reloadAsk();
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 async function unrenoteMute(user, ev) {
