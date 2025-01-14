@@ -9275,13 +9275,8 @@ packages:
   pseudomap@1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
 
-<<<<<<< HEAD
-  psl@1.13.0:
-    resolution: {integrity: sha512-BFwmFXiJoFqlUpZ5Qssolv15DMyc84gTBds1BjsV1BfXEo1UyyD7GsmN67n7J77uRhoSNW1AXtXKPLcBFQn9Aw==}
-=======
   psl@1.15.0:
     resolution: {integrity: sha512-JZd3gMVBAVQkSs6HdNZo9Sdo0LNcQeMNP3CozBJb3JYC/QUYZTnKxP+f8oWRX4rHP5EurWxqAHTSwUCjlNKa1w==}
->>>>>>> 145c6cf2b5 (fix: node.js の punycode モジュールが使用されている場所がある問題 (#15248))
 
   pstree.remy@1.1.8:
     resolution: {integrity: sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==}
@@ -20877,11 +20872,7 @@ snapshots:
 
   pseudomap@1.0.2: {}
 
-<<<<<<< HEAD
-  psl@1.13.0:
-=======
   psl@1.15.0:
->>>>>>> 145c6cf2b5 (fix: node.js の punycode モジュールが使用されている場所がある問題 (#15248))
     dependencies:
       punycode: 2.3.1
 
@@ -22082,7 +22073,6 @@ snapshots:
     dependencies:
       nopt: 1.0.10
 
-<<<<<<< HEAD
   tough-cookie@2.5.0:
     dependencies:
       psl: 1.13.0
@@ -22091,11 +22081,6 @@ snapshots:
   tough-cookie@4.1.4:
     dependencies:
       psl: 1.13.0
-=======
-  tough-cookie@4.1.4:
-    dependencies:
-      psl: 1.15.0
->>>>>>> 145c6cf2b5 (fix: node.js の punycode モジュールが使用されている場所がある問題 (#15248))
       punycode: 2.3.1
       universalify: 0.2.0
       url-parse: 1.5.10

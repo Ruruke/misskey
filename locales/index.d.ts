@@ -5386,6 +5386,7 @@ export interface Locale extends ILocale {
      * このサーバーは連合が無効化されています。他のサーバーのユーザーとやり取りすることはできません。
      */
     "federationDisabled": string;
+    
     "_accountSettings": {
         /**
          * コンテンツの表示にログインを必須にする

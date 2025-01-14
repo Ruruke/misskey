@@ -57,7 +57,6 @@ watch(tab, () => {
 
 const headerActions = computed(() => []);
 
-<<<<<<< HEAD
 let headerTabs = computed(() => [{
 	key: 'overview',
 	title: i18n.ts.overview,
@@ -74,36 +73,6 @@ let headerTabs = computed(() => [{
 	title: i18n.ts.charts,
 	icon: 'ti ti-chart-line',
 }]);
-=======
-const headerTabs = computed(() => {
-	const items = [];
-
-	items.push({
-		key: 'overview',
-		title: i18n.ts.overview,
-	}, {
-		key: 'emojis',
-		title: i18n.ts.customEmojis,
-		icon: 'ti ti-icons',
-	});
-
-	if (instance.federation !== 'none') {
-		items.push({
-			key: 'federation',
-			title: i18n.ts.federation,
-			icon: 'ti ti-whirl',
-		});
-	}
-
-	items.push({
-		key: 'charts',
-		title: i18n.ts.charts,
-		icon: 'ti ti-chart-line',
-	});
-
-	return items;
-});
->>>>>>> 5445b023e5 (enhance: 連合モードにあわせてフロントエンドを変化させるように (#15112))
 
 if (miLocalStorage.getItem('account') === null) {
 	headerTabs = computed(() => [{
