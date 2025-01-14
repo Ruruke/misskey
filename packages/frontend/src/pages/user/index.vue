@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkSpacer v-else-if="tab === 'notes'" key="notes" :contentMax="800" style="padding-top: 0">
 						<XTimeline :user="user"/>
 					</MkSpacer>
+					<XFiles v-else-if="tab === 'files'" :user="user"/>
 					<XActivity v-else-if="tab === 'activity'" key="activity" :user="user"/>
 					<XAchievements v-else-if="tab === 'achievements'" key="achievements" :user="user"/>
 					<XReactions v-else-if="tab === 'reactions'" key="reactions" :user="user"/>
@@ -121,6 +122,8 @@ const hasTabAccess = (tabName: string): boolean => {
 			return true;
 		case 'notes':
 			return !user.value.isBlocked;
+		case 'files':
+			return !user.value.isBlocked;
 		case 'activity':
 			return (!user.value.hideActivity && !user.value.isBlocked) || isOwner || isAdminMod;
 		case 'achievements':
@@ -167,6 +170,10 @@ const headerTabs = computed(() => {
 			key: 'notes',
 			title: i18n.ts.notes,
 			icon: 'ti ti-pencil',
+		}, {
+			key: 'files',
+			title: i18n.ts.files,
+			icon: 'ti ti-photo',
 		},
 	];
 
