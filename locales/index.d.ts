@@ -135,6 +135,10 @@ export interface Locale extends ILocale {
      */
     "openInWindow": string;
     /**
+     * ウィンドウ
+     */
+    "window": string;
+    /**
      * プロフィール
      */
     "profile": string;
@@ -3226,10 +3230,6 @@ export interface Locale extends ILocale {
      * 設定はページリロード後に反映されます。
      */
     "reloadToApplySetting": string;
-    /**
-     * 反映には再起動が必要です。
-     */
-    "needReloadToApply": string;
     /**
      * タイトルバーを表示する
      */

@@ -144,7 +144,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	pinnedEmojis: {
 		where: 'account',
-		default: [],
+		default: [] as string[],
 	},
 	reactionAcceptance: {
 		where: 'account',
@@ -368,7 +368,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	emojiPickerStyle: {
 		where: 'device',
-		default: 'auto' as 'auto' | 'popup' | 'drawer',
+		default: 'auto' as 'auto' | 'popup' | 'drawer' | 'window',
 	},
 	recentlyUsedEmojis: {
 		where: 'device',

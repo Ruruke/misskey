@@ -20,4 +20,6 @@ git remote add io https://github.com/MisskeyIO/misskey.git
 git remote add upstream https://github.com/misskey-dev/misskey.git
 git remote add youjo https://github.com/yojo-art/cherrypick.git
 git remote add samunohito https://github.com/samunohito/misskey.git
+git remote add gtyih https://github.com/kakkokari-gtyih/misskey.git
+git remote add taichan https://github.com/tai-cha/misskey.git
 git fetch --all

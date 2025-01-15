@@ -12,9 +12,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { shallowRef } from 'vue';
 import * as Misskey from 'misskey-js';
+import type { PostFormProps } from '@/types/post-form.js';
 import MkModal from '@/components/MkModal.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 import * as os from '@/os.js';
+import { globalEvents } from '@/events.js';
 
 const props = defineProps<{
 	reply?: Misskey.entities.Note;
@@ -49,6 +51,12 @@ function onPosting() {
 
 function onPostError() {
 	os.post();
+}
+
+function onModalClose() {
+	// MkPostFormでもonBeforeUnmountで発火しているが、modalの場合は閉じるまでのトランジションがあるので
+	// 閉じるボタンが押された瞬間に先に発火する
+	globalEvents.emit('requestCloseEmojiPickerWindow');
 }
 
 function onModalClosed() {
