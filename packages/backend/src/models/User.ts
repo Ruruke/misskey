@@ -288,10 +288,6 @@ export class MiUser {
 	})
 	public signupReason: string | null;
 
-	@Column('varchar', {
-		length: 500, nullable: true,
-	})
-	public listenbrainz: string | null;
 	/**
 	 * True if profile RSS feeds are enabled for this user.
 	 * Enabled by default (opt-out) for existing users, to avoid breaking any existing feeds.
