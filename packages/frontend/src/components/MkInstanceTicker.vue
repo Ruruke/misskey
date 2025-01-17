@@ -7,11 +7,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div :class="$style.root" :style="themeColorStyle">
 	<img v-if="faviconUrl" :class="$style.icon" :src="faviconUrl"/>
 	<div :class="$style.name">
-  	{{ instance.name }}
-  <template v-if="showInstanceTickerSoftwareName">
-    | {{ instance.softwareName }}
-  </template>
-</div>
+		{{ instance.name }}
+		<template v-if="showInstanceTickerSoftwareName">
+			| {{ instance.softwareName }}
+		</template>
+	</div>
 </div>
 </template>
 
