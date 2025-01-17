@@ -1285,19 +1285,13 @@ declare namespace entities {
         AdminAdListRequest,
         AdminAdListResponse,
         AdminAdUpdateRequest,
-        AdminInboxRuleListResponse,
-        AdminInboxRuleSetRequest,
-        AdminInboxRuleSetResponse,
-        AdminInboxRuleEditRequest,
-        AdminInboxRuleEditResponse,
-        AdminInboxRuleDeleteRequest,
-        AdminInboxRuleDeleteResponse,
         AdminAnnouncementsCreateRequest,
         AdminAnnouncementsCreateResponse,
         AdminAnnouncementsDeleteRequest,
         AdminAnnouncementsListRequest,
         AdminAnnouncementsListResponse,
         AdminAnnouncementsUpdateRequest,
+        AdminApproveUserRequest,
         AdminAvatarDecorationsCreateRequest,
         AdminAvatarDecorationsCreateResponse,
         AdminAvatarDecorationsDeleteRequest,
@@ -1329,8 +1323,6 @@ declare namespace entities {
         AdminEmojiSetCategoryBulkRequest,
         AdminEmojiSetLicenseBulkRequest,
         AdminEmojiUpdateRequest,
-        V2AdminEmojiListRequest,
-        V2AdminEmojiListResponse,
         AdminFederationDeleteAllFilesRequest,
         AdminFederationRefreshRemoteInstanceMetadataRequest,
         AdminFederationRemoveAllFollowingRequest,
@@ -1340,6 +1332,13 @@ declare namespace entities {
         AdminGetTableStatsResponse,
         AdminGetUserIpsRequest,
         AdminGetUserIpsResponse,
+        AdminInboxRuleDeleteRequest,
+        AdminInboxRuleDeleteResponse,
+        AdminInboxRuleEditRequest,
+        AdminInboxRuleEditResponse,
+        AdminInboxRuleListResponse,
+        AdminInboxRuleSetRequest,
+        AdminInboxRuleSetResponse,
         AdminInviteCreateRequest,
         AdminInviteCreateResponse,
         AdminInviteListRequest,
@@ -1352,7 +1351,6 @@ declare namespace entities {
         AdminQueueStatsResponse,
         AdminRelaysAddRequest,
         AdminRelaysAddResponse,
-        AdminApproveUserRequest,
         AdminRelaysListResponse,
         AdminRelaysRemoveRequest,
         AdminResetPasswordRequest,
@@ -1735,10 +1733,10 @@ declare namespace entities {
         NotesScheduleDeleteRequest,
         NotesScheduleListRequest,
         NotesScheduleListResponse,
-        NotesSearchByTagRequest,
-        NotesSearchByTagResponse,
         NotesSearchRequest,
         NotesSearchResponse,
+        NotesSearchByTagRequest,
+        NotesSearchByTagResponse,
         NotesShowRequest,
         NotesShowResponse,
         NotesStateRequest,
@@ -3486,12 +3484,6 @@ type UsersShowResponse = operations['users___show']['responses']['200']['content
 
 // @public (undocumented)
 type UsersUpdateMemoRequest = operations['users___update-memo']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type V2AdminEmojiListRequest = operations['v2___admin___emoji___list']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type V2AdminEmojiListResponse = operations['v2___admin___emoji___list']['responses']['200']['content']['application/json'];
 
 // Warnings were encountered during analysis:
 //

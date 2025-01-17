@@ -23,19 +23,13 @@ import type {
 	AdminAdListRequest,
 	AdminAdListResponse,
 	AdminAdUpdateRequest,
-	AdminInboxRuleListResponse,
-	AdminInboxRuleSetRequest,
-	AdminInboxRuleSetResponse,
-	AdminInboxRuleEditRequest,
-	AdminInboxRuleEditResponse,
-	AdminInboxRuleDeleteRequest,
-	AdminInboxRuleDeleteResponse,
 	AdminAnnouncementsCreateRequest,
 	AdminAnnouncementsCreateResponse,
 	AdminAnnouncementsDeleteRequest,
 	AdminAnnouncementsListRequest,
 	AdminAnnouncementsListResponse,
 	AdminAnnouncementsUpdateRequest,
+	AdminApproveUserRequest,
 	AdminAvatarDecorationsCreateRequest,
 	AdminAvatarDecorationsCreateResponse,
 	AdminAvatarDecorationsDeleteRequest,
@@ -67,8 +61,6 @@ import type {
 	AdminEmojiSetCategoryBulkRequest,
 	AdminEmojiSetLicenseBulkRequest,
 	AdminEmojiUpdateRequest,
-	V2AdminEmojiListRequest,
-	V2AdminEmojiListResponse,
 	AdminFederationDeleteAllFilesRequest,
 	AdminFederationRefreshRemoteInstanceMetadataRequest,
 	AdminFederationRemoveAllFollowingRequest,
@@ -78,6 +70,13 @@ import type {
 	AdminGetTableStatsResponse,
 	AdminGetUserIpsRequest,
 	AdminGetUserIpsResponse,
+	AdminInboxRuleDeleteRequest,
+	AdminInboxRuleDeleteResponse,
+	AdminInboxRuleEditRequest,
+	AdminInboxRuleEditResponse,
+	AdminInboxRuleListResponse,
+	AdminInboxRuleSetRequest,
+	AdminInboxRuleSetResponse,
 	AdminInviteCreateRequest,
 	AdminInviteCreateResponse,
 	AdminInviteListRequest,
@@ -90,7 +89,6 @@ import type {
 	AdminQueueStatsResponse,
 	AdminRelaysAddRequest,
 	AdminRelaysAddResponse,
-	AdminApproveUserRequest,
 	AdminRelaysListResponse,
 	AdminRelaysRemoveRequest,
 	AdminResetPasswordRequest,
@@ -473,10 +471,10 @@ import type {
 	NotesScheduleDeleteRequest,
 	NotesScheduleListRequest,
 	NotesScheduleListResponse,
-	NotesSearchByTagRequest,
-	NotesSearchByTagResponse,
 	NotesSearchRequest,
 	NotesSearchResponse,
+	NotesSearchByTagRequest,
+	NotesSearchByTagResponse,
 	NotesShowRequest,
 	NotesShowResponse,
 	NotesStateRequest,
@@ -612,14 +610,11 @@ export type Endpoints = {
 	'admin/ad/delete': { req: AdminAdDeleteRequest; res: EmptyResponse };
 	'admin/ad/list': { req: AdminAdListRequest; res: AdminAdListResponse };
 	'admin/ad/update': { req: AdminAdUpdateRequest; res: EmptyResponse };
-	'admin/inbox-rule/list': { req: EmptyRequest; res: AdminInboxRuleListResponse };
-	'admin/inbox-rule/set': { req: AdminInboxRuleSetRequest; res: AdminInboxRuleSetResponse };
-	'admin/inbox-rule/edit': { req: AdminInboxRuleEditRequest; res: AdminInboxRuleEditResponse };
-	'admin/inbox-rule/delete': { req: AdminInboxRuleDeleteRequest; res: AdminInboxRuleDeleteResponse };
 	'admin/announcements/create': { req: AdminAnnouncementsCreateRequest; res: AdminAnnouncementsCreateResponse };
 	'admin/announcements/delete': { req: AdminAnnouncementsDeleteRequest; res: EmptyResponse };
 	'admin/announcements/list': { req: AdminAnnouncementsListRequest; res: AdminAnnouncementsListResponse };
 	'admin/announcements/update': { req: AdminAnnouncementsUpdateRequest; res: EmptyResponse };
+	'admin/approve-user': { req: AdminApproveUserRequest; res: EmptyResponse };
 	'admin/avatar-decorations/create': { req: AdminAvatarDecorationsCreateRequest; res: AdminAvatarDecorationsCreateResponse };
 	'admin/avatar-decorations/delete': { req: AdminAvatarDecorationsDeleteRequest; res: EmptyResponse };
 	'admin/avatar-decorations/list': { req: AdminAvatarDecorationsListRequest; res: AdminAvatarDecorationsListResponse };
@@ -645,7 +640,6 @@ export type Endpoints = {
 	'admin/emoji/set-category-bulk': { req: AdminEmojiSetCategoryBulkRequest; res: EmptyResponse };
 	'admin/emoji/set-license-bulk': { req: AdminEmojiSetLicenseBulkRequest; res: EmptyResponse };
 	'admin/emoji/update': { req: AdminEmojiUpdateRequest; res: EmptyResponse };
-	'v2/admin/emoji/list': { req: V2AdminEmojiListRequest; res: V2AdminEmojiListResponse };
 	'admin/federation/delete-all-files': { req: AdminFederationDeleteAllFilesRequest; res: EmptyResponse };
 	'admin/federation/refresh-remote-instance-metadata': { req: AdminFederationRefreshRemoteInstanceMetadataRequest; res: EmptyResponse };
 	'admin/federation/remove-all-following': { req: AdminFederationRemoveAllFollowingRequest; res: EmptyResponse };
@@ -654,6 +648,10 @@ export type Endpoints = {
 	'admin/get-index-stats': { req: EmptyRequest; res: AdminGetIndexStatsResponse };
 	'admin/get-table-stats': { req: EmptyRequest; res: AdminGetTableStatsResponse };
 	'admin/get-user-ips': { req: AdminGetUserIpsRequest; res: AdminGetUserIpsResponse };
+	'admin/inbox-rule/delete': { req: AdminInboxRuleDeleteRequest; res: AdminInboxRuleDeleteResponse };
+	'admin/inbox-rule/edit': { req: AdminInboxRuleEditRequest; res: AdminInboxRuleEditResponse };
+	'admin/inbox-rule/list': { req: EmptyRequest; res: AdminInboxRuleListResponse };
+	'admin/inbox-rule/set': { req: AdminInboxRuleSetRequest; res: AdminInboxRuleSetResponse };
 	'admin/invite/create': { req: AdminInviteCreateRequest; res: AdminInviteCreateResponse };
 	'admin/invite/list': { req: AdminInviteListRequest; res: AdminInviteListResponse };
 	'admin/meta': { req: EmptyRequest; res: AdminMetaResponse };
@@ -664,7 +662,6 @@ export type Endpoints = {
 	'admin/queue/promote': { req: AdminQueuePromoteRequest; res: EmptyResponse };
 	'admin/queue/stats': { req: EmptyRequest; res: AdminQueueStatsResponse };
 	'admin/relays/add': { req: AdminRelaysAddRequest; res: AdminRelaysAddResponse };
-	'admin/approve-user': { req: AdminApproveUserRequest; res: EmptyResponse };
 	'admin/relays/list': { req: EmptyRequest; res: AdminRelaysListResponse };
 	'admin/relays/remove': { req: AdminRelaysRemoveRequest; res: EmptyResponse };
 	'admin/reset-password': { req: AdminResetPasswordRequest; res: AdminResetPasswordResponse };
@@ -912,8 +909,8 @@ export type Endpoints = {
 	'notes/schedule/create': { req: NotesScheduleCreateRequest; res: EmptyResponse };
 	'notes/schedule/delete': { req: NotesScheduleDeleteRequest; res: EmptyResponse };
 	'notes/schedule/list': { req: NotesScheduleListRequest; res: NotesScheduleListResponse };
-	'notes/search-by-tag': { req: NotesSearchByTagRequest; res: NotesSearchByTagResponse };
 	'notes/search': { req: NotesSearchRequest; res: NotesSearchResponse };
+	'notes/search-by-tag': { req: NotesSearchByTagRequest; res: NotesSearchByTagResponse };
 	'notes/show': { req: NotesShowRequest; res: NotesShowResponse };
 	'notes/state': { req: NotesStateRequest; res: NotesStateResponse };
 	'notes/thread-muting/create': { req: NotesThreadMutingCreateRequest; res: EmptyResponse };

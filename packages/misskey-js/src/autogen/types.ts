@@ -134,42 +134,6 @@ export type paths = {
      */
     post: operations['admin___ad___update'];
   };
-  '/admin/inbox-rule/list': {
-    /**
-     * admin/inbox-rule/list
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:admin:inbox-rule*
-     */
-    post: operations['admin___inbox-rule___list'];
-  };
-  '/admin/inbox-rule/set': {
-    /**
-     * admin/inbox-rule/set
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
-     */
-    post: operations['admin___inbox-rule___set'];
-  };
-  '/admin/inbox-rule/edit': {
-    /**
-     * admin/inbox-rule/edit
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
-     */
-    post: operations['admin___inbox-rule___edit'];
-  };
-  '/admin/inbox-rule/delete': {
-    /**
-     * admin/inbox-rule/delete
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
-     */
-    post: operations['admin___inbox-rule___delete'];
-  };
   '/admin/announcements/create': {
     /**
      * admin/announcements/create
@@ -205,6 +169,16 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *write:admin:announcements*
      */
     post: operations['admin___announcements___update'];
+  };
+  '/admin/approve-user': {
+    /**
+     * admin/approve-user
+     * @description No description provided.
+     *
+     * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
+     * **Credential required**: *Yes* / **Permission**: *write:admin:approve-account*
+     */
+    post: operations['admin___approve-user'];
   };
   '/admin/avatar-decorations/create': {
     /**
@@ -432,15 +406,6 @@ export type paths = {
      */
     post: operations['admin___emoji___update'];
   };
-  '/v2/admin/emoji/list': {
-    /**
-     * v2/admin/emoji/list
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:admin:emoji*
-     */
-    post: operations['v2___admin___emoji___list'];
-  };
   '/admin/federation/delete-all-files': {
     /**
      * admin/federation/delete-all-files
@@ -512,6 +477,42 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *read:admin:user-ips*
      */
     post: operations['admin___get-user-ips'];
+  };
+  '/admin/inbox-rule/delete': {
+    /**
+     * admin/inbox-rule/delete
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+     */
+    post: operations['admin___inbox-rule___delete'];
+  };
+  '/admin/inbox-rule/edit': {
+    /**
+     * admin/inbox-rule/edit
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+     */
+    post: operations['admin___inbox-rule___edit'];
+  };
+  '/admin/inbox-rule/list': {
+    /**
+     * admin/inbox-rule/list
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *read:admin:inbox-rule*
+     */
+    post: operations['admin___inbox-rule___list'];
+  };
+  '/admin/inbox-rule/set': {
+    /**
+     * admin/inbox-rule/set
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+     */
+    post: operations['admin___inbox-rule___set'];
   };
   '/admin/invite/create': {
     /**
@@ -602,16 +603,6 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *write:admin:relays*
      */
     post: operations['admin___relays___add'];
-  };
-  '/admin/approve-user': {
-    /**
-     * admin/approve-user
-     * @description No description provided.
-     *
-     * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-     * **Credential required**: *Yes* / **Permission**: *write:admin:approve-account*
-     */
-    post: operations['admin___approve-user'];
   };
   '/admin/relays/list': {
     /**
@@ -3032,15 +3023,6 @@ export type paths = {
      */
     post: operations['notes___schedule___list'];
   };
-  '/notes/search-by-tag': {
-    /**
-     * notes/search-by-tag
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['notes___search-by-tag'];
-  };
   '/notes/search': {
     /**
      * notes/search
@@ -3049,6 +3031,15 @@ export type paths = {
      * **Credential required**: *No*
      */
     post: operations['notes___search'];
+  };
+  '/notes/search-by-tag': {
+    /**
+     * notes/search-by-tag
+     * @description No description provided.
+     *
+     * **Credential required**: *No*
+     */
+    post: operations['notes___search-by-tag'];
   };
   '/notes/show': {
     /**
@@ -6036,218 +6027,6 @@ export type operations = {
     };
   };
   /**
-   * admin/inbox-rule/list
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:admin:inbox-rule*
-   */
-  'admin___inbox-rule___list': {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': Record<string, never>[];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/inbox-rule/set
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
-   */
-  'admin___inbox-rule___set': {
-    requestBody: {
-      content: {
-        'application/json': {
-          name?: string | null;
-          condFormula: Record<string, never>;
-          action: Record<string, never>;
-          description?: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/inbox-rule/edit
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
-   */
-  'admin___inbox-rule___edit': {
-    requestBody: {
-      content: {
-        'application/json': {
-          id: string;
-          name?: string | null;
-          condFormula?: Record<string, never> | null;
-          action?: Record<string, never>;
-          description?: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/inbox-rule/delete
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
-   */
-  'admin___inbox-rule___delete': {
-    requestBody: {
-      content: {
-        'application/json': {
-          id: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * admin/announcements/create
    * @description No description provided.
    *
@@ -6490,6 +6269,59 @@ export type operations = {
           silence?: boolean;
           needConfirmationToRead?: boolean;
           isActive?: boolean;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/approve-user
+   * @description No description provided.
+   *
+   * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
+   * **Credential required**: *Yes* / **Permission**: *write:admin:approve-account*
+   */
+  'admin___approve-user': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          userId: string;
         };
       };
     };
@@ -8016,97 +7848,6 @@ export type operations = {
     };
   };
   /**
-   * v2/admin/emoji/list
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:admin:emoji*
-   */
-  v2___admin___emoji___list: {
-    requestBody: {
-      content: {
-        'application/json': {
-          query?: ({
-            updatedAtFrom?: string;
-            updatedAtTo?: string;
-            name?: string;
-            host?: string;
-            uri?: string;
-            publicUrl?: string;
-            originalUrl?: string;
-            type?: string;
-            aliases?: string;
-            category?: string;
-            license?: string;
-            isSensitive?: boolean;
-            localOnly?: boolean;
-            /**
-             * @default all
-             * @enum {string}
-             */
-            hostType?: 'local' | 'remote' | 'all';
-            roleIds?: string[];
-          }) | null;
-          /** Format: misskey:id */
-          sinceId?: string;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** @default 10 */
-          limit?: number;
-          page?: number;
-          /**
-           * @default [
-           *   "-id"
-           * ]
-           */
-          sortKeys?: ('+id' | '-id' | '+updatedAt' | '-updatedAt' | '+name' | '-name' | '+host' | '-host' | '+uri' | '-uri' | '+publicUrl' | '-publicUrl' | '+type' | '-type' | '+aliases' | '-aliases' | '+category' | '-category' | '+license' | '-license' | '+isSensitive' | '-isSensitive' | '+localOnly' | '-localOnly' | '+roleIdsThatCanBeUsedThisEmojiAsReaction' | '-roleIdsThatCanBeUsedThisEmojiAsReaction')[];
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-            emojis: components['schemas']['EmojiDetailedAdmin'][];
-            count: number;
-            allCount: number;
-            allPages: number;
-          };
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * admin/federation/delete-all-files
    * @description No description provided.
    *
@@ -8488,6 +8229,218 @@ export type operations = {
               /** Format: date-time */
               createdAt: string;
             }[];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/inbox-rule/delete
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+   */
+  'admin___inbox-rule___delete': {
+    requestBody: {
+      content: {
+        'application/json': {
+          id: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/inbox-rule/edit
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+   */
+  'admin___inbox-rule___edit': {
+    requestBody: {
+      content: {
+        'application/json': {
+          id: string;
+          name?: string | null;
+          condFormula?: Record<string, never> | null;
+          action?: Record<string, never>;
+          description?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': unknown;
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/inbox-rule/list
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *read:admin:inbox-rule*
+   */
+  'admin___inbox-rule___list': {
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': Record<string, never>[];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/inbox-rule/set
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:inbox-rule*
+   */
+  'admin___inbox-rule___set': {
+    requestBody: {
+      content: {
+        'application/json': {
+          name?: string | null;
+          condFormula: Record<string, never>;
+          action: Record<string, never>;
+          description?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': unknown;
         };
       };
       /** @description Client error */
@@ -9134,59 +9087,6 @@ export type operations = {
             status: 'requesting' | 'accepted' | 'rejected';
           };
         };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/approve-user
-   * @description No description provided.
-   *
-   * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-   * **Credential required**: *Yes* / **Permission**: *write:admin:approve-account*
-   */
-  'admin___approve-user': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          userId: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
       };
       /** @description Client error */
       400: {
@@ -24148,35 +24048,36 @@ export type operations = {
     };
   };
   /**
-   * notes/search-by-tag
+   * notes/search
    * @description No description provided.
    *
    * **Credential required**: *No*
    */
-  'notes___search-by-tag': {
+  notes___search: {
     requestBody: {
       content: {
         'application/json': {
-          /** @default null */
-          reply?: boolean | null;
-          /** @default null */
-          renote?: boolean | null;
-          /**
-           * @description Only show notes that have attached files.
-           * @default false
-           */
-          withFiles?: boolean;
-          /** @default null */
-          poll?: boolean | null;
+          query: string;
           /** Format: misskey:id */
           sinceId?: string;
           /** Format: misskey:id */
           untilId?: string;
           /** @default 10 */
           limit?: number;
-          tag?: string;
-          /** @description The outer arrays are chained with OR, the inner arrays are chained with AND. */
-          query?: string[][];
+          /** @default 0 */
+          offset?: number;
+          /** @description The local host is represented with `.`. */
+          host?: string;
+          /**
+           * Format: misskey:id
+           * @default null
+           */
+          userId?: string | null;
+          /**
+           * Format: misskey:id
+           * @default null
+           */
+          channelId?: string | null;
         };
       };
     };
@@ -24220,36 +24121,35 @@ export type operations = {
     };
   };
   /**
-   * notes/search
+   * notes/search-by-tag
    * @description No description provided.
    *
    * **Credential required**: *No*
    */
-  notes___search: {
+  'notes___search-by-tag': {
     requestBody: {
       content: {
         'application/json': {
-          query: string;
+          /** @default null */
+          reply?: boolean | null;
+          /** @default null */
+          renote?: boolean | null;
+          /**
+           * @description Only show notes that have attached files.
+           * @default false
+           */
+          withFiles?: boolean;
+          /** @default null */
+          poll?: boolean | null;
           /** Format: misskey:id */
           sinceId?: string;
           /** Format: misskey:id */
           untilId?: string;
           /** @default 10 */
           limit?: number;
-          /** @default 0 */
-          offset?: number;
-          /** @description The local host is represented with `.`. */
-          host?: string;
-          /**
-           * Format: misskey:id
-           * @default null
-           */
-          userId?: string | null;
-          /**
-           * Format: misskey:id
-           * @default null
-           */
-          channelId?: string | null;
+          tag?: string;
+          /** @description The outer arrays are chained with OR, the inner arrays are chained with AND. */
+          query?: string[][];
         };
       };
     };
