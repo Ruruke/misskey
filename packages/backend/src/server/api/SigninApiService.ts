@@ -24,9 +24,10 @@ import { UserAuthService } from '@/core/UserAuthService.js';
 import { CaptchaService } from '@/core/CaptchaService.js';
 import { FastifyReplyError } from '@/misc/fastify-reply-error.js';
 import { MetaService } from '@/core/MetaService.js';
+import { NotificationService } from '@/core/NotificationService.js';
+import { EmailService } from '@/core/EmailService.js';
 import { RateLimiterService } from './RateLimiterService.js';
 import { SigninService } from './SigninService.js';
-import { EmailService } from '@/core/EmailService.js';
 import type { AuthenticationResponseJSON } from '@simplewebauthn/types';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
@@ -57,6 +58,12 @@ export class SigninApiService {
 		private captchaService: CaptchaService,
 		private metaService: MetaService,
 	) {
+	}
+
+	private formatHeaders(headers: Record<string, any>): string {
+		return Object.entries(headers)
+			.map(([key, val]) => `${key}: ${val}`)
+			.join('\n');
 	}
 
 	@bindThis
@@ -123,7 +130,7 @@ export class SigninApiService {
 				emailVerified: true,
 				user: {
 					host: IsNull(),
-				}
+				},
 			} : {
 				user: {
 					usernameLower: username.toLowerCase(),
@@ -146,7 +153,7 @@ export class SigninApiService {
 		}
 
 		const profile = profiles[0];
-		const user = (profile?.user as MiLocalUser) ?? null;
+		const user = (profile.user as MiLocalUser) ?? null;
 
 		if (user == null || profile == null) {
 			return error(404, {
@@ -216,11 +223,11 @@ export class SigninApiService {
 				this.emailService.sendEmail(profile.email, 'Login failed / ログインに失敗しました',
 					`userid: ${user.name ?? `@${user.username}`} <br>` +
 					`ip: ${request.ip} <br>` +
-					'header: ' + JSON.stringify(request.headers) + '<br>' +
+					`header: <pre>${this.formatHeaders(request.headers as any)}</pre><br>` +
 					'There is a new login. If you do not recognize this login, update the security status of your account, including changing your password. / 新しいログインがありました。このログインに心当たりがない場合は、パスワードを変更するなど、アカウントのセキュリティ状態を更新してください。',
 					`userid: ${user.name ?? `@${user.username}`} \n` +
 					`ip: ${request.ip} \n` +
-					'header: ' + JSON.stringify(request.headers) + '\n' +
+					'header:\n' + this.formatHeaders(request.headers as any) + '\n' +
 					'There is a new login. If you do not recognize this login, update the security status of your account, including changing your password. / 新しいログインがありました。このログインに心当たりがない場合は、パスワードを変更するなど、アカウントのセキュリティ状態を更新してください。');
 			}
 
