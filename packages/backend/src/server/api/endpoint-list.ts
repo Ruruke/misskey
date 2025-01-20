@@ -4,7 +4,7 @@
  */
 
 /*
- * This file contains list of all endpoints exported as pathname of API endpoint*
+ * This file contains list of all endpoints exported as pathname of API endpoint
  *
  * When you add new endpoint, you should add it to this file.
  * This file is used to generate API documentation and EndpointsModule.
@@ -404,3 +404,4 @@ export * as 'users/search' from './endpoints/users/search.js';
 export * as 'users/search-by-username-and-host' from './endpoints/users/search-by-username-and-host.js';
 export * as 'users/show' from './endpoints/users/show.js';
 export * as 'users/update-memo' from './endpoints/users/update-memo.js';
+export * as 'v2/admin/emoji/list' from './endpoints/v2/admin/emoji/list.js';
