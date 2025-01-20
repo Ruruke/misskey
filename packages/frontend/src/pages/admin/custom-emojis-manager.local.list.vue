@@ -136,27 +136,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<XRegisterLogsFolder :logs="requestLogs"/>
 
-			<div v-if="gridItems.length === 0" style="text-align: center">
-				{{ i18n.ts._customEmojisManager._local._list.emojisNothing }}
-			</div>
-
+			<component :is="loadingHandler.component.value" v-if="loadingHandler.showing.value"/>
 			<template v-else>
-				<div :class="$style.gridArea">
-					<MkGrid :data="gridItems" :settings="setupGrid()" @event="onGridEvent"/>
+				<div v-if="gridItems.length === 0" style="text-align: center">
+					{{ i18n.ts._customEmojisManager._local._list.emojisNothing }}
 				</div>
 
-				<MkPagingButtons :current="currentPage" :max="allPages" :buttonCount="5" @pageChanged="onPageChanged"/>
-			</template>
+				<template v-else>
+					<div :class="$style.gridArea">
+						<MkGrid :data="gridItems" :settings="setupGrid()" @event="onGridEvent"/>
+					</div>
 
-			<div :class="$style.buttons">
-				<MkButton danger style="margin-right: auto" @click="onDeleteButtonClicked">{{ i18n.ts.delete }}</MkButton>
-				<MkButton primary :disabled="updateButtonDisabled" @click="onUpdateButtonClicked">
-					{{
-						i18n.ts.update
-					}}
-				</MkButton>
-				<MkButton @click="onGridResetButtonClicked">{{ i18n.ts.reset }}</MkButton>
-			</div>
+					<div :class="$style.footer">
+						<div :class="$style.left">
+							<MkButton danger style="margin-right: auto" @click="onDeleteButtonClicked">
+								{{ i18n.ts.delete }} ({{ deleteItemsCount }})
+							</MkButton>
+						</div>
+
+						<div :class="$style.center">
+							<MkPagingButtons :current="currentPage" :max="allPages" :buttonCount="5" @pageChanged="onPageChanged"/>
+						</div>
+
+						<div :class="$style.right">
+							<MkButton primary :disabled="updateButtonDisabled" @click="onUpdateButtonClicked">
+								{{ i18n.ts.update }} ({{ updatedItemsCount }})
+							</MkButton>
+							<MkButton @click="onGridResetButtonClicked">{{ i18n.ts.reset }}</MkButton>
+						</div>
+					</div>
+				</template>
+			</template>
 		</div>
 	</template>
 </MkStickyContainer>
@@ -192,6 +202,7 @@ import { selectFile } from '@/scripts/select-file.js';
 import { copyGridDataToClipboard, removeDataFromGrid } from '@/components/grid/grid-utils.js';
 import MkSortOrderEditor from '@/components/MkSortOrderEditor.vue';
 import { SortOrder } from '@/components/MkSortOrderEditor.define.js';
+import { useLoading } from '@/components/hook/useLoading.js';
 
 type GridItem = {
 	checked: boolean;
@@ -267,9 +278,9 @@ function setupGrid(): GridSetting {
 			},
 		},
 		cols: [
-			{ bindTo: 'checked', icon: 'ti ti-trash', type: 'boolean', editable: true, width: 34 },
+			{ bindTo: 'checked', icon: 'ti-trash', type: 'boolean', editable: true, width: 34 },
 			{
-				bindTo: 'url', icon: 'ti ti-icons', type: 'image', editable: true, width: 'auto', validators: [required],
+				bindTo: 'url', icon: 'ti-icons', type: 'image', editable: true, width: 'auto', validators: [required],
 				async customValueEditor(row, col, value, cellElement) {
 					const file = await selectFile(cellElement);
 					gridItems.value[row.index].url = file.url;
@@ -364,6 +375,8 @@ function setupGrid(): GridSetting {
 	};
 }
 
+const loadingHandler = useLoading();
+
 const customEmojis = ref<Misskey.entities.EmojiDetailedAdmin[]>([]);
 const allPages = ref<number>(0);
 const currentPage = ref<number>(0);
@@ -388,6 +401,10 @@ const updateButtonDisabled = ref<boolean>(false);
 
 const spMode = computed(() => ['smartphone', 'tablet'].includes(deviceKind));
 const queryRolesText = computed(() => queryRoles.value.map(it => it.name).join(','));
+const updatedItemsCount = computed(() => {
+	return gridItems.value.filter((it, idx) => !it.checked && JSON.stringify(it) !== JSON.stringify(originGridItems.value[idx])).length;
+});
+const deleteItemsCount = computed(() => gridItems.value.filter(it => it.checked).length);
 
 async function onUpdateButtonClicked() {
 	const _items = gridItems.value;
@@ -577,18 +594,12 @@ async function refreshCustomEmojis() {
 		currentPage.value = 1;
 	}
 
-	const result = await os.promiseDialog(
-		misskeyApi('v2/admin/emoji/list', {
-			query: query,
-			limit: limit,
-			page: currentPage.value,
-			sortKeys: sortOrders.value.map(({ key, direction }) => `${direction}${key}` as any),
-		}),
-		() => {
-		},
-		() => {
-		},
-	);
+	const result = await loadingHandler.scope(() => misskeyApi('v2/admin/emoji/list', {
+		query: query,
+		limit: limit,
+		page: currentPage.value,
+		sortKeys: sortOrders.value.map(({ key, direction }) => `${direction}${key}` as any),
+	}));
 
 	customEmojis.value = result.emojis;
 	allPages.value = result.allPages;
@@ -702,8 +713,8 @@ onMounted(async () => {
 	background-color: var(--MI_THEME-bg);
 
 	position: sticky;
-	left: 0;
-	bottom: 0;
+	left:0;
+	bottom:0;
 	z-index: 1;
 	// stickyで追従させる都合上、フッター自身でpaddingを持つ必要があるため、親要素で画一的に指定している分をネガティブマージンで相殺している
 	margin-top: calc(var(--MI-margin) * -1);
@@ -714,7 +725,28 @@ onMounted(async () => {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	gap: 8px;
-	flex-wrap: wrap;
+
+	& .left {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 8px;
+	}
+
+	& .center {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	& .right {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		flex-direction: row;
+		gap: 8px;
+	}
 }
 
 .divider {

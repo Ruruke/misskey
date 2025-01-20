@@ -11051,7 +11051,7 @@ export interface Locale extends ILocale {
              */
             "importSelectionRangesRows": string;
             /**
-             * チェックがついた絵文字をインポート
+             * チェックされた絵文字をインポート
              */
             "importEmojisButton": string;
             /**

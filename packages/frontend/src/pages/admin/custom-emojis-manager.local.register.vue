@@ -43,16 +43,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<ul>
 			<li>{{ i18n.ts._customEmojisManager._local._register.emojiInputAreaList1 }}</li>
-			<li>
-				<a @click.prevent="onFileSelectClicked">{{
-					i18n.ts._customEmojisManager._local._register.emojiInputAreaList2
-				}}</a>
-			</li>
-			<li>
-				<a @click.prevent="onDriveSelectClicked">{{
-					i18n.ts._customEmojisManager._local._register.emojiInputAreaList3
-				}}</a>
-			</li>
+			<li><a @click.prevent="onFileSelectClicked">{{ i18n.ts._customEmojisManager._local._register.emojiInputAreaList2 }}</a></li>
+			<li><a @click.prevent="onDriveSelectClicked">{{ i18n.ts._customEmojisManager._local._register.emojiInputAreaList3 }}</a></li>
 		</ul>
 	</div>
 
@@ -64,7 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		/>
 	</div>
 
-	<div v-if="gridItems.length > 0" :class="$style.buttons">
+	<div v-if="gridItems.length > 0" :class="$style.footer">
 		<MkButton primary :disabled="registerButtonDisabled" @click="onRegistryClicked">
 			{{ i18n.ts.registration }}
 		</MkButton>
@@ -173,7 +165,7 @@ function setupGrid(): GridSetting {
 			},
 		},
 		cols: [
-			{ bindTo: 'url', icon: 'ti ti-icons', type: 'image', editable: false, width: 'auto', validators: [required] },
+			{ bindTo: 'url', icon: 'ti-icons', type: 'image', editable: false, width: 'auto', validators: [required] },
 			{
 				bindTo: 'name', title: 'name', type: 'text', editable: true, width: 140,
 				validators: [required, regex, unique],
@@ -468,8 +460,8 @@ onMounted(async () => {
 	background-color: var(--MI_THEME-bg);
 
 	position: sticky;
-	left: 0;
-	bottom: 0;
+	left:0;
+	bottom:0;
 	z-index: 1;
 	// stickyで追従させる都合上、フッター自身でpaddingを持つ必要があるため、親要素で画一的に指定している分をネガティブマージンで相殺している
 	margin-top: calc(var(--MI-margin) * -1);
