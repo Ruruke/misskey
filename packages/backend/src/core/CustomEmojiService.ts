@@ -19,6 +19,7 @@ import { sqlLikeEscape } from '@/misc/sql-like-escape.js';
 import type { EmojisRepository, MiRole, MiUser } from '@/models/_.js';
 import type { MiEmoji } from '@/models/Emoji.js';
 import type { Serialized } from '@/types.js';
+import { DriveService } from '@/core/DriveService.js';
 
 const parseEmojiStrRegexp = /^([-\w]+)(?:@([\w.-]+))?$/;
 
