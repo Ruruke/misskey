@@ -69,10 +69,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span v-if="appearNote.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
 					</div>
 				</div>
-<<<<<<< HEAD
-				<div :class="$style.noteHeaderUsername"><MkAcct :user="appearNote.user"/></div>
-				<MkInstanceTicker v-if="showTicker || showInstanceIcon" :instance="appearNote.user.instance"/>
-=======
 				<div :class="$style.noteHeaderUsernameAndBadgeRoles">
 					<div :class="$style.noteHeaderUsername">
 						<MkAcct :user="appearNote.user"/>
@@ -82,7 +78,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 				<MkInstanceTicker v-if="showTicker" :host="appearNote.user.host" :instance="appearNote.user.instance"/>
->>>>>>> e8b633efec (fix(frontend): Instanceの値が部分的に欠損していると、ローカルサーバーの情報にフォールバックする問題を修正 (#15319))
 			</div>
 		</header>
 		<div :class="$style.noteContent">
