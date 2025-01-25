@@ -1,4 +1,4 @@
-<!--
+ <!--
 SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
@@ -78,6 +78,7 @@ import { computed, defineAsyncComponent, ref, shallowRef } from 'vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkPagination from '@/components/MkPagination.vue';
+import MkRemoteEmojiEditDialog from '@/components/MkRemoteEmojiEditDialog.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import FormSplit from '@/components/form/split.vue';
 import { selectFile } from '@/scripts/select-file.js';
@@ -159,6 +160,18 @@ const edit = (emoji) => {
 		closed: () => dispose(),
 	});
 };
+const detailRemoteEmoji = (emoji) => {
+	const { dispose } = os.popup(MkRemoteEmojiEditDialog, {
+		emoji: emoji,
+	}, {
+		done: () => {
+			dispose();
+		},
+		closed: () => {
+			dispose();
+		},
+	});
+};
 
 const importEmoji = async(emoji) => {
 	let res = await os.apiWithDialog('admin/emoji/copy', {
@@ -172,6 +185,10 @@ const remoteMenu = (emoji, ev: MouseEvent) => {
 	os.popupMenu([{
 		type: 'label',
 		text: ':' + emoji.name + ':',
+	}, {
+		text: i18n.ts.details,
+		icon: 'ti ti-info-circle',
+		action: () => { detailRemoteEmoji(emoji); },
 	}, {
 		text: i18n.ts.import,
 		icon: 'ti ti-plus',
