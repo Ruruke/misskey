@@ -193,6 +193,7 @@ export function pluginReplaceIcons() {
 				'ti ti-corner-up-right': 'ph-arrow-bend-up-right ph-bold ph-lg',
 				'ti ti-cpu': 'ph-cpu ph-bold ph-lg',
 				'ti ti-crop': 'ph-crop ph-bold ph-lg',
+				'ti ti-photo-search': 'ph-image ph-bold ph-lg',
 				'ti ti-crown': 'ph-crown ph-bold ph-lg',
 				'ti ti-dashboard': 'ph-gauge ph-bold ph-lg',
 				'ti ti-database': 'ph-database ph-bold ph-lg',
