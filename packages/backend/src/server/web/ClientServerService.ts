@@ -517,7 +517,11 @@ export class ClientServerService {
 				usernameLower: username.toLowerCase(),
 				host: host ?? IsNull(),
 				isSuspended: false,
+<<<<<<< HEAD
 				enableRss: true,
+=======
+				requireSigninToViewContents: false,
+>>>>>>> ef29130057 (fix(backend): ノートの閲覧にログイン必須にしてもFeedでノートが表示されてしまう問題を修正 (#15083))
 			});
 
 			return user && await this.feedService.packFeed(user);
