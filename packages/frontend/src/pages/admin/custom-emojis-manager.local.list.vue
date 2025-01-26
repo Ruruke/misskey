@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 
 				<template v-else>
-					<div>
+					<div :class="$style.grid">
 						<MkGrid :data="gridItems" :settings="setupGrid()" @event="onGridEvent"/>
 					</div>
 				</template>
@@ -610,6 +610,11 @@ const headerActions = computed(() => [{
 .main {
 	height: calc(100vh - var(--MI-stickyTop) - var(--MI-stickyBottom));
 	overflow: scroll;
+}
+
+.grid {
+	width: max-content;
+	border-bottom: 1px solid var(--MI_THEME-divider);
 }
 
 .footer {
