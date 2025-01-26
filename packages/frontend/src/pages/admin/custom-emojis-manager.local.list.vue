@@ -289,6 +289,7 @@ const searchQuery = ref<EmojiSearchQuery>({
 	sortOrders: [],
 	limit: 25,
 });
+let searchWindowOpening = false;
 
 const previousQuery = ref<string | undefined>(undefined);
 const sortOrders = ref<SortOrder<GridSortOrderKey>[]>([]);
@@ -527,6 +528,8 @@ const headerActions = computed(() => [{
 	icon: 'ti ti-search',
 	text: i18n.ts.search,
 	handler: () => {
+		if (searchWindowOpening) return;
+		searchWindowOpening = true;
 		const { dispose } = os.popup(defineAsyncComponent(() => import('./custom-emojis-manager.local.list.search.vue')), {
 			query: searchQuery.value,
 		}, {
@@ -541,6 +544,7 @@ const headerActions = computed(() => [{
 			},
 			closed: () => {
 				dispose();
+				searchWindowOpening = false;
 			},
 		});
 	},
@@ -590,7 +594,7 @@ const headerActions = computed(() => [{
 				dispose();
 			},
 		});
-	},
+	}
 }]);
 </script>
 
