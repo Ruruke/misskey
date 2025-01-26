@@ -89,13 +89,9 @@ import MkPagingButtons from '@/components/MkPagingButtons.vue';
 import { GridSetting } from '@/components/grid/grid.js';
 import { selectFile } from '@/scripts/select-file.js';
 import { copyGridDataToClipboard, removeDataFromGrid } from '@/components/grid/grid-utils.js';
-<<<<<<< HEAD
 import MkSortOrderEditor from '@/components/MkSortOrderEditor.vue';
 import { SortOrder } from '@/components/MkSortOrderEditor.define.js';
 import { useLoading } from '@/components/hook/useLoading.js';
-=======
-import { useLoading } from "@/components/hook/useLoading.js";
->>>>>>> cc265ca1f9 (enhance(frontend): 絵文字管理画面β（ローカル）のUI・UX改善)
 
 type GridItem = {
 	checked: boolean;
@@ -559,7 +555,7 @@ const headerActions = computed(() => [{
 				dispose();
 			},
 		});
-	}
+	},
 }]);
 </script>
 
