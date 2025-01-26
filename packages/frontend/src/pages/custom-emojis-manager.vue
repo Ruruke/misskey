@@ -173,8 +173,26 @@ const detailRemoteEmoji = (emoji) => {
 	});
 };
 
+<<<<<<< HEAD
 const importEmoji = async(emoji) => {
 	let res = await os.apiWithDialog('admin/emoji/copy', {
+=======
+const detailRemoteEmoji = (emoji) => {
+	const { dispose } = os.popup(MkRemoteEmojiEditDialog, {
+		emoji: emoji,
+	}, {
+		done: () => {
+			dispose();
+		},
+		closed: () => {
+			dispose();
+		},
+	});
+};
+
+const importEmoji = (emoji) => {
+	os.apiWithDialog('admin/emoji/copy', {
+>>>>>>> f4bca4708e (feat(frontend): リモート絵文字のインポート時に詳細を確認できるように (#15344))
 		emojiId: emoji.id,
 	});
 	res = await importEmojiMeta(res, emoji.host);
