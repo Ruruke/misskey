@@ -23,4 +23,6 @@ git remote add samunohito https://github.com/samunohito/misskey.git
 git remote add gtyih https://github.com/kakkokari-gtyih/misskey.git
 git remote add taichan https://github.com/tai-cha/misskey.git
 git remote add anatawa https://github.com/anatawa12/misskey.git
+git remote add fruitriin https://github.com/fruitriin/misskey.git
+git remote add sakuhanight https://github.com/sakuhanight/misskey.git
 git fetch --all

@@ -106,6 +106,7 @@ export * as 'admin/unsuspend-user' from './endpoints/admin/unsuspend-user.js';
 export * as 'admin/update-abuse-user-report' from './endpoints/admin/update-abuse-user-report.js';
 export * as 'admin/update-meta' from './endpoints/admin/update-meta.js';
 export * as 'admin/update-user-note' from './endpoints/admin/update-user-note.js';
+export * as 'admin/update-proxy-account' from './endpoints/admin/update-proxy-account.js';
 export * as 'announcements' from './endpoints/announcements.js';
 export * as 'announcements/show' from './endpoints/announcements/show.js';
 export * as 'antennas/create' from './endpoints/antennas/create.js';
