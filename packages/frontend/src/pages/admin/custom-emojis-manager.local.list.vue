@@ -319,11 +319,11 @@ async function onUpdateButtonClicked() {
 		return;
 	}
 
-	const confirm = await os.confirm({
+	const { canceled } = await os.confirm({
 		type: 'info',
 		text: i18n.tsx._customEmojisManager._local._list.confirmUpdateEmojisDescription({ count: updatedItems.length }),
 	});
-	if (confirm.canceled) {
+	if (canceled) {
 		return;
 	}
 
@@ -385,11 +385,11 @@ async function onDeleteButtonClicked() {
 		return;
 	}
 
-	const confirm = await os.confirm({
+	const { canceled } = await os.confirm({
 		type: 'info',
 		text: i18n.tsx._customEmojisManager._local._list.confirmDeleteEmojisDescription({ count: deleteItems.length }),
 	});
-	if (confirm.canceled) {
+	if (canceled) {
 		return;
 	}
 
@@ -543,6 +543,41 @@ const headerActions = computed(() => [{
 				dispose();
 			},
 		});
+	},
+}, {
+	icon: 'ti ti-list-numbers',
+	text: i18n.ts._customEmojisManager._gridCommon.searchLimit,
+	handler: (ev: MouseEvent) => {
+		async function changeSearchLimit(to: number) {
+			if (updatedItemsCount.value > 0) {
+				const { canceled } = await os.confirm({
+					type: 'warning',
+					title: i18n.ts._customEmojisManager._local._list.confirmChangeView,
+					text: i18n.ts._customEmojisManager._local._list.confirmMovePageDesciption,
+				});
+				if (canceled) return;
+			}
+
+			searchQuery.value.limit = to;
+			refreshCustomEmojis();
+		}
+
+		os.popupMenu([{
+			type: 'radioOption',
+			text: '25',
+			active: computed(() => searchQuery.value.limit === 25),
+			action: () => changeSearchLimit(25),
+		}, {
+			type: 'radioOption',
+			text: '50',
+			active: computed(() => searchQuery.value.limit === 50),
+			action: () => changeSearchLimit(50),
+		}, {
+			type: 'radioOption',
+			text: '100',
+			active: computed(() => searchQuery.value.limit === 100),
+			action: () => changeSearchLimit(100),
+		}], ev.currentTarget ?? ev.target);
 	},
 }, {
 	icon: 'ti ti-notes',
