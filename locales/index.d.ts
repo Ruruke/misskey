@@ -11039,7 +11039,7 @@ export interface Locale extends ILocale {
              */
             "deleteSelectionRows": string;
             /**
-             * 選択範囲の行を削除
+             * 選択範囲の値をクリア
              */
             "deleteSelectionRanges": string;
             /**
