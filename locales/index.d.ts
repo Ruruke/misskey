@@ -9988,6 +9988,14 @@ export interface Locale extends ILocale {
              * 連携アプリからの通知
              */
             "app": string;
+            /**
+             * 予約投稿に成功
+             */
+            "scheduledNotePosted": string;
+            /**
+             * 予約投稿に失敗
+             */
+            "scheduledNoteFailed": string;
         };
         "_actions": {
             /**
