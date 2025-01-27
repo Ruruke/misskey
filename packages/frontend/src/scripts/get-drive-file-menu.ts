@@ -121,6 +121,14 @@ export function getDriveFileMenu(file: Misskey.entities.DriveFile, folder?: Miss
 				aspectRatio: NaN,
 				uploadFolder: folder ? folder.id : folder,
 			}),
+		}, {
+			text: i18n.ts.preview,
+			icon: 'ti ti-photo-search',
+			action: () => {
+				os.popup(defineAsyncComponent(() => import('@/components/MkImgPreviewDialog.vue')), {
+					file: file,
+				});
+			},
 		});
 	}
 
