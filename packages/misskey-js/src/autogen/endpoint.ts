@@ -496,6 +496,10 @@ import type {
 	NotesUnrenoteRequest,
 	NotesUserListTimelineRequest,
 	NotesUserListTimelineResponse,
+	NotesVmimiRelayHybridTimelineRequest,
+	NotesVmimiRelayHybridTimelineResponse,
+	NotesVmimiRelayTimelineRequest,
+	NotesVmimiRelayTimelineResponse,
 	NotificationsCreateRequest,
 	PagePushRequest,
 	PagesCreateRequest,
@@ -936,6 +940,8 @@ export type Endpoints = {
 	'notes/translate': { req: NotesTranslateRequest; res: NotesTranslateResponse };
 	'notes/unrenote': { req: NotesUnrenoteRequest; res: EmptyResponse };
 	'notes/user-list-timeline': { req: NotesUserListTimelineRequest; res: NotesUserListTimelineResponse };
+	'notes/vmimi-relay-hybrid-timeline': { req: NotesVmimiRelayHybridTimelineRequest; res: NotesVmimiRelayHybridTimelineResponse };
+	'notes/vmimi-relay-timeline': { req: NotesVmimiRelayTimelineRequest; res: NotesVmimiRelayTimelineResponse };
 	'notifications/create': { req: NotificationsCreateRequest; res: EmptyResponse };
 	'notifications/flush': { req: EmptyRequest; res: EmptyResponse };
 	'notifications/mark-all-as-read': { req: EmptyRequest; res: EmptyResponse };

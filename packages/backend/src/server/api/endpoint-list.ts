@@ -336,6 +336,8 @@ export * as 'notes/user-list-timeline' from './endpoints/notes/user-list-timelin
 export * as 'notes/schedule/create' from './endpoints/notes/schedule/create.js';
 export * as 'notes/schedule/delete' from './endpoints/notes/schedule/delete.js';
 export * as 'notes/schedule/list' from './endpoints/notes/schedule/list.js';
+export * as 'notes/vmimi-relay-hybrid-timeline' from './endpoints/notes/vmimi-relay-hybrid-timeline.js';
+export * as 'notes/vmimi-relay-timeline' from './endpoints/notes/vmimi-relay-timeline.js';
 export * as 'notifications/create' from './endpoints/notifications/create.js';
 export * as 'notifications/flush' from './endpoints/notifications/flush.js';
 export * as 'notifications/mark-all-as-read' from './endpoints/notifications/mark-all-as-read.js';
