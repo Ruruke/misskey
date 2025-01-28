@@ -8844,6 +8844,9 @@ export type operations = {
             entranceShowSignup: boolean;
             entranceShowAnotherInstance: boolean;
             entranceShowSignin: boolean;
+            deeplFreeInstance: string | null;
+            enableCpuModel: boolean;
+            customCpuModel: string | null;
             entranceMarginLeft: number;
             entranceMarginRight: number;
             entranceMarginTop: number;
