@@ -196,16 +196,6 @@ redis:
 #  # You can specify more ioredis options...
 #  #username: example-username
 
-#redisForRemoteApis:
-#  host: localhost
-#  port: 6379
-#  #family: 0  # 0=Both, 4=IPv4, 6=IPv6
-#  #pass: example-pass
-#  #prefix: example-prefix
-#  #db: 1
-#  # You can specify more ioredis options...
-#  #username: example-username
-
 #   ┌───────────────────────────────┐
 #───┘ Fulltext search configuration └─────────────────────────────
 
@@ -238,6 +228,11 @@ fulltextSearch:
 #  index: ''
 #  scope: local
 
+# For pgroonga settings
+# If you want to use multiple columns (cw and text) for pgroonga, it must be set.
+
+#pgroonga:
+#  target: 'cw_and_text'
 
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────

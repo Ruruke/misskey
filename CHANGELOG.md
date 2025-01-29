@@ -1,7 +1,13 @@
 ## 2025.2.0
 
+### Note
+- 新しい設定項目"pgroonga.target"が追加されました.
+	- すでにnoteのtextのみのindexを貼っていてそのまま利用したい場合、設定は不要です.
+	- cwとtextのマルチカラムに対応する場合、**"pgroonga.target"を"cw_and_text"**に設定する必要があります.
+  - index	に関する詳細は #14730 を、configに関しては`.config/example.yml` または `.config/docker_example.yml`の'pgroonga'の節を参照願います
+
+
 ### General
--
 
 ### Client
 - Feat: ノートの描画処理を軽量化できる機能を追加（実験的機能のためデフォルト無効）
@@ -10,6 +16,7 @@
 
 ### Server
 - Fix: 個別お知らせページのmetaタグ出力の条件が間違っていたのを修正
+- Enhance: pgroongaを用いた検索でcwと本文を合わせて, またAND検索、OR検索が可能になります
 
 
 ## 2025.1.0
