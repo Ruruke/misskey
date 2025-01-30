@@ -35,10 +35,7 @@ export default function(app: App) {
 	app.component('WidgetClicker', defineAsyncComponent(() => import('./WidgetClicker.vue')));
 	app.component('WidgetBirthdayFollowings', defineAsyncComponent(() => import('./WidgetBirthdayFollowings.vue')));
 	app.component('WidgetListenBrainz', defineAsyncComponent(() => import('./WidgetListenBrainz.vue')));
-<<<<<<< HEAD
 	app.component('WidgetWeather', defineAsyncComponent(() => import('./WidgetWeather.vue')));
-=======
->>>>>>> bbeca59e56 (Merge pull request #89 from nadesskey/widget-listenbrains)
 }
 
 // 連合関連のウィジェット（連合無効時に隠す）
@@ -75,10 +72,6 @@ export const widgets = [
 	'clicker',
 	'birthdayFollowings',
 	'listenBrainz',
-<<<<<<< HEAD
 	'weather',
-=======
-
->>>>>>> bbeca59e56 (Merge pull request #89 from nadesskey/widget-listenbrains)
 	...federationWidgets,
 ];
