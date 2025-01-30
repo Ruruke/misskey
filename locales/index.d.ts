@@ -9093,15 +9093,11 @@ export interface Locale extends ILocale {
         /**
          * ListenBrainz
          */
-<<<<<<< HEAD
         "listenbrainz": string;
         /**
          * 天気予報
          */
         "weather": string;
-=======
-        "listenBrainz": string;
->>>>>>> bbeca59e56 (Merge pull request #89 from nadesskey/widget-listenbrains)
     };
     "_cw": {
         /**
@@ -9366,10 +9362,6 @@ export interface Locale extends ILocale {
          * フォローを承認制にしている場合、フォローリクエストを許可した時に表示されます。
          */
         "followedMessageDescriptionForLockedAccount": string;
-        /**
-         * ListenBrainz username
-         */
-        "listenbrainz": string;
     };
     "_exportOrImport": {
         /**
