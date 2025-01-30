@@ -2386,8 +2386,12 @@ _widgets:
     chooseList: "リストを選択"
   clicker: "クリッカー"
   birthdayFollowings: "今日誕生日のユーザー"
+<<<<<<< HEAD
   listenbrainz: "ListenBrainz"
   weather: "天気予報"
+=======
+  listenBrainz: "ListenBrainz"
+>>>>>>> bbeca59e56 (Merge pull request #89 from nadesskey/widget-listenbrains)
 
 _cw:
   hide: "隠す"
@@ -2448,6 +2452,7 @@ _profile:
   name: "名前"
   username: "ユーザー名"
   description: "自己紹介"
+  listenbrainz: "ListenBrainz"
   youCanIncludeHashtags: "ハッシュタグを含めることができます。"
   metadata: "追加情報"
   metadataEdit: "追加情報を編集"

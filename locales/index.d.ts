@@ -9093,11 +9093,15 @@ export interface Locale extends ILocale {
         /**
          * ListenBrainz
          */
+<<<<<<< HEAD
         "listenbrainz": string;
         /**
          * 天気予報
          */
         "weather": string;
+=======
+        "listenBrainz": string;
+>>>>>>> bbeca59e56 (Merge pull request #89 from nadesskey/widget-listenbrains)
     };
     "_cw": {
         /**
@@ -9306,6 +9310,10 @@ export interface Locale extends ILocale {
          * 自己紹介
          */
         "description": string;
+        /**
+         * ListenBrainz
+         */
+        "listenbrainz": string;
         /**
          * ハッシュタグを含めることができます。
          */

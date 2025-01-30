@@ -4,26 +4,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkContainer :showHeader="widgetProps.showHeader" class="mkw-listenBrainz">
-	<template #icon><i class="ti ti-music"></i></template>
-	<template #header>{{ i18n.ts._widgets.listenbrainz }} <span class="_beta">{{ i18n.ts._featureBy.temp }}</span></template>
-	<template #func="{ buttonStyleClass }">
-		<button class="_button" :class="buttonStyleClass" @click="fetchPlayingNow()"><i class="ti ti-refresh"></i></button>
-		<button class="_button" :class="buttonStyleClass" @click="configure()"><i class="ti ti-settings"></i></button>
-	</template>
+	<MkContainer :showHeader="widgetProps.showHeader" class="mkw-listenBrainz">
+		<template #icon><i class="ti ti-music"></i></template>
+		<template #header>{{ i18n.ts._widgets.listenBrainz }}</template>
+		<template #func="{ buttonStyleClass }">
+			<button class="_button" :class="buttonStyleClass" @click="fetchPlayingNow()"><i class="ti ti-refresh"></i></button>
+			<button class="_button" :class="buttonStyleClass" @click="configure()"><i class="ti ti-settings"></i></button>
+		</template>
 
-	<div :class="$style.root">
-		<MkLoading v-if="fetching"/>
-		<div v-else-if="!playingNow" style="text-align: center;">
-			<img :src="infoImageUrl" :class="$style.ghostImage"/>
-			<div>{{ i18n.ts.nothing }}</div>
+		<div :class="$style.root">
+			<MkLoading v-if="fetching"/>
+			<div v-else-if="!playingNow" style="text-align: center;">
+				<img :src="infoImageUrl" :class="$style.ghostImage"/>
+				<div>{{ i18n.ts.nothing }}</div>
+			</div>
+			<div v-else class="_gaps_s" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+				<div>{{ formattedNote }}</div>
+				<MkButton primary @click="postNote">{{ i18n.ts.note }}</MkButton>
+			</div>
 		</div>
-		<div v-else class="_gaps_s" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-			<div>{{ formattedNote }}</div>
-			<MkButton primary @click="postNote">{{ i18n.ts.note }}</MkButton>
-		</div>
-	</div>
-</MkContainer>
+	</MkContainer>
 </template>
 
 <script lang="ts" setup>
@@ -36,8 +36,9 @@ import MkLoading from '@/components/global/MkLoading.vue';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
+import { $i } from '@/account.js';
 
-const name = i18n.ts._widgets.listenbrainz;
+const name = i18n.ts._widgets.listenBrainz;
 
 const widgetPropsDef = {
 	showHeader: {
@@ -58,6 +59,9 @@ const widgetPropsDef = {
 		default: 'home' as const,
 		enum: [
 			{ label: 'Public', value: 'public' },
+			...( $i?.policies.canPublicNonLtlNote ? [{
+				label: 'Semi-Public', value: 'public_non_ltl',
+			}] : []),
 			{ label: 'Home', value: 'home' },
 			{ label: 'Followers', value: 'followers' },
 		],
@@ -124,11 +128,15 @@ watch(() => widgetProps.userId, fetchPlayingNow, { immediate: true });
 
 watch(() => widgetProps.refreshIntervalSec, (newInterval) => {
 	if (intervalId) clearInterval(intervalId);
-	intervalId = setInterval(fetchPlayingNow, newInterval * 1000);
+	if (newInterval > 0) {
+		intervalId = setInterval(fetchPlayingNow, newInterval * 1000);
+	}
 }, { immediate: true });
 
 onMounted(() => {
-	intervalId = setInterval(fetchPlayingNow, widgetProps.refreshIntervalSec * 1000);
+	if (widgetProps.refreshIntervalSec > 0) {
+		intervalId = setInterval(fetchPlayingNow, widgetProps.refreshIntervalSec * 1000);
+	}
 });
 
 onUnmounted(() => {
@@ -144,11 +152,11 @@ defineExpose<WidgetComponentExpose>({
 
 <style lang="scss" module>
 .root {
-		padding: 16px;
+	padding: 16px;
 }
 
 .ghostImage {
-    max-width: 100%;
-    max-height: 100px;
+	max-width: 100%;
+	max-height: 100px;
 }
 </style>
