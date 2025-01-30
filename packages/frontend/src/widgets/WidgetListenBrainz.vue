@@ -4,26 +4,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-	<MkContainer :showHeader="widgetProps.showHeader" class="mkw-listenBrainz">
-		<template #icon><i class="ti ti-music"></i></template>
-		<template #header>{{ i18n.ts._widgets.listenBrainz }}</template>
-		<template #func="{ buttonStyleClass }">
-			<button class="_button" :class="buttonStyleClass" @click="fetchPlayingNow()"><i class="ti ti-refresh"></i></button>
-			<button class="_button" :class="buttonStyleClass" @click="configure()"><i class="ti ti-settings"></i></button>
-		</template>
+<MkContainer :showHeader="widgetProps.showHeader" class="mkw-listenBrainz">
+	<template #icon><i class="ti ti-music"></i></template>
+	<template #header>{{ i18n.ts._widgets.listenBrainz }}</template>
+	<template #func="{ buttonStyleClass }">
+		<button class="_button" :class="buttonStyleClass" @click="fetchPlayingNow()"><i class="ti ti-refresh"></i></button>
+		<button class="_button" :class="buttonStyleClass" @click="configure()"><i class="ti ti-settings"></i></button>
+	</template>
 
-		<div :class="$style.root">
-			<MkLoading v-if="fetching"/>
-			<div v-else-if="!playingNow" style="text-align: center;">
-				<img :src="infoImageUrl" :class="$style.ghostImage"/>
-				<div>{{ i18n.ts.nothing }}</div>
-			</div>
-			<div v-else class="_gaps_s" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-				<div>{{ formattedNote }}</div>
-				<MkButton primary @click="postNote">{{ i18n.ts.note }}</MkButton>
-			</div>
+	<div :class="$style.root">
+		<MkLoading v-if="fetching"/>
+		<div v-else-if="!playingNow" style="text-align: center;">
+			<img :src="infoImageUrl" :class="$style.ghostImage"/>
+			<div>{{ i18n.ts.nothing }}</div>
 		</div>
-	</MkContainer>
+		<div v-else class="_gaps_s" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+			<MkMfm :text="formattedNote"/>
+			<MkButton primary @click="postNote">{{ i18n.ts.note }}</MkButton>
+		</div>
+	</div>
+</MkContainer>
 </template>
 
 <script lang="ts" setup>
@@ -37,6 +37,7 @@ import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { $i } from '@/account.js';
+import MkMfm from '@/components/global/MkMfm.js';
 
 const name = i18n.ts._widgets.listenBrainz;
 
@@ -152,11 +153,11 @@ defineExpose<WidgetComponentExpose>({
 
 <style lang="scss" module>
 .root {
-	padding: 16px;
+		padding: 16px;
 }
 
 .ghostImage {
-	max-width: 100%;
-	max-height: 100px;
+		max-width: 100%;
+		max-height: 100px;
 }
 </style>
