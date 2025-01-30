@@ -186,9 +186,6 @@ import { instance, infoImageUrl } from '@/instance.js';
 import { signinRequired } from '@/account.js';
 import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
-import MkSwitch from '@/components/MkSwitch.vue';
-import { defaultStore } from '@/store';
-import { unisonReload } from '@/scripts/unison-reload.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
 
 const $i = signinRequired();
