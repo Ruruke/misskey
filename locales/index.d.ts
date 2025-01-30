@@ -9091,13 +9091,13 @@ export interface Locale extends ILocale {
          */
         "birthdayFollowings": string;
         /**
-         * ListenBrainz
-         */
-        "listenbrainz": string;
-        /**
          * 天気予報
          */
         "weather": string;
+        /**
+         * ListenBrainz
+         */
+        "listenBrainz": string;
     };
     "_cw": {
         /**
