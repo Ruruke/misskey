@@ -557,7 +557,7 @@ export const defaultStore = markRaw(new Storage('base', {
 
 	skipNoteRender: {
 		where: 'device',
-		default: true,
+		default: 'css' as 'css' | 'js' | 'none',
 	},
 	confirmOnReact: {
 		where: 'device',
