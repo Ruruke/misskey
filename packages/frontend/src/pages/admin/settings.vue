@@ -138,6 +138,31 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkFolder>
 
 				<MkFolder>
+					<template #icon><i class="ph-faders ph-bold ph-lg ti-fw"></i></template>
+					<template #label>{{ i18n.ts.otherSettings }}</template>
+					<template v-if="otherForm.modified.value" #footer>
+						<MkFormFooter :form="otherForm"/>
+					</template>
+
+					<div class="_gaps">
+						<MkSwitch v-model="otherForm.state.enableAchievements">
+							<template #label>{{ i18n.ts.enableAchievements }}<span v-if="otherForm.modifiedStates.enableAchievements" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>{{ i18n.ts.turnOffAchievements}}</template>
+						</MkSwitch>
+
+						<MkSwitch v-model="otherForm.state.enableBotTrending">
+							<template #label>{{ i18n.ts.enableBotTrending }}<span v-if="otherForm.modifiedStates.enableBotTrending" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>{{ i18n.ts.turnOffBotTrending }}</template>
+						</MkSwitch>
+
+						<MkTextarea v-model="otherForm.state.robotsTxt">
+							<template #label>{{ i18n.ts.robotsTxt }}<span v-if="otherForm.modifiedStates.robotsTxt" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>{{ i18n.ts.robotsTxtDescription }}</template>
+						</MkTextarea>
+					</div>
+				</MkFolder>
+
+				<MkFolder>
 					<template #icon><i class="ti ti-ad"></i></template>
 					<template #label>{{ i18n.ts._ad.adsSettings }}</template>
 					<template v-if="adForm.modified.value" #footer>
@@ -393,6 +418,15 @@ const serviceWorkerForm = useForm({
 		enableServiceWorker: state.enableServiceWorker,
 		swPublicKey: state.swPublicKey,
 		swPrivateKey: state.swPrivateKey,
+	});
+	fetchInstance(true);
+});
+
+const otherForm = useForm({
+	robotsTxt: meta.robotsTxt,
+}, async (state) => {
+	await os.apiWithDialog('admin/update-meta', {
+		robotsTxt: state.robotsTxt,
 	});
 	fetchInstance(true);
 });

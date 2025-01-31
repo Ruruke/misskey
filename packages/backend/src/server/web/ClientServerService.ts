@@ -475,7 +475,12 @@ export class ClientServerService {
 		});
 
 		fastify.get('/robots.txt', async (request, reply) => {
-			return await reply.sendFile('/robots.txt', staticAssets);
+			if (this.meta.robotsTxt) {
+				reply.header('Content-Type', 'text/plain');
+				return await reply.send(this.meta.robotsTxt);
+			} else {
+				return await reply.sendFile('/robots.txt', staticAssets);
+			}
 		});
 
 		// OpenSearch XML

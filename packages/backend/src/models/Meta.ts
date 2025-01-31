@@ -560,6 +560,11 @@ export class MiMeta {
 	})
 	public enableIdenticonGeneration: boolean;
 
+	@Column('varchar', {
+		length: 2048, nullable: true,
+	})
+	public robotsTxt: string | null;
+
 	@Column('jsonb', {
 		default: { },
 	})

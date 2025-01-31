@@ -5419,7 +5419,7 @@ export interface Locale extends ILocale {
      */
     "youCannotPlayGames": string;
     /**
-		 * リアクション統計
+     * リアクション統計
      */
     "reactionStats": string;
     /**
