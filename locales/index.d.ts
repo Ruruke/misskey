@@ -4363,14 +4363,6 @@ export interface Locale extends ILocale {
      */
     "thisPostMayBeAnnoyingIgnore": string;
     /**
-     * ノートの下書きの復元を無効化
-     */
-    "disableNoteDrafting": string;
-    /**
-     * ノートの投稿フォームを開き直した際に、下書きを復元しないようにします。
-     */
-    "disableNoteDraftingDescription": string;
-    /**
      * リノートのスマート省略
      */
     "collapseRenotes": string;
@@ -5575,6 +5567,10 @@ export interface Locale extends ILocale {
      * 1年以上先の日時を指定することはできません
      */
     "cannotScheduleLaterThanOneYear": string;
+		/**
+		 * 投稿フォームをリセット
+		 */
+		"clearPost": string;
     /**
      * 投稿フォーム
      */
@@ -5583,34 +5579,6 @@ export interface Locale extends ILocale {
      * 投稿フォームの下部に表示される項目の並び替えが出来ます。項目をクリックすると削除できます。
      */
     "postFormBottomSettingsDescription": string;
-    /**
-     * 投稿フォームをリセット
-     */
-    "clearPost": string;
-    /**
-     * 絵文字ピッカーに追加
-     */
-    "addToEmojiPicker": string;
-    /**
-     * リアクション数の非表示
-     */
-    "hideReactionCount": string;
-    /**
-     * 下書き
-     */
-    "drafts": string;
-    /**
-     * 下書きの保存に関する動作
-     */
-    "draftSavingBehavior": string;
-    /**
-     * 下書きとして保存
-     */
-    "saveAsDraft": string;
-    /**
-     * 下書きを適用すると現在入力されている内容はリセットされます。よろしいですか？
-     */
-    "draftOverwriteConfirm": string;
     /**
      * デフォルトでノートが自己消滅するように
      */

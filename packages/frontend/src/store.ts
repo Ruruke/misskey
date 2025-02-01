@@ -94,14 +94,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
-	disableNoteDrafting: {
-		where: 'account',
-		default: false,
-	},
-	draftSavingBehavior: {
-		where: 'account',
-		default: 'auto' as 'auto' | 'manual',
-	},
 	rememberNoteVisibility: {
 		where: 'account',
 		default: false,
