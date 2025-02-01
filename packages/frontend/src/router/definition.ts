@@ -244,6 +244,7 @@ const routes: RouteDef[] = [{
 		channel: 'channel',
 		type: 'type',
 		origin: 'origin',
+		visibility: 'visibility',
 	},
 }, {
 	// Legacy Compatibility
