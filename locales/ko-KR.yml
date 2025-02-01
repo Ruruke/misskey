@@ -1300,7 +1300,7 @@ confirmWhenRevealingSensitiveMedia: "민감한 미디어를 열 때 두 번 확�
 sensitiveMediaRevealConfirm: "민감한 미디어입니다. 표시할까요?"
 createdLists: "만든 리스트"
 createdAntennas: "만든 안테나"
-fromX: "{x}부터"
+fromX: "{x}에서"
 genEmbedCode: "임베디드 코드 만들기"
 noteOfThisUser: "이 유저의 노트 목록"
 clipNoteLimitExceeded: "더 이상 이 클립에 노트를 추가 할 수 없습니다."
