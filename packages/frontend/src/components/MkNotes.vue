@@ -39,7 +39,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef, ref, watch, onMounted, onActivated, onDeactivated, onBeforeUnmount, nextTick } from 'vue';
+import { useTemplateRef, ref, watch, onActivated, onDeactivated, onBeforeUnmount } from 'vue';
+import type { WatchStopHandle } from 'vue';
 import XNote from '@/components/MkNotes.note.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
@@ -64,6 +65,7 @@ const rootEl = useTemplateRef('rootEl');
 //#region Note Render Skipping (JS)
 let intersectionObserver: IntersectionObserver | null = null;
 let mutationObserver: MutationObserver | null = null;
+let rootElWatcher: WatchStopHandle | null = null;
 const visibleNotes = ref(new Set<string>());
 const initialComputeDone = ref(false);
 
@@ -74,30 +76,18 @@ function initNoteRenderSkipping() {
 		!props.disableJsRenderSkip &&
 		defaultStore.state.skipNoteRender === 'js'
 	) {
-		watch(rootEl, (to) => {
+		rootElWatcher = watch(rootEl, (to) => {
 			if (to != null) {
-				const rootClientRect = to.getBoundingClientRect();
+				// 既存の仮想スクロール処理を破棄
+				disposeNoteRenderSkipping();
 
-				// 初回：現在見えているノートを洗い出す
-				initialComputeDone.value = false;
-				visibleNotes.value.clear();
-				rootEl.value.querySelectorAll('[data-note-id]').forEach((note) => {
-					const el = getHTMLElementOrNull(note);
-					const id = el.dataset?.noteId;
-					if (id) {
-						const rect = el.getBoundingClientRect();
-						if (rect.top < window.innerHeight && rect.bottom > 0) {
-							visibleNotes.value.add(id);
-						}
-					}
-				});
-				initialComputeDone.value = true;
+				const scrollEl = getScrollContainer(to);
+				const scrollElRect = (scrollEl ?? document.body).getBoundingClientRect();
 
 				// 画面内に入ったノートを記録
 				intersectionObserver = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
-						if (rootEl.value == null) return;
-						if (rootEl.value.classList.contains('list-move')) return;
+						if (to.classList.contains('list-move')) return;
 
 						const el = getHTMLElementOrNull(entry.target);
 						if (el == null) return;
@@ -117,27 +107,39 @@ function initNoteRenderSkipping() {
 						}
 					});
 				}, {
-					root: getScrollContainer(rootEl.value),
+					root: scrollEl,
 					rootMargin: '50% 0% 50% 0%',
 				});
 
-				// 初回
-				rootEl.value.querySelectorAll<HTMLElement>('[data-note-id]').forEach((note) => {
+				// 初回：現在見えているノートを洗い出す・IntersectionObserverに登録
+				to.querySelectorAll('[data-note-id]').forEach((note) => {
+					const el = getHTMLElementOrNull(note);
+					if (el == null) return;
+					const id = el.dataset?.noteId;
+					if (id) {
+						const rect = el.getBoundingClientRect();
+						if (rect.top < (scrollElRect.top + scrollElRect.height) && rect.bottom > 0) {
+							visibleNotes.value.add(id);
+						}
+					}
 					intersectionObserver!.observe(note);
 				});
+
+				// 初回計算完了。見えてない要素は隠しても良くなった
+				initialComputeDone.value = true;
 
 				// ノートが追加されたらそれもIntersectionObserverに登録
 				// 削除されたらIntersectionObserverから削除
 				mutationObserver = new MutationObserver((mutations) => {
 					mutations.forEach((mutation) => {
 						mutation.addedNodes.forEach((note) => {
-							if (note.dataset?.noteId == null) return;
 							const noteEl = getHTMLElementOrNull(note);
 							if (noteEl == null) return;
+							if (noteEl.dataset?.noteId == null) return;
 
 							const rect = (noteEl).getBoundingClientRect();
 							if (rect.top < window.innerHeight && rect.bottom > 0) {
-								visibleNotes.value.add(note.dataset.noteId);
+								visibleNotes.value.add(noteEl.dataset.noteId);
 							}
 							intersectionObserver!.observe(noteEl);
 						});
@@ -150,7 +152,7 @@ function initNoteRenderSkipping() {
 					});
 				});
 
-				mutationObserver.observe(rootEl.value, {
+				mutationObserver.observe(to, {
 					childList: true,
 					subtree: true,
 				});
@@ -162,7 +164,7 @@ function initNoteRenderSkipping() {
 					mutationObserver.disconnect();
 				}
 			}
-		}, { flush: 'post' });
+		}, { immediate: true, flush: 'post' });
 	}
 }
 
@@ -174,6 +176,9 @@ function disposeNoteRenderSkipping() {
 	}
 	if (mutationObserver) {
 		mutationObserver.disconnect();
+	}
+	if (rootElWatcher) {
+		rootElWatcher();
 	}
 	visibleNotes.value.clear();
 	initialComputeDone.value = false;
