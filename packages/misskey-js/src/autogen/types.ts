@@ -5202,6 +5202,7 @@ export type components = {
       recaptchaSiteKey: string | null;
       enableTurnstile: boolean;
       turnstileSiteKey: string | null;
+      robotsTxt: string | null;
       enableTestcaptcha: boolean;
       swPublickey: string | null;
       /** @default /assets/ai.png */
@@ -5249,6 +5250,34 @@ export type components = {
       maxFileSize: number;
       /** @enum {string} */
       federation: 'all' | 'specified' | 'none';
+      /** @default false */
+      entranceShowTimeLine: boolean;
+      /** @default false */
+      entranceShowFeatured: boolean;
+      /** @default false */
+      entranceShowEmojis: boolean;
+      /**
+       * @default [
+       *   "👍",
+       *   "❤",
+       *   "😆",
+       *   "🎉",
+       *   "🍮"
+       * ]
+       */
+      entranceSelectEmojis: string[];
+      /** @default false */
+      entranceShowStats: boolean;
+      /** @default false */
+      entranceShowFederation: boolean;
+      /** @default true */
+      entranceShowDashboard: boolean;
+      /** @default true */
+      entranceShowSignup: boolean;
+      /** @default true */
+      entranceShowAnotherInstance: boolean;
+      /** @default true */
+      entranceShowSignin: boolean;
     };
     MetaDetailedOnly: {
       features?: {
@@ -8745,6 +8774,7 @@ export type operations = {
             enableChartsForFederatedInstances: boolean;
             enableStatsForFederatedInstances: boolean;
             enableServerMachineStats: boolean;
+            robotsTxt: string | null;
             enableIdenticonGeneration: boolean;
             manifestJsonOverride: string;
             policies: Record<string, never>;
@@ -8789,6 +8819,23 @@ export type operations = {
             urlPreviewSummaryProxyUrl: string | null;
             federation: string;
             federationHosts: string[];
+            enableCpuCore: boolean;
+            customCpuCore: number | null;
+            enableMemTotal: boolean;
+            customMemTotal: number | null;
+            enableFsTotal: boolean;
+            customFsTotal: number | null;
+            secondsPerSignup: number;
+            entranceShowTimeLine: boolean;
+            entranceShowFeatured: boolean;
+            entranceShowEmojis: boolean;
+            entranceSelectEmojis: string[];
+            entranceShowStats: boolean;
+            entranceShowFederation: boolean;
+            entranceShowDashboard: boolean;
+            entranceShowSignup: boolean;
+            entranceShowAnotherInstance: boolean;
+            entranceShowSignin: boolean;
           };
         };
       };
@@ -11103,6 +11150,7 @@ export type operations = {
           enableChartsForFederatedInstances?: boolean;
           enableStatsForFederatedInstances?: boolean;
           enableServerMachineStats?: boolean;
+          robotsTxt?: string | null;
           enableIdenticonGeneration?: boolean;
           serverRules?: string[];
           bannedEmailDomains?: string[];
@@ -11130,8 +11178,30 @@ export type operations = {
           /** @enum {string} */
           federation?: 'all' | 'none' | 'specified';
           federationHosts?: string[];
-          disableSignup?: boolean;
-          disableNotloginToShowTL?: boolean;
+          customSplashText?: string[] | null;
+          defaultFollowedUsers?: string[] | null;
+          forciblyFollowedUsers?: string[] | null;
+          deeplFreeMode?: boolean;
+          deeplFreeInstance?: string | null;
+          enableCpuModel?: boolean;
+          customCpuModel?: string | null;
+          enableCpuCore?: boolean;
+          customCpuCore?: number | null;
+          enableMemTotal?: boolean;
+          customMemTotal?: number | null;
+          enableFsTotal?: boolean;
+          customFsTotal?: number | null;
+          secondsPerSignup?: number;
+          entranceShowTimeLine?: boolean;
+          entranceShowFeatured?: boolean;
+          entranceShowEmojis?: boolean;
+          entranceSelectEmojis?: string[];
+          entranceShowStats?: boolean;
+          entranceShowFederation?: boolean;
+          entranceShowDashboard?: boolean;
+          entranceShowSignup?: boolean;
+          entranceShowAnotherInstance?: boolean;
+          entranceShowSignin?: boolean;
         };
       };
     };

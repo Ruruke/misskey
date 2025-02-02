@@ -688,5 +688,78 @@ export class MiMeta {
 	@Column('boolean', {
 		default: false,
 	})
+	public enableMemTotal: boolean;
+
+	@Column('integer', {
+		nullable: true,
+	})
+	public customMemTotal: number | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public enableFsTotal: boolean;
+
+	@Column('integer', {
+		nullable: true,
+	})
+	public customFsTotal: number | null;
+
+	@Column('integer', {
+		default: 0,
+	})
+	public secondsPerSignup: number;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public entranceShowTimeLine: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public entranceShowFeatured: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public entranceShowEmojis: boolean;
+
+	@Column('varchar', {
+		length: 1024,
+		array: true,
+		default: '{ "👍", "❤", "😆", "🎉", "🍮" }',
+	})
+	public entranceSelectEmojis: string[];
+
+	@Column('boolean', {
+		default: false,
+	})
+	public entranceShowStats: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public entranceShowFederation: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public entranceShowDashboard: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public entranceShowSignup: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public entranceShowAnotherInstance: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public entranceShowSignin: boolean;
 	public disableNotloginToShowTL: boolean;
 }

@@ -11509,6 +11509,786 @@ export interface Locale extends ILocale {
             };
         };
     };
+    "_reactionChecksMuting": {
+        /**
+         * リアクションでミュートを考慮する
+         */
+        "title": string;
+        /**
+         * リアクションがミュートを考慮しますが、キャッシュが効かず通信量が増えることがあります。
+         */
+        "caption": string;
+    };
+    "_hideReactionCount": {
+        /**
+         * 非表示にしない
+         */
+        "none": string;
+        /**
+         * 自分のノートのみ
+         */
+        "self": string;
+        /**
+         * 自分以外のノートのみ
+         */
+        "others": string;
+        /**
+         * 全てのノート
+         */
+        "all": string;
+    };
+    "__TL_conf": {
+        /**
+         * タイムラインの非表示
+         */
+        "extendSettings": string;
+        /**
+         * タイムラインの表示制御
+         */
+        "hideTimelineLabel": string;
+        /**
+         * ローカルタイムラインを非表示にする
+         */
+        "hideLocalTimeLine": string;
+        /**
+         * サーバー内の全ての投稿が表示されるタイムラインを非表示にします
+         */
+        "hideLocalTimeLineDescription": string;
+        /**
+         * ソーシャルタイムラインを非表示にする
+         */
+        "hideSocialTimeLine": string;
+        /**
+         * フォローしているユーザーとリモートユーザーの投稿が表示されるタイムラインを非表示にします
+         */
+        "hideSocialTimeLineDescription": string;
+        /**
+         * グローバルタイムラインを非表示にする
+         */
+        "hideGlobalTimeLine": string;
+        /**
+         * 連合先のサーバーを含む全ての公開投稿が表示されるタイムラインを非表示にします
+         */
+        "hideGlobalTimeLineDescription": string;
+        /**
+         * リストを隠す
+         */
+        "hideLists": string;
+        /**
+         * 作成したリストのタブを非表示にします
+         */
+        "hideListsDescription": string;
+        /**
+         * アンテナを隠す
+         */
+        "hideAntennas": string;
+        /**
+         * 設定したアンテナのタブを非表示にします
+         */
+        "hideAntennasDescription": string;
+        /**
+         * チャンネルを隠す
+         */
+        "hideChannel": string;
+        /**
+         * チャンネル機能へのアクセスを非表示にします
+         */
+        "hideChannelDescription": string;
+    };
+    "_imageCompressionMode": {
+        /**
+         * 画像の圧縮形式
+         */
+        "title": string;
+        /**
+         * オリジナル画像を保持しない場合に、Web公開用画像の圧縮形式を選択できます。縮小する場合は2048x2048より小さくなるように縮小されます。非可逆圧縮を指定しない場合は、元画像に応じて非可逆圧縮か可逆圧縮かが自動的に選択されます。
+         */
+        "description": string;
+        /**
+         * 縮小して再圧縮する
+         */
+        "resizeCompress": string;
+        /**
+         * 縮小せず再圧縮する
+         */
+        "noResizeCompress": string;
+        /**
+         * 縮小して非可逆圧縮する
+         */
+        "resizeCompressLossy": string;
+        /**
+         * 縮小せず非可逆圧縮する
+         */
+        "noResizeCompressLossy": string;
+    };
+    "_followRequestHistory": {
+        /**
+         * フォロリクの履歴
+         */
+        "title": string;
+        /**
+         * {user} へフォローリクエストを送信
+         */
+        "sent": ParameterizedString<"user">;
+        /**
+         * {user} からフォローリクエストを受信
+         */
+        "received": ParameterizedString<"user">;
+        /**
+         * {user} のフォローリクエストを許可
+         */
+        "approved": ParameterizedString<"user">;
+        /**
+         * {user} のフォローリクエストを拒否
+         */
+        "rejected": ParameterizedString<"user">;
+        /**
+         * {user} にフォローリクエストが許可された
+         */
+        "wasApproved": ParameterizedString<"user">;
+        /**
+         * {user} にフォローリクエストが拒否された
+         */
+        "wasRejected": ParameterizedString<"user">;
+        /**
+         * 履歴はありません
+         */
+        "empty": string;
+        /**
+         * フィルター
+         */
+        "filter": string;
+        /**
+         * 履歴をすべて削除
+         */
+        "deleteAll": string;
+        /**
+         * すべてのフォローリクエスト履歴を削除してもよろしいですか？ この操作は元に戻せません。
+         */
+        "deleteConfirm": string;
+        "types": {
+            /**
+             * すべて
+             */
+            "all": string;
+            /**
+             * 送信済み
+             */
+            "sent": string;
+            /**
+             * 受信済み
+             */
+            "received": string;
+            /**
+             * 許可済み
+             */
+            "approved": string;
+            /**
+             * 拒否済み
+             */
+            "rejected": string;
+            /**
+             * 許可された
+             */
+            "wasApproved": string;
+            /**
+             * 拒否された
+             */
+            "wasRejected": string;
+        };
+    };
+    "_followHistory": {
+        /**
+         * フォローの履歴
+         */
+        "title": string;
+        /**
+         * {user} をフォローした
+         */
+        "follow": ParameterizedString<"user">;
+        /**
+         * {user} のフォローを解除
+         */
+        "unFollow": ParameterizedString<"user">;
+        /**
+         * {user} にフォローされた
+         */
+        "wasFollow": ParameterizedString<"user">;
+        /**
+         * {user} からフォロー解除された
+         */
+        "wasUnFollow": ParameterizedString<"user">;
+        /**
+         * {user} をブロックした
+         */
+        "blocked": ParameterizedString<"user">;
+        /**
+         * {user} のブロックを解除した
+         */
+        "unBlocked": ParameterizedString<"user">;
+        /**
+         * {user} にブロックされた
+         */
+        "wasBlocked": ParameterizedString<"user">;
+        /**
+         * {user} にブロックが解除された
+         */
+        "wasUnBlocked": ParameterizedString<"user">;
+        /**
+         * 履歴はありません
+         */
+        "empty": string;
+        /**
+         * フィルター
+         */
+        "filter": string;
+        /**
+         * 履歴をすべて削除
+         */
+        "deleteAll": string;
+        /**
+         * すべてのフォロー関連の履歴を削除してもよろしいですか？ この操作は元に戻せません。
+         */
+        "deleteConfirm": string;
+        "types": {
+            /**
+             * すべて
+             */
+            "all": string;
+            /**
+             * フォローした
+             */
+            "follow": string;
+            /**
+             * フォロー解除した
+             */
+            "unFollow": string;
+            /**
+             * フォローされた
+             */
+            "wasFollow": string;
+            /**
+             * フォロー解除された
+             */
+            "wasUnFollow": string;
+            /**
+             * ブロックした
+             */
+            "blocked": string;
+            /**
+             * ブロック解除した
+             */
+            "unBlocked": string;
+            /**
+             * ブロックされた
+             */
+            "wasBlocked": string;
+            /**
+             * ブロックが解除された
+             */
+            "wasUnBlocked": string;
+        };
+    };
+    "_accountTruncate": {
+        /**
+         * アカウントの整理
+         */
+        "accountDelete": string;
+        /**
+         * アカウントの整理は負荷のかかる処理であるため、作成したコンテンツの数やアップロードしたファイルの数が多いと完了までに時間がかかることがあります。
+         */
+        "mayTakeTime": string;
+        /**
+         * アカウント整理をリクエスト
+         */
+        "requestAccountTruncate": string;
+        /**
+         * 整理処理が開始されました。
+         */
+        "started": string;
+        /**
+         * 整理が進行中
+         */
+        "inProgress": string;
+        /**
+         * ダイレクトとピン留めされたノート、関連ドライブのファイルを除くすべてのノートとドライブのファイルが削除されます。続行しますか？
+         */
+        "truncateAccountConfirm": string;
+        /**
+         * アカウント整理
+         */
+        "truncateAccount": string;
+    };
+    "_makePrivate": {
+        /**
+         * 非公開にする
+         */
+        "text": string;
+        /**
+         * 投稿を非公開にすると、あなただけが閲覧できるようになり、リモートサーバーに削除リクエストが送信されます。
+         */
+        "description": string;
+        /**
+         * 本当にこの投稿を非公開にしますか？
+         */
+        "confirm": string;
+        /**
+         * 複数の投稿をまとめて非公開にすることは、**永久的で取り消し不可能**な操作であり、サーバーに一定の負荷がかかります。注意して進めてください。投稿をまとめて非公開にできるのは1時間に1回のみです。
+         */
+        "warn": string;
+        /**
+         * 開始日
+         */
+        "sinceDate": string;
+        /**
+         * 終了日
+         */
+        "untilDate": string;
+        /**
+         * これは非常に危険な操作のため、この機能を有効にするには `{text}` と入力してください
+         */
+        "dangerTip": ParameterizedString<"text">;
+        /**
+         * 非公開にされる投稿が {count} 件あります
+         */
+        "manyCount": ParameterizedString<"count">;
+        /**
+         * 投稿を非公開にする！
+         */
+        "textmany": string;
+        /**
+         * これらの {count} 件の投稿をまとめて非公開にしてよろしいですか？この操作は取り消せず、投稿は今後ずっとあなただけしか閲覧できなくなります（本当です！）
+         */
+        "manyWarn": ParameterizedString<"count">;
+        /**
+         * 非公開化の処理が開始されました
+         */
+        "didStart": string;
+        /**
+         * 投稿をまとめて非公開にする
+         */
+        "bulkText": string;
+    };
+    "_serverStats": {
+        /**
+         * サーバー情報表示設定
+         */
+        "title": string;
+        /**
+         * CPUモデルを表示
+         */
+        "enableCpuModel": string;
+        /**
+         * CPUモデルを表示します。無効の場合は、「？」が表示されます。
+         */
+        "enableCpuModelDescription": string;
+        /**
+         * カスタムCPUモデル
+         */
+        "customCpuModel": string;
+        /**
+         * CPUモデルをカスタムで表示します。(オプション)
+         */
+        "customCpuModelDescription": string;
+        /**
+         * CPUコア数を表示
+         */
+        "enableCpuCore": string;
+        /**
+         * CPUコア数を表示します。無効の場合は、「？」が表示されます。
+         */
+        "enableCpuCoreDescription": string;
+        /**
+         * カスタムCPUコア数
+         */
+        "customCpuCore": string;
+        /**
+         * CPUコア数をカスタムで表示します。(オプション)
+         */
+        "customCpuCoreDescription": string;
+        /**
+         * メモリ容量を表示
+         */
+        "enableMemTotal": string;
+        /**
+         * メモリ容量を表示します。無効の場合は、「？」が表示されます。
+         */
+        "enableMemTotalDescription": string;
+        /**
+         * カスタムメモリ容量
+         */
+        "customMemTotal": string;
+        /**
+         * メモリ容量をカスタムで表示します。(オプション)
+         */
+        "customMemTotalDescription": string;
+        /**
+         * ストレージ容量を表示
+         */
+        "enableFsTotal": string;
+        /**
+         * ストレージ容量を表示します。無効の場合は、「？」が表示されます。
+         */
+        "enableFsTotalDescription": string;
+        /**
+         * カスタムストレージ容量
+         */
+        "customFsTotal": string;
+        /**
+         * ストレージ容量をカスタムで表示します。(オプション)
+         */
+        "customFsTotalDescription": string;
+    };
+    "_hana": {
+        /**
+         * はなみすきー仕様のエントランスを使う
+         */
+        "useHanaEntrance": string;
+        /**
+         * はなテーマのメインカラー
+         */
+        "hanaThemeColor": string;
+        /**
+         * HEXカラーコード (#000000 形式)
+         */
+        "hanaThemeColorDescription": string;
+        /**
+         * はなテーマのアクセントカラー
+         */
+        "hanaThemeAltColor": string;
+        /**
+         * HEXカラーコード (#000000 形式)
+         */
+        "hanaThemeAltColorDescription": string;
+        /**
+         * はなテーマの薄色の透明度
+         */
+        "hanaThemeWeakOpacity": string;
+        /**
+         * 0から1までの数値
+         */
+        "hanaThemeWeakOpacityDescription": string;
+        /**
+         * LPで使うアイコン
+         */
+        "hanaModeIcon": string;
+        /**
+         * はなみすきー仕様のエントランスで表示するアイコン
+         */
+        "hanaModeIconDescription": string;
+        /**
+         * アイコンのサイズ
+         */
+        "hanaModeIconSize": string;
+        /**
+         * アイコンの表示サイズ（ピクセル単位）
+         */
+        "hanaModeIconSizeDescription": string;
+        /**
+         * アイコンの角丸
+         */
+        "hanaModeIconRadius": string;
+        /**
+         * アイコンの角を丸くする度合い（0=四角形、100=円形）
+         */
+        "hanaModeIconRadiusDescription": string;
+        /**
+         * LPで使う背景画像
+         */
+        "hanaModeBackground": string;
+        /**
+         * はなみすきー仕様のエントランスで表示する背景画像
+         */
+        "hanaModeBackgroundDescription": string;
+    };
+    "_extraSettings": {
+        /**
+         * デフォルトでフォローするユーザー (ID)
+         */
+        "defaultFollowedUsers": string;
+        /**
+         * 今後アカウントが作成された際に自動でフォローされるユーザー（解除可能）のユーザーIDを改行区切りで指定します。
+         */
+        "defaultFollowedUsersDescription": string;
+        /**
+         * 交流を断てないユーザー (ID)
+         */
+        "forciblyFollowedUsers": string;
+        /**
+         * 今後アカウントが作成された際には自動でフォローされ、フォローの解除やミュート・ブロックができないユーザーのユーザーIDを改行区切りで指定します。
+         */
+        "forciblyFollowedUsersDescription": string;
+        /**
+         * 「デフォルトでフォローするユーザー」と「交流を絶てないユーザー」が重複しています。
+         */
+        "defaultFollowedUsersDuplicated": string;
+        /**
+         * サーバー管理者はこのユーザーをフォロー解除することを禁止しています。
+         */
+        "unfollowThisUserIsProhibited": string;
+        /**
+         * サーバー管理者はこのユーザーをブロックすることを禁止しています。
+         */
+        "blockThisUserIsProhibited": string;
+        /**
+         * サーバー管理者はこのユーザーをミュートすることを禁止しています。
+         */
+        "muteThisUserIsProhibited": string;
+        /**
+         * このユーザーのフォロー解除は禁止されています。
+         */
+        "unfollowThisUserProhibited": string;
+    };
+    "_entrance": {
+        /**
+         * エントランス設定
+         */
+        "title": string;
+        /**
+         * ダッシュボード設定
+         */
+        "title2": string;
+        /**
+         * タイムラインを表示
+         */
+        "showTimeLine": string;
+        /**
+         * エントランスでタイムラインを表示します。
+         */
+        "showTimeLineDescription": string;
+        /**
+         * おすすめタイムラインを表示
+         */
+        "showFeatured": string;
+        /**
+         * エントランスで「みつける」と同様のタイムラインを表示します。
+         */
+        "showFeaturedDescription": string;
+        /**
+         * 絵文字を表示
+         */
+        "showEmojis": string;
+        /**
+         * エントランスで絵文字を表示します。
+         */
+        "showEmojisDescription": string;
+        /**
+         * 表示する絵文字
+         */
+        "selectEmojis": string;
+        /**
+         * エントランスで表示する絵文字を選択します。（最大5個まで）
+         */
+        "selectEmojisDescription": string;
+        /**
+         * サーバー情報を表示
+         */
+        "showStats": string;
+        /**
+         * エントランスでユーザー/ノート数や、チャートを表示します。
+         */
+        "showStatsDescription": string;
+        /**
+         * 連合インスタンスを表示
+         */
+        "showFederation": string;
+        /**
+         * エントランスで連合インスタンスを表示します。
+         */
+        "showFederationDescription": string;
+        /**
+         * ダッシュボードを表示
+         */
+        "showDashboard": string;
+        /**
+         * エントランスでダッシュボードを表示します。
+         */
+        "showDashboardDescription": string;
+        /**
+         * 新規登録を表示
+         */
+        "showSignup": string;
+        /**
+         * エントランスで新規登録を表示します。
+         */
+        "showSignupDescription": string;
+        /**
+         * 他のインスタンスを表示
+         */
+        "showAnotherInstance": string;
+        /**
+         * エントランスで「他のサーバーを探す」を表示します。
+         */
+        "showAnotherInstanceDescription": string;
+        /**
+         * ログインを表示
+         */
+        "showSignin": string;
+        /**
+         * エントランスでログインを表示します。
+         */
+        "showSigninDescription": string;
+    };
+    /**
+     * 予約投稿
+     */
+    "schedulePost": string;
+    /**
+     * 予約投稿一覧
+     */
+    "schedulePostList": string;
+    /**
+     * Administrator
+     */
+    "isAdmin": string;
+    /**
+     * 背景画像URL
+     */
+    "backgroundImageUrls": string;
+    /**
+     * コミュニティー
+     */
+    "community": string;
+    /**
+     * コミュニティーロール
+     */
+    "communityRole": string;
+    /**
+     * ロールの管理
+     */
+    "manageRole": string;
+    /**
+     * 割り当て済みロール
+     */
+    "assignedRole": string;
+    /**
+     * 割り当て可能なロール
+     */
+    "assignableRole": string;
+    /**
+     * ブロックされています
+     */
+    "youBlocked": string;
+    /**
+     * {user}さんのフォローやポストの表示はできません。
+     */
+    "youBlockedDescription": ParameterizedString<"user">;
+    /**
+     * ログインしてください
+     */
+    "pleaseLogin": string;
+    /**
+     * プロフィールを閲覧するにはログインが必要です
+     */
+    "pleaseLoginToViewProfile": string;
+    /**
+     * DeepLX-JS を使用する (認証キーなし)
+     */
+    "deeplFreeMode": string;
+    /**
+     * ヘルプが必要ですか? DeepLX-JSのセットアップ方法については、ドキュメントを参照してください。
+     */
+    "deeplFreeModeDescription": string;
+    /**
+     * 雪を降らせる
+     */
+    "snowMode": string;
+    /**
+     * ミュートしたユーザーを匿名にする
+     */
+    "anonymizeMutedUsers": string;
+    /**
+     * リアクションの確認を有効にする
+     */
+    "enableReactionConfirm": string;
+    /**
+     * リアクションを押した際に確認ダイアログを表示します。
+     */
+    "enableReactionConfirmDescription": string;
+    /**
+     * リアクションを追加しますか？
+     */
+    "addReactionConfirm": string;
+    /**
+     * いいねの確認を有効にする
+     */
+    "enableLikeConfirm": string;
+    /**
+     * いいねを押した際に確認ダイアログを表示します。
+     */
+    "enableLikeConfirmDescription": string;
+    /**
+     * いいねしますか？
+     */
+    "likeConfirm": string;
+    /**
+     * インスタンスのソフトウェア名を表示
+     */
+    "showInstanceTickerSoftwareName": string;
+    /**
+     * インスタンスのソフトウェア名をインスタンスの名前の横に表示します。
+     */
+    "showInstanceTickerSoftwareNameDescription": string;
+    /**
+     * テキストエリアの自動リサイズ
+     */
+    "textAreaAutoResize": string;
+    /**
+     * テキストエリアの高さを自動で調整します。
+     */
+    "textAreaAutoResizeDescription": string;
+    /**
+     * 通知を送る
+     */
+    "notificationSend": string;
+    /**
+     * 通知内容を入力
+     */
+    "enterNotificationText": string;
+    /**
+     * 通知を送信しますか？
+     */
+    "notificationSendConfirm": string;
+    /**
+     * リアクション統計
+     */
+    "reactionsStat": string;
+    /**
+     * 最も使用された絵文字リアクション上位100件を表示します
+     */
+    "reactionsStatDescription": string;
+    /**
+     * センシティブなファイルのみ
+     */
+    "showOnlySensitiveFiles": string;
+    /**
+     * メール認証をスキップ
+     */
+    "skipEmailAuth": string;
+    /**
+     * 自動フォローバック
+     */
+    "autoFollowBack": string;
+    /**
+     * フォローされた際に自動でフォローバックします。
+     */
+    "autoFollowBackDescription": string;
+    /**
+     * アカウントを新規作成できるインターバル（秒）
+     */
+    "secondsPerSignup": string;
+    /**
+     * 一度アカウントの作成があってから上記の秒数が経たないと他のユーザーが登録できないようになります。0に設定すると無効になります。招待コードがある場合はこの制限を無視できます。「誰でも新規登録できるようにする」が無効の場合はそちらが優先されます。
+     */
+    "secondsPerSignupDescription": string;
+    /**
+     * 登録が制限されています
+     */
+    "signupRateLimited": string;
+    /**
+     * ただいま、アカウントの登録にインターバルを設けています。しばらく待ってから再度お試しいただくか、招待コードをお持ちの場合はそちらをご利用ください。
+     */
+    "signupRateLimitedDescription": string;
 }
 declare const locales: {
     [lang: string]: Locale;

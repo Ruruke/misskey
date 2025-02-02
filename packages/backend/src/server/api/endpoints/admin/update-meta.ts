@@ -195,8 +195,42 @@ export const paramDef = {
 				type: 'string',
 			},
 		},
-		disableSignup: { type: 'boolean' },
-		disableNotloginToShowTL: { type: 'boolean' },
+		customSplashText: { type: 'array', nullable: true, items: {
+			type: 'string',
+		} },
+		defaultFollowedUsers: {
+			type: 'array', nullable: true, items: {
+				type: 'string',
+				format: 'misskey:id',
+			},
+		},
+		forciblyFollowedUsers: {
+			type: 'array', nullable: true, items: {
+				type: 'string',
+				format: 'misskey:id',
+			},
+		},
+		deeplFreeMode: { type: 'boolean' },
+		deeplFreeInstance: { type: 'string', nullable: true },
+		enableCpuModel: { type: 'boolean' },
+		customCpuModel: { type: 'string', nullable: true },
+		enableCpuCore: { type: 'boolean' },
+		customCpuCore: { type: 'integer', nullable: true },
+		enableMemTotal: { type: 'boolean' },
+		customMemTotal: { type: 'integer', nullable: true },
+		enableFsTotal: { type: 'boolean' },
+		customFsTotal: { type: 'integer', nullable: true },
+		secondsPerSignup: { type: 'integer' },
+		entranceShowTimeLine: { type: 'boolean' },
+		entranceShowFeatured: { type: 'boolean' },
+		entranceShowEmojis: { type: 'boolean' },
+		entranceSelectEmojis: { type: 'array', items: { type: 'string' } },
+		entranceShowStats: { type: 'boolean' },
+		entranceShowFederation: { type: 'boolean' },
+		entranceShowDashboard: { type: 'boolean' },
+		entranceShowSignup: { type: 'boolean' },
+		entranceShowAnotherInstance: { type: 'boolean' },
+		entranceShowSignin: { type: 'boolean' },
 	},
 	required: [],
 } as const;
@@ -711,6 +745,162 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (Array.isArray(ps.federationHosts)) {
 				set.federationHosts = ps.federationHosts.filter(Boolean).map(x => x.toLowerCase());
+			}
+
+			if (Array.isArray(ps.customSplashText)) {
+				set.customSplashText = ps.customSplashText.filter(Boolean);
+			}
+
+			if (Array.isArray(ps.customSplashText)) {
+				set.customSplashText = ps.customSplashText.filter(Boolean);
+			}
+
+			if (ps.blockMentionsFromUnfamiliarRemoteUsers !== undefined) {
+				set.blockMentionsFromUnfamiliarRemoteUsers = ps.blockMentionsFromUnfamiliarRemoteUsers;
+			}
+
+			if (ps.blockMentionsFromUnfamiliarRemoteUsers !== undefined) {
+				set.blockMentionsFromUnfamiliarRemoteUsers = ps.blockMentionsFromUnfamiliarRemoteUsers;
+			}
+
+			if (ps.validateMinimumUsernameLength !== undefined) {
+				set.validateMinimumUsernameLength = ps.validateMinimumUsernameLength;
+			}
+
+			if (ps.useHanaEntrance !== undefined) {
+				set.useHanaEntrance = ps.useHanaEntrance;
+			}
+
+			if (ps.hanaThemeColor !== undefined) {
+				set.hanaThemeColor = ps.hanaThemeColor;
+			}
+
+			if (ps.hanaThemeAltColor !== undefined) {
+				set.hanaThemeAltColor = ps.hanaThemeAltColor;
+			}
+
+			if (ps.hanaThemeWeakOpacity !== undefined) {
+				set.hanaThemeWeakOpacity = ps.hanaThemeWeakOpacity;
+			}
+
+			if (ps.hanaModeIcon !== undefined) {
+				set.hanaModeIcon = ps.hanaModeIcon;
+			}
+
+			if (ps.hanaModeIconSize !== undefined) {
+				set.hanaModeIconSize = ps.hanaModeIconSize;
+			}
+
+			if (ps.hanaModeIconRadius !== undefined) {
+				set.hanaModeIconRadius = ps.hanaModeIconRadius;
+			}
+
+			if (ps.hanaModeBackground !== undefined) {
+				set.hanaModeBackground = ps.hanaModeBackground;
+			}
+
+			if (Array.isArray(ps.defaultFollowedUsers)) {
+				if (ps.defaultFollowedUsers.some(x => this.serverSettings.forciblyFollowedUsers.includes(x) || ps.forciblyFollowedUsers?.includes(x))) {
+					throw new ApiError(meta.errors.followedUserDuplicated);
+				}
+
+				set.defaultFollowedUsers = ps.defaultFollowedUsers.filter(Boolean);
+			}
+
+			if (Array.isArray(ps.forciblyFollowedUsers)) {
+				if (ps.forciblyFollowedUsers.some(x => this.serverSettings.defaultFollowedUsers.includes(x) || ps.defaultFollowedUsers?.includes(x))) {
+					throw new ApiError(meta.errors.followedUserDuplicated);
+				}
+
+				set.forciblyFollowedUsers = ps.forciblyFollowedUsers.filter(Boolean);
+			}
+
+			if (ps.deeplFreeMode !== undefined) {
+				set.deeplFreeMode = ps.deeplFreeMode;
+			}
+
+			if (ps.deeplFreeInstance !== undefined) {
+				if (ps.deeplFreeInstance === '') {
+					set.deeplFreeInstance = null;
+				} else {
+					set.deeplFreeInstance = ps.deeplFreeInstance;
+				}
+			}
+
+			if (ps.enableCpuModel !== undefined) {
+				set.enableCpuModel = ps.enableCpuModel;
+			}
+
+			if (ps.customCpuModel !== undefined) {
+				set.customCpuModel = ps.customCpuModel;
+			}
+
+			if (ps.enableCpuCore !== undefined) {
+				set.enableCpuCore = ps.enableCpuCore;
+			}
+
+			if (ps.customCpuCore !== undefined) {
+				set.customCpuCore = ps.customCpuCore;
+			}
+
+			if (ps.enableMemTotal !== undefined) {
+				set.enableMemTotal = ps.enableMemTotal;
+			}
+
+			if (ps.customMemTotal !== undefined) {
+				set.customMemTotal = ps.customMemTotal;
+			}
+
+			if (ps.enableFsTotal !== undefined) {
+				set.enableFsTotal = ps.enableFsTotal;
+			}
+
+			if (ps.customFsTotal !== undefined) {
+				set.customFsTotal = ps.customFsTotal;
+			}
+
+			if (ps.secondsPerSignup !== undefined) {
+				set.secondsPerSignup = ps.secondsPerSignup;
+			}
+
+			if (ps.entranceShowTimeLine !== undefined) {
+				set.entranceShowTimeLine = ps.entranceShowTimeLine;
+			}
+
+			if (ps.entranceShowFeatured !== undefined) {
+				set.entranceShowFeatured = ps.entranceShowFeatured;
+			}
+
+			if (ps.entranceShowEmojis !== undefined) {
+				set.entranceShowEmojis = ps.entranceShowEmojis;
+			}
+
+			if (Array.isArray(ps.entranceSelectEmojis)) {
+				set.entranceSelectEmojis = ps.entranceSelectEmojis;
+			}
+
+			if (ps.entranceShowStats !== undefined) {
+				set.entranceShowStats = ps.entranceShowStats;
+			}
+
+			if (ps.entranceShowFederation !== undefined) {
+				set.entranceShowFederation = ps.entranceShowFederation;
+			}
+
+			if (ps.entranceShowDashboard !== undefined) {
+				set.entranceShowDashboard = ps.entranceShowDashboard;
+			}
+
+			if (ps.entranceShowSignup !== undefined) {
+				set.entranceShowSignup = ps.entranceShowSignup;
+			}
+
+			if (ps.entranceShowAnotherInstance !== undefined) {
+				set.entranceShowAnotherInstance = ps.entranceShowAnotherInstance;
+			}
+
+			if (ps.entranceShowSignin !== undefined) {
+				set.entranceShowSignin = ps.entranceShowSignin;
 			}
 
 			const before = await this.metaService.fetch(true);
