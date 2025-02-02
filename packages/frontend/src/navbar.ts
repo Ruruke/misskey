@@ -186,7 +186,7 @@ export const navbarItemDef = reactive({
 	reactionStats: {
 		title: i18n.ts.reactionStats,
 		icon: 'ti ti-chart-bar',
-		to: '/reaction-stats',
+		to: '/reactions-stats',
 	},
 	cacheClear: {
 		title: i18n.ts.clearCache,
