@@ -8,6 +8,8 @@
 
 
 ### General
+- Fix: Docker のビルドに失敗する問題を修正  
+  (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/883)
 
 ### Client
 - Feat: ノートの描画処理を軽量化できる機能を追加（実験的機能のためデフォルト無効）
