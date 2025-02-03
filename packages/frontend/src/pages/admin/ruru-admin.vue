@@ -63,6 +63,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkFolder>
 				</div>
 			</MkFolder>
+			<MkFolder>
+				<template #icon><i class="ti ti-box-margin"></i></template>
+				<template #label>{{ i18n.ts._entrance.marginSettings }}</template>
+				<div class="_gaps_m">
+					<MkInput v-model="entranceSettingsForm.state.entranceMarginLeft" type="number" :min="0">
+						<template #label>{{ i18n.ts._entrance.marginLeft }}</template>
+					</MkInput>
+					<MkInput v-model="entranceSettingsForm.state.entranceMarginRight" type="number" :min="0">
+						<template #label>{{ i18n.ts._entrance.marginRight }}</template>
+					</MkInput>
+					<MkInput v-model="entranceSettingsForm.state.entranceMarginTop" type="number" :min="0">
+						<template #label>{{ i18n.ts._entrance.marginTop }}</template>
+					</MkInput>
+					<MkInput v-model="entranceSettingsForm.state.entranceMarginBottom" type="number" :min="0">
+						<template #label>{{ i18n.ts._entrance.marginBottom }}</template>
+					</MkInput>
+				</div>
+			</MkFolder>
 		</FormSuspense>
 	</MkSpacer>
 </MkStickyContainer>
@@ -97,6 +115,10 @@ const entranceShowDashboard = ref<boolean>(false);
 const entranceShowSignup = ref<boolean>(false);
 const entranceShowAnotherInstance = ref<boolean>(false);
 const entranceShowSignin = ref<boolean>(false);
+const entranceMarginLeft = ref<number>();
+const entranceMarginRight = ref<number>();
+const entranceMarginTop = ref<number>();
+const entranceMarginBottom = ref<number>();
 
 async function init() {
 	entranceShowTimeLine.value = meta.entranceShowTimeLine;
@@ -109,6 +131,11 @@ async function init() {
 	entranceShowSignup.value = meta.entranceShowSignup;
 	entranceShowAnotherInstance.value = meta.entranceShowAnotherInstance;
 	entranceShowSignin.value = meta.entranceShowSignin;
+	entranceMarginLeft.value = meta.entranceMarginLeft;
+	entranceMarginRight.value = meta.entranceMarginRight;
+	entranceMarginTop.value = meta.entranceMarginTop;
+	entranceMarginBottom.value = meta.entranceMarginBottom;
+
 }
 
 const entranceSettingsForm = useForm({
@@ -131,6 +158,20 @@ const entranceSettingsForm = useForm({
 		});
 		return;
 	}
+	const parsedMargins = {
+		entranceMarginLeft: Number(state.entranceMarginLeft),
+		entranceMarginRight: Number(state.entranceMarginRight),
+		entranceMarginTop: Number(state.entranceMarginTop),
+		entranceMarginBottom: Number(state.entranceMarginBottom),
+	};
+	if (Object.values(parsedMargins).some(isNaN)) {
+		os.alert({
+			type: 'error',
+			text: 'マージン値は数値で入力してください',
+		});
+		return;
+	}
+
 	await os.apiWithDialog('admin/update-meta', {
 		entranceShowTimeLine: state.entranceShowTimeLine,
 		entranceShowFeatured: state.entranceShowFeatured,
@@ -142,6 +183,11 @@ const entranceSettingsForm = useForm({
 		entranceShowSignup: state.entranceShowSignup,
 		entranceShowAnotherInstance: state.entranceShowAnotherInstance,
 		entranceShowSignin: state.entranceShowSignin,
+		entranceMarginLeft: state.entranceMarginLeft,
+		entranceMarginRight: state.entranceMarginRight,
+		entranceMarginTop: state.entranceMarginTop,
+		entranceMarginBottom: state.entranceMarginBottom,
+
 	});
 	fetchInstance(true);
 });

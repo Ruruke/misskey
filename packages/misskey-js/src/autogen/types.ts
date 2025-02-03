@@ -5278,6 +5278,14 @@ export type components = {
       entranceShowAnotherInstance: boolean;
       /** @default true */
       entranceShowSignin: boolean;
+      /** @default 120 */
+      entranceMarginLeft: number;
+      /** @default 0 */
+      entranceMarginRight: number;
+      /** @default 0 */
+      entranceMarginTop: number;
+      /** @default 0 */
+      entranceMarginBottom: number;
     };
     MetaDetailedOnly: {
       features?: {
@@ -8836,6 +8844,10 @@ export type operations = {
             entranceShowSignup: boolean;
             entranceShowAnotherInstance: boolean;
             entranceShowSignin: boolean;
+            entranceMarginLeft: number;
+            entranceMarginRight: number;
+            entranceMarginTop: number;
+            entranceMarginBottom: number;
           };
         };
       };
@@ -11202,6 +11214,10 @@ export type operations = {
           entranceShowSignup?: boolean;
           entranceShowAnotherInstance?: boolean;
           entranceShowSignin?: boolean;
+          entranceMarginLeft?: number;
+          entranceMarginRight?: number;
+          entranceMarginTop?: number;
+          entranceMarginBottom?: number;
         };
       };
     };

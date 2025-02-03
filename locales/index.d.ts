@@ -12100,6 +12100,26 @@ export interface Locale extends ILocale {
          * エントランスでログインを表示します。
          */
         "showSigninDescription": string;
+        /**
+         * マージン設定
+         */
+        "marginSettings": string;
+        /**
+         * 左マージン
+         */
+        "marginLeft": string;
+        /**
+         * 右マージン
+         */
+        "marginRight": string;
+        /**
+         * 上マージン
+         */
+        "marginTop": string;
+        /**
+         * 下マージン
+         */
+        "marginBottom": string;
     };
     /**
      * 予約投稿

@@ -623,6 +623,22 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			entranceMarginLeft: {
+				type: 'number',
+				optional: false, nullable: false,
+			},
+			entranceMarginRight: {
+				type: 'number',
+				optional: false, nullable: false,
+			},
+			entranceMarginTop: {
+				type: 'number',
+				optional: false, nullable: false,
+			},
+			entranceMarginBottom: {
+				type: 'number',
+				optional: false, nullable: false,
+			},
 		},
 	},
 } as const;
@@ -803,6 +819,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				entranceShowSignup: instance.entranceShowSignup,
 				entranceShowAnotherInstance: instance.entranceShowAnotherInstance,
 				entranceShowSignin: instance.entranceShowSignin,
+				entranceMarginLeft: instance.entranceMarginLeft,
+				entranceMarginRight: instance.entranceMarginRight,
+				entranceMarginTop: instance.entranceMarginTop,
+				entranceMarginBottom: instance.entranceMarginBottom,
 			};
 		});
 	}
