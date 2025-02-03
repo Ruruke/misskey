@@ -9,6 +9,9 @@ import * as assert from 'assert';
 import { Test } from '@nestjs/testing';
 import { jest } from '@jest/globals';
 
+import { MockResolver } from '../misc/mock-resolver.js';
+import type { IActor, IApDocument, ICollection, IObject, IPost } from '@/core/activitypub/type.js';
+import type { MiRemoteUser } from '@/models/User.js';
 import { ApImageService } from '@/core/activitypub/models/ApImageService.js';
 import { ApNoteService } from '@/core/activitypub/models/ApNoteService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
@@ -19,14 +22,11 @@ import { GlobalModule } from '@/GlobalModule.js';
 import { CoreModule } from '@/core/CoreModule.js';
 import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { LoggerService } from '@/core/LoggerService.js';
-import type { IActor, IApDocument, ICollection, IObject, IPost } from '@/core/activitypub/type.js';
 import { MiMeta, MiNote, UserProfilesRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
 import { secureRndstr } from '@/misc/secure-rndstr.js';
 import { DownloadService } from '@/core/DownloadService.js';
-import type { MiRemoteUser } from '@/models/User.js';
 import { genAidx } from '@/misc/id/aidx.js';
-import { MockResolver } from '../misc/mock-resolver.js';
 
 const host = 'https://host1.test';
 
@@ -281,7 +281,7 @@ describe('ActivityPub', () => {
 			await personService.createPerson(actor.id, resolver);
 
 			// All notes in `featured` are same-origin, no need to fetch notes again
-			assert.deepStrictEqual(resolver.remoteGetTrials(), [actor.id, actor.featured]);
+			assert.deepStrictEqual(resolver.remoteGetTrials(), [actor.id, actor.outbox, actor.featured]);
 
 			// Created notes without resolving anything
 			for (const item of featured.items as IPost[]) {
@@ -314,7 +314,7 @@ describe('ActivityPub', () => {
 			// actor2Note is from a different server and needs to be fetched again
 			assert.deepStrictEqual(
 				resolver.remoteGetTrials(),
-				[actor1.id, actor1.featured, actor2Note.id, actor2.id],
+				[actor1.id, actor1.outbox, actor1.featured, actor2Note.id, actor2.id, actor2.id + '/outbox'],
 			);
 
 			const note = await noteService.fetchNote(actor2Note.id);
@@ -440,7 +440,7 @@ describe('ActivityPub', () => {
 		});
 	});
 
-	describe('JSON-LD', () =>{
+	describe('JSON-LD', () => {
 		test('Compaction', async () => {
 			const jsonLd = jsonLdService.use();
 

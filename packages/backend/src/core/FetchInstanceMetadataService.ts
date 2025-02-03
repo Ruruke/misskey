@@ -71,8 +71,10 @@ export class FetchInstanceMetadataService {
 
 	@bindThis
 	public async fetchInstanceMetadata(instance: MiInstance, force = false): Promise<void> {
-		const host = instance.host;
-
+		const host = instance?.host;
+		if ( host === undefined) {
+			return;
+		}
 		// finallyでunlockされてしまうのでtry内でロックチェックをしない
 		// （returnであってもfinallyは実行される）
 		if (!force && await this.tryLock(host) === '1') {

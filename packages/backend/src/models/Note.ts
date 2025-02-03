@@ -234,6 +234,8 @@ export class MiNote {
 		comment: '[Denormalized]',
 	})
 	public renoteUserHost: string | null;
+
+
 	//#endregion
 
 	constructor(data: Partial<MiNote>) {

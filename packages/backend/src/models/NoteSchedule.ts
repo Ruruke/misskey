@@ -18,7 +18,7 @@ type MinimumUser = {
 };
 
 export type MiScheduleNoteType={
-	visibility: 'public' | 'home' | 'followers' | 'specified';
+	visibility: 'public' | 'home' | 'followers' | 'specified' | 'public_non_ltl';
 	visibleUsers: MinimumUser[];
 	channel?: MiChannel['id'];
 	poll: {

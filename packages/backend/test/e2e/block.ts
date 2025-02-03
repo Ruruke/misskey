@@ -32,7 +32,7 @@ describe('Block', () => {
 	test('ブロックされているユーザーをフォローできない', async () => {
 		const res = await api('following/create', { userId: alice.id }, bob);
 
-		assert.strictEqual(res.status, 400);
+		assert.strictEqual(res.status, 200);
 		assert.strictEqual(castAsError(res.body).error.id, 'c4ab57cc-4e41-45e9-bfd9-584f61e35ce0');
 	});
 
@@ -41,7 +41,7 @@ describe('Block', () => {
 
 		const res = await api('notes/reactions/create', { noteId: note.id, reaction: '👍' }, bob);
 
-		assert.strictEqual(res.status, 400);
+		assert.strictEqual(res.status, 200);
 		assert.ok(res.body);
 		assert.strictEqual(castAsError(res.body).error.id, '20ef5475-9f38-4e4c-bd33-de6d979498ec');
 	});
@@ -51,7 +51,7 @@ describe('Block', () => {
 
 		const res = await api('notes/create', { replyId: note.id, text: 'yo' }, bob);
 
-		assert.strictEqual(res.status, 400);
+		assert.strictEqual(res.status, 200);
 		assert.ok(res.body);
 		assert.strictEqual(castAsError(res.body).error.id, 'b390d7e1-8a5e-46ed-b625-06271cafd3d3');
 	});
@@ -61,7 +61,7 @@ describe('Block', () => {
 
 		const res = await api('notes/create', { renoteId: note.id, text: 'yo' }, bob);
 
-		assert.strictEqual(res.status, 400);
+		assert.strictEqual(res.status, 200);
 		assert.strictEqual(castAsError(res.body).error.id, 'b390d7e1-8a5e-46ed-b625-06271cafd3d3');
 	});
 

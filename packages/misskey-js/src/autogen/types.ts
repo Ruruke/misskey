@@ -24126,7 +24126,7 @@ export type operations = {
            * @default public
            * @enum {string}
            */
-          visibility?: 'public' | 'home' | 'followers' | 'specified';
+          visibility?: 'public' | 'home' | 'followers' | 'specified' | 'public_non_ltl';
           visibleUserIds?: string[];
           cw?: string | null;
           /**
@@ -24292,7 +24292,7 @@ export type operations = {
                 cw?: string | null;
                 fileIds: string[];
                 /** @enum {string} */
-                visibility: 'public' | 'home' | 'followers' | 'specified';
+                visibility: 'public' | 'home' | 'followers' | 'specified' | 'public_non_ltl';
                 visibleUsers: components['schemas']['UserLite'][];
                 user: components['schemas']['User'];
                 /**

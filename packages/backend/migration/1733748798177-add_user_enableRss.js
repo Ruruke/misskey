@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
 export class AddUserEnableRss1733748798177 {
     name = 'AddUserEnableRss1733748798177'
 

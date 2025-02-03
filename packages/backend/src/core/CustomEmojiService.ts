@@ -20,6 +20,7 @@ import type { EmojisRepository, MiRole, MiUser } from '@/models/_.js';
 import type { MiEmoji } from '@/models/Emoji.js';
 import type { Serialized } from '@/types.js';
 import { DriveService } from '@/core/DriveService.js';
+import { MiDriveFile } from '@/models/DriveFile.js';
 
 const parseEmojiStrRegexp = /^([-\w]+)(?:@([\w.-]+))?$/;
 
@@ -119,7 +120,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 				});
 
 				// 元データの削除
-				this.driveService.deleteFile(originalDriveData);
+				await this.driveService.deleteFile(originalDriveData);
 			}
 		} catch (e) {
 			if (e instanceof TypeError) {
