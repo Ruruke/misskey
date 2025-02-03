@@ -236,7 +236,6 @@ const routes: RouteDef[] = [{
 	component: page(() => import('@/pages/explore.vue')),
 	loginRequired: true,
 	hash: 'initialTab',
-	loginRequired: true,
 }, {
 	path: '/search',
 	component: page(() => import('@/pages/search.vue')),
@@ -604,7 +603,6 @@ const routes: RouteDef[] = [{
 	loginRequired: false,
 }, {
 	path: '/timeline',
-	loginRequired: true,
 	component: page(() => import('@/pages/timeline.vue')),
 	loginRequired: true,
 }, {

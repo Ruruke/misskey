@@ -687,7 +687,7 @@ function getMenu() {
 	}, { type: 'divider' }, {
 		text: folder.value ? folder.value.name : i18n.ts.drive,
 		type: 'label',
-	});
+	}];
 
 	menu.push({
 		type: 'switch',
@@ -752,7 +752,7 @@ function getMenu() {
 		text: i18n.ts.createFolder,
 		icon: 'ti ti-folder-plus',
 		action: () => { createFolder(); },
-	}];
+	});
 
 	return menu;
 }

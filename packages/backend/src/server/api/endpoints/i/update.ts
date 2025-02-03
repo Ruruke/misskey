@@ -177,6 +177,7 @@ export const paramDef = {
 		hideOnlineStatus: { type: 'boolean' },
 		publicReactions: { type: 'boolean' },
 		hideActivity: { type: 'boolean' },
+		hideNoteFromOverview: { type: 'boolean' },
 		carefulBot: { type: 'boolean' },
 		autoAcceptFollowed: { type: 'boolean' },
 		noCrawle: { type: 'boolean' },
@@ -337,6 +338,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (typeof ps.hideOnlineStatus === 'boolean') updates.hideOnlineStatus = ps.hideOnlineStatus;
 			if (typeof ps.publicReactions === 'boolean') profileUpdates.publicReactions = ps.publicReactions;
 			if (typeof ps.hideActivity === 'boolean') profileUpdates.hideActivity = ps.hideActivity;
+			if (typeof ps.hideNoteFromOverview === 'boolean') profileUpdates.hideNoteFromOverview = ps.hideNoteFromOverview;
 			if (typeof ps.isBot === 'boolean') updates.isBot = ps.isBot;
 			if (typeof ps.enableRss === 'boolean') updates.enableRss = ps.enableRss;
 			if (typeof ps.carefulBot === 'boolean') profileUpdates.carefulBot = ps.carefulBot;

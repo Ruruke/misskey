@@ -178,10 +178,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkLazy>
 						</template>
 					</div>
-					<MkLazy>
-						<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user" :collapsed="true"/>
-					</MkLazy>
-					<div v-if="!disableNotes && !user.isBlocked">
+					<template v-if="narrow && !user.isBlocked">
+						<MkLazy v-if="user.listenbrainz && listenbrainzdata">
+							<XListenBrainz :key="user.id" :user="user" :collapsed="true"/>
+						</MkLazy>
+					</template>
+					<div v-if="!disableNotes && !user.isBlocked && !user.hideNoteFromOverview">
 						<MkLazy>
 							<XTimeline :user="user"/>
 						</MkLazy>
