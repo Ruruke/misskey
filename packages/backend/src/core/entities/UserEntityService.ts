@@ -602,6 +602,8 @@ export class UserEntityService implements OnModuleInit {
 					color: role.color,
 					iconUrl: role.iconUrl,
 					description: role.description,
+					isModerator: role.isModerator,
+					isAdministrator: role.isAdministrator,
 					permissionGroup: role.permissionGroup,
 					displayOrder: role.displayOrder,
 				}))),
