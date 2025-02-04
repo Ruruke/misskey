@@ -251,39 +251,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkFolder>
 
 				<MkFolder>
-					<template #icon><i class="ti ti-ghost"></i></template>
-					<template #label>{{ i18n.ts.proxyAccount }}</template>
-					<template v-if="proxyAccountForm.modified.value" #footer>
-						<MkFormFooter :form="proxyAccountForm"/>
-					</template>
-
-					<div class="_gaps">
-						<MkInfo>{{ i18n.ts.proxyAccountDescription }}</MkInfo>
-
-						<div class="_panel">
-							<div :class="$style.banner" :style="{ backgroundImage: proxyAccount.bannerUrl ? `url(${ proxyAccount.bannerUrl })` : null }">
-								<MkButton primary rounded :class="$style.bannerEdit" @click="changeProxyAccountBanner">{{ i18n.ts._profile.changeBanner }}</MkButton>
-							</div>
-							<div :class="$style.avatarContainer">
-								<MkAvatar :class="$style.avatar" :user="proxyAccount" forceShowDecoration @click="changeProxyAccountAvatar"/>
-								<div class="_buttonsCenter">
-									<MkButton primary rounded @click="changeProxyAccountAvatar">{{ i18n.ts._profile.changeAvatar }}</MkButton>
-								</div>
-							</div>
-						</div>
-
-						<MkInput v-model="proxyAccountForm.state.name" :max="30" :mfmAutocomplete="['emoji']">
-							<template #label>{{ i18n.ts._profile.name }}</template>
-						</MkInput>
-
-						<MkTextarea v-model="proxyAccountForm.state.description" :max="500" tall mfmAutocomplete :mfmPreview="true">
-							<template #label>{{ i18n.ts._profile.description }}</template>
-							<template #caption>{{ i18n.ts._profile.youCanIncludeHashtags }}</template>
-						</MkTextarea>
-					</div>
-				</MkFolder>
-
-				<MkFolder>
 					<template #icon><i class="ti ti-cloud"></i></template>
 					<template #label>{{ i18n.ts._customizeFeature.title }} <span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
 					<template v-if="customFeatureForm.modified.value" #footer>
@@ -334,12 +301,6 @@ import { globalEvents } from '@/events.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 
 const meta = await misskeyApi('admin/meta');
-
-const proxyAccount = ref(meta.proxyAccountId ? await misskeyApi('users/show', { userId: meta.proxyAccountId }) : null);
-const proxyAccountProfile = reactive({
-	name: proxyAccount.value.name,
-	description: proxyAccount.value.description,
-});
 
 const infoForm = useForm({
 	name: meta.name ?? '',
@@ -456,17 +417,6 @@ const federationForm = useForm({
 	await os.apiWithDialog('admin/update-meta', {
 		federation: state.federation,
 		federationHosts: state.federationHosts.split('\n'),
-	});
-	fetchInstance(true);
-});
-
-const proxyAccountForm = useForm({
-	name: proxyAccountProfile.name,
-	description: proxyAccountProfile.description,
-}, async (state) => {
-	await os.apiWithDialog('admin/update-proxy-account', {
-		name: state.name,
-		description: state.description,
 	});
 	fetchInstance(true);
 });

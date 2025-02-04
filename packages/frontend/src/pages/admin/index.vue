@@ -236,6 +236,11 @@ const menuDef = computed<SuperMenuDef[]>(() => [{
 		to: '/admin/system-webhook',
 		active: currentPage.value?.route.name === 'system-webhook',
 	}, {
+		icon: 'ti ti-webhook',
+		text: 'Proxy',
+		to: '/admin/proxy',
+		active: currentPage.value?.route.name === 'proxy',
+	}, {
 		icon: 'ti ti-bolt',
 		text: i18n.ts.performance,
 		to: '/admin/performance',
