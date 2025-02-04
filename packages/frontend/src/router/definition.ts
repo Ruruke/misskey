@@ -511,6 +511,10 @@ const routes: RouteDef[] = [{
 		name: 'proxy',
 		component: page(() => import('@/pages/admin/proxy.vue')),
 	}, {
+		path: '/ruru-admin',
+		name: 'Ruru Admin',
+		component: page(() => import('@/pages/admin/ruru-admin.vue')),
+	}, {
 		path: '/',
 		component: page(() => import('@/pages/_empty_.vue')),
 	}],
