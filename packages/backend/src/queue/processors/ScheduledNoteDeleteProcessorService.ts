@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
 import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
@@ -55,7 +60,7 @@ export class ScheduledNoteDeleteProcessorService {
 			});
 
 			for (const file of files) {
-				await this.driveService.deleteFileImmediately(file, false, user);
+				// await this.driveService.deleteFileImmediately(file, false, user);　//TODO:
 			}
 
 			this.logger.info(`Deleted ${files.length} attached files: ${files.map(f => f.id).join(', ')}`);

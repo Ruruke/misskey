@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import * as http from "node:http";
 import * as https from "node:https";
 import type { URL } from "node:url";

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and misskey-project
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <span v-if="menuName" :class="$style.menuRoot">
 	<span :class="$style.menuCode">
