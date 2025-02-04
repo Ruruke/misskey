@@ -685,30 +685,30 @@ export class MiMeta {
 	})
 	public disableSignup: boolean;
 
-	@Column('boolean', {
-		default: false,
-	})
-	public enableMemTotal: boolean;
-
-	@Column('integer', {
-		nullable: true,
-	})
-	public customMemTotal: number | null;
-
-	@Column('boolean', {
-		default: false,
-	})
-	public enableFsTotal: boolean;
-
-	@Column('integer', {
-		nullable: true,
-	})
-	public customFsTotal: number | null;
-
-	@Column('integer', {
-		default: 0,
-	})
-	public secondsPerSignup: number;
+	// @Column('boolean', {
+	// 	default: false,
+	// })
+	// public enableMemTotal: boolean;
+	//
+	// @Column('integer', {
+	// 	nullable: true,
+	// })
+	// public customMemTotal: number | null;
+	//
+	// @Column('boolean', {
+	// 	default: false,
+	// })
+	// public enableFsTotal: boolean;
+	//
+	// @Column('integer', {
+	// 	nullable: true,
+	// })
+	// public customFsTotal: number | null;
+	//
+	// @Column('integer', {
+	// 	default: 0,
+	// })
+	// public secondsPerSignup: number;
 
 	@Column('boolean', {
 		default: false,

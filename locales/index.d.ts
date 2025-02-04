@@ -11399,14 +11399,6 @@ export interface Locale extends ILocale {
         };
     };
     /**
-     * インスタンスのソフトウェア名を表示
-     */
-    "showInstanceTickerSoftwareName": string;
-    /**
-     * インスタンスのソフトウェア名をインスタンスの名前の横に表示します。
-     */
-    "showInstanceTickerSoftwareNameDescription": string;
-    /**
      * リモートフォロワーのアクティビティは不完全または古い情報である可能性があります
      */
     "remoteFollowersWarning": string;
@@ -11419,33 +11411,13 @@ export interface Locale extends ILocale {
      */
     "showBots": string;
     /**
-     * 予約投稿
+     * Custom robots.txt
      */
-    "schedulePost": string;
+    "robotsTxt": string;
     /**
-     * 予約投稿一覧
+     * ここにエントリを追加すると、Misskeyに同梱されているデフォルトのrobots.txtを上書きすることができます。
      */
-    "schedulePostList": string;
-    /**
-     * テキストエリアの自動リサイズ
-     */
-    "textAreaAutoResize": string;
-    /**
-     * テキストエリアの高さを自動で調整します。
-     */
-    "textAreaAutoResizeDescription": string;
-		/**
-		 * Custom robots.txt
-		 */
-		"robotsTxt": string;
-		/**
-		 * Adding entries here will override the default robots.txt packaged with Sharkey. Maximum 2048 characters.
-		 */
-		"robotsTxtDescription": string;
-		/**
-     * ミュートしたユーザーを匿名にする
-     */
-    "anonymizeMutedUsers": string;
+    "robotsTxtDescription": string;
     "_customizeFeature": {
         /**
          * 独自機能

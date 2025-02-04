@@ -3045,22 +3045,13 @@ _remoteLookupErrors:
     title: "見つかりません"
     description: "要求されたリソースは見つかりませんでした。URIをもう一度お確かめください。"
 
-showInstanceTickerSoftwareName: "インスタンスのソフトウェア名を表示"
-showInstanceTickerSoftwareNameDescription: "インスタンスのソフトウェア名をインスタンスの名前の横に表示します。"
-
 remoteFollowersWarning: "リモートフォロワーのアクティビティは不完全または古い情報である可能性があります"
 followFeed: "フォローフィード"
 showBots: "タイムラインにbotを表示"
-schedulePost: "予約投稿"
-schedulePostList: "予約投稿一覧"
 
 robotsTxt: "Custom robots.txt"
 robotsTxtDescription: "ここにエントリを追加すると、Misskeyに同梱されているデフォルトのrobots.txtを上書きすることができます。"
 
-textAreaAutoResize: "テキストエリアの自動リサイズ"
-textAreaAutoResizeDescription: "テキストエリアの高さを自動で調整します。"
-
-anonymizeMutedUsers: "ミュートしたユーザーを匿名にする"
 _customizeFeature:
   title: "独自機能"
   disableSignup: "Signupの無効化"
