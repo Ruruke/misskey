@@ -464,13 +464,26 @@ onUnmounted(() => {
 						color: #fff;
 
 						> .name {
-							display: block;
+							display: flex;
+							gap: 8px;
 							margin: -10px;
 							padding: 10px;
 							line-height: 32px;
 							font-weight: bold;
 							font-size: 1.8em;
 							filter: drop-shadow(0 0 4px #000);
+
+							> .nickname-button {
+								-webkit-backdrop-filter: var(--blur, blur(8px));
+								backdrop-filter: var(--blur, blur(8px));
+								background: rgba(0, 0, 0, 0.2);
+								color: #ccc;
+								font-size: 0.7em;
+								line-height: 1;
+								width: 1.8em;
+								height: 1.8em;
+								border-radius: 100%;
+							}
 						}
 
 						> .bottom {
@@ -512,6 +525,10 @@ onUnmounted(() => {
 							opacity: 0.8;
 						}
 					}
+
+					> .nickname-button {
+						margin-left: 8px;
+					}
 				}
 
 				> .avatar {
@@ -543,247 +560,228 @@ onUnmounted(() => {
 
 				> .role-folder {
 					padding: 12px 12px 0 154px;
-
 					.roles {
 						padding: 10px 0px 0 8px;
 						font-size: 0.95em;
 						display: flex;
 						flex-wrap: wrap;
 						gap: 8px;
-
 						> .role {
 							border: solid 1px var(--color, var(--divider));
 							border-radius: 999px;
 							margin-right: 4px;
 							padding: 3px 8px;
 						}
-
-						> .isSystemAccount {
-							padding: 24px 24px 0 154px;
-						}
-
-						> .roles {
-							padding: 24px 24px 0 154px;
-							font-size: 0.95em;
-							display: flex;
-							flex-wrap: wrap;
-							gap: 8px;
-
-							> .role {
-								border: solid 1px var(--color, var(--MI_THEME-divider));
-								border-radius: 999px;
-								margin-right: 4px;
-								padding: 3px 8px;
-							}
-						}
-
-						> .moderationNote {
-							margin: 12px 24px 0 154px;
-						}
-
-						> .memo {
-							margin: 12px 24px 0 154px;
-							background: transparent;
-							color: var(--MI_THEME-fg);
-							border: 1px solid var(--MI_THEME-divider);
-							border-radius: 8px;
-							padding: 8px;
-							line-height: 0;
-
-							> .heading {
-								text-align: left;
-								color: var(--MI_THEME-fgTransparent);
-								line-height: 1.5;
-								font-size: 85%;
-							}
-
-							textarea {
-								margin: 0;
-								padding: 0;
-								resize: none;
-								border: none;
-								outline: none;
-								width: 100%;
-								height: auto;
-								min-height: 0;
-								line-height: 1.5;
-								color: var(--MI_THEME-fg);
-								overflow: hidden;
-								background: transparent;
-								font-family: inherit;
-							}
-						}
-
-						> .description {
-							padding: 24px 24px 24px 154px;
-							font-size: 0.95em;
-
-							> .empty {
-								margin: 0;
-								opacity: 0.5;
-							}
-						}
-
-						> .fields {
-							padding: 24px;
-							font-size: 0.9em;
-							border-top: solid 0.5px var(--MI_THEME-divider);
-
-							> .field {
-								display: flex;
-								padding: 0;
-								margin: 0;
-								align-items: center;
-
-								&:not(:last-child) {
-									margin-bottom: 8px;
-								}
-
-								> .name {
-									width: 30%;
-									overflow: hidden;
-									white-space: nowrap;
-									text-overflow: ellipsis;
-									font-weight: bold;
-									text-align: center;
-								}
-
-								> .value {
-									width: 70%;
-									overflow: hidden;
-									white-space: nowrap;
-									text-overflow: ellipsis;
-									margin: 0;
-								}
-							}
-
-							&.system > .field > .name {
-							}
-						}
-
-						> .status {
-							display: flex;
-							padding: 24px;
-							border-top: solid 0.5px var(--MI_THEME-divider);
-
-							> a {
-								flex: 1;
-								text-align: center;
-
-								&.active {
-									color: var(--MI_THEME-accent);
-								}
-
-								&:hover {
-									text-decoration: none;
-								}
-
-								> b {
-									display: block;
-									line-height: 16px;
-								}
-
-								> span {
-									font-size: 70%;
-								}
-							}
-						}
 					}
 				}
 
-				> .contents {
-					> .content {
-						margin-bottom: var(--MI-margin);
+				> .moderationNote {
+					margin: 12px 24px 0 154px;
+				}
+
+				> .memo {
+					margin: 12px 24px 0 154px;
+					background: transparent;
+					color: var(--MI_THEME-fg);
+					border: 1px solid var(--MI_THEME-divider);
+					border-radius: 8px;
+					padding: 8px;
+					line-height: 0;
+
+					> .heading {
+						text-align: left;
+						color: var(--MI_THEME-fgTransparent);
+						line-height: 1.5;
+						font-size: 85%;
+					}
+
+					textarea {
+						margin: 0;
+						padding: 0;
+						resize: none;
+						border: none;
+						outline: none;
+						width: 100%;
+						height: auto;
+						min-height: 0;
+						line-height: 1.5;
+						color: var(--MI_THEME-fg);
+						overflow: hidden;
+						background: transparent;
+						font-family: inherit;
 					}
 				}
-			}
 
-			&.wide {
-				display: flex;
-				width: 100%;
+				> .description {
+					padding: 24px 24px 24px 154px;
+					font-size: 0.95em;
 
-				> .main {
-					width: 100%;
-					min-width: 0;
+					> .empty {
+						margin: 0;
+						opacity: 0.5;
+					}
 				}
 
-				> .sub {
-					max-width: 350px;
-					min-width: 350px;
-					margin-left: var(--MI-margin);
+				> .fields {
+					padding: 24px;
+					font-size: 0.9em;
+					border-top: solid 0.5px var(--MI_THEME-divider);
+
+					> .field {
+						display: flex;
+						padding: 0;
+						margin: 0;
+						align-items: center;
+
+						&:not(:last-child) {
+							margin-bottom: 8px;
+						}
+
+						> .name {
+							width: 30%;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
+							font-weight: bold;
+							text-align: center;
+						}
+
+						> .value {
+							width: 70%;
+							overflow: hidden;
+							white-space: nowrap;
+							text-overflow: ellipsis;
+							margin: 0;
+						}
+					}
+
+					&.system > .field > .name {
+					}
+				}
+
+				> .status {
+					display: flex;
+					padding: 24px;
+					border-top: solid 0.5px var(--MI_THEME-divider);
+
+					> a {
+						flex: 1;
+						text-align: center;
+
+						&.active {
+							color: var(--MI_THEME-accent);
+						}
+
+						&:hover {
+							text-decoration: none;
+						}
+
+						> b {
+							display: block;
+							line-height: 16px;
+						}
+
+						> span {
+							font-size: 70%;
+						}
+					}
 				}
 			}
 		}
 
-		@container (max-width: 500px) {
-			.ftskorzw {
-				> .main {
-					> .profile > .main {
-						> .banner-container {
-							height: 140px;
+		> .contents {
+			> .content {
+				margin-bottom: var(--MI-margin);
+			}
+		}
+	}
 
-							> .fade {
-								display: none;
-							}
+	&.wide {
+		display: flex;
+		width: 100%;
 
-							> .title {
-								display: none;
-							}
-						}
+		> .main {
+			width: 100%;
+			min-width: 0;
+		}
 
-						> .title {
-							display: block;
-						}
+		> .sub {
+			max-width: 350px;
+			min-width: 350px;
+			margin-left: var(--MI-margin);
+		}
+	}
+}
 
-						> .avatar {
-							top: 90px;
-							left: 0;
-							right: 0;
-							width: 92px;
-							height: 92px;
-							margin: auto;
-						}
+@container (max-width: 500px) {
+	.ftskorzw {
+		> .main {
+			> .profile > .main {
+				> .banner-container {
+					height: 140px;
 
-						> .followedMessage {
-							padding: 16px 16px 0 16px;
-						}
-
-						> .role-folder {
-							padding: 8px 16px 0 16px;
-
-							.roles {
-								padding: 8px 8px 0 8px;
-								justify-content: center;
-							}
-						}
-
-						> .moderationNote {
-							margin: 16px 16px 0 16px;
-						}
-
-						> .memo {
-							margin: 16px 16px 0 16px;
-						}
-
-						> .description {
-							padding: 16px;
-							text-align: center;
-						}
-
-						> .fields {
-							padding: 16px;
-						}
-
-						> .status {
-							padding: 16px;
-						}
+					> .fade {
+						display: none;
 					}
 
-					> .contents {
-						> .nav {
-							font-size: 80%;
-						}
+					> .title {
+						display: none;
 					}
+				}
+
+				> .title {
+					display: block;
+				}
+
+				> .avatar {
+					top: 90px;
+					left: 0;
+					right: 0;
+					width: 92px;
+					height: 92px;
+					margin: auto;
+				}
+
+				> .followedMessage {
+					padding: 16px 16px 0 16px;
+				}
+
+				> .role-folder {
+					padding: 8px 16px 0 16px;
+					.roles {
+						padding: 8px 8px 0 8px;
+						justify-content: center;
+					}
+				}
+				> .isSystemAccount {
+					padding: 24px 24px 0 154px;
+				}
+
+				> .moderationNote {
+					margin: 16px 16px 0 16px;
+				}
+
+				> .memo {
+					margin: 16px 16px 0 16px;
+				}
+
+				> .description {
+					padding: 16px;
+					text-align: center;
+				}
+
+				> .fields {
+					padding: 16px;
+				}
+
+				> .status {
+					padding: 16px;
+				}
+			}
+
+			> .contents {
+				> .nav {
+					font-size: 80%;
 				}
 			}
 		}
