@@ -145,16 +145,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</template>
 
 					<div class="_gaps">
-						<MkSwitch v-model="otherForm.state.enableAchievements">
-							<template #label>{{ i18n.ts.enableAchievements }}<span v-if="otherForm.modifiedStates.enableAchievements" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>{{ i18n.ts.turnOffAchievements}}</template>
-						</MkSwitch>
-
-						<MkSwitch v-model="otherForm.state.enableBotTrending">
-							<template #label>{{ i18n.ts.enableBotTrending }}<span v-if="otherForm.modifiedStates.enableBotTrending" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>{{ i18n.ts.turnOffBotTrending }}</template>
-						</MkSwitch>
-
 						<MkTextarea v-model="otherForm.state.robotsTxt">
 							<template #label>{{ i18n.ts.robotsTxt }}<span v-if="otherForm.modifiedStates.robotsTxt" class="_modified">{{ i18n.ts.modified }}</span></template>
 							<template #caption>{{ i18n.ts.robotsTxtDescription }}</template>
