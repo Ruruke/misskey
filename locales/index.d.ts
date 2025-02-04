@@ -11434,7 +11434,15 @@ export interface Locale extends ILocale {
      * テキストエリアの高さを自動で調整します。
      */
     "textAreaAutoResizeDescription": string;
-    /**
+		/**
+		 * Custom robots.txt
+		 */
+		"robotsTxt": string;
+		/**
+		 * Adding entries here will override the default robots.txt packaged with Sharkey. Maximum 2048 characters.
+		 */
+		"robotsTxtDescription": string;
+		/**
      * ミュートしたユーザーを匿名にする
      */
     "anonymizeMutedUsers": string;

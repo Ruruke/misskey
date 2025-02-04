@@ -3054,6 +3054,9 @@ showBots: "タイムラインにbotを表示"
 schedulePost: "予約投稿"
 schedulePostList: "予約投稿一覧"
 
+robotsTxt: "Custom robots.txt"
+robotsTxtDescription: "ここにエントリを追加すると、Misskeyに同梱されているデフォルトのrobots.txtを上書きすることができます。"
+
 textAreaAutoResize: "テキストエリアの自動リサイズ"
 textAreaAutoResizeDescription: "テキストエリアの高さを自動で調整します。"
 
