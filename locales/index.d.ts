@@ -12170,10 +12170,6 @@ export interface Locale extends ILocale {
 		 */
 		"communityRole": string;
     /**
-     * コミュニティーロール
-     */
-    "communityRole": string;
-    /**
      * ロールの管理
      */
     "manageRole": string;
