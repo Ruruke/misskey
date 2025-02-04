@@ -149,6 +149,11 @@ const entranceSettingsForm = useForm({
 	entranceShowSignup: meta.entranceShowSignup,
 	entranceShowAnotherInstance: meta.entranceShowAnotherInstance,
 	entranceShowSignin: meta.entranceShowSignin,
+	entranceMarginLeft: Number(meta.entranceMarginLeft),
+	entranceMarginRight: Number(meta.entranceMarginRight),
+	entranceMarginTop: Number(meta.entranceMarginTop),
+	entranceMarginBottom: Number(meta.entranceMarginBottom),
+
 }, async (state) => {
 	const emojis = state.entranceSelectEmojis.split('\n').filter(emoji => emoji.trim() !== '');
 	if (emojis.length > 5) {
