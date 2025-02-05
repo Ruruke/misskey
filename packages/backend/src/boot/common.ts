@@ -3,21 +3,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import os from 'node:os';
-import * as process from 'node:process';
 import { NestFactory } from '@nestjs/core';
-import { INestApplicationContext } from '@nestjs/common';
-import { Config } from '@/config.js';
 import { ChartManagementService } from '@/core/chart/ChartManagementService.js';
-import { QueueStatsService } from '@/daemons/QueueStatsService.js';
-import { ServerStatsService } from '@/daemons/ServerStatsService.js';
-import { MainModule } from '@/MainModule.js';
+import { QueueProcessorService } from '@/queue/QueueProcessorService.js';
 import { NestLogger } from '@/NestLogger.js';
 import { QueueProcessorModule } from '@/queue/QueueProcessorModule.js';
-import { QueueProcessorService } from '@/queue/QueueProcessorService.js';
+import { QueueStatsService } from '@/daemons/QueueStatsService.js';
+import { ServerStatsService } from '@/daemons/ServerStatsService.js';
 import { ServerService } from '@/server/ServerService.js';
+import { MainModule } from '@/MainModule.js';
 
-export async function server(): Promise<INestApplicationContext> {
+export async function server() {
 	const app = await NestFactory.createApplicationContext(MainModule, {
 		logger: new NestLogger(),
 	});
@@ -34,7 +30,7 @@ export async function server(): Promise<INestApplicationContext> {
 	return app;
 }
 
-export async function jobQueue(): Promise<INestApplicationContext> {
+export async function jobQueue() {
 	const jobQueue = await NestFactory.createApplicationContext(QueueProcessorModule, {
 		logger: new NestLogger(),
 	});
@@ -44,20 +40,3 @@ export async function jobQueue(): Promise<INestApplicationContext> {
 
 	return jobQueue;
 }
-
-export function actualClusterLimit(config: Partial<Config>): number {
-	return Math.min(config.clusterLimit ?? 1, cpuCount);
-}
-
-// for testing
-export function setCpuCount(count: number): void {
-	// だいぶ苦肉の策だが、jestで上手くmockできないためこのような実装になっている
-	if (process.env.NODE_ENV !== 'test') {
-		throw new Error('This function is only available in test environment');
-	}
-
-	cpuCount = count;
-}
-
-// for testing
-let cpuCount = os.cpus().length;
