@@ -746,20 +746,20 @@ importers:
         specifier: 1.9.3
         version: 1.9.3
       chart.js:
-        specifier: 4.4.6
-        version: 4.4.6
+        specifier: 4.4.7
+        version: 4.4.7
       chartjs-adapter-date-fns:
         specifier: 3.0.0
-        version: 3.0.0(chart.js@4.4.6)(date-fns@2.30.0)
+        version: 3.0.0(chart.js@4.4.7)(date-fns@2.30.0)
       chartjs-chart-matrix:
         specifier: 2.0.1
-        version: 2.0.1(chart.js@4.4.6)
+        version: 2.0.1(chart.js@4.4.7)
       chartjs-plugin-gradient:
         specifier: 0.6.1
-        version: 0.6.1(chart.js@4.4.6)
+        version: 0.6.1(chart.js@4.4.7)
       chartjs-plugin-zoom:
         specifier: 2.2.0
-        version: 2.2.0(chart.js@4.4.6)
+        version: 2.2.0(chart.js@4.4.7)
       chromatic:
         specifier: 11.18.1
         version: 11.18.1
@@ -5667,8 +5667,8 @@ packages:
   character-parser@2.2.0:
     resolution: {integrity: sha512-+UqJQjFEFaTAs3bNsF2j2kEN1baG/zghZbdqoYEDxGZtJo9LBzl1A+m0D4n3qKx8N2FNv8/Xp6yV9mQmBuptaw==}
 
-  chart.js@4.4.6:
-    resolution: {integrity: sha512-8Y406zevUPbbIBA/HRk33khEmQPk5+cxeflWE/2rx1NJsjVWMPw/9mSP9rxHP5eqi6LNoPBVMfZHxbwLSgldYA==}
+  chart.js@4.4.7:
+    resolution: {integrity: sha512-pwkcKfdzTMAU/+jNosKhNL2bHtJc/sSmYgVbuGTEDhzkrhmyihmP7vUc/5ZK9WopidMDHNe3Wm7jOd/WhuHWuw==}
     engines: {pnpm: '>=8'}
 
   chartjs-adapter-date-fns@3.0.0:
@@ -16577,27 +16577,27 @@ snapshots:
     dependencies:
       is-regex: 1.1.4
 
-  chart.js@4.4.6:
+  chart.js@4.4.7:
     dependencies:
       '@kurkle/color': 0.3.2
 
-  chartjs-adapter-date-fns@3.0.0(chart.js@4.4.6)(date-fns@2.30.0):
+  chartjs-adapter-date-fns@3.0.0(chart.js@4.4.7)(date-fns@2.30.0):
     dependencies:
-      chart.js: 4.4.6
+      chart.js: 4.4.7
       date-fns: 2.30.0
 
-  chartjs-chart-matrix@2.0.1(chart.js@4.4.6):
+  chartjs-chart-matrix@2.0.1(chart.js@4.4.7):
     dependencies:
-      chart.js: 4.4.6
+      chart.js: 4.4.7
 
-  chartjs-plugin-gradient@0.6.1(chart.js@4.4.6):
+  chartjs-plugin-gradient@0.6.1(chart.js@4.4.7):
     dependencies:
-      chart.js: 4.4.6
+      chart.js: 4.4.7
 
-  chartjs-plugin-zoom@2.2.0(chart.js@4.4.6):
+  chartjs-plugin-zoom@2.2.0(chart.js@4.4.7):
     dependencies:
       '@types/hammerjs': 2.0.46
-      chart.js: 4.4.6
+      chart.js: 4.4.7
       hammerjs: 2.0.8
 
   check-error@1.0.3:
