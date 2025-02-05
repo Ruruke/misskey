@@ -653,8 +653,8 @@ importers:
         specifier: 3.6.4
         version: 3.6.4
       '@types/ws':
-        specifier: 8.5.13
-        version: 8.5.13
+        specifier: 8.5.14
+        version: 8.5.14
       '@typescript-eslint/eslint-plugin':
         specifier: 7.17.0
         version: 7.17.0(@typescript-eslint/parser@7.17.0(eslint@9.14.0)(typescript@5.6.3))(eslint@9.14.0)(typescript@5.6.3)
@@ -963,8 +963,8 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       '@types/ws':
-        specifier: 8.5.13
-        version: 8.5.13
+        specifier: 8.5.14
+        version: 8.5.14
       '@typescript-eslint/eslint-plugin':
         specifier: 7.17.0
         version: 7.17.0(@typescript-eslint/parser@7.17.0(eslint@9.14.0)(typescript@5.6.3))(eslint@9.14.0)(typescript@5.6.3)
@@ -1159,8 +1159,8 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       '@types/ws':
-        specifier: 8.5.13
-        version: 8.5.13
+        specifier: 8.5.14
+        version: 8.5.14
       '@typescript-eslint/eslint-plugin':
         specifier: 7.17.0
         version: 7.17.0(@typescript-eslint/parser@7.17.0(eslint@9.14.0)(typescript@5.6.3))(eslint@9.14.0)(typescript@5.6.3)
@@ -4612,8 +4612,8 @@ packages:
   '@types/webgl-ext@0.0.30':
     resolution: {integrity: sha512-LKVgNmBxN0BbljJrVUwkxwRYqzsAEPcZOe6S2T6ZaBDIrFp0qu4FNlpc5sM1tGbXUYFgdVQIoeLk1Y1UoblyEg==}
 
-  '@types/ws@8.5.13':
-    resolution: {integrity: sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA==}
+  '@types/ws@8.5.14':
+    resolution: {integrity: sha512-bd/YFLW+URhBzMXurx7lWByOu+xzU9+kb3RboOteXYDfW+tr+JZa99OyNmPINEGB/ahzKrEuc8rcv4gnpJmxTw==}
 
   '@types/yargs-parser@21.0.0':
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}
@@ -15074,7 +15074,7 @@ snapshots:
 
   '@types/webgl-ext@0.0.30': {}
 
-  '@types/ws@8.5.13':
+  '@types/ws@8.5.14':
     dependencies:
       '@types/node': 22.9.0
 
