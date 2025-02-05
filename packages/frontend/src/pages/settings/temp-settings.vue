@@ -268,6 +268,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, watch } from 'vue';
 import * as Misskey from 'misskey-js';
 import { defineAsyncComponent, ref } from 'vue';
+import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkSelect from '@/components/MkSelect.vue';
 // import MkRadios from '@/components/MkRadios.vue';
