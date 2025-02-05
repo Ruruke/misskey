@@ -154,6 +154,7 @@ export const paramDef = {
 		perUserListTimelineCacheMax: { type: 'integer' },
 		enableReactionsBuffering: { type: 'boolean' },
 		notesPerOneAd: { type: 'integer' },
+		blockMentionsFromUnfamiliarRemoteUsers: { type: 'boolean' },
 		silencedHosts: {
 			type: 'array',
 			nullable: true,
@@ -363,14 +364,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.cacheRemoteFiles !== undefined) {
 				set.cacheRemoteFiles = ps.cacheRemoteFiles;
-			}
-
-			if (ps.disableSignup !== undefined) {
-				set.disableSignup = ps.disableSignup;
-			}
-
-			if (ps.disableNotloginToShowTL !== undefined) {
-				set.disableNotloginToShowTL = ps.disableNotloginToShowTL;
 			}
 
 			if (ps.cacheRemoteSensitiveFiles !== undefined) {
@@ -921,6 +914,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.entranceMarginBottom !== undefined) {
 				set.entranceMarginBottom = ps.entranceMarginBottom;
+			}
+
+			if (ps.blockMentionsFromUnfamiliarRemoteUsers !== undefined) {
+				set.blockMentionsFromUnfamiliarRemoteUsers = ps.blockMentionsFromUnfamiliarRemoteUsers;
 			}
 
 			const before = await this.metaService.fetch(true);

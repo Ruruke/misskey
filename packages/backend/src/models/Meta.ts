@@ -828,4 +828,9 @@ export class MiMeta {
 		nullable: true,
 	})
 	public customFsTotal: number | null;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public blockMentionsFromUnfamiliarRemoteUsers: boolean;
 }
