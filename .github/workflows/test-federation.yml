@@ -9,11 +9,11 @@ on:
       - packages/backend/**
       - packages/misskey-js/**
       - .github/workflows/test-federation.yml
-  pull_request:
-    paths:
-      - packages/backend/**
-      - packages/misskey-js/**
-      - .github/workflows/test-federation.yml
+#  pull_request:
+#    paths:
+#      - packages/backend/**
+#      - packages/misskey-js/**
+#      - .github/workflows/test-federation.yml
 
 env:
   COREPACK_DEFAULT_TO_LATEST: 0
