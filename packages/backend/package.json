@@ -64,7 +64,7 @@
 		"slacc-linux-x64-musl": "0.0.10",
 		"slacc-win32-arm64-msvc": "0.0.10",
 		"slacc-win32-x64-msvc": "0.0.10",
-		"utf-8-validate": "6.0.3"
+		"utf-8-validate": "6.0.5"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "3.620.0",
