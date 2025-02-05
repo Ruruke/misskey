@@ -16,15 +16,13 @@
 	},
 
 	"packageRules": [
-		{
-			"matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-			"automerge": true
-		},
-		{
-			"matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-			"matchPackagePatterns": ["eslint"],
-			"groupName": "eslint",
-			"automerge": true
-		}
+        {
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
+            "automerge": true,
+            "addLabels": ["auto-merge"]
+        }
 	]
 }
