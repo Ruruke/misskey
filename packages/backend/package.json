@@ -215,7 +215,7 @@
 		"@types/oauth": "0.9.6",
 		"@types/oauth2orize": "1.11.5",
 		"@types/oauth2orize-pkce": "0.1.2",
-		"@types/pg": "8.11.10",
+		"@types/pg": "8.11.11",
 		"@types/pug": "2.0.10",
 		"@types/qrcode": "1.5.5",
 		"@types/random-seed": "0.3.5",
