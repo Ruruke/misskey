@@ -587,8 +587,8 @@ importers:
         specifier: 1.5.15
         version: 1.5.15
       '@types/jsrsasign':
-        specifier: 10.5.14
-        version: 10.5.14
+        specifier: 10.5.15
+        version: 10.5.15
       '@types/mime-types':
         specifier: 2.1.4
         version: 2.1.4
@@ -4414,8 +4414,8 @@ packages:
   '@types/jsonld@1.5.15':
     resolution: {integrity: sha512-PlAFPZjL+AuGYmwlqwKEL0IMP8M8RexH0NIPGfCVWSQ041H2rR/8OlyZSD7KsCVoN8vCfWdtWDBxX8yBVP+xow==}
 
-  '@types/jsrsasign@10.5.14':
-    resolution: {integrity: sha512-lppSlfK6etu+cuKs40K4rg8As79PH6hzIB+v55zSqImbSH3SE6Fm8MBHCiI91cWlAP3Z4igtJK1VL3fSN09blQ==}
+  '@types/jsrsasign@10.5.15':
+    resolution: {integrity: sha512-3stUTaSRtN09PPzVWR6aySD9gNnuymz+WviNHoTb85dKu+BjaV4uBbWWGykBBJkfwPtcNZVfTn2lbX00U+yhpQ==}
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
@@ -14895,7 +14895,7 @@ snapshots:
 
   '@types/jsonld@1.5.15': {}
 
-  '@types/jsrsasign@10.5.14': {}
+  '@types/jsrsasign@10.5.15': {}
 
   '@types/keyv@3.1.4':
     dependencies:
