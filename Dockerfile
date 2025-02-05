@@ -1,6 +1,6 @@
-# syntax = docker/dockerfile:1.4
+# syntax = docker/dockerfile:1.13
 
-ARG NODE_VERSION=22.11.0-bookworm
+ARG NODE_VERSION=22.13.1-bookworm
 
 # build assets & compile TypeScript
 
