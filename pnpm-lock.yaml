@@ -1440,8 +1440,8 @@ importers:
         specifier: 7.17.0
         version: 7.17.0(eslint@9.14.0)(typescript@5.6.3)
       '@typescript/lib-webworker':
-        specifier: npm:@types/serviceworker@0.0.67
-        version: '@types/serviceworker@0.0.67'
+        specifier: npm:@types/serviceworker@0.0.119
+        version: '@types/serviceworker@0.0.119'
       eslint-plugin-import:
         specifier: 2.30.0
         version: 2.30.0(@typescript-eslint/parser@7.17.0(eslint@9.14.0)(typescript@5.6.3))(eslint@9.14.0)
@@ -4549,8 +4549,8 @@ packages:
   '@types/serve-static@1.15.1':
     resolution: {integrity: sha512-NUo5XNiAdULrJENtJXZZ3fHtfMolzZwczzBbnAeBbqBwG+LaG6YaJtuwzwGSQZ2wsCrxjEhNNjAkKigy3n8teQ==}
 
-  '@types/serviceworker@0.0.67':
-    resolution: {integrity: sha512-7TCH7iNsCSNb+aUD9M/36TekrWFSLCjNK8zw/3n5kOtRjbLtDfGYMXTrDnGhSfqXNwpqmt9Vd90w5C/ad1tX6Q==}
+  '@types/serviceworker@0.0.119':
+    resolution: {integrity: sha512-Y6m+CoJ4wbdDRvzb0d3dvHT/ZFUAZilqnMvrUh3eZcUC+wsPfbB4zFuwJL/0gJZCEWEpoZy8ymEhEOhISLtOeA==}
 
   '@types/shimmer@1.0.5':
     resolution: {integrity: sha512-9Hp0ObzwwO57DpLFF0InUjUm/II8GmKAvzbefxQTihCb7KI6yc9yzf0nLc4mVdby5N4DRCgQM2wCup9KTieeww==}
@@ -15040,7 +15040,7 @@ snapshots:
       '@types/mime': 3.0.1
       '@types/node': 22.9.0
 
-  '@types/serviceworker@0.0.67': {}
+  '@types/serviceworker@0.0.119': {}
 
   '@types/shimmer@1.0.5': {}
 
