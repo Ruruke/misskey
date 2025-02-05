@@ -4,11 +4,11 @@
 		"config:recommended"
 	],
 	"schedule": [
-		"every 1 hour after 00:00 and before 23:59 every day"
+		"0 * * * *"
 	],
 
 	"automergeSchedule": [
-		"every 1 hour after 00:00 and before 23:59 every day"
+		"0 * * * *"
 	],
 
 	"major": {
