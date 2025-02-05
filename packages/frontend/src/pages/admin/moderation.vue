@@ -27,12 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #caption>{{ i18n.ts.registerApprovalEmailRecommended }}</template>
 					</MkSwitch>
 
-					<MkSwitch v-model="blockMentionsFromUnfamiliarRemoteUsers" @change="onChange_approvalRequiredForSignup">
-						<template #label>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsers }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-						<template #caption>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsersDescription }} Cherry-picked from Misskey.io (https://github.com/MisskeyIO/misskey/commit/82cc3987c13db4ad0da1589386027c222ce85ff8)</template>
-					</MkSwitch>
-
-					<MkSwitch v-model="blockMentionsFromUnfamiliarRemoteUsers">
+					<MkSwitch v-model="blockMentionsFromUnfamiliarRemoteUsers" @change="onChange_blockMentionsFromUnfamiliarRemoteUsers">
 						<template #label>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsers }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
 						<template #caption>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsersDescription }} Cherry-picked from Misskey.io (https://github.com/MisskeyIO/misskey/commit/82cc3987c13db4ad0da1589386027c222ce85ff8)</template>
 					</MkSwitch>
@@ -131,7 +126,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkTextarea v-model="blockedHosts">
 								<template #caption>{{ i18n.ts.blockedInstancesDescription }}</template>
 							</MkTextarea>
-							<MkButton primary @click="save_blockMentionsFromUnfamiliarRemoteUsers">{{ i18n.ts.save }}</MkButton>
+							<MkButton primary @click="save_blockH">{{ i18n.ts.save }}</MkButton>
 						</div>
 					</MkFolder>
 				</div>
@@ -220,6 +215,14 @@ function onChange_approvalRequiredForSignup(value: boolean) {
 	});
 }
 
+function onChange_blockMentionsFromUnfamiliarRemoteUsers(value: boolean) {
+	os.apiWithDialog('admin/update-meta', {
+		blockMentionsFromUnfamiliarRemoteUsers: value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
 function save_preservedUsernames() {
 	os.apiWithDialog('admin/update-meta', {
 		preservedUsernames: preservedUsernames.value.split('\n'),
@@ -271,13 +274,6 @@ function save_blockedHosts() {
 function save_silencedHosts() {
 	os.apiWithDialog('admin/update-meta', {
 		silencedHosts: silencedHosts.value.split('\n') || [],
-	}).then(() => {
-		fetchInstance(true);
-	});
-}
-function save_blockMentionsFromUnfamiliarRemoteUsers() {
-	os.apiWithDialog('admin/update-meta', {
-		blockMentionsFromUnfamiliarRemoteUsers: blockMentionsFromUnfamiliarRemoteUsers.value,
 	}).then(() => {
 		fetchInstance(true);
 	});
