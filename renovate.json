@@ -12,19 +12,19 @@
 	],
 
 	"major": {
-		"enabled": false
+		"enabled": true
 	},
 
 	"packageRules": [
 		{
 			"matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-			"automerge": false
+			"automerge": true
 		},
 		{
 			"matchUpdateTypes": ["minor", "patch", "pin", "digest"],
 			"matchPackagePatterns": ["eslint"],
 			"groupName": "eslint",
-			"automerge": false
+			"automerge": true
 		}
 	]
 }
