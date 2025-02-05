@@ -14,7 +14,7 @@ import Xev from 'xev';
 import Logger from '@/logger.js';
 import { envOption } from '../env.js';
 import { masterMain } from './master.js';
-import { parseWorkerArguments, workerMain } from './worker.js';
+import { workerMain } from './worker.js';
 import { readyRef } from './ready.js';
 
 import 'reflect-metadata';
@@ -75,8 +75,7 @@ if (!envOption.disableClustering) {
 		ev.mount();
 	} else if (cluster.isWorker) {
 		logger.info(`Start worker process... pid: ${process.pid}`);
-		const workerArguments = parseWorkerArguments(process.env);
-		await workerMain(workerArguments);
+		await workerMain();
 	} else {
 		throw new Error('Unknown process type');
 	}
