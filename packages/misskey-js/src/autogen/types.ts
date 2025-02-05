@@ -8853,6 +8853,7 @@ export type operations = {
             entranceMarginRight: number;
             entranceMarginTop: number;
             entranceMarginBottom: number;
+            blockMentionsFromUnfamiliarRemoteUsers: boolean;
           };
         };
       };
@@ -11181,6 +11182,7 @@ export type operations = {
           perUserListTimelineCacheMax?: number;
           enableReactionsBuffering?: boolean;
           notesPerOneAd?: number;
+          blockMentionsFromUnfamiliarRemoteUsers?: boolean;
           silencedHosts?: string[] | null;
           mediaSilencedHosts?: string[] | null;
           mfmSilencedHosts?: string[] | null;

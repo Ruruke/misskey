@@ -366,14 +366,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.cacheRemoteFiles = ps.cacheRemoteFiles;
 			}
 
-			if (ps.disableSignup !== undefined) {
-				set.disableSignup = ps.disableSignup;
-			}
-
-			if (ps.disableNotloginToShowTL !== undefined) {
-				set.disableNotloginToShowTL = ps.disableNotloginToShowTL;
-			}
-
 			if (ps.cacheRemoteSensitiveFiles !== undefined) {
 				set.cacheRemoteSensitiveFiles = ps.cacheRemoteSensitiveFiles;
 			}
