@@ -8,8 +8,8 @@ import * as Misskey from 'misskey-js';
 import { hemisphere } from '@@/js/intl-const.js';
 import lightTheme from '@@/themes/l-light.json5';
 import darkTheme from '@@/themes/d-green-lime.json5';
-import { miLocalStorage } from './local-storage.js';
 import type { SoundType } from '@/scripts/sound.js';
+import { miLocalStorage } from '@/local-storage.js';
 import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
@@ -636,6 +636,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	anonymizeMutedUsers: {
 		where: 'account',
 		default: true,
+	},
+	imageCompressionMode: {
+		where: 'account',
+		default: 'resizeCompressLossy' as 'resizeCompress' | 'noResizeCompress' | 'resizeCompressLossy' | 'noResizeCompressLossy' | null,
 	},
 }));
 
