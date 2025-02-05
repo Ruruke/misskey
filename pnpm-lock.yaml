@@ -240,8 +240,8 @@ importers:
         specifier: 4.2.2
         version: 4.2.2
       file-type:
-        specifier: 19.6.0
-        version: 19.6.0
+        specifier: 20.1.0
+        version: 20.1.0
       fluent-ffmpeg:
         specifier: 2.1.3
         version: 2.1.3
@@ -4446,6 +4446,10 @@ packages:
       '@vue/compiler-sfc':
         optional: true
 
+  '@tokenizer/inflate@0.2.6':
+    resolution: {integrity: sha512-SdR/i05U7Xhnsq36iyIq/ZiGGw4PKzw4ww3bOq80Pjj4wyXpqyTcgrgdDdGlcatnlvzNJx8CQw3hp6QZvkUwhA==}
+    engines: {node: '>=16'}
+
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
@@ -6806,6 +6810,9 @@ packages:
     resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
     engines: {node: ^12.20 || >= 14.13}
 
+  fflate@0.8.2:
+    resolution: {integrity: sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==}
+
   figures@3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}
     engines: {node: '>=8'}
@@ -6818,8 +6825,8 @@ packages:
     resolution: {integrity: sha512-hlDw5Ev+9e883s0pwUsuuYNu4tD7GgpUnOvykjv1Gya0ZIjuKumthDRua90VUn6/nlRKAjcxLUnHNTIUWwWIiw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  file-type@19.6.0:
-    resolution: {integrity: sha512-VZR5I7k5wkD0HgFnMsq5hOsSc710MJMu5Nc5QYsbe38NN5iPV/XTObYLc/cpttRTf6lX538+5uO1ZQRhYibiZQ==}
+  file-type@20.1.0:
+    resolution: {integrity: sha512-XoxU+lETfCf+bYK3SXkxFusAvmtYQl1u/ZC4zw1DBLEsHUvh339uwYucgQnnSMz1mRCWYJrCzsbJJ95hsQbZ8A==}
     engines: {node: '>=18'}
 
   filelist@1.0.4:
@@ -9036,13 +9043,13 @@ packages:
   pause-stream@0.0.11:
     resolution: {integrity: sha512-e3FBlXLmN/D1S+zHzanP4E/4Z60oFAa3O051qt1pxa7DEJWKAyil6upYVXCWadEnuoqa4Pkc9oUx9zsxYeRv8A==}
 
-  peek-readable@5.2.0:
-    resolution: {integrity: sha512-U94a+eXHzct7vAd19GH3UQ2dH4Satbng0MyYTMaQatL0pvYYL5CTPR25HBhKtecl+4bfu1/i3vC6k0hydO5Vcw==}
-    engines: {node: '>=14.16'}
-
   peek-readable@5.3.1:
     resolution: {integrity: sha512-GVlENSDW6KHaXcd9zkZltB7tCLosKB/4Hg0fqBJkAoBgYG2Tn1xtMgXtSUuMU9AK/gCm/tTdT8mgAeF4YNeeqw==}
     engines: {node: '>=14.16'}
+
+  peek-readable@6.1.1:
+    resolution: {integrity: sha512-7QmvgRKhxM0E2PGV4ocfROItVode+ELI27n4q+lpufZ+tRKBu/pBP8WOmw9HXn2ui/AUizqtvaVQhcJrOkRqYg==}
+    engines: {node: '>=18'}
 
   pend@1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
@@ -10372,13 +10379,13 @@ packages:
   strnum@1.0.5:
     resolution: {integrity: sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==}
 
+  strtok3@10.2.1:
+    resolution: {integrity: sha512-Q2dTnW3UXokAvXmXvrvMoUj/me3LyJI76HNHeuGMh2o0As/vzd7eHV3ncLOyvu928vQIDbE7Vf9ldEnC7cwy1w==}
+    engines: {node: '>=18'}
+
   strtok3@7.0.0:
     resolution: {integrity: sha512-pQ+V+nYQdC5H3Q7qBZAz/MO6lwGhoC2gOAjuouGf/VO0m7vQRh8QNMl2Uf6SwAtzZ9bOw3UIeBukEGNJl5dtXQ==}
     engines: {node: '>=14.16'}
-
-  strtok3@9.0.1:
-    resolution: {integrity: sha512-ERPW+XkvX9W2A+ov07iy+ZFJpVdik04GhDA4eVogiG9hpC97Kem2iucyzhFxbFRvQ5o2UckFtKZdp1hkGvnrEw==}
-    engines: {node: '>=16'}
 
   stylehacks@6.1.1:
     resolution: {integrity: sha512-gSTTEQ670cJNoaeIp9KX6lZmm8LJ3jPB5yJmX8Zq/wQxOsAFXV3qjWzHas3YYk1qesuVIyYWWUpZ0vSE/dTSGg==}
@@ -15073,6 +15080,14 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/server-renderer'
 
+  '@tokenizer/inflate@0.2.6':
+    dependencies:
+      debug: 4.4.0
+      fflate: 0.8.2
+      token-types: 6.0.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@tokenizer/token@0.3.0': {}
 
   '@transfem-org/sfm-js@0.24.5':
@@ -18088,6 +18103,8 @@ snapshots:
       node-domexception: 1.0.0
       web-streams-polyfill: 3.2.1
 
+  fflate@0.8.2: {}
+
   figures@3.2.0:
     dependencies:
       escape-string-regexp: 1.0.5
@@ -18102,12 +18119,14 @@ snapshots:
       strtok3: 7.0.0
       token-types: 5.0.1
 
-  file-type@19.6.0:
+  file-type@20.1.0:
     dependencies:
-      get-stream: 9.0.1
-      strtok3: 9.0.1
+      '@tokenizer/inflate': 0.2.6
+      strtok3: 10.2.1
       token-types: 6.0.0
       uint8array-extras: 1.4.0
+    transitivePeerDependencies:
+      - supports-color
 
   filelist@1.0.4:
     dependencies:
@@ -20760,9 +20779,9 @@ snapshots:
     dependencies:
       through: 2.3.8
 
-  peek-readable@5.2.0: {}
-
   peek-readable@5.3.1: {}
+
+  peek-readable@6.1.1: {}
 
   pend@1.2.0: {}
 
@@ -22206,12 +22225,12 @@ snapshots:
 
   strnum@1.0.5: {}
 
-  strtok3@7.0.0:
+  strtok3@10.2.1:
     dependencies:
       '@tokenizer/token': 0.3.0
-      peek-readable: 5.2.0
+      peek-readable: 6.1.1
 
-  strtok3@9.0.1:
+  strtok3@7.0.0:
     dependencies:
       '@tokenizer/token': 0.3.0
       peek-readable: 5.3.1
