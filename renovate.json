@@ -4,11 +4,11 @@
 		"config:recommended"
 	],
 	"schedule": [
-		"0 * * * *"
+		"* * * * *"
 	],
 
 	"automergeSchedule": [
-		"30 * * * *"
+		"* * * * *"
 	],
 
 	"major": {
