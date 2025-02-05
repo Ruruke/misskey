@@ -623,6 +623,42 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			deeplFreeInstance: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			enableCpuModel: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			customCpuModel: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			enableCpuCore: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			customCpuCore: {
+				type: 'number',
+				optional: false, nullable: true,
+			},
+			enableMemTotal: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			customMemTotal: {
+				type: 'number',
+				optional: false, nullable: true,
+			},
+			enableFsTotal: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			customFsTotal: {
+				type: 'number',
+				optional: false, nullable: true,
+			},
 			entranceMarginLeft: {
 				type: 'number',
 				optional: false, nullable: false,

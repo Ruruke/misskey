@@ -777,9 +777,55 @@ export class MiMeta {
 	})
 	public entranceMarginTop: number;
 
-	@Column('integer', {
-		default: 0,
+	// @Column('integer', {
+	// 	default: 0,
+	// })
+	// public deeplFreeMode: boolean;
+
+	// @Column('varchar', {
+	// 	length: 1024,
+	// 	nullable: true,
+	// })
+	// public deeplFreeInstance: string | null;
+
+	@Column('boolean', {
+		default: false,
 	})
-	public entranceMarginBottom: number;
-	public disableNotloginToShowTL: boolean;
+	public enableCpuModel: boolean;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public customCpuModel: string | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public enableCpuCore: boolean;
+
+	@Column('integer', {
+		nullable: true,
+	})
+	public customCpuCore: number | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public enableMemTotal: boolean;
+
+	@Column('integer', {
+		nullable: true,
+	})
+	public customMemTotal: number | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public enableFsTotal: boolean;
+
+	@Column('integer', {
+		nullable: true,
+	})
+	public customFsTotal: number | null;
 }

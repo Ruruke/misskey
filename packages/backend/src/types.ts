@@ -138,6 +138,9 @@ export const moderationLogTypes = [
 	'setInboxRule',
 	'deleteInboxRule',
 	'inboxRejected',
+	'unsetUserMutualLink',
+	'quarantineRemoteInstance',
+	'unquarantineRemoteInstance',
 ] as const;
 
 export type ModerationLogPayloads = {
@@ -411,7 +414,20 @@ export type ModerationLogPayloads = {
 	inboxRejected: {
 		activity: any;
 		rule: MiInboxRule;
-	}
+	};
+	unsetUserMutualLink: {
+		userId: string;
+		userUsername: string;
+		userMutualLinkSections: { name: string | null; mutualLinks: { fileId: string; description: string | null; imgSrc: string; }[]; }[] | []
+	};
+	quarantineRemoteInstance: {
+		id: string;
+		host: string;
+	};
+	unquarantineRemoteInstance: {
+		id: string;
+		host: string;
+	};
 };
 
 export type Serialized<T> = {
