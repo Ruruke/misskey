@@ -686,8 +686,8 @@ importers:
         specifier: 3.1.9
         version: 3.1.9
       pid-port:
-        specifier: 1.0.0
-        version: 1.0.0
+        specifier: 1.0.2
+        version: 1.0.2
       simple-oauth2:
         specifier: 5.1.0
         version: 5.1.0
@@ -8921,8 +8921,8 @@ packages:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
 
-  pid-port@1.0.0:
-    resolution: {integrity: sha512-LSNBeKChRPA4Xlrs6+zV588G1hSrFvANtPV5rt/5MPfSPK3V9XPWxx1d29svsrOjngT9ifLisXWCLS7DvO9ZhQ==}
+  pid-port@1.0.2:
+    resolution: {integrity: sha512-Khqp07zX8IJpmIg56bHrLxS3M0iSL4cq6wnMq8YE7r/hSw3Kn4QxYS6QJg8Bs22Z7CSVj7eSsxFuigYVIFWmjg==}
     engines: {node: '>=18'}
 
   pify@2.3.0:
@@ -17834,7 +17834,7 @@ snapshots:
     dependencies:
       aggregate-error: 5.0.0
       execa: 8.0.1
-      pid-port: 1.0.0
+      pid-port: 1.0.2
       process-exists: 5.0.0
       ps-list: 8.1.1
       taskkill: 5.0.0
@@ -20553,7 +20553,7 @@ snapshots:
 
   picomatch@4.0.2: {}
 
-  pid-port@1.0.0:
+  pid-port@1.0.2:
     dependencies:
       execa: 8.0.1
 
