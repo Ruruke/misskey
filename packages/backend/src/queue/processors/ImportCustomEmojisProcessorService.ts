@@ -96,6 +96,7 @@ export class ImportCustomEmojisProcessorService {
 						force: true,
 					});
 					await this.customEmojiService.add({
+						driveFile,
 						originalUrl: driveFile.url,
 						publicUrl: driveFile.webpublicUrl ?? driveFile.url,
 						fileType: driveFile.webpublicType ?? driveFile.type,

@@ -278,6 +278,7 @@ function save_silencedHosts() {
 		fetchInstance(true);
 	});
 }
+
 function save_mediaSilencedHosts() {
 	os.apiWithDialog('admin/update-meta', {
 		mediaSilencedHosts: mediaSilencedHosts.value.split('\n') || [],

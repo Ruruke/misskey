@@ -59,9 +59,9 @@ export class ScheduledNoteDeleteProcessorService {
 				userId: user.id,
 			});
 
-			for (const file of files) {
-				// await this.driveService.deleteFileImmediately(file, false, user);　//TODO:
-			}
+			// for (const file of files) {
+			// 	// await this.driveService.deleteFileImmediately(file, false, user); //TODO:
+			// }
 
 			this.logger.info(`Deleted ${files.length} attached files: ${files.map(f => f.id).join(', ')}`);
 		}

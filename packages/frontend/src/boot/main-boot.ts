@@ -388,7 +388,7 @@ export async function mainBoot() {
 
 		main.on('unreadAntenna', () => {
 			updateAccountPartial({ hasUnreadAntenna: true });
-			sound.playMisskeySfx('antenna');
+			sound.playMisskeySfx('notification');
 		});
 
 		main.on('readAllAnnouncements', () => {

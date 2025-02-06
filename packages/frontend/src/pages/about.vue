@@ -30,8 +30,7 @@ import { i18n } from '@/i18n.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
-import {miLocalStorage} from "@/local-storage.js";
-
+import { miLocalStorage } from "@/local-storage.js";
 
 const XOverview = defineAsyncComponent(() => import('@/pages/about.overview.vue'));
 const XEmojis = defineAsyncComponent(() => import('@/pages/about.emojis.vue'));
@@ -45,7 +44,7 @@ const props = withDefaults(defineProps<{
 });
 
 let tab = ref(props.initialTab);
-if(miLocalStorage.getItem('account') === null && !(tab.value === 'overview' || tab.value === 'emojis')) {
+if (miLocalStorage.getItem('account') === null && !(tab.value === 'overview' || tab.value === 'emojis')) {
 	tab = ref("overview");
 }
 
@@ -78,12 +77,11 @@ if (miLocalStorage.getItem('account') === null) {
 	headerTabs = computed(() => [{
 		key: 'overview',
 		title: i18n.ts.overview,
-	},{
+	}, {
 		key: 'emojis',
 		title: i18n.ts.customEmojis,
 		icon: 'ti ti-icons',
 	}]);
-
 }
 
 definePageMetadata(() => ({

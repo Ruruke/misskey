@@ -26,6 +26,7 @@ import { QueueService } from '@/core/QueueService.js';
 import { IdService } from '@/core/IdService.js';
 import { MiScheduleNoteType } from '@/models/NoteSchedule.js';
 import { RoleService } from '@/core/RoleService.js';
+import { isQuote, isRenote } from '@/misc/is-renote.js';
 import { ApiError } from '../../../error.js';
 
 export const meta = {
@@ -117,16 +118,37 @@ export const meta = {
 			code: 'CANNOT_RENOTE_OUTSIDE_OF_CHANNEL',
 			id: '33510210-8452-094c-6227-4a6c05d99f00',
 		},
+
+		cannotScheduleDeleteEarlierThanNow: {
+			message: 'Scheduled delete time is earlier than now.',
+			code: 'CANNOT_SCHEDULE_DELETE_EARLIER_THAN_NOW',
+			id: '9576c3c8-d8f3-11ee-ac15-00155d19d35d',
+		},
+
+		cannotScheduleDeleteLaterThanOneYear: {
+			message: 'Scheduled delete time is later than one year.',
+			code: 'CANNOT_SCHEDULE_DELETE_LATER_THAN_ONE_YEAR',
+			id: 'b02b5edb-2741-4841-b692-d9893f1e6515',
+		},
 	},
 } as const;
+
+function checkPureRenote(note: MiNote): boolean {
+	return note.renoteId != null &&
+		note.replyId == null &&
+		note.text == null &&
+		note.cw == null &&
+		(!note.fileIds || note.fileIds.length === 0) &&
+		!note.hasPoll;
+}
 
 export const paramDef = {
 	type: 'object',
 	properties: {
-		visibility: { type: 'string', enum: ['public', 'home', 'followers', 'specified','public_non_ltl'], default: 'public' },
+		visibility: { type: 'string', enum: ['public', 'home', 'followers', 'specified'], default: 'public' },
 		visibleUserIds: { type: 'array', uniqueItems: true, items: {
-			type: 'string', format: 'misskey:id',
-		} },
+				type: 'string', format: 'misskey:id',
+			} },
 		cw: { type: 'string', nullable: true, minLength: 1, maxLength: 100 },
 		reactionAcceptance: { type: 'string', nullable: true, enum: [null, 'likeOnly', 'likeOnlyForRemote', 'nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote'], default: null },
 		noExtractMentions: { type: 'boolean', default: false },
@@ -181,6 +203,14 @@ export const paramDef = {
 				scheduledAt: { type: 'integer', nullable: false },
 			},
 		},
+		scheduledDelete: {
+			type: 'object',
+			nullable: true,
+			properties: {
+				deleteAt: { type: 'number', nullable: true },
+				deleteAfter: { type: 'number', nullable: true },
+			},
+		},
 	},
 	// (re)note with text, files and poll are optional
 	anyOf: [
@@ -216,7 +246,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		private queueService: QueueService,
 		private roleService: RoleService,
-    private idService: IdService,
+		private idService: IdService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const scheduleNoteCount = await this.noteScheduleRepository.countBy({ userId: me.id });
@@ -255,7 +285,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				if (renote == null) {
 					throw new ApiError(meta.errors.noSuchRenoteTarget);
-				} else if (isPureRenote(renote)) {
+				} else if (isRenote(renote) && !isQuote(renote)) {
 					throw new ApiError(meta.errors.cannotReRenote);
 				}
 
@@ -288,7 +318,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				if (reply == null) {
 					throw new ApiError(meta.errors.noSuchReplyTarget);
-				} else if (isPureRenote(reply)) {
+				} else if (checkPureRenote(reply)) {
 					throw new ApiError(meta.errors.cannotReplyToPureRenote);
 				}
 
@@ -326,6 +356,21 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			} else {
 				throw new ApiError(meta.errors.cannotCreateAlreadyExpiredSchedule);
 			}
+
+			if (ps.scheduledDelete) {
+				if (typeof ps.scheduledDelete.deleteAt === 'number') {
+					if (ps.scheduledDelete.deleteAt < Date.now()) {
+						throw new ApiError(meta.errors.cannotScheduleDeleteEarlierThanNow);
+					}
+				} else if (typeof ps.scheduledDelete.deleteAfter === 'number') {
+					ps.scheduledDelete.deleteAt = ps.scheduleNote.scheduledAt + ps.scheduledDelete.deleteAfter;
+				}
+
+				if (ps.scheduledDelete.deleteAt && ps.scheduledDelete.deleteAt > ps.scheduleNote.scheduledAt + ms('1year')) {
+					throw new ApiError(meta.errors.cannotScheduleDeleteLaterThanOneYear);
+				}
+			}
+
 			const note: MiScheduleNoteType = {
 				files: files.map(f => f.id),
 				poll: ps.poll ? {
@@ -344,6 +389,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				apMentions: ps.noExtractMentions ? [] : undefined,
 				apHashtags: ps.noExtractHashtags ? [] : undefined,
 				apEmojis: ps.noExtractEmojis ? [] : undefined,
+				deleteAt: ps.scheduledDelete && ps.scheduledDelete.deleteAt
+					? new Date(ps.scheduledDelete.deleteAt).toISOString()
+					: null,
 			};
 
 			if (ps.scheduleNote.scheduledAt) {

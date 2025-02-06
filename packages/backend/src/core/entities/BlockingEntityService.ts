@@ -39,9 +39,10 @@ export class BlockingEntityService {
 			id: blocking.id,
 			createdAt: this.idService.parse(blocking.id).date.toISOString(),
 			blockeeId: blocking.blockeeId,
-			blockee: hint?.blockee ?? this.userEntityService.pack(blocking.blockeeId, me, {
+			blockee: hint?.blockee ?? await this.userEntityService.pack(blocking.blockeeId, me, {
 				schema: 'UserDetailedNotMe',
 			}),
+			isReactionBlock: blocking.isReactionBlock,
 		});
 	}
 

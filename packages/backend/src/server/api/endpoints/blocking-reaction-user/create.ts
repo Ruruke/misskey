@@ -10,8 +10,8 @@ import type { UsersRepository, BlockingsRepository } from '@/models/_.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DI } from '@/di-symbols.js';
 import { GetterService } from '@/server/api/GetterService.js';
-import { ApiError } from '../../error.js';
 import { UserReactionBlockingService } from '@/core/UserReactionBlockingService.js';
+import { ApiError } from '../../error.js';
 
 export const meta = {
 	tags: ['account'],

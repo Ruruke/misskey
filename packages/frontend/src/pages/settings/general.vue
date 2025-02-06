@@ -362,7 +362,6 @@ const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
 const searchEngine = computed(defaultStore.makeGetterSetter('searchEngine'));
 const showInstanceTickerSoftwareName = computed(defaultStore.makeGetterSetter('showInstanceTickerSoftwareName'));
 
-
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
 	miLocalStorage.removeItem('locale');

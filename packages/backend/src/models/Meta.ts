@@ -777,6 +777,10 @@ export class MiMeta {
 	})
 	public entranceMarginTop: number;
 
+	@Column('integer', {
+		default: 0,
+	})
+	public entranceMarginBottom: number;
 	// @Column('integer', {
 	// 	default: 0,
 	// })

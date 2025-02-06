@@ -108,8 +108,8 @@ importers:
         specifier: 11.0.2
         version: 11.0.2
       '@fastify/cors':
-        specifier: 10.0.2
-        version: 10.0.2
+        specifier: 10.0.1
+        version: 10.0.1
       '@fastify/express':
         specifier: 4.0.1
         version: 4.0.1
@@ -252,8 +252,8 @@ importers:
         specifier: 14.4.4
         version: 14.4.4
       happy-dom:
-        specifier: 16.8.1
-        version: 16.8.1
+        specifier: 15.11.4
+        version: 15.11.4
       hpagent:
         specifier: 1.2.0
         version: 1.2.0
@@ -973,7 +973,7 @@ importers:
         version: 7.17.0(eslint@9.14.0)(typescript@5.6.3)
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0))
       '@vue/runtime-core':
         specifier: 3.5.12
         version: 3.5.12
@@ -996,8 +996,8 @@ importers:
         specifier: 3.3.2
         version: 3.3.2
       happy-dom:
-        specifier: 16.8.1
-        version: 16.8.1
+        specifier: 10.0.3
+        version: 10.0.3
       intersection-observer:
         specifier: 0.12.2
         version: 0.12.2
@@ -1039,10 +1039,10 @@ importers:
         version: 1.0.3
       vitest:
         specifier: 1.6.0
-        version: 1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0)
+        version: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0)
       vitest-fetch-mock:
         specifier: 0.2.2
-        version: 0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0))
+        version: 0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0))
       vue-component-type-helpers:
         specifier: 2.1.10
         version: 2.1.10
@@ -1169,7 +1169,7 @@ importers:
         version: 7.17.0(eslint@9.14.0)(typescript@5.6.3)
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0)(sass@1.79.4)(terser@5.36.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0)(sass@1.79.4)(terser@5.36.0))
       '@vue/runtime-core':
         specifier: 3.5.12
         version: 3.5.12
@@ -1189,8 +1189,8 @@ importers:
         specifier: 3.3.2
         version: 3.3.2
       happy-dom:
-        specifier: 16.8.1
-        version: 16.8.1
+        specifier: 10.0.3
+        version: 10.0.3
       intersection-observer:
         specifier: 0.12.2
         version: 0.12.2
@@ -1440,8 +1440,8 @@ importers:
         specifier: 7.17.0
         version: 7.17.0(eslint@9.14.0)(typescript@5.6.3)
       '@typescript/lib-webworker':
-        specifier: npm:@types/serviceworker@0.0.119
-        version: '@types/serviceworker@0.0.119'
+        specifier: npm:@types/serviceworker@0.0.67
+        version: '@types/serviceworker@0.0.67'
       eslint-plugin-import:
         specifier: 2.30.0
         version: 2.30.0(@typescript-eslint/parser@7.17.0(eslint@9.14.0)(typescript@5.6.3))(eslint@9.14.0)
@@ -2637,8 +2637,8 @@ packages:
   '@fastify/cookie@11.0.2':
     resolution: {integrity: sha512-GWdwdGlgJxyvNv+QcKiGNevSspMQXncjMZ1J8IvuDQk0jvkzgWWZFNC2En3s+nHndZBGV8IbLwOI/sxCZw/mzA==}
 
-  '@fastify/cors@10.0.2':
-    resolution: {integrity: sha512-DGdxOG36sS/tZv1NFiCJGi7wGuXOSPL2CmNX5PbOVKx0C6LuIALRMrqLByHTCcX1Rbl8NJ9IWlJex32bzydvlw==}
+  '@fastify/cors@10.0.1':
+    resolution: {integrity: sha512-O8JIf6448uQbOgzSkCqhClw6gFTAqrdfeA6R3fc/3gwTJGUp7gl8/3tbNB+6INuu4RmgVOq99BmvdGbtu5pgOA==}
 
   '@fastify/deepmerge@2.0.0':
     resolution: {integrity: sha512-fsaybTGDyQ5KpPsplQqb9yKdCf2x/pbNpMNk8Tvp3rRz7lVcupKysH4b2ELMN2P4Hak1+UqTYdTj/u4FNV2p0g==}
@@ -4736,8 +4736,8 @@ packages:
   '@types/serve-static@1.15.1':
     resolution: {integrity: sha512-NUo5XNiAdULrJENtJXZZ3fHtfMolzZwczzBbnAeBbqBwG+LaG6YaJtuwzwGSQZ2wsCrxjEhNNjAkKigy3n8teQ==}
 
-  '@types/serviceworker@0.0.119':
-    resolution: {integrity: sha512-Y6m+CoJ4wbdDRvzb0d3dvHT/ZFUAZilqnMvrUh3eZcUC+wsPfbB4zFuwJL/0gJZCEWEpoZy8ymEhEOhISLtOeA==}
+  '@types/serviceworker@0.0.67':
+    resolution: {integrity: sha512-7TCH7iNsCSNb+aUD9M/36TekrWFSLCjNK8zw/3n5kOtRjbLtDfGYMXTrDnGhSfqXNwpqmt9Vd90w5C/ad1tX6Q==}
 
   '@types/shimmer@1.0.5':
     resolution: {integrity: sha512-9Hp0ObzwwO57DpLFF0InUjUm/II8GmKAvzbefxQTihCb7KI6yc9yzf0nLc4mVdby5N4DRCgQM2wCup9KTieeww==}
@@ -7143,8 +7143,11 @@ packages:
     resolution: {integrity: sha512-tSQXBXS/MWQOn/RKckawJ61vvsDpCom87JgxiYdGwHdOa0ht0vzUWDlfioofFCRU0L+6NGDt6XzbgoJvZkMeRQ==}
     engines: {node: '>=0.8.0'}
 
-  happy-dom@16.8.1:
-    resolution: {integrity: sha512-n0QrmT9lD81rbpKsyhnlz3DgnMZlaOkJPpgi746doA+HvaMC79bdWkwjrNnGJRvDrWTI8iOcJiVTJ5CdT/AZRw==}
+  happy-dom@10.0.3:
+    resolution: {integrity: sha512-WkCP+Z5fX6U5PY+yHP3ElV5D9PoxRAHRWPFq3pG9rg/6Hjf5ak7dozAgSCywsTRUq2qfa8vV8OQvUy5pRXy8EQ==}
+
+  happy-dom@15.11.4:
+    resolution: {integrity: sha512-AU6tzh3ADd28vSmXahgLsGyGGihXPGeKH0owDn9lhHolB6vIwEhag//T+TBzDoAcHhmVEwlxwSgtW1KZep+1MA==}
     engines: {node: '>=18.0.0'}
 
   hard-rejection@2.1.0:
@@ -11203,6 +11206,10 @@ packages:
   webpack-virtual-modules@0.5.0:
     resolution: {integrity: sha512-kyDivFZ7ZM0BVOUteVbDFhlRt7Ah/CSPwJdi8hBpkK7QLumUqdLtVfm/PX/hkcnrvr0i77fO5+TjZ94Pe+C9iw==}
 
+  whatwg-encoding@2.0.0:
+    resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}
+    engines: {node: '>=12'}
+
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
@@ -11973,7 +11980,7 @@ snapshots:
       '@babel/traverse': 7.24.7
       '@babel/types': 7.24.7
       convert-source-map: 2.0.0
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -12247,7 +12254,7 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.24.7
       '@babel/parser': 7.25.6
       '@babel/types': 7.25.6
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -12733,7 +12740,7 @@ snapshots:
   '@eslint/config-array@0.18.0':
     dependencies:
       '@eslint/object-schema': 2.1.4
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -12743,7 +12750,7 @@ snapshots:
   '@eslint/eslintrc@3.1.0':
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       espree: 10.3.0
       globals: 14.0.0
       ignore: 5.3.1
@@ -12784,7 +12791,7 @@ snapshots:
       cookie: 1.0.1
       fastify-plugin: 5.0.0
 
-  '@fastify/cors@10.0.2':
+  '@fastify/cors@10.0.1':
     dependencies:
       fastify-plugin: 5.0.0
       mnemonist: 0.39.8
@@ -15385,7 +15392,7 @@ snapshots:
       '@types/mime': 3.0.1
       '@types/node': 22.9.0
 
-  '@types/serviceworker@0.0.119': {}
+  '@types/serviceworker@0.0.67': {}
 
   '@types/shimmer@1.0.5': {}
 
@@ -15530,7 +15537,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/typescript-estree': 7.1.0(typescript@5.6.3)
       '@typescript-eslint/utils': 7.1.0(eslint@9.14.0)(typescript@5.6.3)
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       eslint: 9.14.0
       ts-api-utils: 1.0.1(typescript@5.6.3)
     optionalDependencies:
@@ -15542,7 +15549,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/typescript-estree': 7.17.0(typescript@5.6.3)
       '@typescript-eslint/utils': 7.17.0(eslint@9.14.0)(typescript@5.6.3)
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       eslint: 9.14.0
       ts-api-utils: 1.3.0(typescript@5.6.3)
     optionalDependencies:
@@ -15558,7 +15565,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 7.1.0
       '@typescript-eslint/visitor-keys': 7.1.0
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
@@ -15573,7 +15580,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 7.17.0
       '@typescript-eslint/visitor-keys': 7.17.0
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.4
@@ -15631,7 +15638,7 @@ snapshots:
       vite: 6.0.11(@types/node@22.9.0)(sass@1.79.4)(terser@5.36.0)
       vue: 3.5.12(typescript@5.6.3)
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0))':
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0))':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@bcoe/v8-coverage': 0.2.3
@@ -15646,11 +15653,11 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0)
+      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0)(sass@1.79.4)(terser@5.36.0))':
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0)(sass@1.79.4)(terser@5.36.0))':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@bcoe/v8-coverage': 0.2.3
@@ -15665,7 +15672,7 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0)(sass@1.79.4)(terser@5.36.0)
+      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0)(sass@1.79.4)(terser@5.36.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -15910,7 +15917,7 @@ snapshots:
 
   agent-base@7.1.0:
     dependencies:
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -17783,7 +17790,7 @@ snapshots:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       escape-string-regexp: 4.0.0
       eslint-scope: 8.2.0
       eslint-visitor-keys: 4.2.0
@@ -18523,8 +18530,18 @@ snapshots:
 
   hammerjs@2.0.8: {}
 
-  happy-dom@16.8.1:
+  happy-dom@10.0.3:
     dependencies:
+      css.escape: 1.5.1
+      entities: 4.5.0
+      iconv-lite: 0.6.3
+      webidl-conversions: 7.0.0
+      whatwg-encoding: 2.0.0
+      whatwg-mimetype: 3.0.0
+
+  happy-dom@15.11.4:
+    dependencies:
+      entities: 4.5.0
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
 
@@ -18694,7 +18711,7 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -18702,7 +18719,7 @@ snapshots:
   https-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -19067,7 +19084,7 @@ snapshots:
   istanbul-lib-source-maps@5.0.4:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       istanbul-lib-coverage: 3.2.2
     transitivePeerDependencies:
       - supports-color
@@ -21538,7 +21555,7 @@ snapshots:
 
   require-in-the-middle@7.3.0:
     dependencies:
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       module-details-from-path: 1.0.3
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -22805,7 +22822,7 @@ snapshots:
   vite-node@1.6.0(@types/node@22.9.0)(sass@1.79.3)(terser@5.36.0):
     dependencies:
       cac: 6.7.14
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       pathe: 1.1.2
       picocolors: 1.0.1
       vite: 5.4.11(@types/node@22.9.0)(sass@1.79.3)(terser@5.36.0)
@@ -22823,7 +22840,7 @@ snapshots:
   vite-node@1.6.0(@types/node@22.9.0)(sass@1.79.4)(terser@5.36.0):
     dependencies:
       cac: 6.7.14
-      debug: 4.3.7(supports-color@5.5.0)
+      debug: 4.3.7(supports-color@8.1.1)
       pathe: 1.1.2
       picocolors: 1.0.1
       vite: 5.4.11(@types/node@22.9.0)(sass@1.79.4)(terser@5.36.0)
@@ -22884,14 +22901,14 @@ snapshots:
       sass: 1.79.4
       terser: 5.36.0
 
-  vitest-fetch-mock@0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0)):
+  vitest-fetch-mock@0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0)):
     dependencies:
       cross-fetch: 3.1.6(encoding@0.1.13)
-      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0)
+      vitest: 1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0)
     transitivePeerDependencies:
       - encoding
 
-  vitest@1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0):
+  vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5))(sass@1.79.3)(terser@5.36.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -22915,7 +22932,7 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 22.9.0
-      happy-dom: 16.8.1
+      happy-dom: 10.0.3
       jsdom: 26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
     transitivePeerDependencies:
       - less
@@ -22927,7 +22944,7 @@ snapshots:
       - supports-color
       - terser
 
-  vitest@1.6.0(@types/node@22.9.0)(happy-dom@16.8.1)(jsdom@26.0.0)(sass@1.79.4)(terser@5.36.0):
+  vitest@1.6.0(@types/node@22.9.0)(happy-dom@10.0.3)(jsdom@26.0.0)(sass@1.79.4)(terser@5.36.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -22951,7 +22968,7 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 22.9.0
-      happy-dom: 16.8.1
+      happy-dom: 10.0.3
       jsdom: 26.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
     transitivePeerDependencies:
       - less
@@ -23116,6 +23133,10 @@ snapshots:
   webpack-sources@3.2.3: {}
 
   webpack-virtual-modules@0.5.0: {}
+
+  whatwg-encoding@2.0.0:
+    dependencies:
+      iconv-lite: 0.6.3
 
   whatwg-encoding@3.1.1:
     dependencies:

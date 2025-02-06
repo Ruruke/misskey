@@ -77,11 +77,12 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		isExplorable: true,
 		isHibernated: false,
 		isDeleted: false,
-		requireSigninToViewContents: false,
+		approved: true,
+		enableRss: false,
+		signupReason: '',
+		requireSigninToViewContents: true,
 		makeNotesFollowersOnlyBefore: null,
 		makeNotesHiddenBefore: null,
-		approved: true,
-		signupReason: '',
 		emojis: [],
 		score: 0,
 		host: null,
@@ -91,7 +92,6 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		uri: null,
 		followersUri: null,
 		token: null,
-		enableRss: true,
 		...override,
 	};
 }
@@ -134,6 +134,7 @@ function generateDummyNote(override?: Partial<MiNote>): MiNote {
 		replyUserHost: null,
 		renoteUserId: null,
 		renoteUserHost: null,
+		deleteAt: null,
 		...override,
 	};
 }
@@ -201,9 +202,9 @@ function toPackedUserLite(user: MiUser, override?: Packed<'UserLite'>): Packed<'
 		isCat: user.isCat,
 		approved: user.approved,
 		emojis: user.emojis,
+		enableRss: user.enableRss,
 		onlineStatus: 'active',
 		badgeRoles: [],
-		enableRss: true,
 		...override,
 	};
 }
@@ -227,7 +228,6 @@ function toPackedUserDetailedNotMe(user: MiUser, override?: Packed<'UserDetailed
 		location: null,
 		birthday: null,
 		lang: null,
-		ListenBrainz: null,
 		fields: [],
 		verifiedLinks: [],
 		followersCount: user.followersCount,
@@ -256,6 +256,7 @@ function toPackedUserDetailedNotMe(user: MiUser, override?: Packed<'UserDetailed
 		isRenoteMuted: false,
 		notify: 'none',
 		withReplies: true,
+		ListenBrainz: null,
 		...override,
 	};
 }

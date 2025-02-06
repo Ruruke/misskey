@@ -113,7 +113,7 @@ const menuDef = computed<SuperMenuDef[]>(() => [{
 		text: i18n.ts.dashboard,
 		to: '/admin/overview',
 		active: currentPage.value?.route.name === 'overview',
-	},{
+	}, {
 		icon: 'ti ti-dashboard',
 		text: "Ruru Admin",
 		to: '/admin/ruru-admin',
@@ -208,7 +208,7 @@ const menuDef = computed<SuperMenuDef[]>(() => [{
 		active: currentPage.value?.route.name === 'moderation',
 	}, {
 		icon: 'ti ti-inbox',
-		text: i18n.ts.inboxModeration+` [${i18n.ts._featureBy.type4ny}]`,
+		text: i18n.ts.inboxModeration + ` [${i18n.ts._featureBy.type4ny}]`,
 		to: '/admin/inbox-moderation',
 		active: currentPage.value?.route.name === 'inbox-moderation',
 	}, {

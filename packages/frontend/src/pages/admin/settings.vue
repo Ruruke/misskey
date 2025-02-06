@@ -250,27 +250,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</MkFolder>
 
-				<MkFolder>
-					<template #icon><i class="ti ti-cloud"></i></template>
-					<template #label>{{ i18n.ts._customizeFeature.title }} <span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-					<template v-if="customFeatureForm.modified.value" #footer>
-						<MkFormFooter :form="customFeatureForm"/>
-					</template>
-
-					<div class="_gaps">
-						<MkSwitch v-model="customFeatureForm.state.disableSignup">
-							<template #label>{{ i18n.ts._customizeFeature.disableSignup }}<span v-if="customFeatureForm.modifiedStates.disableSignup" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>Wip.</template>
-						</MkSwitch>
-					</div>
-
-					<div class="_gaps">
-						<MkSwitch v-model="customFeatureForm.state.disableNotloginToShowTL">
-							<template #label>{{ i18n.ts._customizeFeature.disableNotloginToShowTL }}<span v-if="customFeatureForm.modifiedStates.disableNotloginToShowTL" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>Wip.</template>
-						</MkSwitch>
-					</div>
-				</MkFolder>
 			</div>
 		</MkSpacer>
 	</MkStickyContainer>
@@ -349,17 +328,6 @@ const filesForm = useForm({
 	fetchInstance(true);
 });
 
-const customFeatureForm = useForm({
-	disableSignup: meta.disableSignup,
-	disableNotloginToShowTL: meta.disableNotloginToShowTL,
-}, async (state) => {
-	await os.apiWithDialog('admin/update-meta', {
-		disableSignup: state.disableSignup,
-		disableNotloginToShowTL: state.disableNotloginToShowTL,
-	});
-	fetchInstance(true);
-});
-
 const serviceWorkerForm = useForm({
 	enableServiceWorker: meta.enableServiceWorker,
 	swPublicKey: meta.swPublickey ?? '',
@@ -420,69 +388,6 @@ const federationForm = useForm({
 	});
 	fetchInstance(true);
 });
-
-function changeProxyAccountAvatar(ev) {
-	selectFile(ev.currentTarget ?? ev.target, i18n.ts.avatar).then(async (file) => {
-		let originalOrCropped = file;
-
-		const { canceled } = await os.confirm({
-			type: 'question',
-			text: i18n.ts.cropImageAsk,
-			okText: i18n.ts.cropYes,
-			cancelText: i18n.ts.cropNo,
-		});
-
-		if (!canceled) {
-			originalOrCropped = await os.cropImage(file, {
-				aspectRatio: 1,
-			});
-		}
-
-		const proxy = await os.apiWithDialog('admin/update-proxy-account', {
-			avatarId: originalOrCropped.id,
-		});
-		proxyAccount.value.avatarId = proxy.avatarId;
-		proxyAccount.value.avatarUrl = proxy.avatarUrl;
-		globalEvents.emit('requestClearPageCache');
-	});
-}
-
-function changeProxyAccountBanner(ev) {
-	selectFile(ev.currentTarget ?? ev.target, i18n.ts.banner).then(async (file) => {
-		let originalOrCropped = file;
-
-		const { canceled } = await os.confirm({
-			type: 'question',
-			text: i18n.ts.cropImageAsk,
-			okText: i18n.ts.cropYes,
-			cancelText: i18n.ts.cropNo,
-		});
-
-		if (!canceled) {
-			originalOrCropped = await os.cropImage(file, {
-				aspectRatio: 2,
-			});
-		}
-
-		const proxy = await os.apiWithDialog('admin/update-proxy-account', {
-			bannerId: originalOrCropped.id,
-		});
-		proxyAccount.value.bannerId = proxy.bannerId;
-		proxyAccount.value.bannerUrl = proxy.bannerUrl;
-		globalEvents.emit('requestClearPageCache');
-	});
-}
-
-function chooseProxyAccount() {
-	os.selectUser({ localOnly: true }).then(user => {
-		proxyAccount.value = user;
-		os.apiWithDialog('admin/update-meta', {
-			proxyAccountId: user.id,
-		}).then(() => {
-			fetchInstance(true);
-		});
-	});
-}
 
 const headerTabs = computed(() => []);
 

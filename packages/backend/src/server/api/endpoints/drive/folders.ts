@@ -36,7 +36,7 @@ export const paramDef = {
 		sinceId: { type: 'string', format: 'misskey:id' },
 		untilId: { type: 'string', format: 'misskey:id' },
 		folderId: { type: 'string', format: 'misskey:id', nullable: true, default: null },
-		searchQuery: { type: 'string', default: '' }
+		searchQuery: { type: 'string', default: '' },
 	},
 	required: [],
 } as const;

@@ -3,25 +3,25 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as http from "node:http";
-import * as https from "node:https";
-import type { URL } from "node:url";
-import CacheableLookup from "cacheable-lookup";
-import fetch from "node-fetch";
-import { HttpProxyAgent, HttpsProxyAgent } from "hpagent";
+import * as http from 'node:http';
+import * as https from 'node:https';
+import CacheableLookup from 'cacheable-lookup';
+import fetch from 'node-fetch';
+import { HttpProxyAgent, HttpsProxyAgent } from 'hpagent';
 import { loadConfig } from '@/config.js';
+import type { URL } from 'node:url';
 export async function fetchJson(
 	url: string,
-	accept = "application/json, */*",
+	accept = 'application/json, */*',
 	timeout = 10000,
 	headers?: Record<string, string>,
 ) {
 	const res = await getResponse({
 		url,
-		method: "GET",
+		method: 'GET',
 		headers: Object.assign(
 			{
-				"User-Agent": config.userAgent,
+				'User-Agent': config.userAgent,
 				Accept: accept,
 			},
 			headers || {},
@@ -32,20 +32,20 @@ export async function fetchJson(
 	return await res.json();
 }
 
-let config = loadConfig();
+const config = loadConfig();
 
 export async function getHtml(
 	url: string,
-	accept = "text/html, */*",
+	accept = 'text/html, */*',
 	timeout = 10000,
 	headers?: Record<string, string>,
 ) {
 	const res = await getResponse({
 		url,
-		method: "GET",
+		method: 'GET',
 		headers: Object.assign(
 			{
-				"User-Agent": config.userAgent,
+				'User-Agent': config.userAgent,
 				Accept: accept,
 			},
 			headers || {},
@@ -70,7 +70,7 @@ export async function getResponse(args: {
 	setTimeout(() => {
 		controller.abort();
 	}, timeout * 6);
-	const bearcaps = args.url.startsWith("bear:?")
+	const bearcaps = args.url.startsWith('bear:?')
 		? parseBearcaps(args.url)
 		: undefined;
 
@@ -135,7 +135,7 @@ export const httpAgent = config.proxy
 		keepAliveMsecs: 30 * 1000,
 		maxSockets,
 		maxFreeSockets: 256,
-		scheduling: "lifo",
+		scheduling: 'lifo',
 		proxy: config.proxy,
 		localAddress: config.outgoingAddress,
 	})
@@ -150,7 +150,7 @@ export const httpsAgent = config.proxy
 		keepAliveMsecs: 30 * 1000,
 		maxSockets,
 		maxFreeSockets: 256,
-		scheduling: "lifo",
+		scheduling: 'lifo',
 		proxy: config.proxy,
 		localAddress: config.outgoingAddress,
 	})
@@ -163,9 +163,9 @@ export const httpsAgent = config.proxy
  */
 export function getAgentByUrl(url: URL, bypassProxy = false) {
 	if (bypassProxy || (config.proxyBypassHosts || []).includes(url.hostname)) {
-		return url.protocol === "http:" ? _http : _https;
+		return url.protocol === 'http:' ? _http : _https;
 	} else {
-		return url.protocol === "http:" ? httpAgent : httpsAgent;
+		return url.protocol === 'http:' ? httpAgent : httpsAgent;
 	}
 }
 
@@ -175,12 +175,12 @@ export function getAgentByUrl(url: URL, bypassProxy = false) {
 function parseBearcaps(
 	url: string,
 ): { url: string; token: string | undefined } | undefined {
-	const params = new URLSearchParams(url.split("?")[1]);
-	if (!params.has("u")) return undefined;
+	const params = new URLSearchParams(url.split('?')[1]);
+	if (!params.has('u')) return undefined;
 
 	return {
-		url: params.get("u")!,
-		token: params.get("t") ?? undefined,
+		url: params.get('u')!,
+		token: params.get('t') ?? undefined,
 	};
 }
 
@@ -192,11 +192,11 @@ export class StatusError extends Error {
 
 	constructor(message: string, statusCode: number, statusMessage?: string) {
 		super(message);
-		this.name = "StatusError";
+		this.name = 'StatusError';
 		this.statusCode = statusCode;
 		this.statusMessage = statusMessage;
 		this.isClientError =
-			typeof this.statusCode === "number" &&
+			typeof this.statusCode === 'number' &&
 			this.statusCode >= 400 &&
 			this.statusCode < 500;
 		this.isRetryable = !this.isClientError || this.statusCode === 429;

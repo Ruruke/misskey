@@ -3196,7 +3196,7 @@ type Signin = components['schemas']['Signin'];
 
 // @public (undocumented)
 type SigninFlowRequest = {
-    username: string;
+    username?: string;
     password?: string;
     token?: string;
     credential?: AuthenticationResponseJSON;

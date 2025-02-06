@@ -291,7 +291,7 @@ export type SignupPendingResponse = {
 };
 
 export type SigninFlowRequest = {
-	username: string;
+	username?: string;
 	password?: string;
 	token?: string;
 	credential?: AuthenticationResponseJSON;
