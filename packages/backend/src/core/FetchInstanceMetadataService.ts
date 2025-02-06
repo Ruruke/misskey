@@ -71,7 +71,7 @@ export class FetchInstanceMetadataService {
 
 	@bindThis
 	public async fetchInstanceMetadata(instance: MiInstance, force = false): Promise<void> {
-		const host = instance.host;
+		const host = instance?.host;
 		if ( host === undefined) {
 			return;
 		}
