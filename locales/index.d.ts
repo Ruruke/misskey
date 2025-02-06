@@ -12166,6 +12166,118 @@ export interface Locale extends ILocale {
          */
         "marginBottom": string;
     };
+    "_updateCount": {
+        /**
+         * カウント更新
+         */
+        "title": string;
+        /**
+         * フォロー数を更新
+         */
+        "updateFollowCount": string;
+        /**
+         * フォロー数を上書きします。
+         */
+        "updateFollowCountDescription": string;
+        /**
+         * フォロワー数を更新
+         */
+        "updateFollowerCount": string;
+        /**
+         * フォロワー数を上書きします。
+         */
+        "updateFollowerCountDescription": string;
+        /**
+         * ノート数を更新
+         */
+        "updateNoteCount": string;
+        /**
+         * ノート数を上書きします。
+         */
+        "updateNoteCountDescription": string;
+        /**
+         * 負の数は許可されません。
+         */
+        "negativeNumberNotAllowed": string;
+        /**
+         * カウンター更新の確認
+         */
+        "warningTitle": string;
+        /**
+         * フォロワー数/フォロー数/ノート数を手動で更新します。
+         * この操作は通常では必要なく、変更前の値に戻すことは出来ません。
+         * 本当に実行しますか？
+         */
+        "warningText": string;
+    };
+    /**
+     * すぐ消す
+     */
+    "scheduledNoteDelete": string;
+    /**
+     * このノートは{time}に削除されます
+     */
+    "noteDeletationAt": ParameterizedString<"time">;
+    /**
+     * 1年以上先の日時を指定することはできません
+     */
+    "cannotScheduleLaterThanOneYear": string;
+    /**
+     * 投稿フォーム
+     */
+    "postForm": string;
+    /**
+     * 投稿フォームの下部に表示される項目の並び替えが出来ます。項目をクリックすると削除できます。
+     */
+    "postFormBottomSettingsDescription": string;
+    /**
+     * デフォルトでノートが自己消滅するように
+     */
+    "defaultScheduledNoteDelete": string;
+    /**
+     * 投稿フォームをリセット
+     */
+    "clearPost": string;
+    /**
+     * いいねボタンで使うリアクションを選択
+     */
+    "selectReaction": string;
+    /**
+     * いいねボタンを表示する
+     */
+    "showLikeButton": string;
+    /**
+     * 誰がリアクションをしたのかを非表示にする
+     */
+    "hideReactionUsers": string;
+    /**
+     * リアクションをホバーした際のユーザー一覧と、ノート詳細ページのリアクションタブにあるリアクションをしたユーザー一覧を非表示にします
+     */
+    "hideReactionUsersDescription": string;
+    /**
+     * リアクション数の非表示
+     */
+    "hideReactionCount": string;
+    /**
+     * 絵文字ピッカーに追加
+     */
+    "addToEmojiPicker": string;
+    /**
+     * アクティビティを非公開にする
+     */
+    "hideActivity": string;
+    /**
+     * 自分のプロフィールのアクティビティ (概要/アクティビティタブ) を他人が見れないようにします。このオプションを有効にしても、自分であればプロフィールのアクティビティタブから引き続き閲覧できます。
+     */
+    "hideActivityDescription": string;
+    /**
+     * 概要からノートを非表示にする
+     */
+    "hideNoteFromOverview": string;
+    /**
+     * プロフィールの概要にノートを表示されないようにします。このオプションを有効にしても、ノートのURLを知っていれば閲覧できます。
+     */
+    "hideNoteFromOverviewDescription": string;
     /**
      * 予約投稿
      */

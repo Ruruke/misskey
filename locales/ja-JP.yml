@@ -3262,6 +3262,29 @@ _entrance:
   marginTop: "上マージン"
   marginBottom: "下マージン"
 
+_updateCount:
+  title: "カウント更新"
+  updateFollowCount: "フォロー数を更新"
+  updateFollowCountDescription: "フォロー数を上書きします。"
+  updateFollowerCount: "フォロワー数を更新"
+  updateFollowerCountDescription: "フォロワー数を上書きします。"
+  updateNoteCount: "ノート数を更新"
+  updateNoteCountDescription: "ノート数を上書きします。"
+  negativeNumberNotAllowed: "負の数は許可されません。"
+  warningTitle: "カウンター更新の確認"
+  warningText: "フォロワー数/フォロー数/ノート数を手動で更新します。\nこの操作は通常では必要なく、変更前の値に戻すことは出来ません。\n本当に実行しますか？"
+
+showLikeButton: "いいねボタンを表示する"
+
+hideReactionUsers: "誰がリアクションをしたのかを非表示にする"
+hideReactionUsersDescription: "リアクションをホバーした際のユーザー一覧と、ノート詳細ページのリアクションタブにあるリアクションをしたユーザー一覧を非表示にします"
+
+hideActivity: "アクティビティを非公開にする"
+hideActivityDescription: "自分のプロフィールのアクティビティ (概要/アクティビティタブ) を他人が見れないようにします。このオプションを有効にしても、自分であればプロフィールのアクティビティタブから引き続き閲覧できます。"
+
+hideNoteFromOverview: "概要からノートを非表示にする"
+hideNoteFromOverviewDescription: "プロフィールの概要にノートを表示されないようにします。このオプションを有効にしても、ノートのURLを知っていれば閲覧できます。"
+
 schedulePost: "予約投稿"
 schedulePostList: "予約投稿一覧"
 
