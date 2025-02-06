@@ -6,6 +6,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { summaly } from '@misskey-dev/summaly';
 import { SummalyResult } from '@misskey-dev/summaly/built/summary.js';
+import * as Redis from 'ioredis';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
@@ -15,9 +16,8 @@ import { LoggerService } from '@/core/LoggerService.js';
 import { bindThis } from '@/decorators.js';
 import { ApiError } from '@/server/api/error.js';
 import { MiMeta } from '@/models/Meta.js';
+import { fetchJson } from '@/misc/fetchJson.js';
 import type { FastifyRequest, FastifyReply } from 'fastify';
-import { fetchJson } from "@/misc/fetchJson.js";
-import * as Redis from "ioredis";
 
 @Injectable()
 export class UrlPreviewService {
@@ -96,7 +96,7 @@ export class UrlPreviewService {
 				if (cache_value !== null) {
 					summary = JSON.parse(cache_value);
 					// Cache 7days
-					reply.header("Cache-Control", "max-age=604800, immutable");
+					reply.header('Cache-Control', 'max-age=604800, immutable');
 					return summary;
 				} else {
 					const data: any = await fetchJson(steamApiUrl);
@@ -119,21 +119,21 @@ export class UrlPreviewService {
 								discountPercent: appData.price_overview ? appData.price_overview.discount_percent : 0,
 								originalPrice: appData.price_overview ? appData.price_overview.initial_formatted : null,
 								currentPrice: appData.price_overview ? appData.price_overview.final_formatted : null,
-								description: appData.detailed_description ? appData.detailed_description : "No Desc",
+								description: appData.detailed_description ? appData.detailed_description : 'No Desc',
 								isFree: appData.is_free,
 							},
 						};
 						// 開発者情報を説明に設定
 						summary.description = summary.steam.developer;
 						// サムネイルとアイコンをラップ
-						summary.icon = this.wrap(summary.icon) ?? "";
+						summary.icon = this.wrap(summary.icon) ?? '';
 						summary.thumbnail = this.wrap(summary.thumbnail);
 
 						const redisPipeline = this.redisForRemoteApis.pipeline();
 						await redisPipeline.set(cache_key, JSON.stringify(summary), 'EX', 86400).exec();
 
 						// Cache 7days
-						reply.header("Cache-Control", "max-age=604800, immutable");
+						reply.header('Cache-Control', 'max-age=604800, immutable');
 						return summary;
 					} else {
 						throw new Error('Failed to get Steam app data');
@@ -142,7 +142,7 @@ export class UrlPreviewService {
 			} catch (err) {
 				this.logger.warn(`Failed to get Steam data for ${url}: ${err}`);
 				reply.code(200);
-				reply.header("Cache-Control", "max-age=86400, immutable");
+				reply.header('Cache-Control', 'max-age=86400, immutable');
 				return new Error('unsupported schema included');
 			}
 		}
@@ -184,24 +184,23 @@ export class UrlPreviewService {
 		}
 	}
 
-
 	// SteamのURLを判定し、App IDを取得する関数
 	private isSteamUrl(url: string): string | null {
 		try {
 			const parsedUrl = new URL(url);
 			if (
-				parsedUrl.hostname === "store.steampowered.com" ||
-				parsedUrl.hostname.endsWith(".steampowered.com")
+				parsedUrl.hostname === 'store.steampowered.com' ||
+				parsedUrl.hostname.endsWith('.steampowered.com')
 			) {
-				const pathSegments = parsedUrl.pathname.split("/");
-				const appIndex = pathSegments.indexOf("app");
+				const pathSegments = parsedUrl.pathname.split('/');
+				const appIndex = pathSegments.indexOf('app');
 				if (appIndex !== -1 && pathSegments.length > appIndex + 1) {
 					return pathSegments[appIndex + 1];
 				}
 			}
 			return null;
 		} catch (error: any) {
-			this.logger.warn("Invalid URL:", error);
+			this.logger.warn('Invalid URL:', error);
 			return null;
 		}
 	}

@@ -8,9 +8,9 @@ import { Endpoint } from '@/server/api/endpoint-base.js';
 import { RoleService } from '@/core/RoleService.js';
 import { ReversiService } from '@/core/ReversiService.js';
 import { ReversiGameEntityService } from '@/core/entities/ReversiGameEntityService.js';
+import { IdentifiableError } from '@/misc/identifiable-error.js';
 import { ApiError } from '../../error.js';
 import { GetterService } from '../../GetterService.js';
-import { IdentifiableError } from '@/misc/identifiable-error.js';
 
 export const meta = {
 	requireCredential: true,
