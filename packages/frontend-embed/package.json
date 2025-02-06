@@ -54,7 +54,7 @@
 		"acorn": "8.14.0",
 		"cross-env": "7.0.3",
 		"eslint-plugin-import": "2.31.0",
-		"eslint-plugin-vue": "9.31.0",
+		"eslint-plugin-vue": "9.32.0",
 		"fast-glob": "3.3.2",
 		"happy-dom": "16.8.1",
 		"intersection-observer": "0.12.2",
