@@ -172,6 +172,17 @@ export class NoteEntityService implements OnModuleInit {
 			}
 		}
 
+		// 未ログインかつプロフィールで非表示設定されている場合は非表示
+		if (!meId) {
+			const profile = await this.userProfilesRepository.findOneByOrFail({ userId: packedNote.userId });
+			if (packedNote.visibility === 'public' && profile.hidePublicNotes) {
+				hide = true;
+			}
+			if (packedNote.visibility === 'home' && profile.hideHomeNotes) {
+				hide = true;
+			}
+		}
+
 		// visibility が followers かつ自分が投稿者のフォロワーでなかったら非表示
 		if (!hide) {
 			if (packedNote.visibility === 'followers') {
