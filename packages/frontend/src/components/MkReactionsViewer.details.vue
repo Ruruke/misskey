@@ -35,7 +35,6 @@ defineProps<{
 	count: number;
 	targetElement: HTMLElement;
 }>();
-
 const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
