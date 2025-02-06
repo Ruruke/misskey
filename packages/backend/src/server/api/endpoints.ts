@@ -134,9 +134,9 @@ export interface IEndpoint {
 const endpoints: IEndpoint[] = Object.entries(endpointsObject).map(([name, ep]) => {
 	return {
 		name: name,
-		get meta() {
-			return ep.meta ?? {};
-		},
+			get meta() {
+				return ep.meta ?? { requireCredential: false, requireAdmin: false, requireModerator: false };
+			},
 		get params() {
 			return ep.paramDef;
 		},

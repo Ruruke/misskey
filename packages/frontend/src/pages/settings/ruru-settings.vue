@@ -168,7 +168,6 @@ import { globalEvents } from '@/events.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import MkNote from '@/components/MkNote.vue';
 
-
 const $i = signinRequired();
 const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
 const disableNoteNyaize = computed(defaultStore.makeGetterSetter('disableNoteNyaize'));
@@ -210,12 +209,14 @@ function saveColors() {
 		noteVisibilityColorChanged.value = false;
 	}
 }
+
 function save_privacy() {
 	misskeyApi('i/update', {
 		hidePublicNotes: !!hidePublicNotes.value,
 		hideHomeNotes: !!hideHomeNotes.value,
 	});
 }
+
 function getHTMLElement(ev: MouseEvent): HTMLElement {
 	const target = ev.currentTarget ?? ev.target;
 	return target as HTMLElement; // イベント発生元の HTML 要素を取得
