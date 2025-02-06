@@ -134,12 +134,8 @@ export interface IEndpoint {
 const endpoints: IEndpoint[] = Object.entries(endpointsObject).map(([name, ep]) => {
 	return {
 		name: name,
-		get meta() {
-			return ep.meta ?? {};
-		},
-		get params() {
-			return ep.paramDef;
-		},
+		meta: ep.meta ?? { requireCredential: false, requireAdmin: false, requireModerator: false, kind: undefined },
+		params: ep.paramDef,
 	};
 });
 

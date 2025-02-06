@@ -904,7 +904,7 @@ export type paths = {
      * announcements
      * @description No description provided.
      *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['announcements'];
   };
@@ -3810,7 +3810,7 @@ export type paths = {
      * users/search-by-username-and-host
      * @description Search for a user by username and/or host.
      *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['users___search-by-username-and-host'];
   };
@@ -3963,6 +3963,10 @@ export type components = {
       pinnedPageId: string | null;
       pinnedPage: components['schemas']['Page'] | null;
       publicReactions: boolean;
+      hideActivity: boolean;
+      hideNoteFromOverview: boolean;
+      hidePublicNotes: boolean;
+      hideHomeNotes: boolean;
       /** @enum {string} */
       followingVisibility: 'public' | 'followers' | 'private';
       /** @enum {string} */
@@ -11375,7 +11379,7 @@ export type operations = {
    * announcements
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   announcements: {
     requestBody: {
@@ -21792,6 +21796,10 @@ export type operations = {
           isExplorable?: boolean;
           hideOnlineStatus?: boolean;
           publicReactions?: boolean;
+          hideActivity?: boolean;
+          hideNoteFromOverview?: boolean;
+          hidePublicNotes?: boolean;
+          hideHomeNotes?: boolean;
           carefulBot?: boolean;
           autoAcceptFollowed?: boolean;
           noCrawle?: boolean;
@@ -29077,7 +29085,7 @@ export type operations = {
    * users/search-by-username-and-host
    * @description Search for a user by username and/or host.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   'users___search-by-username-and-host': {
     requestBody: {

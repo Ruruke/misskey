@@ -23,13 +23,16 @@ const routes: RouteDef[] = [{
 }, {
 	path: '/@:acct/following',
 	component: page(() => import('@/pages/user/following.vue')),
+	loginRequired: true,
 }, {
 	path: '/@:acct/followers',
 	component: page(() => import('@/pages/user/followers.vue')),
+	loginRequired: true,
 }, {
 	name: 'user',
 	path: '/@:acct/:page?',
 	component: page(() => import('@/pages/user/index.vue')),
+	// loginRequired: true,
 }, {
 	name: 'note',
 	path: '/notes/:noteId/:initialTab?',
@@ -194,6 +197,7 @@ const routes: RouteDef[] = [{
 }, {
 	path: '/announcements',
 	component: page(() => import('@/pages/announcements.vue')),
+	loginRequired: true,
 }, {
 	path: '/announcements/:announcementId',
 	component: page(() => import('@/pages/announcement.vue')),
@@ -201,6 +205,7 @@ const routes: RouteDef[] = [{
 	path: '/about',
 	component: page(() => import('@/pages/about.vue')),
 	hash: 'initialTab',
+	loginRequired: true,
 }, {
 	path: '/contact',
 	component: page(() => import('@/pages/contact.vue')),
@@ -598,8 +603,8 @@ const routes: RouteDef[] = [{
 	loginRequired: false,
 }, {
 	path: '/timeline',
-	loginRequired: true,
 	component: page(() => import('@/pages/timeline.vue')),
+	loginRequired: true,
 }, {
 	path: '/reactions-stats',
 	component: page(() => import('@/pages/reaction-stats.vue')),

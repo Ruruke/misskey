@@ -9963,6 +9963,15 @@ export interface Locale extends ILocale {
          * 承認されていない機器であれば、セキュリティのために「{text}」を通じてすべての機器でログアウトを行ってください。
          */
         "loginDescription": ParameterizedString<"ip" | "text">;
+        /**
+         * ログインに失敗しました
+         */
+        "loginFailed": string;
+        /**
+         * {ip}からのログインに失敗しました。
+         * 心当たりがない場合はパスワードの変更を行ってください。
+         */
+        "loginFailedDescription": ParameterizedString<"ip">;
         "_types": {
             /**
              * すべて
@@ -12157,6 +12166,94 @@ export interface Locale extends ILocale {
          */
         "marginBottom": string;
     };
+    "_updateCount": {
+        /**
+         * カウント更新
+         */
+        "title": string;
+        /**
+         * フォロー数を更新
+         */
+        "updateFollowCount": string;
+        /**
+         * フォロー数を上書きします。
+         */
+        "updateFollowCountDescription": string;
+        /**
+         * フォロワー数を更新
+         */
+        "updateFollowerCount": string;
+        /**
+         * フォロワー数を上書きします。
+         */
+        "updateFollowerCountDescription": string;
+        /**
+         * ノート数を更新
+         */
+        "updateNoteCount": string;
+        /**
+         * ノート数を上書きします。
+         */
+        "updateNoteCountDescription": string;
+        /**
+         * 負の数は許可されません。
+         */
+        "negativeNumberNotAllowed": string;
+        /**
+         * カウンター更新の確認
+         */
+        "warningTitle": string;
+        /**
+         * フォロワー数/フォロー数/ノート数を手動で更新します。
+         * この操作は通常では必要なく、変更前の値に戻すことは出来ません。
+         * 本当に実行しますか？
+         */
+        "warningText": string;
+    };
+    /**
+     * いいねボタンを表示する
+     */
+    "showLikeButton": string;
+    /**
+     * 誰がリアクションをしたのかを非表示にする
+     */
+    "hideReactionUsers": string;
+    /**
+     * リアクションをホバーした際のユーザー一覧と、ノート詳細ページのリアクションタブにあるリアクションをしたユーザー一覧を非表示にします
+     */
+    "hideReactionUsersDescription": string;
+    /**
+     * アクティビティを非公開にする
+     */
+    "hideActivity": string;
+    /**
+     * 自分のプロフィールのアクティビティ (概要/アクティビティタブ) を他人が見れないようにします。このオプションを有効にしても、自分であればプロフィールのアクティビティタブから引き続き閲覧できます。
+     */
+    "hideActivityDescription": string;
+    /**
+     * 概要からノートを非表示にする
+     */
+    "hideNoteFromOverview": string;
+    /**
+     * プロフィールの概要にノートを表示されないようにします。このオプションを有効にしても、ノートのURLを知っていれば閲覧できます。
+     */
+    "hideNoteFromOverviewDescription": string;
+    /**
+     * 公開ノートを非表示にする
+     */
+    "hidePublicNotes": string;
+    /**
+     * 自分のプロフィールの公開ノートを非ログインユーザーが見れないようにします。このオプションを有効にしても、ログイン状態であればプロフィールのノートタブから引き続き閲覧できます。
+     */
+    "hidePublicNotesDescription": string;
+    /**
+     * ホームノートを非表示にする
+     */
+    "hideHomeNotes": string;
+    /**
+     * 自分のホームノートを非ログインユーザーが見れないようにします。このオプションを有効にしても、ログイン状態であればホームタブから引き続き閲覧できます。
+     */
+    "hideHomeNotesDescription": string;
     /**
      * 予約投稿
      */

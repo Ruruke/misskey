@@ -179,6 +179,7 @@ if (props.host === requestUrl.host && (requestUrl.pathname.startsWith('/clips/')
 } else {
 	url_string = requestUrl.toString();
 }
+
 const attr = self ? 'to' : 'href';
 const target = self ? null : '_blank';
 let fetching = ref(true);

@@ -120,6 +120,26 @@ export class MiUserProfile {
 	})
 	public followersVisibility: typeof followersVisibilities[number];
 
+	@Column('boolean', {
+		default: false,
+	})
+	public hideActivity: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public hideNoteFromOverview: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public hidePublicNotes: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public hideHomeNotes: boolean;
+
 	@Column('varchar', {
 		length: 128, nullable: true,
 	})
