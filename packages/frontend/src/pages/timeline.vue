@@ -16,8 +16,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
 				<div :class="$style.tl">
 					<MkTimeline
-						ref="tlComponent"
 						v-if="miLocalStorage !== null"
+						ref="tlComponent"
 						:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
 						:src="src.split(':')[0]"
 						:list="src.split(':')[1]"
