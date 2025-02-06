@@ -121,9 +121,16 @@ export class ScheduleNotePostProcessorService {
 					channel,
 				});
 				await this.noteScheduleRepository.remove(data);
-				this.notificationService.createNotification(me.id, 'scheduledNotePosted', {
-					noteId: createdNote.id,
-				});
+				if (createdNote) {
+					this.notificationService.createNotification(me.id, 'scheduledNotePosted', {
+						noteId: createdNote.id,
+					});
+				} else {
+					this.logger.warn('Schedule Note Failed Reason: Note creation returned null');
+					this.notificationService.createNotification(me.id, 'scheduledNoteFailed', {
+						reason: 'The scheduled note could not be created',
+					});
+				}
 			}
 		});
 	}

@@ -254,7 +254,7 @@ async function remoteNote(
 		note = await apNoteService.fetchNote(uri);
 		if (note == null) {
 			//ダメそうなら照会
-			note = await apNoteService.createNote(uri, undefined, true);
+			note = await apNoteService.createNote(uri, undefined, undefined);
 			is_create = true;
 		}
 	} catch (e) {
@@ -263,7 +263,7 @@ async function remoteNote(
 		return null;
 	}
 	if (note !== null) {
-		redisForRemoteApis.set('local-noteId:' + note.id + '@' + host, remote_note_id);
+		await redisForRemoteApis.set('local-noteId:' + note.id + '@' + host, remote_note_id);
 		return {
 			note,
 			is_create,

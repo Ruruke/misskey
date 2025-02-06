@@ -744,85 +744,85 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.federationHosts = ps.federationHosts.filter(Boolean).map(x => x.toLowerCase());
 			}
 
-			if (Array.isArray(ps.customSplashText)) {
-				set.customSplashText = ps.customSplashText.filter(Boolean);
-			}
+			// if (Array.isArray(ps.customSplashText)) {
+			// 	set.customSplashText = ps.customSplashText.filter(Boolean);
+			// }
+			//
+			// if (Array.isArray(ps.customSplashText)) {
+			// 	set.customSplashText = ps.customSplashText.filter(Boolean);
+			// }
 
-			if (Array.isArray(ps.customSplashText)) {
-				set.customSplashText = ps.customSplashText.filter(Boolean);
+			if (ps.blockMentionsFromUnfamiliarRemoteUsers !== undefined) {
+				set.blockMentionsFromUnfamiliarRemoteUsers = ps.blockMentionsFromUnfamiliarRemoteUsers;
 			}
 
 			if (ps.blockMentionsFromUnfamiliarRemoteUsers !== undefined) {
 				set.blockMentionsFromUnfamiliarRemoteUsers = ps.blockMentionsFromUnfamiliarRemoteUsers;
 			}
 
-			if (ps.blockMentionsFromUnfamiliarRemoteUsers !== undefined) {
-				set.blockMentionsFromUnfamiliarRemoteUsers = ps.blockMentionsFromUnfamiliarRemoteUsers;
-			}
-
-			if (ps.validateMinimumUsernameLength !== undefined) {
-				set.validateMinimumUsernameLength = ps.validateMinimumUsernameLength;
-			}
-
-			if (ps.useHanaEntrance !== undefined) {
-				set.useHanaEntrance = ps.useHanaEntrance;
-			}
-
-			if (ps.hanaThemeColor !== undefined) {
-				set.hanaThemeColor = ps.hanaThemeColor;
-			}
-
-			if (ps.hanaThemeAltColor !== undefined) {
-				set.hanaThemeAltColor = ps.hanaThemeAltColor;
-			}
-
-			if (ps.hanaThemeWeakOpacity !== undefined) {
-				set.hanaThemeWeakOpacity = ps.hanaThemeWeakOpacity;
-			}
-
-			if (ps.hanaModeIcon !== undefined) {
-				set.hanaModeIcon = ps.hanaModeIcon;
-			}
-
-			if (ps.hanaModeIconSize !== undefined) {
-				set.hanaModeIconSize = ps.hanaModeIconSize;
-			}
-
-			if (ps.hanaModeIconRadius !== undefined) {
-				set.hanaModeIconRadius = ps.hanaModeIconRadius;
-			}
-
-			if (ps.hanaModeBackground !== undefined) {
-				set.hanaModeBackground = ps.hanaModeBackground;
-			}
-
-			if (Array.isArray(ps.defaultFollowedUsers)) {
-				if (ps.defaultFollowedUsers.some(x => this.serverSettings.forciblyFollowedUsers.includes(x) || ps.forciblyFollowedUsers?.includes(x))) {
-					throw new ApiError(meta.errors.followedUserDuplicated);
-				}
-
-				set.defaultFollowedUsers = ps.defaultFollowedUsers.filter(Boolean);
-			}
-
-			if (Array.isArray(ps.forciblyFollowedUsers)) {
-				if (ps.forciblyFollowedUsers.some(x => this.serverSettings.defaultFollowedUsers.includes(x) || ps.defaultFollowedUsers?.includes(x))) {
-					throw new ApiError(meta.errors.followedUserDuplicated);
-				}
-
-				set.forciblyFollowedUsers = ps.forciblyFollowedUsers.filter(Boolean);
-			}
-
-			if (ps.deeplFreeMode !== undefined) {
-				set.deeplFreeMode = ps.deeplFreeMode;
-			}
-
-			if (ps.deeplFreeInstance !== undefined) {
-				if (ps.deeplFreeInstance === '') {
-					set.deeplFreeInstance = null;
-				} else {
-					set.deeplFreeInstance = ps.deeplFreeInstance;
-				}
-			}
+			// if (ps.validateMinimumUsernameLength !== undefined) {
+			// 	set.validateMinimumUsernameLength = ps.validateMinimumUsernameLength;
+			// }
+			//
+			// if (ps.useHanaEntrance !== undefined) {
+			// 	set.useHanaEntrance = ps.useHanaEntrance;
+			// }
+			//
+			// if (ps.hanaThemeColor !== undefined) {
+			// 	set.hanaThemeColor = ps.hanaThemeColor;
+			// }
+			//
+			// if (ps.hanaThemeAltColor !== undefined) {
+			// 	set.hanaThemeAltColor = ps.hanaThemeAltColor;
+			// }
+			//
+			// if (ps.hanaThemeWeakOpacity !== undefined) {
+			// 	set.hanaThemeWeakOpacity = ps.hanaThemeWeakOpacity;
+			// }
+			//
+			// if (ps.hanaModeIcon !== undefined) {
+			// 	set.hanaModeIcon = ps.hanaModeIcon;
+			// }
+			//
+			// if (ps.hanaModeIconSize !== undefined) {
+			// 	set.hanaModeIconSize = ps.hanaModeIconSize;
+			// }
+			//
+			// if (ps.hanaModeIconRadius !== undefined) {
+			// 	set.hanaModeIconRadius = ps.hanaModeIconRadius;
+			// }
+			//
+			// if (ps.hanaModeBackground !== undefined) {
+			// 	set.hanaModeBackground = ps.hanaModeBackground;
+			// }
+			//
+			// if (Array.isArray(ps.defaultFollowedUsers)) {
+			// 	if (ps.defaultFollowedUsers.some(x => this.serverSettings.forciblyFollowedUsers.includes(x) || ps.forciblyFollowedUsers?.includes(x))) {
+			// 		throw new ApiError(meta.errors.followedUserDuplicated);
+			// 	}
+			//
+			// 	set.defaultFollowedUsers = ps.defaultFollowedUsers.filter(Boolean);
+			// }
+			//
+			// if (Array.isArray(ps.forciblyFollowedUsers)) {
+			// 	if (ps.forciblyFollowedUsers.some(x => this.serverSettings.defaultFollowedUsers.includes(x) || ps.defaultFollowedUsers?.includes(x))) {
+			// 		throw new ApiError(meta.errors.followedUserDuplicated);
+			// 	}
+			//
+			// 	set.forciblyFollowedUsers = ps.forciblyFollowedUsers.filter(Boolean);
+			// }
+			//
+			// if (ps.deeplFreeMode !== undefined) {
+			// 	set.deeplFreeMode = ps.deeplFreeMode;
+			// }
+			//
+			// if (ps.deeplFreeInstance !== undefined) {
+			// 	if (ps.deeplFreeInstance === '') {
+			// 		set.deeplFreeInstance = null;
+			// 	} else {
+			// 		set.deeplFreeInstance = ps.deeplFreeInstance;
+			// 	}
+			// }
 
 			if (ps.enableCpuModel !== undefined) {
 				set.enableCpuModel = ps.enableCpuModel;
@@ -856,9 +856,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.customFsTotal = ps.customFsTotal;
 			}
 
-			if (ps.secondsPerSignup !== undefined) {
-				set.secondsPerSignup = ps.secondsPerSignup;
-			}
+			// if (ps.secondsPerSignup !== undefined) {
+			// 	set.secondsPerSignup = ps.secondsPerSignup;
+			// }
 
 			if (ps.entranceShowTimeLine !== undefined) {
 				set.entranceShowTimeLine = ps.entranceShowTimeLine;

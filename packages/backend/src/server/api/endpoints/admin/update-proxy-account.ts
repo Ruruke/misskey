@@ -330,11 +330,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			const myLink = `${this.config.url}/@${user.username}`;
 
-			const aEls = Array.from(doc.getElementsByTagName('a'));
+			const aEls = Array.from(doc.getElementsByTagName('a')) as HTMLAnchorElement[];
 			const linkEls = Array.from(doc.getElementsByTagName('link'));
 
 			const includesMyLink = aEls.some(a => a.href === myLink);
-			const includesRelMeLinks = [...aEls, ...linkEls].some(link => link.rel === 'me' && link.href === myLink);
+			const includesRelMeLinks = [...aEls, ...linkEls].some((link) => (link as HTMLAnchorElement | HTMLLinkElement).rel === 'me' && (link as HTMLAnchorElement | HTMLLinkElement).href === myLink);
 
 			if (includesMyLink || includesRelMeLinks) {
 				await this.userProfilesRepository.createQueryBuilder('profile').update()

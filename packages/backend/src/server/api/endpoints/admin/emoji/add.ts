@@ -5,12 +5,12 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { DriveFilesRepository } from '@/models/_.js';
-import { DI } from '@/di-symbols.js';
-import { CustomEmojiService } from '@/core/CustomEmojiService.js';
-import { EmojiEntityService } from '@/core/entities/EmojiEntityService.js';
-import { FILE_TYPE_IMAGE } from '@/const.js';
-import { ApiError } from '../../../error.js';
+import * as _Js from '@/models/_.js';
+import {DI} from '@/di-symbols.js';
+import {CustomEmojiService} from '@/core/CustomEmojiService.js';
+import {EmojiEntityService} from '@/core/entities/EmojiEntityService.js';
+import {FILE_TYPE_IMAGE} from '@/const.js';
+import {ApiError} from '../../../error.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -46,8 +46,8 @@ export const meta = {
 export const paramDef = {
 	type: 'object',
 	properties: {
-		name: { type: 'string', pattern: '^[a-zA-Z0-9_]+$' },
-		fileId: { type: 'string', format: 'misskey:id' },
+		name: {type: 'string', pattern: '^[a-zA-Z0-9_]+$'},
+		fileId: {type: 'string', format: 'misskey:id'},
 		category: {
 			type: 'string',
 			nullable: true,
@@ -59,9 +59,9 @@ export const paramDef = {
 				type: 'string',
 			},
 		},
-		license: { type: 'string', nullable: true },
-		isSensitive: { type: 'boolean' },
-		localOnly: { type: 'boolean' },
+		license: {type: 'string', nullable: true},
+		isSensitive: {type: 'boolean'},
+		localOnly: {type: 'boolean'},
 		roleIdsThatCanBeUsedThisEmojiAsReaction: {
 			type: 'array',
 			items: {
@@ -78,7 +78,7 @@ export const paramDef = {
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
 		@Inject(DI.driveFilesRepository)
-		private driveFilesRepository: DriveFilesRepository,
+		private driveFilesRepository: _Js.DriveFilesRepository,
 		private customEmojiService: CustomEmojiService,
 		private emojiEntityService: EmojiEntityService,
 	) {
@@ -90,6 +90,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (!FILE_TYPE_IMAGE.includes(driveFile.type)) throw new ApiError(meta.errors.unsupportedFileType);
 
 			const emoji = await this.customEmojiService.add({
+				driveFile: driveFile,
 				originalUrl: driveFile.url,
 				publicUrl: driveFile.webpublicUrl ?? driveFile.url,
 				fileType: driveFile.webpublicType ?? driveFile.type,
@@ -98,8 +99,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				aliases: ps.aliases ?? [],
 				host: null,
 				license: ps.license ?? null,
-				isSensitive: ps.isSensitive ?? false,
-				localOnly: ps.localOnly ?? false,
+				isSensitive: Boolean(ps.isSensitive ?? false),
+				localOnly: Boolean(ps.localOnly ?? false),
 				roleIdsThatCanBeUsedThisEmojiAsReaction: ps.roleIdsThatCanBeUsedThisEmojiAsReaction ?? [],
 			}, me);
 

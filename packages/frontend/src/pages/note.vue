@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer v-if="(miLocalStorage.getItem('account') === null ? !instance.disableNotloginToShowTL : true)">
+<MkStickyContainer v-if="(miLocalStorage.getItem('account') === null)">
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
 		<div>

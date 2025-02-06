@@ -5189,8 +5189,6 @@ export type components = {
       defaultDarkTheme: string | null;
       defaultLightTheme: string | null;
       disableRegistration: boolean;
-      disableSignup: boolean;
-      disableNotloginToShowTL: boolean;
       emailRequiredForSignup: boolean;
       /** @default false */
       approvalRequiredForSignup: boolean;
@@ -8703,8 +8701,6 @@ export type operations = {
       200: {
         content: {
           'application/json': {
-            disableSignup: boolean;
-            disableNotloginToShowTL: boolean;
             cacheRemoteFiles: boolean;
             cacheRemoteSensitiveFiles: boolean;
             emailRequiredForSignup: boolean;
@@ -8835,7 +8831,6 @@ export type operations = {
             customMemTotal: number | null;
             enableFsTotal: boolean;
             customFsTotal: number | null;
-            secondsPerSignup: number;
             entranceShowTimeLine: boolean;
             entranceShowFeatured: boolean;
             entranceShowEmojis: boolean;
@@ -8846,7 +8841,6 @@ export type operations = {
             entranceShowSignup: boolean;
             entranceShowAnotherInstance: boolean;
             entranceShowSignin: boolean;
-            deeplFreeInstance: string | null;
             enableCpuModel: boolean;
             customCpuModel: string | null;
             entranceMarginLeft: number;

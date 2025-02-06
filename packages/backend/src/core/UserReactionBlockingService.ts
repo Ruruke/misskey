@@ -47,6 +47,9 @@ export class UserReactionBlockingService implements OnModuleInit {
 		this.logger = this.loggerService.getLogger('user-block');
 	}
 
+	onModuleInit() {
+	}
+
 	@bindThis
 	public async block(blocker: MiUser, blockee: MiUser, silent = false) {
 		const blocking = {
@@ -60,8 +63,8 @@ export class UserReactionBlockingService implements OnModuleInit {
 
 		await this.blockingsRepository.insert(blocking);
 
-		this.cacheService.userReactionBlockingCache.refresh(blocker.id);
-		this.cacheService.userReactionBlockedCache.refresh(blockee.id);
+		await this.cacheService.userReactionBlockingCache.refresh(blocker.id);
+		await this.cacheService.userReactionBlockedCache.refresh(blockee.id);
 
 		this.globalEventService.publishInternalEvent('blockingReactionCreated', {
 			blockerId: blocker.id,
@@ -89,8 +92,8 @@ export class UserReactionBlockingService implements OnModuleInit {
 
 		await this.blockingsRepository.delete(blocking.id);
 
-		this.cacheService.userBlockingCache.refresh(blocker.id);
-		this.cacheService.userBlockedCache.refresh(blockee.id);
+		await this.cacheService.userBlockingCache.refresh(blocker.id);
+		await this.cacheService.userBlockedCache.refresh(blockee.id);
 
 		this.globalEventService.publishInternalEvent('blockingDeleted', {
 			blockerId: blocker.id,

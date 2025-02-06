@@ -13,6 +13,7 @@ import type {
 	SigninsRepository,
 	UserProfilesRepository,
 	UserSecurityKeysRepository,
+    UsersRepository,
 } from '@/models/_.js';
 import type { Config } from '@/config.js';
 import { getIpHash } from '@/misc/get-ip-hash.js';
@@ -40,6 +41,9 @@ export class SigninApiService {
 		@Inject(DI.meta)
 		private meta: MiMeta,
 
+		@Inject(DI.usersRepository)
+		private usersRepository: UsersRepository,
+
 		@Inject(DI.userProfilesRepository)
 		private userProfilesRepository: UserProfilesRepository,
 
@@ -57,6 +61,7 @@ export class SigninApiService {
 		private webAuthnService: WebAuthnService,
 		private captchaService: CaptchaService,
 		private metaService: MetaService,
+		private notificationService: NotificationService,
 	) {
 	}
 
@@ -213,14 +218,14 @@ export class SigninApiService {
 				success: false,
 			});
 
-			// ログインに失敗したことを通知
-			await this.notificationService.createNotification(user.id, 'loginFailed', {
-				userIp: request.ip,
-			});
+			// ログインに失敗したことを通知 //TODO: 正常にcherry-pickできてないやんけ。
+			// this.notificationService.createNotification(user.id, 'loginFailed', {
+			// 	userIp: request.ip,
+			// });
 
 			const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
 			if (profile.email && profile.emailVerified) {
-				this.emailService.sendEmail(profile.email, 'Login failed / ログインに失敗しました',
+				await this.emailService.sendEmail(profile.email, 'Login failed / ログインに失敗しました',
 					`userid: ${user.name ?? `@${user.username}`} <br>` +
 					`ip: ${request.ip} <br>` +
 					`header: <pre>${this.formatHeaders(request.headers as any)}</pre><br>` +
