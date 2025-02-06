@@ -904,7 +904,7 @@ export type paths = {
      * announcements
      * @description No description provided.
      *
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['announcements'];
   };
@@ -11379,7 +11379,7 @@ export type operations = {
    * announcements
    * @description No description provided.
    *
-   * **Credential required**: *Yes*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   announcements: {
     requestBody: {
