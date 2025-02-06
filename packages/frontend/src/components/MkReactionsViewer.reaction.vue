@@ -157,7 +157,7 @@ onMounted(() => {
 		useTooltip(buttonEl, async (showing) => {
 			// const useGet = !reactionChecksMuting.value;
 		// const apiCall = useGet ? misskeyApiGet : misskeyApi;
-		const reactions = !defaultStore.state.hideReactionUsers ? await misskeyApiGet('notes/reactions', {
+		const reactions = !defaultStore.state.hideReactionUsers ? await misskeyApi('notes/reactions', {
 				noteId: props.note.id,
 				type: props.reaction,
 				limit: 10,
