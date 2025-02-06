@@ -4416,7 +4416,7 @@ declare module '../api.js' {
     /**
      * Search for a user by username and/or host.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'users/search-by-username-and-host', P extends Endpoints[E]['req']>(
       endpoint: E,

@@ -3810,7 +3810,7 @@ export type paths = {
      * users/search-by-username-and-host
      * @description Search for a user by username and/or host.
      *
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['users___search-by-username-and-host'];
   };
@@ -29085,7 +29085,7 @@ export type operations = {
    * users/search-by-username-and-host
    * @description Search for a user by username and/or host.
    *
-   * **Credential required**: *Yes*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   'users___search-by-username-and-host': {
     requestBody: {
