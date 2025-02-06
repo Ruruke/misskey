@@ -152,7 +152,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkA>
 						</div>
 					</template>
-					<div v-if="!$i || user.requireSigninToViewContents" class="_fullinfo">
+					<div v-else class="_fullinfo">
 						<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.pleaseLogin }}</div>
 						<div style="opacity: 0.7">{{ i18n.ts.pleaseLoginToViewProfile }}</div>
 					</div>
@@ -195,7 +195,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div style="opacity: 0.7">{{ i18n.tsx.youBlockedDescription({ user: `@${ user.username }` }) }}</div>
 					</div>
 				</div>
-				<div v-if="!$i || user.requireSigninToViewContents" class="_fullinfo">
+				<div v-else class="_fullinfo">
 					<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.pleaseLogin }}</div>
 					<div style="opacity: 0.7">{{ i18n.ts.pleaseLoginToViewProfile }}</div>
 				</div>
