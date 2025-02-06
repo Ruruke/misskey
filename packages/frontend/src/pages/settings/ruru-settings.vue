@@ -27,6 +27,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option :value="null">{{ i18n.ts.default }}</option>
 				<option v-for="[name, font] of Object.entries(fontList)" :value="name">{{ font.name }}</option>
 			</MkSelect>
+
+			<MkSwitch v-model="hidePublicNotes" @update:modelValue="save_privacy()">
+				{{ i18n.ts.hidePublicNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				<template #caption>{{ i18n.ts.hidePublicNotesDescription }}</template>
+			</MkSwitch>
+			<MkSwitch v-model="hideHomeNotes" @update:modelValue="save_privacy()">
+				{{ i18n.ts.hideHomeNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				<template #caption>{{ i18n.ts.hideHomeNotesDescription }}</template>
+			</MkSwitch>
 		</MkFolder>
 	</FormSection>
 
@@ -132,26 +141,35 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+import { computed, watch } from 'vue';
 import * as Misskey from 'misskey-js';
-import { computed, defineAsyncComponent, ref, watch } from 'vue';
-import { i18n } from '@/i18n.js';
+import { defineAsyncComponent, ref } from 'vue';
+import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import MkRadios from '@/components/MkRadios.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
-import { fontList } from '@/scripts/font';
+import FromSlot from '@/components/form/slot.vue';
+import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
+import MkEmoji from '@/components/global/MkEmoji.vue';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
-import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
-import FormSlot from '@/components/form/slot.vue';
-import MkColorInput from '@/components/MkColorInput.vue';
-import MkContainer from '@/components/MkContainer.vue';
-import { bottomItemDef } from '@/scripts/post-form.js';
+import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { fontList } from '@/scripts/font';
+import MkSparkle from '@/components/MkSparkle.vue';
+import MkContainer from '@/components/MkContainer.vue';
+import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
+import { bottomItemDef } from '@/scripts/post-form.js';
+import { signinRequired } from '@/account.js';
+import { globalEvents } from '@/events.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
+import MkNote from '@/components/MkNote.vue';
 
+
+const $i = signinRequired();
 const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
 const disableNoteNyaize = computed(defaultStore.makeGetterSetter('disableNoteNyaize'));
 const customFont = computed(defaultStore.makeGetterSetter('customFont'));
@@ -163,6 +181,8 @@ const noteVisibilityColorLocalOnly = computed(defaultStore.makeGetterSetter('not
 const noteVisibilityColorChanged = ref(false);
 const useTextAreaAutoSize = computed(defaultStore.makeGetterSetter('useTextAreaAutoSize'));
 const imageCompressionMode = computed(defaultStore.makeGetterSetter('imageCompressionMode'));
+const hidePublicNotes = ref($i.hidePublicNotes);
+const hideHomeNotes = ref($i.hideHomeNotes);
 
 watch([
 	noteVisibilityColorHome,
@@ -190,7 +210,12 @@ function saveColors() {
 		noteVisibilityColorChanged.value = false;
 	}
 }
-
+function save_privacy() {
+	misskeyApi('i/update', {
+		hidePublicNotes: !!hidePublicNotes.value,
+		hideHomeNotes: !!hideHomeNotes.value,
+	});
+}
 function getHTMLElement(ev: MouseEvent): HTMLElement {
 	const target = ev.currentTarget ?? ev.target;
 	return target as HTMLElement; // イベント発生元の HTML 要素を取得
