@@ -6,11 +6,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import * as _Js from '@/models/_.js';
-import {DI} from '@/di-symbols.js';
-import {CustomEmojiService} from '@/core/CustomEmojiService.js';
-import {EmojiEntityService} from '@/core/entities/EmojiEntityService.js';
-import {FILE_TYPE_IMAGE} from '@/const.js';
-import {ApiError} from '../../../error.js';
+import { DI } from '@/di-symbols.js';
+import { CustomEmojiService } from '@/core/CustomEmojiService.js';
+import { EmojiEntityService } from '@/core/entities/EmojiEntityService.js';
+import { FILE_TYPE_IMAGE } from '@/const.js';
+import { ApiError } from '../../../error.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -46,8 +46,8 @@ export const meta = {
 export const paramDef = {
 	type: 'object',
 	properties: {
-		name: {type: 'string', pattern: '^[a-zA-Z0-9_]+$'},
-		fileId: {type: 'string', format: 'misskey:id'},
+		name: { type: 'string', pattern: '^[a-zA-Z0-9_]+$' },
+		fileId: { type: 'string', format: 'misskey:id' },
 		category: {
 			type: 'string',
 			nullable: true,
@@ -59,9 +59,9 @@ export const paramDef = {
 				type: 'string',
 			},
 		},
-		license: {type: 'string', nullable: true},
-		isSensitive: {type: 'boolean'},
-		localOnly: {type: 'boolean'},
+		license: { type: 'string', nullable: true },
+		isSensitive: { type: 'boolean' },
+		localOnly: { type: 'boolean' },
 		roleIdsThatCanBeUsedThisEmojiAsReaction: {
 			type: 'array',
 			items: {
