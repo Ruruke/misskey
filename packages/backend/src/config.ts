@@ -82,10 +82,7 @@ type Source = {
 
 	clusterLimit?: number;
 	cluster?: {
-		httpServer?: {
-			instances?: number;
-			enableJobQueueProcessing?: boolean;
-		}
+		workers: ClusterWorker[]
 	};
 
 	id: string;
@@ -165,10 +162,7 @@ export type Config = {
 	maxFileSize: number;
 	clusterLimit: number | undefined;
 	cluster?: {
-		httpServer?: {
-			instances?: number;
-			enableJobQueueProcessing?: boolean;
-		}
+		workers: ClusterWorker[]
 	};
 	id: string;
 	outgoingAddress: string | undefined;
@@ -224,6 +218,13 @@ export type Config = {
 };
 
 export type FulltextSearchProvider = 'sqlLike' | 'sqlPgroonga' | 'meilisearch';
+
+export type ClusterWorkerType = 'http' | 'jobQueue';
+export type ClusterWorker = {
+	name?: string;
+	instances: number;
+	type: ClusterWorkerType[];
+}
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
