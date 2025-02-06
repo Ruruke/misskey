@@ -9963,6 +9963,15 @@ export interface Locale extends ILocale {
          * 承認されていない機器であれば、セキュリティのために「{text}」を通じてすべての機器でログアウトを行ってください。
          */
         "loginDescription": ParameterizedString<"ip" | "text">;
+        /**
+         * ログインに失敗しました
+         */
+        "loginFailed": string;
+        /**
+         * {ip}からのログインに失敗しました。
+         * 心当たりがない場合はパスワードの変更を行ってください。
+         */
+        "loginFailedDescription": ParameterizedString<"ip">;
         "_types": {
             /**
              * すべて
