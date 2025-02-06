@@ -114,8 +114,8 @@ importers:
         specifier: 4.0.2
         version: 4.0.2
       '@fastify/http-proxy':
-        specifier: 10.0.1
-        version: 10.0.1(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+        specifier: 10.0.2
+        version: 10.0.2(bufferutil@4.0.9)(utf-8-validate@6.0.5)
       '@fastify/multipart':
         specifier: 9.0.1
         version: 9.0.1
@@ -2652,8 +2652,8 @@ packages:
   '@fastify/fast-json-stringify-compiler@5.0.0':
     resolution: {integrity: sha512-tywfuZfXsyxLC5kEqrMubbFa9vpAxNtuPE7j9w5si1r+6p5b981pDfZ5Y8HBqmjDQl+PABT7cV5jZgXI2j+I5g==}
 
-  '@fastify/http-proxy@10.0.1':
-    resolution: {integrity: sha512-wCMwI9RXK5ISe9G1FGPDCCD2KlSAuLtDDU8XBEfiBxYV0nt+aYm4vPhU/0+IhUM6t+r7UWiV+9OYaJxcTem9+g==}
+  '@fastify/http-proxy@10.0.2':
+    resolution: {integrity: sha512-3IlTjOu9xtX5UPd/ZxY3ebYb6caINuBlr7iyVxYmh3zZLV0K5ted8yfU9UCNXVNs33RwbXD2RhDucc3z5BNgEA==}
 
   '@fastify/merge-json-schemas@0.1.1':
     resolution: {integrity: sha512-fERDVz7topgNjtXsJTTW1JKLy0rhuLRcquYqNR9rF7OcVpCa2OVW49ZPDIhaRRCaUuvVxI+N416xUoF76HNSXA==}
@@ -12809,7 +12809,7 @@ snapshots:
     dependencies:
       fast-json-stringify: 6.0.0
 
-  '@fastify/http-proxy@10.0.1(bufferutil@4.0.9)(utf-8-validate@6.0.5)':
+  '@fastify/http-proxy@10.0.2(bufferutil@4.0.9)(utf-8-validate@6.0.5)':
     dependencies:
       '@fastify/reply-from': 11.0.0
       fast-querystring: 1.1.2
