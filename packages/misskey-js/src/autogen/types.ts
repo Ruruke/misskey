@@ -24214,7 +24214,7 @@ export type operations = {
            * @default public
            * @enum {string}
            */
-          visibility?: 'public' | 'home' | 'followers' | 'specified' | 'public_non_ltl';
+          visibility?: 'public' | 'home' | 'followers' | 'specified';
           visibleUserIds?: string[];
           cw?: string | null;
           /**
@@ -24244,6 +24244,10 @@ export type operations = {
           scheduleNote: {
             scheduledAt?: number;
           };
+          scheduledDelete?: ({
+            deleteAt?: number | null;
+            deleteAfter?: number | null;
+          }) | null;
         };
       };
     };
