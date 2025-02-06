@@ -3963,6 +3963,10 @@ export type components = {
       pinnedPageId: string | null;
       pinnedPage: components['schemas']['Page'] | null;
       publicReactions: boolean;
+      hideActivity: boolean;
+      hideNoteFromOverview: boolean;
+      hidePublicNotes: boolean;
+      hideHomeNotes: boolean;
       /** @enum {string} */
       followingVisibility: 'public' | 'followers' | 'private';
       /** @enum {string} */
@@ -21792,6 +21796,10 @@ export type operations = {
           isExplorable?: boolean;
           hideOnlineStatus?: boolean;
           publicReactions?: boolean;
+          hideActivity?: boolean;
+          hideNoteFromOverview?: boolean;
+          hidePublicNotes?: boolean;
+          hideHomeNotes?: boolean;
           carefulBot?: boolean;
           autoAcceptFollowed?: boolean;
           noCrawle?: boolean;

@@ -18,6 +18,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #caption>{{ i18n.ts.makeReactionsPublicDescription }}</template>
 	</MkSwitch>
 
+	<MkSwitch v-model="hidePublicNotes" @update:modelValue="save()">
+		{{ i18n.ts.hidePublicNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+		<template #caption>{{ i18n.ts.hidePublicNotesDescription }}</template>
+	</MkSwitch>
+
+	<MkSwitch v-model="hideHomeNotes" @update:modelValue="save()">
+		{{ i18n.ts.hideHomeNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+		<template #caption>{{ i18n.ts.hideHomeNotesDescription }}</template>
+	</MkSwitch>
+
 	<MkSelect v-model="followingVisibility" @update:modelValue="save()">
 		<template #label>{{ i18n.ts.followingVisibility }}</template>
 		<option value="public">{{ i18n.ts._ffVisibility.public }}</option>
@@ -198,6 +208,10 @@ const makeNotesFollowersOnlyBefore = ref($i.makeNotesFollowersOnlyBefore ?? null
 const makeNotesHiddenBefore = ref($i.makeNotesHiddenBefore ?? null);
 const hideOnlineStatus = ref($i.hideOnlineStatus);
 const publicReactions = ref($i.publicReactions);
+const hideActivity = ref($i.hideActivity);
+const hideNoteFromOverview = ref($i.hideNoteFromOverview);
+const hidePublicNotes = ref($i.hidePublicNotes);
+const hideHomeNotes = ref($i.hideHomeNotes);
 const followingVisibility = ref($i.followingVisibility);
 const followersVisibility = ref($i.followersVisibility);
 
@@ -257,6 +271,10 @@ function save() {
 		makeNotesHiddenBefore: makeNotesHiddenBefore.value,
 		hideOnlineStatus: !!hideOnlineStatus.value,
 		publicReactions: !!publicReactions.value,
+		hideActivity: !!hideActivity.value,
+		hideNoteFromOverview: !!hideNoteFromOverview.value,
+		hidePublicNotes: !!hidePublicNotes.value,
+		hideHomeNotes: !!hideHomeNotes.value,
 		followingVisibility: followingVisibility.value,
 		followersVisibility: followersVisibility.value,
 	});
