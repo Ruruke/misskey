@@ -52,6 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps_s">
 			<MkSwitch v-model="showFixedPostForm">{{ i18n.ts.showFixedPostForm }}</MkSwitch>
 			<MkSwitch v-model="showFixedPostFormInChannel">{{ i18n.ts.showFixedPostFormInChannel }}</MkSwitch>
+			<FormLink to="/settings/post-form">{{ i18n.ts.postForm }}</FormLink>
 			<MkFolder>
 				<template #label>{{ i18n.ts.pinnedList }}</template>
 				<!-- 複数ピン止め管理できるようにしたいけどめんどいので一旦ひとつのみ -->
@@ -364,8 +365,20 @@ const useNativeUIForVideoAudioPlayer = computed(defaultStore.makeGetterSetter('u
 const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfirmFollow'));
 const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
 const confirmOnReact = computed(defaultStore.makeGetterSetter('confirmOnReact'));
-const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
 const searchEngine = computed(defaultStore.makeGetterSetter('searchEngine'));
+const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
+const reactionChecksMuting = computed(defaultStore.makeGetterSetter('reactionChecksMuting'));
+const hideLocalTimeLine = computed(defaultStore.makeGetterSetter('hideLocalTimeLine'));
+const hideGlobalTimeLine = computed(defaultStore.makeGetterSetter('hideGlobalTimeLine'));
+const hideSocialTimeLine = computed(defaultStore.makeGetterSetter('hideSocialTimeLine'));
+const hideLists = computed(defaultStore.makeGetterSetter('hideLists'));
+const hideAntennas = computed(defaultStore.makeGetterSetter('hideAntennas'));
+const hideChannel = computed(defaultStore.makeGetterSetter('hideChannel'));
+const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
+const showLikeButton = computed(defaultStore.makeGetterSetter('showLikeButton'));
+const enableSnowMode = computed(defaultStore.makeGetterSetter('enableSnowMode'));
+const enableReactionConfirm = computed(defaultStore.makeGetterSetter('enableReactionConfirm'));
+const enableLikeConfirm = computed(defaultStore.makeGetterSetter('enableLikeConfirm'));
 const showInstanceTickerSoftwareName = computed(defaultStore.makeGetterSetter('showInstanceTickerSoftwareName'));
 
 watch(lang, () => {

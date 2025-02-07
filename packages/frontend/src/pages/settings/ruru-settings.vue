@@ -68,16 +68,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkButton primary class="save" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
 			</div>
 			<div :class="$style.label">{{ i18n.ts.postFormBottomSettingsDescription }}</div>
-			<MkSelect v-model="draftSavingBehavior">
-				<template #label>{{ i18n.ts.draftSavingBehavior }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-				<option value="auto">{{ i18n.ts._draftSavingBehavior.auto }}</option>
-				<option value="manual">{{ i18n.ts._draftSavingBehavior.manual }}</option>
-			</MkSelect>
-			<MkSwitch v-model="disableNoteDrafting">
-				<template #caption>{{ i18n.ts.disableNoteDraftingDescription }}</template>
-				{{ i18n.ts.disableNoteDrafting }}
-				<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-			</MkSwitch>
 			<div>
 				<div :class="$style.label">
 					{{ i18n.ts.defaultScheduledNoteDeleteTime }}
