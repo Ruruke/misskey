@@ -46,7 +46,7 @@ export async function jobQueue(): Promise<INestApplicationContext> {
 }
 
 export function actualClusterLimit(config: Partial<Config>): number {
-	return Math.min(config.clusterLimit ?? 1, cpuCount);
+	return Math.min(config.clusterLimit ?? 1, cpuCount + 2);
 }
 
 /** メインプロセス上でHTTPサーバモジュールを動作させるべきかを判断する */
