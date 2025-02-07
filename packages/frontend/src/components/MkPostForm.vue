@@ -765,6 +765,14 @@ async function onPaste(ev: ClipboardEvent) {
 		});
 	}
 }
+function isAnnoying(text: string): boolean {
+	return text.includes('$[x2') ||
+		text.includes('$[x3') ||
+		text.includes('$[x4') ||
+		text.includes('$[scale') ||
+		text.includes('$[position');
+}
+
 
 function onDragover(ev) {
 	if (!ev.dataTransfer.items[0]) return;
