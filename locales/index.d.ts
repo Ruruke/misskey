@@ -5567,10 +5567,6 @@ export interface Locale extends ILocale {
      * 1年以上先の日時を指定することはできません
      */
     "cannotScheduleLaterThanOneYear": string;
-		/**
-		 * 投稿フォームをリセット
-		 */
-		"clearPost": string;
     /**
      * 投稿フォーム
      */
@@ -5591,6 +5587,18 @@ export interface Locale extends ILocale {
      * このサーバーからのフォロワーがいないリモートユーザーの、メンションを含むノートをブロックするようにします。
      */
     "blockMentionsFromUnfamiliarRemoteUsersDescription": string;
+    /**
+     * 投稿フォームをリセット
+     */
+    "clearPost": string;
+    /**
+     * 絵文字ピッカーに追加
+     */
+    "addToEmojiPicker": string;
+    /**
+     * リアクション数の非表示
+     */
+    "hideReactionCount": string;
     "_bubbleGame": {
         /**
          * 遊び方
