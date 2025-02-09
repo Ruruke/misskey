@@ -10,7 +10,6 @@
 
 ### Server
 - Fix: `following/invalidate`でフォロワーを解除しようとしているユーザーの情報を返すように
-
 - 1つのMisskeyで複数のHTTPサーバプロセスを起動できるように ( #13662 )
 
 ## 2025.2.0
@@ -64,7 +63,6 @@
 
 ### Client
 - Enhance: リモートのノートのリンクをコピーできるように
-- Feat: 投稿フォームで画像をプレビュー可能に
 - Feat: 投稿フォームで画像をプレビュー可能に
 - Enhance: PC画面でチャンネルが複数列で表示されるように  
   (Cherry-picked from https://github.com/Otaku-Social/maniakey/pull/13)
