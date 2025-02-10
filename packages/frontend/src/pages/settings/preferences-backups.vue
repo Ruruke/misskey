@@ -131,7 +131,10 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'showInstanceTickerSoftwareName',
 	'imageCompressionMode',
 	'anonymizeMutedUsers',
-	'imageCompressionMode',
+	'enableReactionConfirm',
+	'enableLikeConfirm',
+	'showInstanceTickerSoftwareName',
+	'showInstanceTickerVersion',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'lightTheme',

@@ -109,6 +109,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</template>
 					<template #caption>{{ i18n.ts.showInstanceTickerSoftwareNameDescription }}</template>
 				</MkSwitch>
+				<MkSwitch v-model="showInstanceTickerVersion">
+					<template #label>
+						{{ i18n.ts.showInstanceTickerVersion }}
+						<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+					</template>
+					<template #caption>{{ i18n.ts.showInstanceTickerVersionDescription }}</template>
+				</MkSwitch>
+				<MkSelect v-model="hideReactionCount">
+					<template #label>{{ i18n.ts.hideReactionCount }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+					<option value="none">{{ i18n.ts._hideReactionCount.none }}</option>
+					<option value="self">{{ i18n.ts._hideReactionCount.self }}</option>
+					<option value="others">{{ i18n.ts._hideReactionCount.others }}</option>
+					<option value="all">{{ i18n.ts._hideReactionCount.all }}</option>
+				</MkSelect>
+			</div>
+
+			<MkSelect v-if="instance.federation !== 'none'" v-model="instanceTicker">
+				<template #label>{{ i18n.ts.instanceTicker }}</template>
+				<option value="none">{{ i18n.ts._instanceTicker.none }}</option>
+				<option value="remote">{{ i18n.ts._instanceTicker.remote }}</option>
+				<option value="always">{{ i18n.ts._instanceTicker.always }}</option>
+			</MkSelect>
 
 			<MkSelect v-model="nsfw">
 				<template #label>{{ i18n.ts.displayOfSensitiveMedia }}</template>
@@ -380,6 +402,7 @@ const enableSnowMode = computed(defaultStore.makeGetterSetter('enableSnowMode'))
 const enableReactionConfirm = computed(defaultStore.makeGetterSetter('enableReactionConfirm'));
 const enableLikeConfirm = computed(defaultStore.makeGetterSetter('enableLikeConfirm'));
 const showInstanceTickerSoftwareName = computed(defaultStore.makeGetterSetter('showInstanceTickerSoftwareName'));
+const showInstanceTickerVersion = computed(defaultStore.makeGetterSetter('showInstanceTickerVersion'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
