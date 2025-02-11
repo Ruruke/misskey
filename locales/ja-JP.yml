@@ -2795,6 +2795,7 @@ _moderationLogTypes:
 
 _fileViewer:
   title: "ファイルの詳細"
+  titleAdmin: "ファイルの詳細(管理者用)"
   type: "ファイルタイプ"
   size: "ファイルサイズ"
   url: "URL"

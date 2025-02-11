@@ -10557,6 +10557,10 @@ export interface Locale extends ILocale {
          */
         "title": string;
         /**
+         * ファイルの詳細(管理者用)
+         */
+        "titleAdmin": string;
+        /**
          * ファイルタイプ
          */
         "type": string;
