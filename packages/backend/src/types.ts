@@ -26,6 +26,7 @@ import { MiInboxRule } from '@/models/InboxRule.js';
  * achievementEarned - 実績を獲得
  * exportCompleted - エクスポートが完了
  * login - ログイン
+ * createToken - トークン作成
  * scheduledNoteFailed - 予約投稿に失敗
  * scheduledNotePosted - 予約投稿をノート
  * app - アプリ通知
@@ -46,6 +47,7 @@ export const notificationTypes = [
 	'achievementEarned',
 	'exportCompleted',
 	'login',
+	'createToken',
 	'scheduledNoteFailed',
 	'scheduledNotePosted',
 	'app',
