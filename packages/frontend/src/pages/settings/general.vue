@@ -91,7 +91,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					{{ i18n.ts.hideReactionUsers }}
 					<span class="_beta">{{ i18n.ts.originalFeature }}</span>
 				</MkSwitch>
-			</div>
 
 			<MkSelect v-if="instance.federation !== 'none'" v-model="instanceTicker">
 				<template #label>{{ i18n.ts.instanceTicker }}</template>
