@@ -943,6 +943,10 @@ export interface Locale extends ILocale {
      */
     "mediaSilenceThisInstance": string;
     /**
+     * サーバーに公開投稿のみ配送
+     */
+    "quarantineThisInstance": string;
+    /**
      * 操作
      */
     "operations": string;
@@ -1118,6 +1122,10 @@ export interface Locale extends ILocale {
      * 配信停止
      */
     "suspended": string;
+    /**
+     * 隔離中
+     */
+    "quarantine": string;
     /**
      * 全て
      */
@@ -4307,7 +4315,7 @@ export interface Locale extends ILocale {
      */
     "invalidParamError": string;
     /**
-     * リクエストパラメータに問題があります。通常これはバグですが、入力した文字数が多すぎる等の可能性もあります。
+     * リクエストパラメータに問題があります。通常これはバグですが、入力した文字数が多すぎる・許可されていない文字を入力している等の可能性もあります。
      */
     "invalidParamErrorDescription": string;
     /**
@@ -4354,14 +4362,6 @@ export interface Locale extends ILocale {
      * このまま投稿
      */
     "thisPostMayBeAnnoyingIgnore": string;
-    /**
-     * ノートの下書きの復元を無効化
-     */
-    "disableNoteDrafting": string;
-    /**
-     * ノートの投稿フォームを開き直した際に、下書きを復元しないようにします。
-     */
-    "disableNoteDraftingDescription": string;
     /**
      * リノートのスマート省略
      */
@@ -5576,6 +5576,18 @@ export interface Locale extends ILocale {
      */
     "postFormBottomSettingsDescription": string;
     /**
+     * デフォルトでノートが自己消滅するように
+     */
+    "defaultScheduledNoteDelete": string;
+    /**
+     * 荒らしの可能性があるユーザーからのメンションをブロックする
+     */
+    "blockMentionsFromUnfamiliarRemoteUsers": string;
+    /**
+     * このサーバーからのフォロワーがいないリモートユーザーの、メンションを含むノートをブロックするようにします。
+     */
+    "blockMentionsFromUnfamiliarRemoteUsersDescription": string;
+    /**
      * 投稿フォームをリセット
      */
     "clearPost": string;
@@ -5587,26 +5599,6 @@ export interface Locale extends ILocale {
      * リアクション数の非表示
      */
     "hideReactionCount": string;
-    /**
-     * 下書き
-     */
-    "drafts": string;
-    /**
-     * 下書きの保存に関する動作
-     */
-    "draftSavingBehavior": string;
-    /**
-     * 下書きとして保存
-     */
-    "saveAsDraft": string;
-    /**
-     * 下書きを適用すると現在入力されている内容はリセットされます。よろしいですか？
-     */
-    "draftOverwriteConfirm": string;
-    /**
-     * デフォルトでノートが自己消滅するように
-     */
-    "defaultScheduledNoteDelete": string;
     "_bubbleGame": {
         /**
          * 遊び方
@@ -9639,18 +9631,6 @@ export interface Locale extends ILocale {
          */
         "readPage": string;
         /**
-         * ページを作成しました
-         */
-        "created": string;
-        /**
-         * ページを更新しました
-         */
-        "updated": string;
-        /**
-         * ページを削除しました
-         */
-        "deleted": string;
-        /**
          * ページ設定
          */
         "pageSetting": string;
@@ -9959,6 +9939,23 @@ export interface Locale extends ILocale {
          * 承認されていない機器であれば、セキュリティのために「{text}」を通じてすべての機器でログアウトを行ってください。
          */
         "loginDescription": ParameterizedString<"ip" | "text">;
+        /**
+         * ログインに失敗しました
+         */
+        "loginFailed": string;
+        /**
+         * {ip}からのログインに失敗しました。
+         * 心当たりがない場合はパスワードの変更を行ってください。
+         */
+        "loginFailedDescription": ParameterizedString<"ip">;
+        /**
+         * アクセストークンが作成されました
+         */
+        "createToken": string;
+        /**
+         * 心当たりがない場合は「{text}」を通じてアクセストークンを削除してください。
+         */
+        "createTokenDescription": ParameterizedString<"text">;
         "_types": {
             /**
              * すべて
@@ -10545,12 +10542,24 @@ export interface Locale extends ILocale {
          * ギャラリーの投稿を削除
          */
         "deleteGalleryPost": string;
+        /**
+         * 公開投稿のみ配送に制限
+         */
+        "quarantineRemoteInstance": string;
+        /**
+         * 公開投稿のみ配送を解除
+         */
+        "unquarantineRemoteInstance": string;
     };
     "_fileViewer": {
         /**
          * ファイルの詳細
          */
         "title": string;
+        /**
+         * ファイルの詳細(管理者用)
+         */
+        "titleAdmin": string;
         /**
          * ファイルタイプ
          */
@@ -11505,6 +11514,52 @@ export interface Locale extends ILocale {
             };
         };
     };
+    "_bootErrors": {
+        /**
+         * 読み込みに失敗しました
+         */
+        "title": string;
+        /**
+         * 少し待ってからリロードしてもまだ問題が解決されない場合、以下のError IDを添えてサーバー管理者に連絡してください。
+         */
+        "serverError": string;
+        /**
+         * 以下を行うと解決する可能性があります。
+         */
+        "solution": string;
+        /**
+         * ブラウザおよびOSを最新バージョンに更新する
+         */
+        "solution1": string;
+        /**
+         * アドブロッカーを無効にする
+         */
+        "solution2": string;
+        /**
+         * ブラウザのキャッシュをクリアする
+         */
+        "solution3": string;
+        /**
+         * (Tor Browser) dom.webaudio.enabledをtrueに設定する
+         */
+        "solution4": string;
+        /**
+         * その他のオプション
+         */
+        "otherOption": string;
+        /**
+         * クライアント設定とキャッシュを削除
+         */
+        "otherOption1": string;
+        /**
+         * 簡易クライアントを起動
+         */
+        "otherOption2": string;
+        /**
+         * 修復ツールを起動
+         */
+        "otherOption3": string;
+    };
     "_reactionChecksMuting": {
         /**
          * リアクションでミュートを考慮する
@@ -12145,6 +12200,94 @@ export interface Locale extends ILocale {
          */
         "marginBottom": string;
     };
+    "_updateCount": {
+        /**
+         * カウント更新
+         */
+        "title": string;
+        /**
+         * フォロー数を更新
+         */
+        "updateFollowCount": string;
+        /**
+         * フォロー数を上書きします。
+         */
+        "updateFollowCountDescription": string;
+        /**
+         * フォロワー数を更新
+         */
+        "updateFollowerCount": string;
+        /**
+         * フォロワー数を上書きします。
+         */
+        "updateFollowerCountDescription": string;
+        /**
+         * ノート数を更新
+         */
+        "updateNoteCount": string;
+        /**
+         * ノート数を上書きします。
+         */
+        "updateNoteCountDescription": string;
+        /**
+         * 負の数は許可されません。
+         */
+        "negativeNumberNotAllowed": string;
+        /**
+         * カウンター更新の確認
+         */
+        "warningTitle": string;
+        /**
+         * フォロワー数/フォロー数/ノート数を手動で更新します。
+         * この操作は通常では必要なく、変更前の値に戻すことは出来ません。
+         * 本当に実行しますか？
+         */
+        "warningText": string;
+    };
+    /**
+     * いいねボタンを表示する
+     */
+    "showLikeButton": string;
+    /**
+     * 誰がリアクションをしたのかを非表示にする
+     */
+    "hideReactionUsers": string;
+    /**
+     * リアクションをホバーした際のユーザー一覧と、ノート詳細ページのリアクションタブにあるリアクションをしたユーザー一覧を非表示にします
+     */
+    "hideReactionUsersDescription": string;
+    /**
+     * アクティビティを非公開にする
+     */
+    "hideActivity": string;
+    /**
+     * 自分のプロフィールのアクティビティ (概要/アクティビティタブ) を他人が見れないようにします。このオプションを有効にしても、自分であればプロフィールのアクティビティタブから引き続き閲覧できます。
+     */
+    "hideActivityDescription": string;
+    /**
+     * 概要からノートを非表示にする
+     */
+    "hideNoteFromOverview": string;
+    /**
+     * プロフィールの概要にノートを表示されないようにします。このオプションを有効にしても、ノートのURLを知っていれば閲覧できます。
+     */
+    "hideNoteFromOverviewDescription": string;
+    /**
+     * 公開ノートを非表示にする
+     */
+    "hidePublicNotes": string;
+    /**
+     * 自分のプロフィールの公開ノートを非ログインユーザーが見れないようにします。このオプションを有効にしても、ログイン状態であればプロフィールのノートタブから引き続き閲覧できます。
+     */
+    "hidePublicNotesDescription": string;
+    /**
+     * ホームノートを非表示にする
+     */
+    "hideHomeNotes": string;
+    /**
+     * 自分のホームノートを非ログインユーザーが見れないようにします。このオプションを有効にしても、ログイン状態であればホームタブから引き続き閲覧できます。
+     */
+    "hideHomeNotesDescription": string;
     /**
      * 予約投稿
      */
@@ -12246,6 +12389,14 @@ export interface Locale extends ILocale {
      */
     "showInstanceTickerSoftwareNameDescription": string;
     /**
+     * インスタンスのバージョンを表示
+     */
+    "showInstanceTickerVersion": string;
+    /**
+     * インスタンスのバージョンをインスタンスの名前の横に表示します。
+     */
+    "showInstanceTickerVersionDescription": string;
+    /**
      * テキストエリアの自動リサイズ
      */
     "textAreaAutoResize": string;
@@ -12305,6 +12456,14 @@ export interface Locale extends ILocale {
      * ただいま、アカウントの登録にインターバルを設けています。しばらく待ってから再度お試しいただくか、招待コードをお持ちの場合はそちらをご利用ください。
      */
     "signupRateLimitedDescription": string;
+    /**
+     * 検索URLをコピー
+     */
+    "copySearchUrl": string;
+    /**
+     * コピーに失敗しました
+     */
+    "failedToCopy": string;
 }
 declare const locales: {
     [lang: string]: Locale;

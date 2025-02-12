@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer v-if="(miLocalStorage.getItem('account') === null ? !instance.disableNotloginToShowTL : true)">
+<MkStickyContainer>
 	<template #header>
 		<MkTab v-model="tab" :class="$style.tab">
 			<option value="featured">{{ i18n.ts.featured }}</option>

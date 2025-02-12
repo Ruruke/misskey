@@ -52,6 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps_s">
 			<MkSwitch v-model="showFixedPostForm">{{ i18n.ts.showFixedPostForm }}</MkSwitch>
 			<MkSwitch v-model="showFixedPostFormInChannel">{{ i18n.ts.showFixedPostFormInChannel }}</MkSwitch>
+			<FormLink to="/settings/post-form">{{ i18n.ts.postForm }}</FormLink>
 			<MkFolder>
 				<template #label>{{ i18n.ts.pinnedList }}</template>
 				<!-- 複数ピン止め管理できるようにしたいけどめんどいので一旦ひとつのみ -->
@@ -85,7 +86,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option value="large">{{ i18n.ts.large }}</option>
 				</MkRadios>
 				<MkSwitch v-model="limitWidthOfReaction">{{ i18n.ts.limitWidthOfReaction }}</MkSwitch>
-			</div>
+				<MkSwitch v-model="hideReactionUsers">
+					<template #caption>{{ i18n.ts.hideReactionUsersDescription }}</template>
+					{{ i18n.ts.hideReactionUsers }}
+					<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				</MkSwitch>
 
 			<MkSelect v-if="instance.federation !== 'none'" v-model="instanceTicker">
 				<template #label>{{ i18n.ts.instanceTicker }}</template>
@@ -103,6 +108,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</template>
 					<template #caption>{{ i18n.ts.showInstanceTickerSoftwareNameDescription }}</template>
 				</MkSwitch>
+				<MkSwitch v-model="showInstanceTickerVersion">
+					<template #label>
+						{{ i18n.ts.showInstanceTickerVersion }}
+						<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+					</template>
+					<template #caption>{{ i18n.ts.showInstanceTickerVersionDescription }}</template>
+				</MkSwitch>
+				<MkSelect v-model="hideReactionCount">
+					<template #label>{{ i18n.ts.hideReactionCount }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+					<option value="none">{{ i18n.ts._hideReactionCount.none }}</option>
+					<option value="self">{{ i18n.ts._hideReactionCount.self }}</option>
+					<option value="others">{{ i18n.ts._hideReactionCount.others }}</option>
+					<option value="all">{{ i18n.ts._hideReactionCount.all }}</option>
+				</MkSelect>
+			</div>
+
+			<MkSelect v-if="instance.federation !== 'none'" v-model="instanceTicker">
+				<template #label>{{ i18n.ts.instanceTicker }}</template>
+				<option value="none">{{ i18n.ts._instanceTicker.none }}</option>
+				<option value="remote">{{ i18n.ts._instanceTicker.remote }}</option>
+				<option value="always">{{ i18n.ts._instanceTicker.always }}</option>
+			</MkSelect>
 
 			<MkSelect v-model="nsfw">
 				<template #label>{{ i18n.ts.displayOfSensitiveMedia }}</template>
@@ -320,6 +347,7 @@ const showNoteActionsOnlyHover = computed(defaultStore.makeGetterSetter('showNot
 const showClipButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showClipButtonInNoteFooter'));
 const reactionsDisplaySize = computed(defaultStore.makeGetterSetter('reactionsDisplaySize'));
 const limitWidthOfReaction = computed(defaultStore.makeGetterSetter('limitWidthOfReaction'));
+const hideReactionUsers = computed(defaultStore.makeGetterSetter('hideReactionUsers'));
 const collapseRenotes = computed(defaultStore.makeGetterSetter('collapseRenotes'));
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));
@@ -358,10 +386,22 @@ const useNativeUIForVideoAudioPlayer = computed(defaultStore.makeGetterSetter('u
 const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfirmFollow'));
 const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
 const confirmOnReact = computed(defaultStore.makeGetterSetter('confirmOnReact'));
-const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
 const searchEngine = computed(defaultStore.makeGetterSetter('searchEngine'));
+const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
+const reactionChecksMuting = computed(defaultStore.makeGetterSetter('reactionChecksMuting'));
+const hideLocalTimeLine = computed(defaultStore.makeGetterSetter('hideLocalTimeLine'));
+const hideGlobalTimeLine = computed(defaultStore.makeGetterSetter('hideGlobalTimeLine'));
+const hideSocialTimeLine = computed(defaultStore.makeGetterSetter('hideSocialTimeLine'));
+const hideLists = computed(defaultStore.makeGetterSetter('hideLists'));
+const hideAntennas = computed(defaultStore.makeGetterSetter('hideAntennas'));
+const hideChannel = computed(defaultStore.makeGetterSetter('hideChannel'));
+const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
+const showLikeButton = computed(defaultStore.makeGetterSetter('showLikeButton'));
+const enableSnowMode = computed(defaultStore.makeGetterSetter('enableSnowMode'));
+const enableReactionConfirm = computed(defaultStore.makeGetterSetter('enableReactionConfirm'));
+const enableLikeConfirm = computed(defaultStore.makeGetterSetter('enableLikeConfirm'));
 const showInstanceTickerSoftwareName = computed(defaultStore.makeGetterSetter('showInstanceTickerSoftwareName'));
-
+const showInstanceTickerVersion = computed(defaultStore.makeGetterSetter('showInstanceTickerVersion'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);

@@ -10,7 +10,7 @@ import { instance } from '@/instance.js';
 import { host } from '@@/js/config.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import {miLocalStorage} from "@/local-storage.js";
+import { miLocalStorage } from "@/local-storage.js";
 
 function toolsMenuItems(): MenuItem[] {
 	return [{
@@ -44,8 +44,7 @@ function toolsMenuItems(): MenuItem[] {
 export function openInstanceMenu(ev: MouseEvent) {
 	const menuItems: MenuItem[] = [];
 
-
-	if(miLocalStorage.getItem('account') === null){
+	if (miLocalStorage.getItem('account') === null) {
 		menuItems.push({
 			text: instance.name ?? host,
 			type: 'label',
@@ -65,7 +64,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 			icon: 'ti ti-ad',
 			to: '/ads',
 		});
-	}else{
+	} else {
 		menuItems.push({
 			text: instance.name ?? host,
 			type: 'label',

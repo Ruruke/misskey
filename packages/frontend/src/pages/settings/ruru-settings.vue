@@ -27,6 +27,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option :value="null">{{ i18n.ts.default }}</option>
 				<option v-for="[name, font] of Object.entries(fontList)" :value="name">{{ font.name }}</option>
 			</MkSelect>
+
+			<MkSwitch v-model="hidePublicNotes" @update:modelValue="save_privacy()">
+				{{ i18n.ts.hidePublicNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				<template #caption>{{ i18n.ts.hidePublicNotesDescription }}</template>
+			</MkSwitch>
+			<MkSwitch v-model="hideHomeNotes" @update:modelValue="save_privacy()">
+				{{ i18n.ts.hideHomeNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				<template #caption>{{ i18n.ts.hideHomeNotesDescription }}</template>
+			</MkSwitch>
 		</MkFolder>
 	</FormSection>
 
@@ -59,16 +68,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkButton primary class="save" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
 			</div>
 			<div :class="$style.label">{{ i18n.ts.postFormBottomSettingsDescription }}</div>
-			<MkSelect v-model="draftSavingBehavior">
-				<template #label>{{ i18n.ts.draftSavingBehavior }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-				<option value="auto">{{ i18n.ts._draftSavingBehavior.auto }}</option>
-				<option value="manual">{{ i18n.ts._draftSavingBehavior.manual }}</option>
-			</MkSelect>
-			<MkSwitch v-model="disableNoteDrafting">
-				<template #caption>{{ i18n.ts.disableNoteDraftingDescription }}</template>
-				{{ i18n.ts.disableNoteDrafting }}
-				<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-			</MkSwitch>
 			<div>
 				<div :class="$style.label">
 					{{ i18n.ts.defaultScheduledNoteDeleteTime }}
@@ -113,30 +112,53 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 		</div>
 	</MkFolder>
+	<FormSection>
+		<template #label>{{ i18n.ts.drive }}</template>
+		<div class="_gaps_m">
+			<div class="_gaps_s">
+				<MkSelect v-model="imageCompressionMode">
+					<template #label>{{ i18n.ts._imageCompressionMode.title }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+					<option value="resizeCompress">{{ i18n.ts._imageCompressionMode.resizeCompress }}</option>
+					<option value="noResizeCompress">{{ i18n.ts._imageCompressionMode.noResizeCompress }}</option>
+					<option value="resizeCompressLossy">{{ i18n.ts._imageCompressionMode.resizeCompressLossy }}</option>
+					<option value="noResizeCompressLossy">{{ i18n.ts._imageCompressionMode.noResizeCompressLossy }}</option>
+					<template #caption>{{ i18n.ts._imageCompressionMode.description }}</template>
+				</MkSelect>
+			</div>
+		</div>
+	</FormSection>
 </div>
 </template>
 
 <script lang="ts" setup>
+import { computed, watch } from 'vue';
 import * as Misskey from 'misskey-js';
-import { computed, defineAsyncComponent, ref, watch } from 'vue';
-import { i18n } from '@/i18n.js';
+import { defineAsyncComponent, ref } from 'vue';
+import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import MkRadios from '@/components/MkRadios.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
-import { fontList } from '@/scripts/font';
+import FromSlot from '@/components/form/slot.vue';
+import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
+import MkEmoji from '@/components/global/MkEmoji.vue';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
-import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
-import FormSlot from '@/components/form/slot.vue';
-import MkColorInput from '@/components/MkColorInput.vue';
-import MkContainer from '@/components/MkContainer.vue';
-import { bottomItemDef } from '@/scripts/post-form.js';
+import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { fontList } from '@/scripts/font';
+import MkSparkle from '@/components/MkSparkle.vue';
+import MkContainer from '@/components/MkContainer.vue';
+import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
+import { bottomItemDef } from '@/scripts/post-form.js';
+import { signinRequired } from '@/account.js';
+import { globalEvents } from '@/events.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
+import MkNote from '@/components/MkNote.vue';
 
+const $i = signinRequired();
 const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
 const disableNoteNyaize = computed(defaultStore.makeGetterSetter('disableNoteNyaize'));
 const customFont = computed(defaultStore.makeGetterSetter('customFont'));
@@ -147,6 +169,9 @@ const noteVisibilityColorSpecified = computed(defaultStore.makeGetterSetter('not
 const noteVisibilityColorLocalOnly = computed(defaultStore.makeGetterSetter('noteVisibilityColorLocalOnly'));
 const noteVisibilityColorChanged = ref(false);
 const useTextAreaAutoSize = computed(defaultStore.makeGetterSetter('useTextAreaAutoSize'));
+const imageCompressionMode = computed(defaultStore.makeGetterSetter('imageCompressionMode'));
+const hidePublicNotes = ref($i.hidePublicNotes);
+const hideHomeNotes = ref($i.hideHomeNotes);
 
 watch([
 	noteVisibilityColorHome,
@@ -160,6 +185,7 @@ watch([
 	customFont,
 	disableNoteNyaize,
 	useTextAreaAutoSize,
+	imageCompressionMode,
 ], async () => {
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
@@ -172,6 +198,13 @@ function saveColors() {
 		defaultStore.set('noteVisibilityColorLocalOnly', noteVisibilityColorLocalOnly.value);
 		noteVisibilityColorChanged.value = false;
 	}
+}
+
+function save_privacy() {
+	misskeyApi('i/update', {
+		hidePublicNotes: !!hidePublicNotes.value,
+		hideHomeNotes: !!hideHomeNotes.value,
+	});
 }
 
 function getHTMLElement(ev: MouseEvent): HTMLElement {

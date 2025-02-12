@@ -49,7 +49,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts">
-import type { SortOrder } from '@/components/MkSortOrderEditor.define.js';
 import type { GridSortOrderKey } from './custom-emojis-manager.impl.js';
 
 export type EmojiSearchQuery = {
@@ -71,26 +70,24 @@ export type EmojiSearchQuery = {
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, nextTick, useCssModule } from 'vue';
 import * as Misskey from 'misskey-js';
+import type { RequestLogItem } from '@/pages/admin/custom-emojis-manager.impl.js';
+import type { GridCellValidationEvent, GridCellValueChangeEvent, GridEvent } from '@/components/grid/grid-event.js';
+import type { GridSetting } from '@/components/grid/grid.js';
 import * as os from '@/os.js';
 import {
 	emptyStrToEmptyArray,
 	emptyStrToNull,
 	emptyStrToUndefined,
-	RequestLogItem,
 	roleIdsParser,
 } from '@/pages/admin/custom-emojis-manager.impl.js';
 import MkGrid from '@/components/grid/MkGrid.vue';
 import { i18n } from '@/i18n.js';
 import MkButton from '@/components/MkButton.vue';
 import { validators } from '@/components/grid/cell-validators.js';
-import { GridCellValidationEvent, GridCellValueChangeEvent, GridEvent } from '@/components/grid/grid-event.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import MkPagingButtons from '@/components/MkPagingButtons.vue';
-import { GridSetting } from '@/components/grid/grid.js';
 import { selectFile } from '@/scripts/select-file.js';
 import { copyGridDataToClipboard, removeDataFromGrid } from '@/components/grid/grid-utils.js';
-import MkSortOrderEditor from '@/components/MkSortOrderEditor.vue';
-import { SortOrder } from '@/components/MkSortOrderEditor.define.js';
 import { useLoading } from '@/components/hook/useLoading.js';
 
 type GridItem = {
@@ -466,8 +463,8 @@ async function refreshCustomEmojis() {
 		aliases: emptyStrToUndefined(searchQuery.value.aliases),
 		category: emptyStrToUndefined(searchQuery.value.category),
 		license: emptyStrToUndefined(searchQuery.value.license),
-		isSensitive: searchQuery.value.sensitive ? Boolean(searchQuery.value.sensitive).valueOf() : undefined,
-		localOnly: searchQuery.value.localOnly ? Boolean(searchQuery.value.localOnly).valueOf() : undefined,
+		isSensitive: searchQuery.value.sensitive != null ? Boolean(searchQuery.value.sensitive).valueOf() : undefined,
+		localOnly: searchQuery.value.localOnly != null ? Boolean(searchQuery.value.localOnly).valueOf() : undefined,
 		updatedAtFrom: emptyStrToUndefined(searchQuery.value.updatedAtFrom),
 		updatedAtTo: emptyStrToUndefined(searchQuery.value.updatedAtTo),
 		roleIds: searchQuery.value.roles.map(it => it.id),
@@ -594,7 +591,7 @@ const headerActions = computed(() => [{
 				dispose();
 			},
 		});
-	}
+	},
 }]);
 </script>
 

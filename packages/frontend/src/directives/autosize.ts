@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Directive } from 'vue';
+import type { Directive } from 'vue';
 import { defaultStore } from '@/store.js';
 
 const onInput = (arg: Event | HTMLTextAreaElement) => {
@@ -11,6 +11,15 @@ const onInput = (arg: Event | HTMLTextAreaElement) => {
 	// 先にautoをしておかないと、縮まってくれない
 	el.style.height = 'auto';
 	el.style.height = `${el.scrollHeight}px`;
+
+	const maxHeight = window.innerHeight * 0.7;
+
+	if (el.scrollHeight > maxHeight) {
+		el.style.height = `${maxHeight}px`;
+		el.style.overflowY = 'scroll';
+	} else {
+		el.style.overflowY = 'hidden';
+	}
 };
 
 export default {

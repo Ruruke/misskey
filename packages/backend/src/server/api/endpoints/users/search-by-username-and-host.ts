@@ -10,7 +10,9 @@ import { UserSearchService } from '@/core/UserSearchService.js';
 export const meta = {
 	tags: ['users'],
 
-	requireCredential: false,
+	requireCredential: true,
+	requireAdmin: true,
+	kind: 'read:account',
 
 	description: 'Search for a user by username and/or host.',
 

@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #caption>{{ i18n.ts.registerApprovalEmailRecommended }}</template>
 					</MkSwitch>
 
-					<MkSwitch v-model="blockMentionsFromUnfamiliarRemoteUsers">
+					<MkSwitch v-model="blockMentionsFromUnfamiliarRemoteUsers" @change="onChange_blockMentionsFromUnfamiliarRemoteUsers">
 						<template #label>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsers }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
 						<template #caption>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsersDescription }} Cherry-picked from Misskey.io (https://github.com/MisskeyIO/misskey/commit/82cc3987c13db4ad0da1589386027c222ce85ff8)</template>
 					</MkSwitch>
@@ -126,7 +126,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkTextarea v-model="blockedHosts">
 								<template #caption>{{ i18n.ts.blockedInstancesDescription }}</template>
 							</MkTextarea>
-							<MkButton primary @click="save_blockedHosts">{{ i18n.ts.save }}</MkButton>
+							<MkButton primary @click="save_blockH">{{ i18n.ts.save }}</MkButton>
 						</div>
 					</MkFolder>
 				</div>
@@ -163,6 +163,7 @@ const preservedUsernames = ref<string>('');
 const blockedHosts = ref<string>('');
 const silencedHosts = ref<string>('');
 const mediaSilencedHosts = ref<string>('');
+const blockMentionsFromUnfamiliarRemoteUsers = ref(false);
 
 async function init() {
 	const meta = await misskeyApi('admin/meta');
@@ -177,6 +178,7 @@ async function init() {
 	blockedHosts.value = meta.blockedHosts.join('\n');
 	silencedHosts.value = meta.silencedHosts?.join('\n') ?? '';
 	mediaSilencedHosts.value = meta.mediaSilencedHosts.join('\n');
+	blockMentionsFromUnfamiliarRemoteUsers.value = meta.blockMentionsFromUnfamiliarRemoteUsers;
 }
 
 async function onChange_enableRegistration(value: boolean) {
@@ -208,6 +210,14 @@ function onChange_emailRequiredForSignup(value: boolean) {
 function onChange_approvalRequiredForSignup(value: boolean) {
 	os.apiWithDialog('admin/update-meta', {
 		approvalRequiredForSignup: value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function onChange_blockMentionsFromUnfamiliarRemoteUsers(value: boolean) {
+	os.apiWithDialog('admin/update-meta', {
+		blockMentionsFromUnfamiliarRemoteUsers: value,
 	}).then(() => {
 		fetchInstance(true);
 	});

@@ -204,6 +204,12 @@ export type ModerationLog = {
 } | {
 	type: 'deleteGalleryPost';
 	info: ModerationLogPayloads['deleteGalleryPost'];
+} | {
+	type: 'quarantineRemoteInstance';
+	info: ModerationLogPayloads['quarantineRemoteInstance'];
+} | {
+	type: 'unquarantineRemoteInstance';
+	info: ModerationLogPayloads['unquarantineRemoteInstance'];
 });
 
 export type ServerStats = {
@@ -285,7 +291,7 @@ export type SignupPendingResponse = {
 };
 
 export type SigninFlowRequest = {
-	username: string;
+	username?: string;
 	password?: string;
 	token?: string;
 	credential?: AuthenticationResponseJSON;

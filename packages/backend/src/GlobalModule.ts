@@ -160,7 +160,7 @@ const $meta: Provider = {
 @Module({
 	imports: [RepositoryModule],
 	providers: [$config, $db, $meta, $meilisearch, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForReactions, $redisForRemoteApis],
-	exports: [$config, $db, $meta, $meilisearch, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForReactions,$redisForRemoteApis, RepositoryModule],
+	exports: [$config, $db, $meta, $meilisearch, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForReactions, $redisForRemoteApis, RepositoryModule],
 })
 export class GlobalModule implements OnApplicationShutdown {
 	constructor(

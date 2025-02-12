@@ -177,6 +177,8 @@ export const moderationLogTypes = [
 	'deleteFlash',
 	'deleteGalleryPost',
 	'inboxRejected',
+	'quarantineRemoteInstance',
+	'unquarantineRemoteInstance',
 ] as const;
 
 // See: packages/backend/src/core/ReversiService.ts@L410
@@ -465,5 +467,13 @@ export type ModerationLogPayloads = {
 		postUserId: string;
 		postUserUsername: string;
 		post: GalleryPost;
+	};
+	quarantineRemoteInstance: {
+		id: string;
+		host: string;
+	};
+	unquarantineRemoteInstance: {
+		id: string;
+		host: string;
 	};
 };

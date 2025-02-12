@@ -46,8 +46,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkFolder>
 			</div>
 		</MkFoldableSection>
-		<div>
-			<MkButton large primary gradate rounded style="margin: 0 auto;" @click="search">{{ i18n.ts.search }}</MkButton>
+		<div style="display: flex; gap: 12px; justify-content: center;">
+			<MkButton large primary gradate rounded @click="search">{{ i18n.ts.search }}</MkButton>
+			<MkButton large rounded gradate @click="copySearchUrl">
+				{{ i18n.ts.copySearchUrl }}
+				<i class="ti ti-link"></i>
+			</MkButton>
 		</div>
 	</div>
 
@@ -146,18 +150,12 @@ function removeUser() {
 	hostInput.value = '';
 }
 
-async function search() {
-	const query = searchQuery.value.toString().trim();
+//region Copy search URL
+async function copySearchUrl() {
+	const params = new URLSearchParams();
 
-	if (query == null || query === '') return;
-
-	// URLに検索条件を反映
-	const params = new URLSearchParams(window.location.search);
-
-	if (query !== '') {
-		params.set('q', query);
-	} else {
-		params.delete('q');
+	if (searchQuery.value) {
+		params.set('q', searchQuery.value);
 	}
 
 	if (user.value) {
@@ -165,26 +163,43 @@ async function search() {
 		if (user.value.username) {
 			params.set('username', user.value.username);
 		}
-	} else {
-		params.delete('userId');
-		params.delete('username');
+		if (user.value.host) {
+			params.set('userHost', user.value.host);
+		}
 	}
 
-	if (hostSelect.value === 'local') {
-		params.set('host', 'local');
-	} else if (hostSelect.value === 'specified' && hostInput.value) {
-		params.set('host', hostInput.value);
-	} else {
-		params.delete('host');
+	switch (hostSelect.value) {
+		case 'local': params.set('host', 'local'); break;
+		case 'specified':
+			if (hostInput.value) {
+				params.set('host', hostInput.value);
+			}
+			break;
 	}
 
 	if (visibilitySelect.value !== 'all') {
 		params.set('visibility', visibilitySelect.value);
-	} else {
-		params.delete('visibility');
 	}
 
-	window.history.replaceState(null, '', `?${params.toString()}`);
+	const url = new URL(window.location.origin + window.location.pathname);
+	url.search = params.toString();
+
+	try {
+		await navigator.clipboard.writeText(url.toString());
+		os.success();
+	} catch (err) {
+		os.alert({
+			type: 'error',
+			text: i18n.ts.failedToCopy,
+		});
+	}
+}
+//endregion
+
+async function search() {
+	const query = searchQuery.value.toString().trim();
+
+	if (query == null || query === '') return;
 
 	//#region AP lookup
 	if (query.startsWith('https://') && !query.includes(' ')) {

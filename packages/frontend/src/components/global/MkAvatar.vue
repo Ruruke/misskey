@@ -90,11 +90,6 @@ const emit = defineEmits<{
 }>();
 
 const showDecoration = props.forceShowDecoration || defaultStore.state.showAvatarDecorations;
-
-const instance = props.instance ?? {
-	name: instanceName,
-};
-
 const faviconUrl = computed(() => props.instance ? getProxiedImageUrlNullable(props.instance.faviconUrl, 'preview') : getProxiedImageUrlNullable(Instance.iconUrl, 'preview') ?? '/favicon.ico');
 
 const bound = computed(() => props.link

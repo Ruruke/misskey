@@ -14,7 +14,10 @@ import type { AnnouncementsRepository } from '@/models/_.js';
 export const meta = {
 	tags: ['meta'],
 
-	requireCredential: false,
+	requireCredential: true,
+
+	requireAdmin: true,
+	kind: 'read:account',
 
 	res: {
 		type: 'array',

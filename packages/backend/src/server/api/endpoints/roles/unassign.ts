@@ -43,8 +43,7 @@ export const paramDef = {
 		'roleId',
 	],
 } as const;
-
-// eslint-disable-next-line import/no-default-export
+ 
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> {
 	constructor(

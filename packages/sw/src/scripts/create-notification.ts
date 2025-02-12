@@ -40,7 +40,7 @@ export async function createNotification<K extends keyof PushNotificationDataMap
 }
 
 async function composeNotification(data: PushNotificationDataMap[keyof PushNotificationDataMap]): Promise<[string, NotificationOptions] | null> {
-	const i18n = await (swLang.i18n ?? swLang.fetchLocale());
+	const i18n = await (swLang.i18n ?? await swLang.fetchLocale());
 	switch (data.type) {
 		/*
 		case 'driveFileCreated': // TODO (Server Side)
@@ -68,8 +68,27 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 								title: i18n.ts._notification._actions.followBack,
 							},
 						],
-					}];
+					} as NotificationOptions & { actions: { action: string; title: string }[] }];
 				}
+
+				// case 'unfollow': {
+				// 	// フォローが外されたときの処理
+				// 	const account = await getAccountFromId(data.userId);
+				// 	if (!account) return null;
+				// 	const userDetail = await cli.request('users/show', { userId: data.body.userId }, account.token);
+				// 	return [i18n.ts._notification.youWereUnFollower, {
+				// 		body: getUserName(data.body.user),
+				// 		icon: data.body.user.avatarUrl ?? undefined,
+				// 		badge: iconUrl('user-minus'),
+				// 		data,
+				// 		actions: userDetail.isFollowing ? [] : [
+				// 			{
+				// 				action: 'follow',
+				// 				title: i18n.ts._notification._actions.followBack,
+				// 			},
+				// 		],
+				// 	}];
+				// }
 
 				case 'mention':
 					return [i18n.tsx._notification.youGotMention({ name: getUserName(data.body.user) }), {
@@ -83,7 +102,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 								title: i18n.ts._notification._actions.reply,
 							},
 						],
-					}];
+					} as NotificationOptions & { actions: { action: string; title: string }[] }];
 
 				case 'reply':
 					return [i18n.tsx._notification.youGotReply({ name: getUserName(data.body.user) }), {
@@ -97,7 +116,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 								title: i18n.ts._notification._actions.reply,
 							},
 						],
-					}];
+					} as NotificationOptions & { actions: { action: string; title: string }[] }];
 
 				case 'renote':
 					return [i18n.tsx._notification.youRenoted({ name: getUserName(data.body.user) }), {
@@ -111,7 +130,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 								title: getUserName(data.body.user),
 							},
 						],
-					}];
+					} as NotificationOptions & { actions: { action: string; title: string }[] }];
 
 				case 'quote':
 					return [i18n.tsx._notification.youGotQuote({ name: getUserName(data.body.user) }), {
@@ -131,7 +150,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 								},
 							] : []),
 						],
-					}];
+					} as NotificationOptions & { actions: { action: string; title: string }[] }];
 
 				case 'note':
 					return [i18n.ts._notification.newNote + ': ' + getUserName(data.body.user), {
@@ -202,6 +221,36 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						data,
 					}];
 
+				// case 'followRequestRejected':
+				// 	return [i18n.ts._notification.yourFollowRequestRejected, {
+				// 		body: getUserName(data.body.user),
+				// 		icon: data.body.user.avatarUrl ?? undefined,
+				// 		badge: iconUrl('ban'),
+				// 		data,
+				// 	}];
+				//
+				// case 'blocked': {
+				// 	const account = await getAccountFromId(data.userId);
+				// 	if (!account) return null;
+				// 	return [i18n.ts._notification.youWereBlocked, {
+				// 		body: getUserName(data.body.user),
+				// 		icon: data.body.user.avatarUrl ?? undefined,
+				// 		badge: iconUrl('ban'),
+				// 		data,
+				// 	}];
+				// }
+				//
+				// case 'unblocked': {
+				// 	const account = await getAccountFromId(data.userId);
+				// 	if (!account) return null;
+				// 	return [i18n.ts._notification.youWereUnblocked, {
+				// 		body: getUserName(data.body.user),
+				// 		icon: data.body.user.avatarUrl ?? undefined,
+				// 		badge: iconUrl('circle-check'),
+				// 		data,
+				// 	}];
+				// }
+
 				case 'achievementEarned':
 					return [i18n.ts._notification.achievementEarned, {
 						body: i18n.ts._achievements._types[`_${data.body.achievement}`].title,
@@ -216,6 +265,13 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						badge: iconUrl('login-2'),
 						data,
 					}];
+
+				// case 'loginFailed':
+				// 	return [i18n.ts._notification.loginFailed, {
+				// 		body: i18n.tsx._notification.loginFailedDescription({ ip: data.body.ip }),
+				// 		badge: iconUrl('login-2'),
+				// 		data,
+				// 	}];
 
 				case 'exportCompleted': {
 					const entityName = {
@@ -257,17 +313,17 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						data,
 					}];
 
-				case 'scheduledNoteFailed':
-					return [i18n.ts._notification.scheduledNoteFailed, {
-						body: data.body.reason,
-						badge: iconUrl('bell'),
-						data,
-					}];
-
 				case 'scheduledNotePosted':
 					return [i18n.ts._notification.scheduledNotePosted, {
 						body: data.body.note.text ?? '',
 						icon: data.body.user.avatarUrl ?? undefined,
+						badge: iconUrl('bell'),
+						data,
+					}];
+
+				case 'scheduledNoteFailed':
+					return [i18n.ts._notification.scheduledNoteFailed, {
+						body: data.body.reason,
 						badge: iconUrl('bell'),
 						data,
 					}];

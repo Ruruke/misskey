@@ -46,7 +46,7 @@ describe('Chart', () => {
 			password: config.db.pass,
 			database: config.db.db,
 			extra: {
-				statement_timeout: 1000 * 10,
+				statement_timeout: 1000 * 20,
 				...config.db.extra,
 			},
 			synchronize: true,

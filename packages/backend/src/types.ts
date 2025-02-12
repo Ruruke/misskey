@@ -26,6 +26,7 @@ import { MiInboxRule } from '@/models/InboxRule.js';
  * achievementEarned - 実績を獲得
  * exportCompleted - エクスポートが完了
  * login - ログイン
+ * createToken - トークン作成
  * scheduledNoteFailed - 予約投稿に失敗
  * scheduledNotePosted - 予約投稿をノート
  * app - アプリ通知
@@ -46,6 +47,7 @@ export const notificationTypes = [
 	'achievementEarned',
 	'exportCompleted',
 	'login',
+	'createToken',
 	'scheduledNoteFailed',
 	'scheduledNotePosted',
 	'app',
@@ -138,6 +140,9 @@ export const moderationLogTypes = [
 	'setInboxRule',
 	'deleteInboxRule',
 	'inboxRejected',
+	'unsetUserMutualLink',
+	'quarantineRemoteInstance',
+	'unquarantineRemoteInstance',
 ] as const;
 
 export type ModerationLogPayloads = {
@@ -411,7 +416,20 @@ export type ModerationLogPayloads = {
 	inboxRejected: {
 		activity: any;
 		rule: MiInboxRule;
-	}
+	};
+	unsetUserMutualLink: {
+		userId: string;
+		userUsername: string;
+		userMutualLinkSections: { name: string | null; mutualLinks: { fileId: string; description: string | null; imgSrc: string; }[]; }[] | []
+	};
+	quarantineRemoteInstance: {
+		id: string;
+		host: string;
+	};
+	unquarantineRemoteInstance: {
+		id: string;
+		host: string;
+	};
 };
 
 export type Serialized<T> = {

@@ -42,7 +42,8 @@ import { lookup } from '@/scripts/lookup.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { lookupUser, lookupUserByEmail, lookupFile } from '@/scripts/admin-lookup.js';
-import { PageMetadata, definePageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
+import { definePageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
+import type { PageMetadata } from '@/scripts/page-metadata.js';
 import { useRouter } from '@/router/supplier.js';
 
 const isEmpty = (x: string | null) => x == null || x === '';
@@ -112,7 +113,7 @@ const menuDef = computed<SuperMenuDef[]>(() => [{
 		text: i18n.ts.dashboard,
 		to: '/admin/overview',
 		active: currentPage.value?.route.name === 'overview',
-	},{
+	}, {
 		icon: 'ti ti-dashboard',
 		text: "Ruru Admin",
 		to: '/admin/ruru-admin',
@@ -207,7 +208,7 @@ const menuDef = computed<SuperMenuDef[]>(() => [{
 		active: currentPage.value?.route.name === 'moderation',
 	}, {
 		icon: 'ti ti-inbox',
-		text: i18n.ts.inboxModeration+` [${i18n.ts._featureBy.type4ny}]`,
+		text: i18n.ts.inboxModeration + ` [${i18n.ts._featureBy.type4ny}]`,
 		to: '/admin/inbox-moderation',
 		active: currentPage.value?.route.name === 'inbox-moderation',
 	}, {

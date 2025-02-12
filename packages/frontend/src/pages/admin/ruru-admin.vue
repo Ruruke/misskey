@@ -135,7 +135,6 @@ async function init() {
 	entranceMarginRight.value = meta.entranceMarginRight;
 	entranceMarginTop.value = meta.entranceMarginTop;
 	entranceMarginBottom.value = meta.entranceMarginBottom;
-
 }
 
 const entranceSettingsForm = useForm({

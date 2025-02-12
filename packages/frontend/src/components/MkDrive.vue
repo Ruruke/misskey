@@ -174,6 +174,10 @@ const ilFilesObserver = new IntersectionObserver(
 	(entries) => entries.some((entry) => entry.isIntersecting) && !fetching.value && moreFiles.value && fetchMoreFiles(),
 );
 
+const sortModeSelect = ref<NonNullable<Misskey.entities.DriveFilesRequest['sort']>>('+createdAt');
+
+const showOnlySensitive = ref(false);
+
 watch(folder, () => emit('cd', folder.value));
 
 // ドライブ情報表示
@@ -594,11 +598,15 @@ async function fetch() {
 		limit: filesMax + 1,
 		searchQuery: searchQuery.value.toString().trim(),
 	}).then(fetchedFiles => {
-		if (fetchedFiles.length === filesMax + 1) {
-			moreFiles.value = true;
-			fetchedFiles.pop();
+		let filteredFiles = fetchedFiles;
+		if (showOnlySensitive.value) {
+			filteredFiles = fetchedFiles.filter(file => file.isSensitive);
 		}
-		return fetchedFiles;
+		if (filteredFiles.length === filesMax + 1) {
+			moreFiles.value = true;
+			filteredFiles.pop();
+		}
+		return filteredFiles;
 	});
 
 	const [fetchedFolders, fetchedFiles] = await Promise.all([foldersPromise, filesPromise]);
@@ -643,15 +651,19 @@ function fetchMoreFiles() {
 		type: props.type,
 		untilId: files.value.at(-1)?.id,
 		limit: max + 1,
-		searchQuery: searchQuery.value.toString().trim(),
-	}).then(files => {
-		if (files.length === max + 1) {
+		sort: sortModeSelect.value,
+	}).then(fetchedFiles => {
+		let filteredFiles = fetchedFiles;
+		if (showOnlySensitive.value) {
+			filteredFiles = fetchedFiles.filter(file => file.isSensitive);
+		}
+		if (filteredFiles.length === max + 1) {
 			moreFiles.value = true;
-			files.pop();
+			filteredFiles.pop();
 		} else {
 			moreFiles.value = false;
 		}
-		for (const x of files) appendFile(x);
+		for (const x of filteredFiles) appendFile(x);
 		fetching.value = false;
 	});
 }
@@ -675,19 +687,72 @@ function getMenu() {
 	}, { type: 'divider' }, {
 		text: folder.value ? folder.value.name : i18n.ts.drive,
 		type: 'label',
-	}, folder.value ? {
-		text: i18n.ts.renameFolder,
-		icon: 'ti ti-forms',
-		action: () => { if (folder.value) renameFolder(folder.value); },
-	} : undefined, folder.value ? {
-		text: i18n.ts.deleteFolder,
-		icon: 'ti ti-trash',
-		action: () => { deleteFolder(folder.value as Misskey.entities.DriveFolder); },
-	} : undefined, {
+	}];
+
+	menu.push({
+		type: 'switch',
+		text: i18n.ts.showOnlySensitiveFiles,
+		ref: showOnlySensitive,
+	});
+
+	watch(showOnlySensitive, () => {
+		fetch();
+	});
+
+	menu.push({
+		type: 'parent',
+		text: i18n.ts.sort,
+		icon: 'ti ti-arrows-sort',
+		children: [{
+			text: `${i18n.ts.registeredDate} (${i18n.ts.descendingOrder})`,
+			icon: 'ti ti-sort-descending-letters',
+			action: () => { sortModeSelect.value = '+createdAt'; },
+			active: sortModeSelect.value === '+createdAt',
+		}, {
+			text: `${i18n.ts.registeredDate} (${i18n.ts.ascendingOrder})`,
+			icon: 'ti ti-sort-ascending-letters',
+			action: () => { sortModeSelect.value = '-createdAt'; },
+			active: sortModeSelect.value === '-createdAt',
+		}, {
+			text: `${i18n.ts.size} (${i18n.ts.descendingOrder})`,
+			icon: 'ti ti-sort-descending-letters',
+			action: () => { sortModeSelect.value = '+size'; },
+			active: sortModeSelect.value === '+size',
+		}, {
+			text: `${i18n.ts.size} (${i18n.ts.ascendingOrder})`,
+			icon: 'ti ti-sort-ascending-letters',
+			action: () => { sortModeSelect.value = '-size'; },
+			active: sortModeSelect.value === '-size',
+		}, {
+			text: `${i18n.ts.name} (${i18n.ts.descendingOrder})`,
+			icon: 'ti ti-sort-descending-letters',
+			action: () => { sortModeSelect.value = '+name'; },
+			active: sortModeSelect.value === '+name',
+		}, {
+			text: `${i18n.ts.name} (${i18n.ts.ascendingOrder})`,
+			icon: 'ti ti-sort-ascending-letters',
+			action: () => { sortModeSelect.value = '-name'; },
+			active: sortModeSelect.value === '-name',
+		}],
+	});
+
+	if (folder.value) {
+		menu.push({
+			text: i18n.ts.renameFolder,
+			icon: 'ti ti-forms',
+			action: () => { if (folder.value) renameFolder(folder.value); },
+		}, {
+			text: i18n.ts.deleteFolder,
+			icon: 'ti ti-trash',
+			action: () => { deleteFolder(folder.value as Misskey.entities.DriveFolder); },
+		});
+	}
+
+	menu.push({
 		text: i18n.ts.createFolder,
 		icon: 'ti ti-folder-plus',
 		action: () => { createFolder(); },
-	}];
+	});
 
 	return menu;
 }

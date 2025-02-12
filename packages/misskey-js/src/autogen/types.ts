@@ -904,7 +904,7 @@ export type paths = {
      * announcements
      * @description No description provided.
      *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['announcements'];
   };
@@ -3810,7 +3810,7 @@ export type paths = {
      * users/search-by-username-and-host
      * @description Search for a user by username and/or host.
      *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['users___search-by-username-and-host'];
   };
@@ -3963,6 +3963,10 @@ export type components = {
       pinnedPageId: string | null;
       pinnedPage: components['schemas']['Page'] | null;
       publicReactions: boolean;
+      hideActivity: boolean;
+      hideNoteFromOverview: boolean;
+      hidePublicNotes: boolean;
+      hideHomeNotes: boolean;
       /** @enum {string} */
       followingVisibility: 'public' | 'followers' | 'private';
       /** @enum {string} */
@@ -4490,6 +4494,13 @@ export type components = {
       /** @enum {string} */
       type: 'login';
       ip: string;
+    } | {
+      /** Format: id */
+      id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** @enum {string} */
+      type: 'createToken';
     } | ({
       /** Format: id */
       id: string;
@@ -4871,6 +4882,7 @@ export type components = {
       /** Format: date-time */
       latestRequestReceivedAt: string | null;
       moderationNote?: string | null;
+      isQuarantineLimited: boolean;
     };
     GalleryPost: {
       /**
@@ -5188,8 +5200,6 @@ export type components = {
       defaultDarkTheme: string | null;
       defaultLightTheme: string | null;
       disableRegistration: boolean;
-      disableSignup: boolean;
-      disableNotloginToShowTL: boolean;
       emailRequiredForSignup: boolean;
       /** @default false */
       approvalRequiredForSignup: boolean;
@@ -8109,6 +8119,7 @@ export type operations = {
           host: string;
           isSuspended?: boolean;
           moderationNote?: string;
+          isQuarantineLimit?: boolean;
         };
       };
     };
@@ -8701,8 +8712,6 @@ export type operations = {
       200: {
         content: {
           'application/json': {
-            disableSignup: boolean;
-            disableNotloginToShowTL: boolean;
             cacheRemoteFiles: boolean;
             cacheRemoteSensitiveFiles: boolean;
             emailRequiredForSignup: boolean;
@@ -8825,7 +8834,8 @@ export type operations = {
             urlPreviewRequireContentLength: boolean;
             urlPreviewUserAgent: string | null;
             urlPreviewSummaryProxyUrl: string | null;
-            federation: string;
+            /** @enum {string} */
+            federation: 'all' | 'specified' | 'none';
             federationHosts: string[];
             enableCpuCore: boolean;
             customCpuCore: number | null;
@@ -8833,7 +8843,6 @@ export type operations = {
             customMemTotal: number | null;
             enableFsTotal: boolean;
             customFsTotal: number | null;
-            secondsPerSignup: number;
             entranceShowTimeLine: boolean;
             entranceShowFeatured: boolean;
             entranceShowEmojis: boolean;
@@ -8844,10 +8853,13 @@ export type operations = {
             entranceShowSignup: boolean;
             entranceShowAnotherInstance: boolean;
             entranceShowSignin: boolean;
+            enableCpuModel: boolean;
+            customCpuModel: string | null;
             entranceMarginLeft: number;
             entranceMarginRight: number;
             entranceMarginTop: number;
             entranceMarginBottom: number;
+            blockMentionsFromUnfamiliarRemoteUsers: boolean;
           };
         };
       };
@@ -11176,6 +11188,7 @@ export type operations = {
           perUserListTimelineCacheMax?: number;
           enableReactionsBuffering?: boolean;
           notesPerOneAd?: number;
+          blockMentionsFromUnfamiliarRemoteUsers?: boolean;
           silencedHosts?: string[] | null;
           mediaSilencedHosts?: string[] | null;
           mfmSilencedHosts?: string[] | null;
@@ -11374,7 +11387,7 @@ export type operations = {
    * announcements
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   announcements: {
     requestBody: {
@@ -16480,6 +16493,7 @@ export type operations = {
           notResponding?: boolean | null;
           suspended?: boolean | null;
           silenced?: boolean | null;
+          quarantine?: boolean | null;
           federating?: boolean | null;
           subscribing?: boolean | null;
           publishing?: boolean | null;
@@ -20704,8 +20718,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'scheduledNoteFailed' | 'scheduledNotePosted' | 'app' | 'test' | 'pollVote' | 'groupInvited')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'scheduledNoteFailed' | 'scheduledNotePosted' | 'app' | 'test' | 'pollVote' | 'groupInvited')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'createToken' | 'scheduledNoteFailed' | 'scheduledNotePosted' | 'app' | 'test' | 'pollVote' | 'groupInvited')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'createToken' | 'scheduledNoteFailed' | 'scheduledNotePosted' | 'app' | 'test' | 'pollVote' | 'groupInvited')[];
         };
       };
     };
@@ -20772,8 +20786,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'scheduledNoteFailed' | 'scheduledNotePosted' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote' | 'groupInvited')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'scheduledNoteFailed' | 'scheduledNotePosted' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote' | 'groupInvited')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'createToken' | 'scheduledNoteFailed' | 'scheduledNotePosted' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote' | 'groupInvited')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'createToken' | 'scheduledNoteFailed' | 'scheduledNotePosted' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote' | 'groupInvited')[];
         };
       };
     };
@@ -21790,6 +21804,10 @@ export type operations = {
           isExplorable?: boolean;
           hideOnlineStatus?: boolean;
           publicReactions?: boolean;
+          hideActivity?: boolean;
+          hideNoteFromOverview?: boolean;
+          hidePublicNotes?: boolean;
+          hideHomeNotes?: boolean;
           carefulBot?: boolean;
           autoAcceptFollowed?: boolean;
           noCrawle?: boolean;
@@ -24212,7 +24230,7 @@ export type operations = {
            * @default public
            * @enum {string}
            */
-          visibility?: 'public' | 'home' | 'followers' | 'specified' | 'public_non_ltl';
+          visibility?: 'public' | 'home' | 'followers' | 'specified';
           visibleUserIds?: string[];
           cw?: string | null;
           /**
@@ -24242,6 +24260,10 @@ export type operations = {
           scheduleNote: {
             scheduledAt?: number;
           };
+          scheduledDelete?: ({
+            deleteAt?: number | null;
+            deleteAfter?: number | null;
+          }) | null;
         };
       };
     };
@@ -29071,7 +29093,7 @@ export type operations = {
    * users/search-by-username-and-host
    * @description Search for a user by username and/or host.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   'users___search-by-username-and-host': {
     requestBody: {
