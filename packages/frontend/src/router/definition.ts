@@ -208,7 +208,6 @@ const routes: RouteDef[] = [{
 	path: '/about',
 	component: page(() => import('@/pages/about.vue')),
 	hash: 'initialTab',
-	// loginRequired: true,
 }, {
 	path: '/contact',
 	component: page(() => import('@/pages/contact.vue')),
