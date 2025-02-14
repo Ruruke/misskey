@@ -12,32 +12,20 @@
 - Enhance: ノートに埋め込まれたメディアのコンテキストメニューから管理者用のファイル管理画面を開けるように ( #15440 )
 - Fix: コンディショナルロールを手動で割り当てできる導線を削除 `#13529`
 - Fix: 埋め込みプレイヤーから外部ページに移動できない問題を修正
-- Fix: カスタム絵文字管理画面(beta)にてisSensitive/localOnlyの絞り込みが上手くいかない問題の修正 ( #15445 )
+- Fix: Play の再読込時に UI が以前の状態を引き継いでしまう問題を修正 `#14378`
 
 ### Server
 - Fix: `following/invalidate`でフォロワーを解除しようとしているユーザーの情報を返すように
 - Fix: オブジェクトストレージの設定でPrefixを設定していなかった場合nullまたは空文字になる問題を修正
-- 1つのMisskeyで複数のHTTPサーバプロセスを起動できるように ( #13662 )
-- Fix: HTTPプロキシとその除外設定を行った状態でカスタム絵文字の一括インポートをしたとき、除外設定が効かないのを修正( #8766 )
 
 
 ## 2025.2.0
-
-### Note
-- 新しい設定項目"pgroonga.target"が追加されました.
-	- すでにnoteのtextのみのindexを貼っていてそのまま利用したい場合、設定は不要です.
-	- cwとtextのマルチカラムに対応する場合、**"pgroonga.target"を"cw_and_text"**に設定する必要があります.
-  - index	に関する詳細は #14730 を、configに関しては`.config/example.yml` または `.config/docker_example.yml`の'pgroonga'の節を参照願います
-  - ページの「ソースを見る」機能は削除されました
 
 ### General
 - Fix: Docker のビルドに失敗する問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/883)
 
 ### Client
-- Feat: ノートの描画処理を軽量化できる機能を追加（実験的機能のためデフォルト無効）
-  - 実験的機能 → Skip note rendering → JS (Unstable) でお試しいただけます
-  - まだ実験的な機能のため、不具合が発生する可能性があります
 - Fix: パスキーでパスワードレスログインが出来ない問題を修正
 - Fix: 一部環境でセンシティブなファイルを含むノートの非表示が効かない問題 
 - Fix: データセーバー有効時にもユーザーページの「ファイル」タブで画像が読み込まれてしまう問題を修正
@@ -51,7 +39,6 @@
 ### Server
 - Enhance: ページのURLに使用可能な文字を限定するように
 - Fix: 個別お知らせページのmetaタグ出力の条件が間違っていたのを修正
-- Enhance: pgroongaを用いた検索でcwと本文を合わせて, またAND検索、OR検索が可能になります
 
 ## 2025.1.0
 
@@ -63,16 +50,10 @@
 - 【開発者向け】従来の開発モードでHMRが機能しない問題が修正されたため、バックエンド・フロントエンド分離型の開発モードが削除されました。開発環境においてconfigの変更が必要となる可能性があります。
 
 ### General
-- Feat: メールアドレスでログインできるように  
-  (Based on https://github.com/MisskeyIO/misskey/pull/836)
-  - 複数のユーザーに対して同じメールアドレスを登録している場合、メールアドレスログインを使用することはできません（v12.96.0より前では、アカウントのメールアドレスの重複が許容されていました）。  
-    メールアドレスログインを使用できるようにするには、アカウントごとに別のメールアドレスを使用するように設定を変更してください。
 - Feat: カスタム絵文字管理画面をリニューアル #10996
 	* β版として公開のため、旧画面も引き続き利用可能です
 
 ### Client
-- Enhance: リモートのノートのリンクをコピーできるように
-- Feat: 投稿フォームで画像をプレビュー可能に
 - Enhance: PC画面でチャンネルが複数列で表示されるように  
   (Cherry-picked from https://github.com/Otaku-Social/maniakey/pull/13)
 - Enhance: 照会に失敗した場合、その理由を表示するように
@@ -83,7 +64,6 @@
 - Enhance: ノートの添付ファイルを一覧で遡れる「ファイル」タブを追加  
   (Based on https://github.com/Otaku-Social/maniakey/pull/14)
 - Enhance: AiScriptの拡張API関数において引数の型チェックをより厳格に
-- Enhance: 投稿フォームの絵文字ピッカーに独立したウィンドウを使用できるように
 - Enhance: クエリパラメータでuiを一時的に変更できるように #15240
 - Enhance: リモート絵文字のインポート時に詳細を確認できるように #15336
 - Fix: 画面サイズが変わった際にナビゲーションバーが自動で折りたたまれない問題を修正
@@ -91,10 +71,6 @@
 - Fix: ノートがログインしているユーザーしか見れない場合にログインダイアログを閉じるとその後の動線がなくなる問題を修正
 - Fix: 公開範囲がホームのノートの埋め込みウィジェットが読み込まれない問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/803)
-- Fix: ノート作成画面でファイルの添付可能個数を超えてもノートボタンが押せていた問題を修正
-- Enhance: Blueskyの投稿埋め込みプレビューに対応
-- Fix: プラグイン `register_note_view_interruptor` でノートのサーバー情報の書き換えができない問題を修正
-	(Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/803)
 - Fix: 絵文字管理画面で一部の絵文字が表示されない問題を修正
 - Fix: プラグイン `register_note_view_interruptor` でノートのサーバー情報の書き換えができない問題を修正
 - Fix: Botプロテクションの設定変更時は実際に検証を通過しないと保存できないように( #15137 )
@@ -116,24 +92,17 @@
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/656)
 - Fix: URLにはじめから`#pswp`が含まれている場合に画像ビューワーがブラウザの戻るボタンで閉じられない問題を修正
 - Fix: ロール作成画面で設定できるアイコンデコレーションの最大取付個数を16に制限
+- Fix: Firefox Nightlyなどでアイコンが読み込めない問題を修正
 
 ### Server
 - Enhance: pg_bigmが利用できるよう、ノートの検索をILIKE演算子でなくLIKE演算子でLOWER()をかけたテキストに対して行うように
 - Enhance: ノート検索の選択肢としてpgroongaに対応 ( #14730 )
 - Enhance: チャート更新時にDBに同時接続しないように  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/830)
-- Enhance: フォローしているユーザーならフォロワー限定投稿のノートでもアンテナで検知できるように  
-	(Cherry-picked from https://github.com/yojo-art/cherrypick/pull/568 and https://github.com/team-shahu/misskey/pull/38)
 - Enhance: config(default.yml)からSQLログ全文を出力するか否かを設定可能に ( #15266 )
 - Fix: ユーザーのプロフィール画面をアドレス入力などで直接表示した際に概要タブの描画に失敗する問題の修正( #15032 )
 - Fix: 起動前の疎通チェックが機能しなくなっていた問題を修正  
   (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/737)
-- Fix: チャートエンジン・キュープロセッサが起動する前にサーバーがリクエストを受け付ける可能性がある問題を修正  
-  (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/788)
-- Fix: URLとURIが異なるエンティティの照会に失敗する問題を修正  
-  (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/773)
-- Enhance: pg_bigmが利用できるよう、ノートの検索をILIKE演算子でなくLIKE演算子でLOWER()をかけたテキストに対して行うように
-	(Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/737)
 - Fix: ノートの閲覧にログイン必須にしてもFeedでノートが表示されてしまう問題を修正
 - Fix: 絵文字の連合でライセンス欄を相互にやり取りするように ( #10859, #14109 )
 - Fix: ロックダウンされた期間指定のノートがStreaming経由でLTLに出現するのを修正 ( #15200 )
@@ -160,11 +129,9 @@
 ### General
 - Feat: コンテンツの表示にログインを必須にできるように
 - Feat: 過去のノートを非公開化/フォロワーのみ表示可能にできるように
-- Feat: Misskey Gamesのプレイ可否をロールで設定可能に
 - Enhance: 依存関係の更新
 - Enhance: l10nの更新
 - Fix: お知らせ作成時に画像URL入力欄を空欄に変更できないのを修正 ( #14976 )
-- Enhance: プロキシアカウントには専用のバッジが表示されるように
 
 ### Client
 - Enhance: Bull DashboardでRelationship Queueの状態も確認できるように  
@@ -264,8 +231,6 @@
 - Feat: サーバー初期設定時に初期パスワードを設定できるように
 - Feat: 通報にモデレーションノートを残せるように
 - Feat: 通報の解決種別を設定できるように
-- Feat: カスタム絵文字管理画面をリニューアル #10996
-	* β版として公開のため、旧画面も引き続き利用可能です
 - Enhance: 通報の解決と転送を個別に行えるように
 - Enhance: セキュリティ向上のため、サインイン時もCAPTCHAを求めるようになりました
 - Enhance: 依存関係の更新
@@ -605,20 +570,6 @@
 - Fix: `/tags` と `/user-tags` が検索エンジンにインデックスされないように
 - Fix: もともとセンシティブではないと連合されていたファイルがセンシティブとして連合された場合にセンシティブとしてそのファイルを扱うように
   - センシティブとして連合したファイルは非センシティブとして連合されてもセンシティブとして扱われます
-
-## 独自機能
-- Feat: rootの切り替え機能 [#1](https://github.com/n1lsqn/misskey/pull/1)
-- Feat: KaTeXの実装 [#2](https://github.com/n1lsqn/misskey/pull/2)
-- Feat: ロールにチャンネルが使えるかどうかの権限を追加
-- Feat: CWに何も書かなくても投稿できるようにする
-- Feat: リモートユーザーのアイコンデコレーションを表示する
-- Feat: 文字数制限を9000に緩和
-- Feat: アンチスパムモードの追加
-- Feat: 他のサーバーのLTLを覗けるようにする [#62](https://github.com/n1lsqn/misskey/pull/62)
-- Fix: 通知バグの解消 [#64](https://github.com/n1lsqn/misskey/pull/64)
-- Feat: 日の入り/日の出に合わてダークモードを変える [#65](https://github.com/n1lsqn/misskey/pull/65)
-- Feat: ファイル名をランダム化できるように [#65](https://github.com/n1lsqn/misskey/pull/65)
-- Feat: 自動的にデータセーバーを切り替える機能 [#65](https://github.com/n1lsqn/misskey/pull/65)
 
 ## 2024.3.1
 
