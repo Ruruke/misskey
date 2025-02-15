@@ -22,6 +22,8 @@
 - Fix: オブジェクトストレージの設定でPrefixを設定していなかった場合nullまたは空文字になる問題を修正
 - 1つのMisskeyで複数のHTTPサーバプロセスを起動できるように ( #13662 )
 - Fix: HTTPプロキシとその除外設定を行った状態でカスタム絵文字の一括インポートをしたとき、除外設定が効かないのを修正( #8766 )
+- Fix: pgroongaでの検索時にはじめのキーワードのみが検索に使用される問題を修正  
+  (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/886)
 
 
 ## 2025.2.0
