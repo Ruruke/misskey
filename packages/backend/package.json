@@ -157,6 +157,7 @@
 		"pkce-challenge": "4.1.0",
 		"probe-image-size": "7.2.3",
 		"promise-limit": "2.7.0",
+		"psl": "^1.15.0",
 		"pug": "3.0.3",
 		"qrcode": "1.5.4",
 		"random-seed": "0.3.0",
