@@ -10,6 +10,7 @@
 		"lint": "pnpm typecheck && pnpm eslint"
 	},
 	"dependencies": {
+		"@phosphor-icons/web": "^2.1.1",
 		"@discordapp/twemoji": "15.1.0",
 		"@rollup/plugin-json": "6.1.0",
 		"@rollup/plugin-replace": "5.0.7",
