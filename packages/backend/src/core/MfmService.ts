@@ -492,11 +492,7 @@ export class MfmService {
 
 		appendChildren(nodes, body);
 
-		// Remove the unnecessary namespace
-		const serialized = new XMLSerializer().serializeToString(body).replace(/^\s*<p xmlns=\"http:\/\/www.w3.org\/1999\/xhtml\">/, '<p>');
+		return body.outerHTML;
 
-		happyDOM.close().catch(err => {});
-
-		return serialized;
 	}
 }
