@@ -285,9 +285,7 @@ const cwTextLength = computed((): number => {
 	return cw.value?.length ?? 0;
 });
 
-const maxCwTextLength = computed((): number => {
-	return 100;
-});
+const maxCwTextLength = 100;
 
 const canPost = computed((): boolean => {
 	return !props.mock && !posting.value && !posted.value &&
@@ -300,6 +298,7 @@ const canPost = computed((): boolean => {
 			quoteId.value != null
 		) &&
 		(textLength.value <= maxTextLength.value) &&
+		(cwTextLength.value <= maxCwTextLength) &&
 		(files.value.length <= 16) &&
 		(!poll.value || poll.value.choices.length >= 2);
 });
