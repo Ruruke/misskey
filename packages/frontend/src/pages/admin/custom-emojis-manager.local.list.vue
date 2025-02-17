@@ -107,7 +107,7 @@ type GridItem = {
 	publicUrl?: string | null;
 	originalUrl?: string | null;
 	type: string | null;
-}
+};
 
 function setupGrid(): GridSetting {
 	const $style = useCssModule();

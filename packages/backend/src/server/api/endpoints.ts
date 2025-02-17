@@ -123,7 +123,7 @@ export type IEndpointMeta = (Omit<IEndpointMetaBase, 'requireCrential' | 'requir
 }) | (Omit<IEndpointMetaBase, 'requireAdmin' | 'kind'> & {
 	requireAdmin: true,
 	kind: (typeof permissions)[number],
-})
+});
 
 export interface IEndpoint {
 	name: string;
