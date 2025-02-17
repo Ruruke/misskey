@@ -5,6 +5,7 @@
 
 import { URL } from 'node:url';
 import { Inject, Injectable } from '@nestjs/common';
+import { XMLSerializer } from 'happy-dom';
 import * as parse5 from 'parse5';
 import { JSDOM } from 'jsdom';
 import { DI } from '@/di-symbols.js';
