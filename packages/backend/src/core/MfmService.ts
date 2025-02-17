@@ -493,6 +493,5 @@ export class MfmService {
 		appendChildren(nodes, body);
 
 		return body.outerHTML;
-
 	}
 }
