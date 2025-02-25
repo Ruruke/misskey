@@ -837,4 +837,10 @@ export class MiMeta {
 		default: true,
 	})
 	public blockMentionsFromUnfamiliarRemoteUsers: boolean;
+
+	@Column('varchar', {
+		length: 64,
+		nullable: true,
+	})
+	public googleAnalyticsMeasurementId: string | null;
 }
