@@ -67,6 +67,8 @@ import { pleaseLogin } from '@/scripts/please-login.js';
 import { assertServerContext, serverContext } from '@/server-context.js';
 import { instance } from "@/instance.js";
 import { miLocalStorage } from "@/local-storage.js";
+import { $i } from '@/account.js';
+import { getAppearNote } from '@/scripts/get-appear-note.js';
 
 // contextは非ログイン状態の情報しかないためログイン時は利用できない
 const CTX_NOTE = !$i && assertServerContext(serverContext, 'note') ? serverContext.note : null;
@@ -134,10 +136,11 @@ function fetchNote() {
 		noteId: props.noteId,
 	}).then(res => {
 		note.value = res;
+		const appearNote = getAppearNote(res);
 		// 古いノートは被クリップ数をカウントしていないので、2023-10-01以前のものは強制的にnotes/clipsを叩く
-		if (note.value.clippedCount > 0 || new Date(note.value.createdAt).getTime() < new Date('2023-10-01').getTime()) {
+		if ((appearNote.clippedCount ?? 0) > 0 || new Date(appearNote.createdAt).getTime() < new Date('2023-10-01').getTime()) {
 			misskeyApi('notes/clips', {
-				noteId: note.value.id,
+				noteId: appearNote.id,
 			}).then((_clips) => {
 				clips.value = _clips;
 			});
@@ -172,7 +175,7 @@ definePageMetadata(() => ({
 		avatar: note.value.user,
 		path: `/notes/${note.value.id}`,
 		share: {
-			title: i18n.tsx.noteOf({ user: note.value.user.name }),
+			title: i18n.tsx.noteOf({ user: note.value.user.name ?? note.value.user.username }),
 			text: note.value.text,
 		},
 	} : {},
