@@ -12244,6 +12244,162 @@ export interface Locale extends ILocale {
          */
         "warningText": string;
     };
+    "_llm": {
+        /**
+         * LLM設定
+         */
+        "title": string;
+        /**
+         * Geminiトークン
+         */
+        "geminiTokenLabel": string;
+        /**
+         * Gemini API の認証に使用するトークンを設定します。
+         */
+        "geminiTokenCaption": string;
+        /**
+         * Geminiモデル
+         */
+        "geminiModelLabel": string;
+        /**
+         * Geminiシステムプロンプト
+         */
+        "geminiSystemPromptLabel": string;
+        /**
+         * システムプロンプトを設定します。
+         */
+        "geminiSystemPromptCaption": string;
+        /**
+         * Gemini要約プロンプト
+         */
+        "geminiSummarizePromptLabel": string;
+        /**
+         * ノートを要約するためのプロンプトを設定します。
+         */
+        "geminiSummarizePromptCaption": string;
+        /**
+         * プロフィール要約プロンプト
+         */
+        "geminiProfileSummarizePromptLabel": string;
+        /**
+         * プロフィールを要約するためのプロンプトを設定します。
+         */
+        "geminiProfileSummarizePromptCaption": string;
+        /**
+         * ノートを要約
+         */
+        "summarizeNote": string;
+        /**
+         * プロフィールを要約
+         */
+        "summarizeProfile": string;
+        /**
+         * ノートの変換
+         */
+        "notesTransformation": string;
+        /**
+         * ノートのプロンプト
+         */
+        "notesPrompt": string;
+        /**
+         * ノートを作成する際のプロンプトを設定します。
+         */
+        "notesPromptDescription": string;
+        /**
+         * 長文
+         */
+        "geminiNoteLongText": string;
+        /**
+         * 短文
+         */
+        "geminiNoteShortText": string;
+        /**
+         * シンプル
+         */
+        "geminiNoteSimpleText": string;
+        /**
+         * カジュアル
+         */
+        "geminiNoteCasualText": string;
+        /**
+         * プロフェッショナル
+         */
+        "geminiNoteProfessionalText": string;
+        /**
+         * 猫っぽく
+         */
+        "geminiNoteCatText": string;
+        /**
+         * カスタム
+         */
+        "geminiNoteCustomText": string;
+    };
+    "_noteSearch": {
+        /**
+         * 検索強化
+         */
+        "enhanceSearch": string;
+        "_type": {
+            /**
+             * ファイル付き
+             */
+            "withFiles": string;
+            /**
+             * CW(内容を隠す)
+             */
+            "cw": string;
+            /**
+             * リプライ付き
+             */
+            "reply": string;
+            /**
+             * 投票付き
+             */
+            "poll": string;
+        };
+        "_option": {
+            /**
+             * 含む
+             */
+            "with": string;
+            /**
+             * 含まない
+             */
+            "without": string;
+        };
+    };
+    /**
+     * すぐ消す
+     */
+    "scheduledNoteDelete": string;
+    /**
+     * このノートは{time}に削除されます
+     */
+    "noteDeletationAt": ParameterizedString<"time">;
+    /**
+     * 1年以上先の日時を指定することはできません
+     */
+    "cannotScheduleLaterThanOneYear": string;
+    /**
+     * 投稿フォーム
+     */
+    "postForm": string;
+    /**
+     * 投稿フォームの下部に表示される項目の並び替えが出来ます。項目をクリックすると削除できます。
+     */
+    "postFormBottomSettingsDescription": string;
+    /**
+     * デフォルトでノートが自己消滅するように
+     */
+    "defaultScheduledNoteDelete": string;
+    /**
+     * 投稿フォームをリセット
+     */
+    "clearPost": string;
+    /**
+     * いいねボタンで使うリアクションを選択
+     */
+    "selectReaction": string;
     /**
      * いいねボタンを表示する
      */

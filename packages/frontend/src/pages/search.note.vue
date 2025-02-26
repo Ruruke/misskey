@@ -13,23 +13,56 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #header>{{ i18n.ts.options }}</template>
 
 			<div class="_gaps_m">
-				<MkRadios v-model="visibilitySelect">
-					<template #label>{{ i18n.ts.visibility }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-					<option value="all" default>{{ i18n.ts.all }}</option>
-					<option value="public">{{ i18n.ts._visibility.public	}}</option>
-					<option value="home">{{ i18n.ts._visibility.home	}}</option>
-					<option value="followers">{{ i18n.ts._visibility.followers	}}</option>
-					<option value="specified">{{ i18n.ts._visibility.specified	}}</option>
-				</MkRadios>
-				<MkRadios v-model="hostSelect">
-					<template #label>{{ i18n.ts.host }}</template>
-					<option value="all" default>{{ i18n.ts.all }}</option>
-					<option value="local">{{ i18n.ts.local }}</option>
-					<option v-if="noteSearchableScope === 'global'" value="specified">{{ i18n.ts.specifyHost }}</option>
-				</MkRadios>
-				<MkInput v-if="noteSearchableScope === 'global'" v-model="hostInput" :disabled="hostSelect !== 'specified'" :large="true" type="search">
-					<template #prefix><i class="ti ti-server"></i></template>
-				</MkInput>
+				<MkFolder>
+					<template #label>{{ i18n.ts._noteSearch.enhanceSearch }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+
+					<div class="_gaps_s">
+						<MkRadios v-model="visibilitySelect">
+							<template #label>{{ i18n.ts.visibility }}</template>
+							<option value="all" default>{{ i18n.ts.all }}</option>
+							<option value="public">{{ i18n.ts._visibility.public	}}</option>
+							<option value="home">{{ i18n.ts._visibility.home	}}</option>
+							<option value="followers">{{ i18n.ts._visibility.followers	}}</option>
+							<option value="specified">{{ i18n.ts._visibility.specified	}}</option>
+						</MkRadios>
+						<MkRadios v-model="hasFiles">
+							<template #label>{{ i18n.ts._noteSearch._type.withFiles }}</template>
+							<option value="all">{{ i18n.ts.all }}</option>
+							<option value="with">{{ i18n.ts._noteSearch._option.with }}</option>
+							<option value="without">{{ i18n.ts._noteSearch._option.without }}</option>
+						</MkRadios>
+						<MkRadios v-model="hasCw">
+							<template #label>{{ i18n.ts._noteSearch._type.cw }}</template>
+							<option value="all" default>{{ i18n.ts.all }}</option>
+							<option value="with">{{ i18n.ts._noteSearch._option.with }}</option>
+							<option value="without">{{ i18n.ts._noteSearch._option.without }}</option>
+						</MkRadios>
+						<MkRadios v-model="hasReply">
+							<template #label>{{ i18n.ts._noteSearch._type.reply }}</template>
+							<option value="all" default>{{ i18n.ts.all }}</option>
+							<option value="with">{{ i18n.ts._noteSearch._option.with }}</option>
+							<option value="without">{{ i18n.ts._noteSearch._option.without }}</option>
+						</MkRadios>
+						<MkRadios v-model="hasPoll">
+							<template #label>{{ i18n.ts._noteSearch._type.poll }}</template>
+							<option value="all" default>{{ i18n.ts.all }}</option>
+							<option value="with">{{ i18n.ts._noteSearch._option.with }}</option>
+							<option value="without">{{ i18n.ts._noteSearch._option.without }}</option>
+						</MkRadios>
+					</div>
+				</MkFolder>
+
+				<template v-if="instance.federation !== 'none'">
+					<MkRadios v-model="hostSelect">
+						<template #label>{{ i18n.ts.host }}</template>
+						<option value="all" default>{{ i18n.ts.all }}</option>
+						<option value="local">{{ i18n.ts.local }}</option>
+						<option v-if="noteSearchableScope === 'global'" value="specified">{{ i18n.ts.specifyHost }}</option>
+					</MkRadios>
+					<MkInput v-if="noteSearchableScope === 'global'" v-model="hostInput" :disabled="hostSelect !== 'specified'" :large="true" type="search">
+						<template #prefix><i class="ti ti-server"></i></template>
+					</MkInput>
+				</template>
 
 				<MkFolder :defaultOpen="true">
 					<template #label>{{ i18n.ts.specifyUser }}</template>
@@ -99,6 +132,10 @@ const notePagination = ref<Paging>();
 const user = ref<UserDetailed | null>(null);
 const hostInput = ref(toRef(props, 'host').value);
 const visibilitySelect = ref<'all' | 'public' | 'home' | 'followers' | 'specified'>('all');
+const hasFiles = ref<'all' | 'with' | 'without'>('all');
+const hasCw = ref<'all' | 'with' | 'without'>('all');
+const hasReply = ref<'all' | 'with' | 'without'>('all');
+const hasPoll = ref<'all' | 'with' | 'without'>('all');
 
 const noteSearchableScope = instance.noteSearchableScope ?? 'local';
 
@@ -181,6 +218,22 @@ async function copySearchUrl() {
 		params.set('visibility', visibilitySelect.value);
 	}
 
+	if (hasFiles.value !== 'all') {
+		params.set('hasFiles', hasFiles.value);
+	}
+
+	if (hasCw.value !== 'all') {
+		params.set('hasCw', hasCw.value);
+	}
+
+	if (hasReply.value !== 'all') {
+		params.set('hasReply', hasReply.value);
+	}
+
+	if (hasPoll.value !== 'all') {
+		params.set('hasPoll', hasPoll.value);
+	}
+
 	const url = new URL(window.location.origin + window.location.pathname);
 	url.search = params.toString();
 
@@ -199,7 +252,8 @@ async function copySearchUrl() {
 async function search() {
 	const query = searchQuery.value.toString().trim();
 
-	if (query == null || query === '') return;
+	const allowEmptySearch = user.value !== null && visibilitySelect.value !== 'all';
+	if ((query === '' || query == null) && !allowEmptySearch) return;
 
 	//#region AP lookup
 	if (query.startsWith('https://') && !query.includes(' ')) {
@@ -255,10 +309,14 @@ async function search() {
 		endpoint: 'notes/search',
 		limit: 10,
 		params: {
-			query: searchQuery.value,
+			query: query === '' ? undefined : query,
 			userId: user.value ? user.value.id : null,
 			...(searchHost.value ? { host: searchHost.value } : {}),
 			visibility: visibilitySelect.value,
+			hasFiles: hasFiles.value,
+			hasCw: hasCw.value,
+			hasReply: hasReply.value,
+			hasPoll: hasPoll.value,
 		},
 	};
 
