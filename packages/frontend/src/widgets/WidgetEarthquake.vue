@@ -75,7 +75,7 @@ const formatDateTime = (datetime: string | null): string => {
 const fetchLatestTime = async (): Promise<void> => {
 	fetching.value = true;
 	try {
-		const response = await fetch('http://www.kmoni.bosai.go.jp/webservice/server/pros/latest.json');
+		const response = await fetch('https://www.kmoni.bosai.go.jp/webservice/server/pros/latest.json');
 		const data = await response.json();
 		const rawTime = data.latest_time.replace(/\//g, '').replace(/ /g, '').replace(/:/g, '');
 		latestTime.value = rawTime;
@@ -88,7 +88,7 @@ const fetchLatestTime = async (): Promise<void> => {
 
 const fetchEarthquakeData = async (time: string): Promise<void> => {
 	try {
-		const url = `http://www.kmoni.bosai.go.jp/webservice/hypo/eew/${time}.json`;
+		const url = `https://www.kmoni.bosai.go.jp/webservice/hypo/eew/${time}.json`;
 		const response = await fetch(url);
 		const data = await response.json();
 		earthquakeData.value = {
