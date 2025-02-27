@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkContainer :showHeader="widgetProps.showHeader" class="mkw-Earthquake">
 	<template #icon><i class="ti ti-building-lighthouse"></i></template>
-	<template #header>{{ i18n.ts._widgets.Earthquake }}</template>
+	<template #header>{{ i18n.ts._widgets.earthquake }}</template>
 	<template #func="{ buttonStyleClass }">
 		<button class="_button" :class="buttonStyleClass" @click="fetchLatestTime()"><i class="ti ti-refresh"></i></button>
 	</template>
