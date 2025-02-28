@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<p>発生時刻: {{ earthquakeData.origin_time }}</p>
 			<p>震源地: {{ earthquakeData.region_name }}</p>
 			<p>最大震度: {{ earthquakeData.calcintensity }}</p>
-			<p>マグニチュード: {{ earthquakeData.magnitude }}</p>
+			<p>マグニチュード: {{ earthquakeData.magunitude }}</p>
 			<p>震源の深さ: {{ earthquakeData.depth }}</p>
 		</div>
 		<p v-else>地震情報を取得中...</p>
