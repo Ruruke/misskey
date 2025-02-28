@@ -11,6 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<button class="_button" :class="buttonStyleClass" @click="fetchLatestTime()"><i class="ti ti-refresh"></i></button>
 	</template>
 	<div class="$style.root">
+		<MkLoading v-if="fetching"></MkLoading>
 		<p v-if="latestTime">最新の取得時刻: {{ formatDateTime(latestTime) }}</p>
 		<div v-if="earthquakeData">
 			<p>発生時刻: {{ earthquakeData.origin_time }}</p>
