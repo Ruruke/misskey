@@ -96,7 +96,7 @@ const fetchEarthquakeData = async (time: string): Promise<void> => {
 			region_name: data.region_name,
 			calcintensity: data.calcintensity,
 			magunitude: data.magunitude,
-			depth: data.depth ? `${data.depth} km` : '不明',
+			depth: data.depth ? `${data.depth}` : '不明',
 		};
 	} catch (error) {
 		console.error('詳細な地震データ取得エラー:', error);
