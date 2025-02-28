@@ -75,7 +75,7 @@ const formatDateTime = (datetime: string | null): string => {
 const fetchLatestTime = async (): Promise<void> => {
 	fetching.value = true;
 	try {
-		const response = await fetch('https://your-worker-subdomain.workers.dev/webservice/server/pros/latest.json');
+		const response = await fetch('https://your-worker-subdomain.workers.dev/webservice/server/pros/latest.json', { cache: 'no-cache' });
 		const data = await response.json();
 		const rawTime = data.latest_time.replace(/\//g, '').replace(/ /g, '').replace(/:/g, '');
 		latestTime.value = rawTime;
