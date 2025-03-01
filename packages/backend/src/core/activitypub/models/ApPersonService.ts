@@ -748,9 +748,10 @@ export class ApPersonService implements OnModuleInit {
 		if (!(await this.usersRepository.update({ id: exist.id, isDeleted: false }, updates)).affected) {
 			return 'skip';
 		}
+
+		const user = await this.usersRepository.findOneByOrFail({ id: exist.id });
 		await this.avatarDecorationService.remoteUserUpdate(user);
-		await this.usersRepository.update(exist.id, updates);
-		
+
 		if (person.publicKey) {
 			await this.userPublickeysRepository.update({ userId: exist.id }, {
 				keyId: person.publicKey.id,
