@@ -470,7 +470,7 @@ function react(): void {
 			if (defaultStore.state.confirmOnReact) {
 				const confirm = await os.confirm({
 					type: 'question',
-					text: i18n.tsx.reactAreYouSure({ emoji: reaction.replace('@.', '') }),
+					text: i18n.tsx.reactAreYouSure({ emoji: reaction }),
 				});
 
 				if (confirm.canceled) return;
