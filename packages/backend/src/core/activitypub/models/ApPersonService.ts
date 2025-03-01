@@ -745,10 +745,12 @@ export class ApPersonService implements OnModuleInit {
 		if (moving) updates.movedAt = new Date();
 
 		// Update user
-		const user = await this.usersRepository.findOneByOrFail({ id: exist.id });
+		if (!(await this.usersRepository.update({ id: exist.id, isDeleted: false }, updates)).affected) {
+			return 'skip';
+		}
 		await this.avatarDecorationService.remoteUserUpdate(user);
 		await this.usersRepository.update(exist.id, updates);
-
+		
 		if (person.publicKey) {
 			await this.userPublickeysRepository.update({ userId: exist.id }, {
 				keyId: person.publicKey.id,
@@ -853,7 +855,7 @@ export class ApPersonService implements OnModuleInit {
 
 	@bindThis
 	public async updateFeatured(userId: MiUser['id'], resolver?: Resolver): Promise<void> {
-		const user = await this.usersRepository.findOneByOrFail({ id: userId });
+		const user = await this.usersRepository.findOneByOrFail({ id: userId, isDeleted: false });
 		if (!this.userEntityService.isRemoteUser(user)) return;
 		if (!user.featured) return;
 
