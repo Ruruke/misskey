@@ -26,6 +26,6 @@ export function assertActivityMatchesUrls(activity: IObject, urls: string[]) {
 		.map(u => new URL(u as string).href);
 
 	if (!actualUrls.some(u => expectedUrls.has(u))) {
-		throw new UnrecoverableError(`bad Activity: neither id(${activity.id}) nor url(${JSON.stringify(activity.url)}) match location(${urls})`);
+		throw new UnrecoverableError(`bad Activity: neither id nor url (${actualUrls.join(', ')}) match location (${urls.join(', ')})`);
 	}
 }
