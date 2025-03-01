@@ -247,10 +247,6 @@ const routes: RouteDef[] = [{
 		type: 'type',
 		origin: 'origin',
 		visibility: 'visibility',
-		hasFiles: 'hasFiles',
-		hasCw: 'hasCw',
-		hasReply: 'hasReply',
-		hasPoll: 'hasPoll',
 	},
 }, {
 	// Legacy Compatibility

@@ -3284,51 +3284,6 @@ _updateCount:
   warningTitle: "カウンター更新の確認"
   warningText: "フォロワー数/フォロー数/ノート数を手動で更新します。\nこの操作は通常では必要なく、変更前の値に戻すことは出来ません。\n本当に実行しますか？"
 
-_llm:
-  title: "LLM設定"
-  geminiTokenLabel: "Geminiトークン"
-  geminiTokenCaption: "Gemini API の認証に使用するトークンを設定します。"
-  geminiModelLabel: "Geminiモデル"
-  geminiSystemPromptLabel: "Geminiシステムプロンプト"
-  geminiSystemPromptCaption: "システムプロンプトを設定します。"
-  geminiSummarizePromptLabel: "Gemini要約プロンプト"
-  geminiSummarizePromptCaption: "ノートを要約するためのプロンプトを設定します。"
-  geminiProfileSummarizePromptLabel: "プロフィール要約プロンプト"
-  geminiProfileSummarizePromptCaption: "プロフィールを要約するためのプロンプトを設定します。"
-  summarizeNote: "ノートを要約"
-  summarizeProfile: "プロフィールを要約"
-  notesTransformation: "ノートの変換"
-  notesPrompt: "ノートのプロンプト"
-  notesPromptDescription: "ノートを作成する際のプロンプトを設定します。"
-  geminiNoteLongText: "長文"
-  geminiNoteShortText: "短文"
-  geminiNoteSimpleText: "シンプル"
-  geminiNoteCasualText: "カジュアル"
-  geminiNoteProfessionalText: "プロフェッショナル"
-  geminiNoteCatText: "猫っぽく"
-  geminiNoteCustomText: "カスタム"
-
-_noteSearch:
-  enhanceSearch: "検索強化"
-  _type:
-    withFiles: "ファイル付き"
-    cw: "CW(内容を隠す)"
-    reply: "リプライ付き"
-    poll: "投票付き"
-  _option:
-      with: "含む"
-      without: "含まない"
-
-scheduledNoteDelete: "すぐ消す"
-noteDeletationAt: "このノートは{time}に削除されます"
-cannotScheduleLaterThanOneYear: "1年以上先の日時を指定することはできません"
-
-postForm: "投稿フォーム"
-postFormBottomSettingsDescription: "投稿フォームの下部に表示される項目の並び替えが出来ます。項目をクリックすると削除できます。"
-defaultScheduledNoteDelete: "デフォルトでノートが自己消滅するように"
-clearPost: "投稿フォームをリセット"
-
-selectReaction: "いいねボタンで使うリアクションを選択"
 showLikeButton: "いいねボタンを表示する"
 
 hideReactionUsers: "誰がリアクションをしたのかを非表示にする"
@@ -3406,12 +3361,3 @@ signupRateLimitedDescription: "ただいま、アカウントの登録にイン�
 
 copySearchUrl: "検索URLをコピー"
 failedToCopy: "コピーに失敗しました"
-
-_search:
-  searchScopeAll: "全て"
-  searchScopeLocal: "ローカル"
-  searchScopeServer: "サーバー指定"
-  searchScopeUser: "ユーザー指定"
-  pleaseEnterServerHost: "サーバーのホストを入力してください"
-  pleaseSelectUser: "ユーザーを選択してください"
-  serverHostPlaceholder: "例: misskey.example.com"
