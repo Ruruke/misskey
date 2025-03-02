@@ -18,6 +18,7 @@ import type {
 	PagesRepository,
 	MiMeta,
 } from '@/models/_.js';
+import { Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { DI } from '@/di-symbols.js';
 import { RoleService } from '@/core/RoleService.js';
@@ -40,6 +41,7 @@ import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import { ModerationLogService } from '@/core/ModerationLogService.js';
+import { SystemAccountService } from '@/core/SystemAccountService.js';
 import { safeForSql } from '@/misc/safe-for-sql.js';
 import { ProxyAccountService } from '@/core/ProxyAccountService.js';
 
@@ -131,6 +133,7 @@ export const meta = {
 			id: '25b5bc31-dc79-4ebd-9bd2-c84978fd052c',
 		},
 	},
+	kind: 'write:admin:account',
 
 	res: {
 		type: 'object',
@@ -185,9 +188,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private avatarDecorationService: AvatarDecorationService,
 		private utilityService: UtilityService,
 		private moderationLogService: ModerationLogService,
+		private systemAccountService: SystemAccountService,
 		private proxyAccountService: ProxyAccountService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const proxy = await this.systemAccountService.updateCorrespondingUserProfile('proxy', {
+				description: ps.description,
 			const _me = await this.usersRepository.findOneByOrFail({ id: me.id });
 			if (!await this.roleService.isModerator(_me)) {
 				throw new ApiError(meta.errors.accessDenied);
@@ -305,6 +311,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			this.cacheService.userProfileCache.set(proxy.id, updatedProfile);
 
+			if (ps.description !== undefined) {
+				this.moderationLogService.log(me, 'updateProxyAccountDescription', {
+					before: null, //TODO
+					after: ps.description,
+				});
 			this.moderationLogService.log(me, 'updateUser', {
 				userId: proxy.id,
 				userUsername: proxy.username,

@@ -86,6 +86,7 @@ import { MiNoteSchedule } from '@/models/NoteSchedule.js';
 import { Config } from '@/config.js';
 import MisskeyLogger from '@/logger.js';
 import { bindThis } from '@/decorators.js';
+import { MiSystemAccount } from './models/SystemAccount.js';
 
 pg.types.setTypeParser(20, Number);
 
@@ -212,6 +213,7 @@ export const entities = [
 	MiEmoji,
 	MiHashtag,
 	MiSwSubscription,
+	MiSystemAccount,
 	MiAbuseUserReport,
 	MiAbuseReportNotificationRecipient,
 	MiRegistrationTicket,

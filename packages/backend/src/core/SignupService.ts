@@ -16,14 +16,12 @@ import { MiUserKeypair } from '@/models/UserKeypair.js';
 import { MiUsedUsername } from '@/models/UsedUsername.js';
 import { generateNativeUserToken } from '@/misc/token.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
-import { InstanceActorService } from '@/core/InstanceActorService.js';
 import { bindThis } from '@/decorators.js';
 import UsersChart from '@/core/chart/charts/users.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import { UserService } from '@/core/UserService.js';
-import { UserFollowingService } from '@/core/UserFollowingService.js';
-import { NotificationService } from '@/core/NotificationService.js';
-import { RoleService } from '@/core/RoleService.js';
+import { SystemAccountService } from '@/core/SystemAccountService.js';
+import { MetaService } from '@/core/MetaService.js';
 
 @Injectable()
 export class SignupService {
@@ -45,7 +43,8 @@ export class SignupService {
 		private userFollowingService: UserFollowingService,
 		private userEntityService: UserEntityService,
 		private idService: IdService,
-		private instanceActorService: InstanceActorService,
+		private systemAccountService: SystemAccountService,
+		private metaService: MetaService,
 		private usersChart: UsersChart,
 		private notificationService: NotificationService,
 		private roleService: RoleService,
@@ -83,9 +82,7 @@ export class SignupService {
 			throw new Error('USED_USERNAME');
 		}
 
-		const isTheFirstUser = !await this.instanceActorService.realLocalUsersPresent();
-
-		if (!opts.ignorePreservedUsernames && !isTheFirstUser) {
+		if (!opts.ignorePreservedUsernames && this.meta.rootUserId != null) {
 			const isPreserved = this.meta.preservedUsernames.map(x => x.toLowerCase()).includes(username.toLowerCase());
 			if (isPreserved) {
 				throw new Error('USED_USERNAME');
@@ -167,6 +164,10 @@ export class SignupService {
 		// //#endregion
 
 		this.userService.notifySystemWebhook(account, 'userCreated');
+
+		if (this.meta.rootUserId == null) {
+			await this.metaService.update({ rootUserId: account.id });
+		}
 
 		const adminIds = await this.roleService.getAdministratorIds();
 		await Promise.all(adminIds.map(async adminId => {

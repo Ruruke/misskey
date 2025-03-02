@@ -10550,6 +10550,10 @@ export interface Locale extends ILocale {
          * 公開投稿のみ配送を解除
          */
         "unquarantineRemoteInstance": string;
+        /**
+         * プロキシアカウントの説明を更新
+         */
+        "updateProxyAccountDescription": string;
     };
     "_fileViewer": {
         /**
