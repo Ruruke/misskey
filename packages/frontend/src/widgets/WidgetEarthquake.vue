@@ -72,7 +72,7 @@ const showLoadingTemporarily = () => {
 	fetching.value = true;
 	setTimeout(() => {
 		fetching.value = false;
-	}, 5000);
+	}, 1000);
 };
 
 const formatDateTime = (datetime: string | null): string => {
