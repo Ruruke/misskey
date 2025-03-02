@@ -12369,38 +12369,6 @@ export interface Locale extends ILocale {
         };
     };
     /**
-     * すぐ消す
-     */
-    "scheduledNoteDelete": string;
-    /**
-     * このノートは{time}に削除されます
-     */
-    "noteDeletationAt": ParameterizedString<"time">;
-    /**
-     * 1年以上先の日時を指定することはできません
-     */
-    "cannotScheduleLaterThanOneYear": string;
-    /**
-     * 投稿フォーム
-     */
-    "postForm": string;
-    /**
-     * 投稿フォームの下部に表示される項目の並び替えが出来ます。項目をクリックすると削除できます。
-     */
-    "postFormBottomSettingsDescription": string;
-    /**
-     * デフォルトでノートが自己消滅するように
-     */
-    "defaultScheduledNoteDelete": string;
-    /**
-     * 投稿フォームをリセット
-     */
-    "clearPost": string;
-    /**
-     * いいねボタンで使うリアクションを選択
-     */
-    "selectReaction": string;
-    /**
      * いいねボタンを表示する
      */
     "showLikeButton": string;
