@@ -68,6 +68,13 @@ let ws: WebSocket | null = null;
 let lastEarthquakeData: EarthquakeData | null = null;
 let reconnecting = ref(false);
 
+const showLoadingTemporarily = () => {
+	fetching.value = true;
+	setTimeout(() => {
+		fetching.value = false;
+	}, 5000);
+};
+
 const formatDateTime = (datetime: string | null): string => {
 	return datetime
 		? `${datetime.slice(0, 4)}/${datetime.slice(4, 6)}/${datetime.slice(6, 8)} `
@@ -84,7 +91,7 @@ const connectWebSocket = () => {
 
 	ws.onopen = () => {
 		console.log('WebSocket 接続確立');
-		fetching.value = false;
+		showLoadingTemporarily();
 	};
 
 	ws.onmessage = (event) => {
@@ -93,8 +100,14 @@ const connectWebSocket = () => {
 			if (data.type === 'heartbeat') {
 				return;
 			}
-			if (data.type !== 'jma_eqlist' || !Array.isArray(data.data) || data.data.length === 0) {
+			if (data.type !== 'jma_eqlist' || !Array.isArray(data.data)) {
 				console.warn('不正なデータ形式:', data);
+				return;
+			}
+			if (data.data.length === 0) {
+				earthquakeData.value = null;
+				latestTime.value = null;
+				showLoadingTemporarily();
 				return;
 			}
 
@@ -123,7 +136,6 @@ const connectWebSocket = () => {
 
 	ws.onerror = (error) => {
 		console.error('WebSocket エラー:', error);
-		fetching.value = false;
 		reconnecting.value = true;
 	};
 
@@ -139,7 +151,7 @@ const reconnectWebSocket = () => {
 	if (!reconnecting.value) {
 		console.log('WebSocket 再接続');
 		reconnecting.value = true;
-		fetching.value = true;
+		showLoadingTemporarily();
 		connectWebSocket();
 	}
 };
