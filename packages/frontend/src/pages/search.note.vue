@@ -252,7 +252,7 @@ async function copySearchUrl() {
 async function search() {
 	const query = searchQuery.value.toString().trim();
 
-	const allowEmptySearch = user.value !== null && visibilitySelect.value !== 'all';
+	const allowEmptySearch = user.value !== null ;
 	if ((query === '' || query == null) && !allowEmptySearch) return;
 
 	//#region AP lookup
