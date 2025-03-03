@@ -885,8 +885,7 @@ export type paths = {
      * admin/update-proxy-account
      * @description No description provided.
      *
-     * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-     * **Credential required**: *Yes* / **Permission**: *write:admin:update-proxy-account*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:account*
      */
     post: operations['admin___update-proxy-account'];
   };
@@ -11283,65 +11282,6 @@ export type operations = {
       content: {
         'application/json': {
           description?: string | null;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['UserDetailed'];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/update-proxy-account
-   * @description No description provided.
-   *
-   * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-   * **Credential required**: *Yes* / **Permission**: *write:admin:update-proxy-account*
-   */
-  'admin___update-proxy-account': {
-    requestBody: {
-      content: {
-        'application/json': {
-          name?: string | null;
-          description?: string | null;
-          /** Format: misskey:id */
-          avatarId?: string | null;
-          /** Format: misskey:id */
-          bannerId?: string | null;
         };
       };
     };
@@ -24517,6 +24457,7 @@ export type operations = {
     requestBody: {
       content: {
         'application/json': {
+          /** @default */
           query: string;
           /** Format: misskey:id */
           sinceId?: string;
