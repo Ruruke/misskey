@@ -1353,6 +1353,8 @@ youCannotPlayGames: "このアカウントではMisskey Gamesをプレイでき�
 reactionStats: "リアクション統計"
 reactionStatsDescription: "最も使用された絵文字リアクション上位100件を表示します"
 
+markAsSensitiveConfirm: "このメディアをセンシティブとして設定しますか？"
+unmarkAsSensitiveConfirm: "このメディアのセンシティブ指定を解除しますか？"
 
 _accountSettings:
   requireSigninToViewContents: "コンテンツの表示にログインを必須にする"
