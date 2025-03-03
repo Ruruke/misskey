@@ -8,19 +8,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #icon><i class="ti ti-building-lighthouse"></i></template>
 	<template #header>{{ i18n.ts._widgets.earthquake }}</template>
 	<template #func="{ buttonStyleClass }">
-		<button class="_button" :class="buttonStyleClass" @click="reconnectWebSocket"><i class="ti ti-refresh"></i></button>
+		<button class="_button" :class="buttonStyleClass" @click="fetchLatestTime()"><i class="ti ti-refresh"></i></button>
 	</template>
 	<div class="$style.root">
 		<MkLoading v-if="fetching"></MkLoading>
 		<p v-if="latestTime">最新の取得時刻: {{ formatDateTime(latestTime) }}</p>
 		<div v-if="earthquakeData">
-			<p>発生時刻: {{ earthquakeData.time }}</p>
-			<p>震源地: {{ earthquakeData.location }}</p>
-			<p>最大震度: {{ earthquakeData.shindo }}</p>
-			<p>マグニチュード: {{ earthquakeData.magnitude }}</p>
+			<p>発生時刻: {{ earthquakeData.origin_time }}</p>
+			<p>震源地: {{ earthquakeData.region_name }}</p>
+			<p>最大震度: {{ earthquakeData.calcintensity }}</p>
+			<p>マグニチュード: {{ earthquakeData.magunitude }}</p>
 			<p>震源の深さ: {{ earthquakeData.depth }}</p>
 		</div>
-		<p v-else>現在、地震情報はありません。</p>
+		<p v-else>地震情報を取得中...</p>
 	</div>
 </MkContainer>
 </template>
@@ -46,7 +46,7 @@ const widgetPropsDef = {
 	},
 };
 
-type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
+	type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 
 const props = defineProps<WidgetComponentProps<WidgetProps>>();
 const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
@@ -54,115 +54,64 @@ const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
 const { widgetProps, configure } = useWidgetPropsManager(name, widgetPropsDef, props, emit);
 
 interface EarthquakeData {
-	time: string;
-	location: string;
-	shindo: string;
-	magnitude: string;
+	origin_time: string;
+	region_name: string;
+	calcintensity: string;
+	magunitude: string;
 	depth: string;
 }
 
 const latestTime = ref<string | null>(null);
 const earthquakeData = ref<EarthquakeData | null>(null);
 const fetching = ref(true);
-let ws: WebSocket | null = null;
-let lastEarthquakeData: EarthquakeData | null = null;
-let reconnecting = ref(false);
-
-const showLoadingTemporarily = () => {
-	fetching.value = true;
-	setTimeout(() => {
-		fetching.value = false;
-	}, 1000);
-};
+let updateInterval: number | null = null;
 
 const formatDateTime = (datetime: string | null): string => {
 	return datetime
 		? `${datetime.slice(0, 4)}/${datetime.slice(4, 6)}/${datetime.slice(6, 8)} `
-      + `${datetime.slice(8, 10)}:${datetime.slice(10, 12)}:${datetime.slice(12, 14)}`
+				+ `${datetime.slice(8, 10)}:${datetime.slice(10, 12)}:${datetime.slice(12, 14)}`
 		: '情報なし';
 };
 
-const connectWebSocket = () => {
-	if (ws) {
-		ws.close();
+const fetchLatestTime = async (): Promise<void> => {
+	fetching.value = true;
+	try {
+		const response = await fetch('https://your-worker-subdomain.workers.dev/webservice/server/pros/latest.json', { cache: 'no-cache' });
+		const data = await response.json();
+		const rawTime = data.latest_time.replace(/\//g, '').replace(/ /g, '').replace(/:/g, '');
+		latestTime.value = rawTime;
+		await fetchEarthquakeData(rawTime);
+	} catch (error) {
+		console.error('最新の地震データ取得エラー:', error);
 	}
-
-	ws = new WebSocket('wss://ws-api.wolfx.jp/jma_eqlist');
-
-	ws.onopen = () => {
-		console.log('WebSocket 接続確立');
-		showLoadingTemporarily();
-	};
-
-	ws.onmessage = (event) => {
-		try {
-			const data = JSON.parse(event.data);
-			if (data.type === 'heartbeat') {
-				return;
-			}
-			if (data.type !== 'jma_eqlist' || !Array.isArray(data.data)) {
-				console.warn('不正なデータ形式:', data);
-				return;
-			}
-			if (data.data.length === 0) {
-				earthquakeData.value = null;
-				latestTime.value = null;
-				showLoadingTemporarily();
-				return;
-			}
-
-			const latestEarthquake = data.data[0];
-
-			const newEarthquakeData: EarthquakeData = {
-				time: latestEarthquake.time,
-				location: latestEarthquake.location,
-				shindo: latestEarthquake.shindo ? `${latestEarthquake.shindo}` : '不明',
-				magnitude: latestEarthquake.magnitude ? `${latestEarthquake.magnitude}` : '不明',
-				depth: latestEarthquake.depth ? `${latestEarthquake.depth}` : '不明',
-			};
-
-			if (JSON.stringify(lastEarthquakeData) === JSON.stringify(newEarthquakeData)) {
-				return;
-			}
-
-			earthquakeData.value = newEarthquakeData;
-			latestTime.value = latestEarthquake.time;
-			fetching.value = false;
-			lastEarthquakeData = newEarthquakeData;
-		} catch (error) {
-			console.error('WebSocket データ解析エラー:', error);
-		}
-	};
-
-	ws.onerror = (error) => {
-		console.error('WebSocket エラー:', error);
-		reconnecting.value = true;
-	};
-
-	ws.onclose = () => {
-		console.log('WebSocket 切断');
-		if (!reconnecting.value) {
-			setTimeout(connectWebSocket, 5000);
-		}
-	};
+	fetching.value = false;
 };
 
-const reconnectWebSocket = () => {
-	if (!reconnecting.value) {
-		console.log('WebSocket 再接続');
-		reconnecting.value = true;
-		showLoadingTemporarily();
-		connectWebSocket();
+const fetchEarthquakeData = async (time: string): Promise<void> => {
+	try {
+		const url = `https://your-worker-subdomain.workers.dev/webservice/hypo/eew/${time}.json`;
+		const response = await fetch(url);
+		const data = await response.json();
+		earthquakeData.value = {
+			origin_time: formatDateTime(data.origin_time),
+			region_name: data.region_name,
+			calcintensity: data.calcintensity,
+			magunitude: data.magunitude,
+			depth: data.depth ? `${data.depth}` : '不明',
+		};
+	} catch (error) {
+		console.error('詳細な地震データ取得エラー:', error);
 	}
 };
 
 onMounted(() => {
-	connectWebSocket();
+	fetchLatestTime();
+	updateInterval = setInterval(fetchLatestTime, 30000);
 });
 
 onUnmounted(() => {
-	if (ws) {
-		ws.close();
+	if (updateInterval !== null) {
+		clearInterval(updateInterval);
 	}
 });
 
@@ -173,8 +122,8 @@ defineExpose<WidgetComponentExpose>({
 });
 </script>
 
-<style lang="scss" module>
-.root {
-  padding: 16px;
-}
-</style>
+	<style lang="scss" module>
+	.root {
+		padding: 16px;
+	}
+	</style>
