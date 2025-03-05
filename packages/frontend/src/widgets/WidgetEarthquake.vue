@@ -112,43 +112,48 @@ const connectWebSocket = () => {
 	};
 
 	ws.onmessage = (event) => {
-		try {
-			const data = JSON.parse(event.data);
-			console.log('受信データ:', data);
+    try {
+        const data = JSON.parse(event.data);
+        console.log('受信データ:', data);
 
-			if (data.type === 'heartbeat') {
-				return;
-			}
+        if (data.type === 'heartbeat') {
+            return;
+        }
 
-			if (Object.keys(data).length === 0) {
-				console.warn('データが空です:', data);
-				earthquakeData.value = null;
-				showLoadingTemporarily();
-				return;
-			}
+        if (Object.keys(data).length === 0 || !data.data) {
+            console.warn('データが空です:', data);
+            earthquakeData.value = null;
+            showLoadingTemporarily();
+            return;
+        }
 
-			const latestEarthquake = data.data[0];
+        const latestEarthquake = Object.values(data.data)[0];
 
-			const newEarthquakeData: EarthquakeData = {
-				title: latestEarthquake.Title,
-				time: latestEarthquake.time_full || latestEarthquake.time,
-				location: latestEarthquake.location,
-				shindo: formatShindo(latestEarthquake.shindo ?? '不明'),
-				magnitude: latestEarthquake.magnitude ?? '不明',
-				depth: latestEarthquake.depth ?? '不明',
-				info: latestEarthquake.info ?? '情報なし',
-			};
+        if (!latestEarthquake) {
+            console.warn('有効な地震データがありません:', data.data);
+            return;
+        }
 
-			if (JSON.stringify(earthquakeData.value) === JSON.stringify(newEarthquakeData)) {
-				return;
-			}
+        const newEarthquakeData: EarthquakeData = {
+            title: latestEarthquake.Title,
+            time: latestEarthquake.time_full || latestEarthquake.time,
+            location: latestEarthquake.location,
+            shindo: formatShindo(latestEarthquake.shindo ?? '不明'),
+            magnitude: latestEarthquake.magnitude ?? '不明',
+            depth: latestEarthquake.depth ?? '不明',
+            info: latestEarthquake.info ?? '情報なし',
+        };
 
-			earthquakeData.value = newEarthquakeData;
-			showLoadingTemporarily();
-		} catch (error) {
-			console.error('WebSocket データ解析エラー:', error);
-		}
-	};
+        if (JSON.stringify(earthquakeData.value) === JSON.stringify(newEarthquakeData)) {
+            return;
+        }
+
+        earthquakeData.value = newEarthquakeData;
+        showLoadingTemporarily();
+    } catch (error) {
+        console.error('WebSocket データ解析エラー:', error);
+    }
+};
 
 	ws.onerror = (error) => {
 		console.error('WebSocket エラー:', error);
