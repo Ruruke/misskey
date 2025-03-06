@@ -99,6 +99,10 @@ export const paramDef = {
 		},
 		deeplAuthKey: { type: 'string', nullable: true },
 		deeplIsPro: { type: 'boolean' },
+		deeplFreeMode: { type: 'boolean' },
+		deeplFreeInstance: { type: 'string', nullable: true },
+		libreTranslateURL: { type: 'string', nullable: true },
+		libreTranslateKey: { type: 'string', nullable: true },
 		enableEmail: { type: 'boolean' },
 		email: { type: 'string', nullable: true },
 		smtpSecure: { type: 'boolean' },
@@ -609,6 +613,34 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.deeplIsPro !== undefined) {
 				set.deeplIsPro = ps.deeplIsPro;
+			}
+
+			if (ps.deeplFreeMode !== undefined) {
+				set.deeplFreeMode = ps.deeplFreeMode;
+			}
+
+			if (ps.deeplFreeInstance !== undefined) {
+				if (ps.deeplFreeInstance === '') {
+					set.deeplFreeInstance = null;
+				} else {
+					set.deeplFreeInstance = ps.deeplFreeInstance;
+				}
+			}
+
+			if (ps.libreTranslateURL !== undefined) {
+				if (ps.libreTranslateURL === '') {
+					set.libreTranslateURL = null;
+				} else {
+					set.libreTranslateURL = ps.libreTranslateURL;
+				}
+			}
+
+			if (ps.libreTranslateKey !== undefined) {
+				if (ps.libreTranslateKey === '') {
+					set.libreTranslateKey = null;
+				} else {
+					set.libreTranslateKey = ps.libreTranslateKey;
+				}
 			}
 
 			if (ps.enableIpLogging !== undefined) {

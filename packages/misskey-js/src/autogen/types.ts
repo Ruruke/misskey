@@ -9201,6 +9201,10 @@ export type operations = {
             backgroundImageUrl: string | null;
             deeplAuthKey: string | null;
             deeplIsPro: boolean;
+            deeplFreeMode: boolean;
+            deeplFreeInstance: string | null;
+            libreTranslateURL: string | null;
+            libreTranslateKey: string | null;
             defaultDarkTheme: string | null;
             defaultLightTheme: string | null;
             description: string | null;
@@ -11861,6 +11865,10 @@ export type operations = {
           langs?: string[];
           deeplAuthKey?: string | null;
           deeplIsPro?: boolean;
+          deeplFreeMode?: boolean;
+          deeplFreeInstance?: string | null;
+          libreTranslateURL?: string | null;
+          libreTranslateKey?: string | null;
           enableEmail?: boolean;
           email?: string | null;
           smtpSecure?: boolean;
@@ -11934,8 +11942,6 @@ export type operations = {
           customSplashText?: string[] | null;
           defaultFollowedUsers?: string[] | null;
           forciblyFollowedUsers?: string[] | null;
-          deeplFreeMode?: boolean;
-          deeplFreeInstance?: string | null;
           enableCpuModel?: boolean;
           customCpuModel?: string | null;
           enableCpuCore?: boolean;

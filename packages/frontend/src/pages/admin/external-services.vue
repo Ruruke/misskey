@@ -7,34 +7,62 @@ SPDX-License-Identifier: AGPL-3.0-only
 <PageWithHeader :actions="headerActions" :tabs="headerTabs">
 	<div class="_spacer" style="--MI_SPACER-w: 700px; --MI_SPACER-min: 16px; --MI_SPACER-max: 32px;">
 		<FormSuspense :p="init">
-			<div class="_gaps_m">
-				<MkFolder>
-					<template #label>Google Analytics<span class="_beta">{{ i18n.ts.beta }}</span></template>
+<div class="_gaps_m">
+	<MkFolder>
+		<template #label>Google Analytics<span class="_beta">{{ i18n.ts.beta }}</span></template>
 
-					<div class="_gaps_m">
-						<MkInput v-model="googleAnalyticsMeasurementId">
-							<template #prefix><i class="ti ti-key"></i></template>
-							<template #label>Measurement ID</template>
-						</MkInput>
-						<MkButton primary @click="save_googleAnalytics">Save</MkButton>
-					</div>
-				</MkFolder>
+		<div class="_gaps_m">
+			<MkInput v-model="googleAnalyticsMeasurementId">
+				<template #prefix><i class="ti ti-key"></i></template>
+				<template #label>Measurement ID</template>
+			</MkInput>
+			<MkButton primary @click="save_googleAnalytics">Save</MkButton>
+		</div>
+	</MkFolder>
 
-				<MkFolder>
-					<template #label>DeepL Translation</template>
+	<MkFolder>
+		<template #label>DeepL Translation</template>
 
-					<div class="_gaps_m">
-						<MkInput v-model="deeplAuthKey">
-							<template #prefix><i class="ti ti-key"></i></template>
-							<template #label>DeepL Auth Key</template>
-						</MkInput>
-						<MkSwitch v-model="deeplIsPro">
-							<template #label>Pro account</template>
-						</MkSwitch>
-						<MkButton primary @click="save_deepl">Save</MkButton>
-					</div>
-				</MkFolder>
-			</div>
+<div class="_gaps_m">
+	<MkInput v-model="deeplAuthKey">
+		<template #prefix><i class="ti ti-key"></i></template>
+		<template #label>DeepL Auth Key</template>
+	</MkInput>
+	<MkSwitch v-model="deeplIsPro">
+		<template #label>Pro account</template>
+	</MkSwitch>
+
+<!--	<MkSwitch v-model="deeplFreeMode">-->
+<!--		<template #label>{{ i18n.ts.deeplFreeMode }}</template>-->
+<!--	</MkSwitch>-->
+<!--	<MkInput v-if="deeplFreeMode" v-model="deeplFreeInstance" :placeholder="'example.com/translate'">-->
+<!--		<template #prefix><i class="ph-globe-simple ph-bold ph-lg"></i></template>-->
+<!--		<template #label>DeepLX-JS URL</template>-->
+<!--		<template #caption>{{ i18n.ts.deeplFreeModeDescription }}</template>-->
+<!--	</MkInput>-->
+
+	<MkButton primary @click="save_deepl">Save</MkButton>
+</div>
+	</MkFolder>
+
+<MkFolder>
+	<template #label>LibreTranslate Translation</template>
+
+	<div class="_gaps_m">
+		<MkInput v-model="libreTranslateURL" :placeholder="'example.com/translate'">
+			<template #prefix><i class="ph-globe-simple ph-bold ph-lg"></i></template>
+			<template #label>LibreTranslate URL</template>
+		</MkInput>
+
+		<MkInput v-model="libreTranslateKey">
+			<template #prefix><i class="ti ti-key"></i></template>
+			<template #label>LibreTranslate Api Key</template>
+		</MkInput>
+
+		<MkButton primary @click="save_libre">Save</MkButton>
+	</div>
+</MkFolder>
+</div>
 		</FormSuspense>
 	</div>
 </PageWithHeader>
@@ -53,16 +81,20 @@ import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import MkFolder from '@/components/MkFolder.vue';
 
-const deeplAuthKey = ref<string>('');
+const deeplAuthKey = ref<string | null>('');
 const deeplIsPro = ref<boolean>(false);
 
-const googleAnalyticsMeasurementId = ref<string>('');
+const googleAnalyticsMeasurementId = ref<string | null>('');
+const libreTranslateURL = ref<string | null>('');
+const libreTranslateKey = ref<string | null>('');
 
 async function init() {
 	const meta = await misskeyApi('admin/meta');
 	deeplAuthKey.value = meta.deeplAuthKey ?? '';
 	deeplIsPro.value = meta.deeplIsPro;
 	googleAnalyticsMeasurementId.value = meta.googleAnalyticsMeasurementId ?? '';
+	libreTranslateURL.value = meta.libreTranslateURL;
+	libreTranslateKey.value = meta.libreTranslateKey;
 }
 
 function save_deepl() {
@@ -77,6 +109,15 @@ function save_deepl() {
 function save_googleAnalytics() {
 	os.apiWithDialog('admin/update-meta', {
 		googleAnalyticsMeasurementId: googleAnalyticsMeasurementId.value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function save_libre() {
+	os.apiWithDialog('admin/update-meta', {
+		libreTranslateURL: libreTranslateURL.value,
+		libreTranslateKey: libreTranslateKey.value,
 	}).then(() => {
 		fetchInstance(true);
 	});

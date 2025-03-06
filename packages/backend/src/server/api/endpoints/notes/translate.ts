@@ -87,19 +87,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				return;
 			}
 
-			if (this.serverSettings.deeplAuthKey == null) {
-				throw new ApiError(meta.errors.unavailable);
-			}
+			const canDeeplFree = this.serverSettings.deeplFreeMode && !!this.serverSettings.deeplFreeInstance;
+			const canDeepl = !!this.serverSettings.deeplAuthKey || canDeeplFree;
+			const canLibre = !!this.serverSettings.libreTranslateURL;
+			if (!canDeepl && !canLibre) throw new ApiError(meta.errors.unavailable);
 
 			let targetLang = ps.targetLang;
 			if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
 
 			const params = new URLSearchParams();
-			params.append('auth_key', this.serverSettings.deeplAuthKey);
+			if (this.serverSettings.deeplAuthKey) params.append('auth_key', this.serverSettings.deeplAuthKey);
 			params.append('text', note.text);
 			params.append('target_lang', targetLang);
-
-			const endpoint = this.serverSettings.deeplIsPro ? 'https://api.deepl.com/v2/translate' : 'https://api-free.deepl.com/v2/translate';
+			const endpoint = canDeeplFree ? this.serverSettings.deeplFreeInstance as string : this.serverSettings.deeplIsPro ? 'https://api.deepl.com/v2/translate' : 'https://api-free.deepl.com/v2/translate';
 
 			const res = await this.httpRequestService.send(endpoint, {
 				method: 'POST',
@@ -117,10 +117,89 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				}[];
 			};
 
-			return {
-				sourceLang: json.translations[0].detected_source_language,
-				text: json.translations[0].text,
-			};
+			// DeepL/DeepLX handling
+			if (canDeepl) {
+				const params = new URLSearchParams();
+				if (this.serverSettings.deeplAuthKey) params.append('auth_key', this.serverSettings.deeplAuthKey);
+				params.append('text', note.text);
+				params.append('target_lang', targetLang);
+				const endpoint = canDeeplFree ? this.serverSettings.deeplFreeInstance as string : this.serverSettings.deeplIsPro ? 'https://api.deepl.com/v2/translate' : 'https://api-free.deepl.com/v2/translate';
+
+				const res = await this.httpRequestService.send(endpoint, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						Accept: 'application/json, */*',
+					},
+					body: params.toString(),
+				});
+				if (this.serverSettings.deeplAuthKey) {
+					const json = (await res.json()) as {
+						translations: {
+							detected_source_language: string;
+							text: string;
+						}[];
+					};
+
+					return {
+						sourceLang: json.translations[0].detected_source_language,
+						text: json.translations[0].text,
+					};
+				} else {
+					const json = (await res.json()) as {
+						code: number,
+						message: string,
+						data: string,
+						source_lang: string,
+						target_lang: string,
+						alternatives: string[],
+					};
+
+					const languageNames = new Intl.DisplayNames(['en'], {
+						type: 'language',
+					});
+
+					return {
+						sourceLang: languageNames.of(json.source_lang),
+						text: json.data,
+					};
+				}
+			}
+
+			// LibreTranslate handling
+			if (canLibre) {
+				const res = await this.httpRequestService.send(this.serverSettings.libreTranslateURL as string, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Accept: 'application/json, */*',
+					},
+					body: JSON.stringify({
+						q: note.text,
+						source: 'auto',
+						target: targetLang,
+						format: 'text',
+						api_key: this.serverSettings.libreTranslateKey ?? '',
+					}),
+				});
+
+				const json = (await res.json()) as {
+					alternatives: string[],
+					detectedLanguage: { [key: string]: string | number },
+					translatedText: string,
+				};
+
+				const languageNames = new Intl.DisplayNames(['en'], {
+					type: 'language',
+				});
+
+				return {
+					sourceLang: languageNames.of(json.detectedLanguage.language as string),
+					text: json.translatedText,
+				};
+			}
+
+			return;
 		});
 	}
 }

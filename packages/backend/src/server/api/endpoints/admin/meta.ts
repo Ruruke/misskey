@@ -439,6 +439,22 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			deeplFreeMode: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			deeplFreeInstance: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			libreTranslateURL: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			libreTranslateKey: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 			defaultDarkTheme: {
 				type: 'string',
 				optional: false, nullable: true,
@@ -741,7 +757,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				defaultDarkTheme: instance.defaultDarkTheme,
 				enableEmail: instance.enableEmail,
 				enableServiceWorker: instance.enableServiceWorker,
-				translatorAvailable: instance.deeplAuthKey != null,
+				translatorAvailable: instance.deeplAuthKey != null || instance.libreTranslateURL != null || instance.deeplFreeMode && instance.deeplFreeInstance != null,
 				cacheRemoteFiles: instance.cacheRemoteFiles,
 				cacheRemoteSensitiveFiles: instance.cacheRemoteSensitiveFiles,
 				pinnedUsers: instance.pinnedUsers,
@@ -786,6 +802,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				objectStorageS3ForcePathStyle: instance.objectStorageS3ForcePathStyle,
 				deeplAuthKey: instance.deeplAuthKey,
 				deeplIsPro: instance.deeplIsPro,
+				// deeplFreeMode: instance.deeplFreeMode,
+				// deeplFreeInstance: instance.deeplFreeInstance,
+				libreTranslateURL: instance.libreTranslateURL,
+				libreTranslateKey: instance.libreTranslateKey,
 				enableIpLogging: instance.enableIpLogging,
 				enableActiveEmailValidation: instance.enableActiveEmailValidation,
 				enableVerifymailApi: instance.enableVerifymailApi,
