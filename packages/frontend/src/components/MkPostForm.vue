@@ -123,7 +123,6 @@ import MkPollEditor from '@/components/MkPollEditor.vue';
 import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
 import type { DeleteScheduleEditorModelValue } from '@/components/MkDeleteScheduleEditor.vue';
-import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import { erase, unique } from '@/scripts/array.js';
 import { extractMentions } from '@/scripts/extract-mentions.js';
 import { formatTimeString } from '@/scripts/format-time-string.js';
