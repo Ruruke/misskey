@@ -885,8 +885,7 @@ export type paths = {
      * admin/update-proxy-account
      * @description No description provided.
      *
-     * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-     * **Credential required**: *Yes* / **Permission**: *write:admin:update-proxy-account*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:account*
      */
     post: operations['admin___update-proxy-account'];
   };
@@ -8761,7 +8760,7 @@ export type operations = {
             setSensitiveFlagAutomatically: boolean;
             enableSensitiveMediaDetectionForVideos: boolean;
             /** Format: id */
-            proxyAccountId: string | null;
+            proxyAccountId: string;
             email: string | null;
             smtpSecure: boolean;
             smtpHost: string | null;
@@ -11129,8 +11128,6 @@ export type operations = {
           sensitiveMediaDetectionSensitivity?: 'medium' | 'low' | 'high' | 'veryLow' | 'veryHigh';
           setSensitiveFlagAutomatically?: boolean;
           enableSensitiveMediaDetectionForVideos?: boolean;
-          /** Format: misskey:id */
-          proxyAccountId?: string | null;
           maintainerName?: string | null;
           maintainerEmail?: string | null;
           langs?: string[];
@@ -11278,19 +11275,13 @@ export type operations = {
    * admin/update-proxy-account
    * @description No description provided.
    *
-   * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-   * **Credential required**: *Yes* / **Permission**: *write:admin:update-proxy-account*
+   * **Credential required**: *Yes* / **Permission**: *write:admin:account*
    */
   'admin___update-proxy-account': {
     requestBody: {
       content: {
         'application/json': {
-          name?: string | null;
           description?: string | null;
-          /** Format: misskey:id */
-          avatarId?: string | null;
-          /** Format: misskey:id */
-          bannerId?: string | null;
         };
       };
     };
@@ -24466,6 +24457,7 @@ export type operations = {
     requestBody: {
       content: {
         'application/json': {
+          /** @default */
           query: string;
           /** Format: misskey:id */
           sinceId?: string;

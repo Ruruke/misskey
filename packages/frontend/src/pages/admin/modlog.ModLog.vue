@@ -181,6 +181,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<CodeDiff :context="5" :hideHeader="true" :oldString="log.info.before ?? ''" :newString="log.info.after ?? ''" maxHeight="300px"/>
 			</div>
 		</template>
+		<template v-else-if="log.type === 'updateProxyAccountDescription'">
+			<div :class="$style.diff">
+				<CodeDiff :context="5" :hideHeader="true" :oldString="log.info.before ?? ''" :newString="log.info.after ?? ''" maxHeight="300px"/>
+			</div>
+		</template>
 		<template v-else-if="log.type === 'inboxRejected'">
 			<div>{{ log.info.rule.name }} {{ i18n.ts._moderationLogTypes.rejectedWithTheRule}}</div>
 		</template>

@@ -29,13 +29,26 @@ export async function lookup(router?: Router) {
 	}
 
 	if (query.startsWith('https://')) {
-		const promise = misskeyApi('ap/show', {
-			uri: query,
-		});
+		const res = await apLookup(query);
 
-		os.promiseDialog(promise, null, (err) => {
-			let title = i18n.ts.somethingHappened;
-			let text = err.message + '\n' + err.id;
+		if (res.type === 'User') {
+			_router.push(`/@${res.object.username}@${res.object.host}`);
+		} else if (res.type === 'Note') {
+			_router.push(`/notes/${res.object.id}`);
+		}
+
+		return;
+	}
+}
+
+export async function apLookup(query: string) {
+	const promise = misskeyApi('ap/show', {
+		uri: query,
+	});
+
+	os.promiseDialog(promise, null, (err) => {
+		let title = i18n.ts.somethingHappened;
+		let text = err.message + '\n' + err.id;
 
 			switch (err.id) {
 				case '974b799e-1a29-4889-b706-18d4dd93e266':
@@ -64,21 +77,12 @@ export async function lookup(router?: Router) {
 					break;
 			}
 
-			os.alert({
-				type: 'error',
-				title,
-				text,
-			});
-		}, i18n.ts.fetchingAsApObject);
+		os.alert({
+			type: 'error',
+			title,
+			text,
+		});
+	}, i18n.ts.fetchingAsApObject);
 
-		const res = await promise;
-
-		if (res.type === 'User') {
-			_router.push(`/@${res.object.username}@${res.object.host}`);
-		} else if (res.type === 'Note') {
-			_router.push(`/notes/${res.object.id}`);
-		}
-
-		return;
-	}
+	return await promise;
 }

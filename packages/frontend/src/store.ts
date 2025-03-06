@@ -9,6 +9,9 @@ import { hemisphere } from '@@/js/intl-const.js';
 import lightTheme from '@@/themes/l-light.json5';
 import darkTheme from '@@/themes/d-green-lime.json5';
 import type { SoundType } from '@/scripts/sound.js';
+import type { Ast } from '@syuilo/aiscript';
+import type { DeviceKind } from '@/scripts/device-kind.js';
+import { DEFAULT_DEVICE_KIND } from '@/scripts/device-kind.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { Storage } from '@/pizzax.js';
 
@@ -85,10 +88,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	keepCw: {
 		where: 'account',
 		default: true,
-	},
-	showFullAcct: {
-		where: 'account',
-		default: false,
 	},
 	collapseRenotes: {
 		where: 'account',

@@ -16,11 +16,12 @@ import { MiUserKeypair } from '@/models/UserKeypair.js';
 import { MiUsedUsername } from '@/models/UsedUsername.js';
 import { generateNativeUserToken } from '@/misc/token.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
-import { InstanceActorService } from '@/core/InstanceActorService.js';
 import { bindThis } from '@/decorators.js';
 import UsersChart from '@/core/chart/charts/users.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import { UserService } from '@/core/UserService.js';
+import { SystemAccountService } from '@/core/SystemAccountService.js';
+import { MetaService } from '@/core/MetaService.js';
 import { UserFollowingService } from '@/core/UserFollowingService.js';
 import { NotificationService } from '@/core/NotificationService.js';
 import { RoleService } from '@/core/RoleService.js';
@@ -45,7 +46,8 @@ export class SignupService {
 		private userFollowingService: UserFollowingService,
 		private userEntityService: UserEntityService,
 		private idService: IdService,
-		private instanceActorService: InstanceActorService,
+		private systemAccountService: SystemAccountService,
+		private metaService: MetaService,
 		private usersChart: UsersChart,
 		private notificationService: NotificationService,
 		private roleService: RoleService,
@@ -63,11 +65,22 @@ export class SignupService {
 		approved?: boolean;
 	}) {
 		const { username, password, passwordHash, host } = opts;
-		const hash = passwordHash;
+		let hash = passwordHash;
 
 		// Validate username
 		if (!this.userEntityService.validateLocalUsername(username)) {
 			throw new Error('INVALID_USERNAME');
+		}
+
+		if (password != null && passwordHash == null) {
+			// Validate password
+			if (!this.userEntityService.validatePassword(password)) {
+				throw new Error('INVALID_PASSWORD');
+			}
+
+			// Generate hash of password
+			const salt = await bcrypt.genSalt(8);
+			hash = await bcrypt.hash(password, salt);
 		}
 
 		// Generate secret
@@ -83,9 +96,9 @@ export class SignupService {
 			throw new Error('USED_USERNAME');
 		}
 
-		const isTheFirstUser = !await this.instanceActorService.realLocalUsersPresent();
+		const isTheFirstUser = await this.usersRepository.count() === 0;
 
-		if (!opts.ignorePreservedUsernames && !isTheFirstUser) {
+		if (!opts.ignorePreservedUsernames && this.meta.rootUserId != null) {
 			const isPreserved = this.meta.preservedUsernames.map(x => x.toLowerCase()).includes(username.toLowerCase());
 			if (isPreserved) {
 				throw new Error('USED_USERNAME');
@@ -94,19 +107,19 @@ export class SignupService {
 
 		const keyPair = await new Promise<string[]>((res, rej) =>
 			generateKeyPair('rsa', {
-				modulusLength: 2048,
-				publicKeyEncoding: {
-					type: 'spki',
-					format: 'pem',
-				},
-				privateKeyEncoding: {
-					type: 'pkcs8',
-					format: 'pem',
-					cipher: undefined,
-					passphrase: undefined,
-				},
-			}, (err, publicKey, privateKey) =>
-				err ? rej(err) : res([publicKey, privateKey]),
+					modulusLength: 2048,
+					publicKeyEncoding: {
+						type: 'spki',
+						format: 'pem',
+					},
+					privateKeyEncoding: {
+						type: 'pkcs8',
+						format: 'pem',
+						cipher: undefined,
+						passphrase: undefined,
+					},
+				}, (err, publicKey, privateKey) =>
+					err ? rej(err) : res([publicKey, privateKey]),
 			));
 
 		let account!: MiUser;
@@ -126,9 +139,8 @@ export class SignupService {
 				usernameLower: username.toLowerCase(),
 				host: this.utilityService.toPunyNullable(host),
 				token: secret,
-				isRoot: isTheFirstUser,
 				signupReason: opts.reason,
-				enableRss: false,
+				approved: isTheFirstUser || (opts.approved ?? !this.meta.approvalRequiredForSignup),
 			}));
 
 			await transactionalEntityManager.save(new MiUserKeypair({
@@ -151,22 +163,27 @@ export class SignupService {
 
 		this.usersChart.update(account, true);
 
-		// //#region Default following
+		//#region Default following
 		// if (
-		// 	!isTheFirstUser && (this.meta.defaultFollowedUsers.length > 0 || this.meta.forciblyFollowedUsers.length > 0)
+		// 	!isTheFirstUser &&
+		// 	(this.meta.defaultFollowedUsers.length > 0 || this.meta.forciblyFollowedUsers.length > 0)
 		// ) {
-		// 	const userIdsToFollow = [
-		// 		...this.meta.defaultFollowedUsers,
-		// 		...this.meta.forciblyFollowedUsers,
-		// 	];
-
+		// 	// const userIdsToFollow = [
+		// 	// 	...this.meta.defaultFollowedUsers,
+		// 	// 	...this.meta.forciblyFollowedUsers,
+		// 	// ];
+		//
 		// 	await Promise.allSettled(userIdsToFollow.map(async userId => {
 		// 		await this.userFollowingService.follow(account, { id: userId });
 		// 	}));
 		// }
-		// //#endregion
+		//#endregion
 
 		this.userService.notifySystemWebhook(account, 'userCreated');
+
+		if (this.meta.rootUserId == null) {
+			await this.metaService.update({ rootUserId: account.id });
+		}
 
 		const adminIds = await this.roleService.getAdministratorIds();
 		await Promise.all(adminIds.map(async adminId => {
@@ -181,4 +198,3 @@ export class SignupService {
 		return { account, secret };
 	}
 }
-
