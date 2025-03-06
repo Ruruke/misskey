@@ -68,17 +68,6 @@ const proxyAccountForm = useForm({
 });
 
 
-function chooseProxyAccount() {
-	os.selectUser({ localOnly: true }).then(user => {
-		proxyAccount.value = user;
-		os.apiWithDialog('admin/update-meta', {
-			proxyAccountId: user.id,
-		}).then(() => {
-			fetchInstance(true);
-		});
-	});
-}
-
 function changeProxyAccountBanner(ev) {
 	selectFile(ev.currentTarget ?? ev.target, i18n.ts.banner).then(async (file) => {
 		let originalOrCropped = file;
