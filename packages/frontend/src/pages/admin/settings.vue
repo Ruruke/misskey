@@ -249,23 +249,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkTextarea>
 					</div>
 				</MkFolder>
-
-				<MkFolder>
-					<template #icon><i class="ti ti-ghost"></i></template>
-					<template #label>{{ i18n.ts.proxyAccount }}</template>
-					<template v-if="proxyAccountForm.modified.value" #footer>
-						<MkFormFooter :form="proxyAccountForm"/>
-					</template>
-
-					<div class="_gaps">
-						<MkInfo>{{ i18n.ts.proxyAccountDescription }}</MkInfo>
-
-						<MkTextarea v-model="proxyAccountForm.state.description" :max="500" tall mfmAutocomplete :mfmPreview="true">
-							<template #label>{{ i18n.ts._profile.description }}</template>
-							<template #caption>{{ i18n.ts._profile.youCanIncludeHashtags }}</template>
-						</MkTextarea>
-					</div>
-				</MkFolder>
 			</div>
 		</MkSpacer>
 	</MkStickyContainer>
@@ -407,16 +390,6 @@ const federationForm = useForm({
 	fetchInstance(true);
 });
 
-function chooseProxyAccount() {
-	os.selectUser({ localOnly: true }).then(user => {
-		proxyAccount.value = user;
-		os.apiWithDialog('admin/update-meta', {
-			proxyAccountId: user.id,
-		}).then(() => {
-			fetchInstance(true);
-		});
-	});
-}
 
 const headerTabs = computed(() => []);
 
