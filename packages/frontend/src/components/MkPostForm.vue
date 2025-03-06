@@ -117,7 +117,7 @@ import { host, url } from '@@/js/config.js';
 import ShVisibilityColoring from './ShVisibilityColoring.vue';
 import type { ShallowRef } from 'vue';
 import type { PostFormProps } from '@/types/post-form.js';
-import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
+import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
 import MkPollEditor from '@/components/MkPollEditor.vue';
@@ -177,7 +177,6 @@ const props = withDefaults(defineProps<{
 	autofocus: true,
 	mock: false,
 	initialLocalOnly: undefined,
-	deleteInitialNoteAfterPost: false,
 });
 
 provide('mock', props.mock);
@@ -971,12 +970,6 @@ async function post(ev?: MouseEvent) {
 			clear();
 		}
 		nextTick(() => {
-			// 削除して編集の対象ノートを削除
-			if (props.initialNote && props.deleteInitialNoteAfterPost) {
-				misskeyApi('notes/delete', {
-					noteId: props.initialNote.id,
-				});
-			}
 			deleteDraft();
 			emit('posted');
 			if (postData.text && postData.text !== '') {
@@ -1029,11 +1022,6 @@ async function post(ev?: MouseEvent) {
 			}
 			if (m === 0 && s === 0) {
 				claimAchievement('postedAt0min0sec');
-			}
-			if (props.initialNote && props.deleteInitialNoteAfterPost) {
-				if (date.getTime() - new Date(props.initialNote.createdAt).getTime() < 1000 * 60 && props.initialNote.userId === $i.id) {
-					claimAchievement('noteDeletedWithin1min');
-				}
 			}
 		});
 	}).catch(err => {
