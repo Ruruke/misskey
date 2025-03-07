@@ -1010,12 +1010,17 @@ importers:
         version: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0)
       eslint-plugin-vue:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: 10.0.0
         version: 10.0.0(eslint@9.21.0)(vue-eslint-parser@10.1.1(eslint@9.21.0))
 =======
         specifier: 9.33.0
         version: 9.33.0(eslint@9.21.0)
 >>>>>>> c7a56c2c2b (fix(deps): update [root] update dependencies (#15543))
+=======
+        specifier: 10.0.0
+        version: 10.0.0(eslint@9.21.0)(vue-eslint-parser@10.1.1(eslint@9.21.0))
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
       fast-glob:
         specifier: 3.3.3
         version: 3.3.3
@@ -1072,12 +1077,17 @@ importers:
         version: 2.2.8
       vue-eslint-parser:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: 10.1.1
         version: 10.1.1(eslint@9.21.0)
 =======
         specifier: 9.4.3
         version: 9.4.3(eslint@9.21.0)
 >>>>>>> c7a56c2c2b (fix(deps): update [root] update dependencies (#15543))
+=======
+        specifier: 10.1.1
+        version: 10.1.1(eslint@9.21.0)
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
       vue-tsc:
         specifier: 2.2.8
         version: 2.2.8(typescript@5.8.2)
@@ -1213,12 +1223,17 @@ importers:
         version: 2.31.0(@typescript-eslint/parser@8.26.0(eslint@9.21.0)(typescript@5.8.2))(eslint@9.21.0)
       eslint-plugin-vue:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: 10.0.0
         version: 10.0.0(eslint@9.21.0)(vue-eslint-parser@10.1.1(eslint@9.21.0))
 =======
         specifier: 9.33.0
         version: 9.33.0(eslint@9.21.0)
 >>>>>>> c7a56c2c2b (fix(deps): update [root] update dependencies (#15543))
+=======
+        specifier: 10.0.0
+        version: 10.0.0(eslint@9.21.0)(vue-eslint-parser@10.1.1(eslint@9.21.0))
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
       fast-glob:
         specifier: 3.3.3
         version: 3.3.3
@@ -1251,12 +1266,17 @@ importers:
         version: 2.2.8
       vue-eslint-parser:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: 10.1.1
         version: 10.1.1(eslint@9.21.0)
 =======
         specifier: 9.4.3
         version: 9.4.3(eslint@9.21.0)
 >>>>>>> c7a56c2c2b (fix(deps): update [root] update dependencies (#15543))
+=======
+        specifier: 10.1.1
+        version: 10.1.1(eslint@9.21.0)
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
       vue-tsc:
         specifier: 2.2.8
         version: 2.2.8(typescript@5.8.2)
@@ -1284,12 +1304,17 @@ importers:
         version: 0.25.0
       eslint-plugin-vue:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: 10.0.0
         version: 10.0.0(eslint@9.21.0)(vue-eslint-parser@10.1.1(eslint@9.21.0))
 =======
         specifier: 9.33.0
         version: 9.33.0(eslint@9.21.0)
 >>>>>>> c7a56c2c2b (fix(deps): update [root] update dependencies (#15543))
+=======
+        specifier: 10.0.0
+        version: 10.0.0(eslint@9.21.0)(vue-eslint-parser@10.1.1(eslint@9.21.0))
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
       nodemon:
         specifier: 3.1.9
         version: 3.1.9
@@ -1298,12 +1323,17 @@ importers:
         version: 5.8.2
       vue-eslint-parser:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: 10.1.1
         version: 10.1.1(eslint@9.21.0)
 =======
         specifier: 9.4.3
         version: 9.4.3(eslint@9.21.0)
 >>>>>>> c7a56c2c2b (fix(deps): update [root] update dependencies (#15543))
+=======
+        specifier: 10.1.1
+        version: 10.1.1(eslint@9.21.0)
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
 
   packages/misskey-bubble-game:
     dependencies:
@@ -6141,8 +6171,13 @@ packages:
   eslint-rule-docs@1.1.235:
     resolution: {integrity: sha512-+TQ+x4JdTnDoFEXXb3fDvfGOwnyNV7duH8fXWTPD1ieaBmB8omj7Gw/pMBBu4uI2uJCCU8APDaQJzWuXnTsH4A==}
 
+<<<<<<< HEAD
   eslint-scope@8.3.0:
     resolution: {integrity: sha512-pUNxi75F8MJ/GdeKtVLSbYg4ZI34J6C0C7sbL4YOp2exGwen7ZsuBqKzUhXd0qMQ362yET3z+uPwKeg/0C2XCQ==}
+=======
+  eslint-scope@8.2.0:
+    resolution: {integrity: sha512-PHlWUfG6lvPc3yvP5A4PNyBL1W8fkDUccmI21JUu/+GKZBoH/W5u6usENXUrWFRsyoW5ACUjFGgAFQp5gUlb/A==}
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   eslint-visitor-keys@3.4.3:
@@ -9272,8 +9307,13 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+<<<<<<< HEAD
   semver@7.7.1:
     resolution: {integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==}
+=======
+  semver@7.6.3:
+    resolution: {integrity: sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==}
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
     engines: {node: '>=10'}
     hasBin: true
 
@@ -16540,6 +16580,7 @@ snapshots:
       - supports-color
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   eslint-plugin-vue@10.0.0(eslint@9.21.0)(vue-eslint-parser@10.1.1(eslint@9.21.0)):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.1(eslint@9.21.0)
@@ -16551,21 +16592,31 @@ snapshots:
       vue-eslint-parser: 10.1.1(eslint@9.21.0)
 =======
   eslint-plugin-vue@9.33.0(eslint@9.21.0):
+=======
+  eslint-plugin-vue@10.0.0(eslint@9.21.0)(vue-eslint-parser@10.1.1(eslint@9.21.0)):
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@9.21.0)
       eslint: 9.21.0
-      globals: 13.24.0
       natural-compare: 1.4.0
       nth-check: 2.1.1
       postcss-selector-parser: 6.1.2
       semver: 7.6.3
+<<<<<<< HEAD
       vue-eslint-parser: 9.4.3(eslint@9.21.0)
 >>>>>>> c7a56c2c2b (fix(deps): update [root] update dependencies (#15543))
+=======
+      vue-eslint-parser: 10.1.1(eslint@9.21.0)
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
       xml-name-validator: 4.0.0
 
   eslint-rule-docs@1.1.235: {}
 
+<<<<<<< HEAD
   eslint-scope@8.3.0:
+=======
+  eslint-scope@8.2.0:
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
     dependencies:
       esrecurse: 4.3.0
       estraverse: 5.3.0
@@ -20367,7 +20418,11 @@ snapshots:
     dependencies:
       lru-cache: 6.0.0
 
+<<<<<<< HEAD
   semver@7.7.1: {}
+=======
+  semver@7.6.3: {}
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
 
   send@0.19.0:
     dependencies:
@@ -21138,8 +21193,11 @@ snapshots:
 
   type-detect@4.1.0: {}
 
+<<<<<<< HEAD
   type-fest@0.18.1: {}
 
+=======
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
   type-fest@0.21.3: {}
 
   type-fest@0.6.0: {}
@@ -21517,6 +21575,7 @@ snapshots:
       vue-inbrowser-compiler-independent-utils: 4.71.1(vue@3.5.13(typescript@5.8.2))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   vue-eslint-parser@10.1.1(eslint@9.21.0):
     dependencies:
       debug: 4.4.0(supports-color@5.5.0)
@@ -21526,9 +21585,13 @@ snapshots:
       espree: 10.3.0
 =======
   vue-eslint-parser@9.4.3(eslint@9.21.0):
+=======
+  vue-eslint-parser@10.1.1(eslint@9.21.0):
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
     dependencies:
-      debug: 4.3.5
+      debug: 4.4.0(supports-color@8.1.1)
       eslint: 9.21.0
+<<<<<<< HEAD
       eslint-scope: 7.2.2
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
@@ -21536,6 +21599,14 @@ snapshots:
       esquery: 1.6.0
       lodash: 4.17.21
       semver: 7.7.1
+=======
+      eslint-scope: 8.2.0
+      eslint-visitor-keys: 4.2.0
+      espree: 10.3.0
+      esquery: 1.6.0
+      lodash: 4.17.21
+      semver: 7.6.3
+>>>>>>> baf3f4a1d1 (chore(deps): update [frontend] update dependencies to v10 (#15619))
     transitivePeerDependencies:
       - supports-color
 
