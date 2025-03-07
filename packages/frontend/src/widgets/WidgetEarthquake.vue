@@ -15,8 +15,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="$style.root">
 		<MkLoading v-if="fetching"></MkLoading>
 		<div v-if="earthquakeData">
-			<p>{{ earthquakeData.title }}</p>
-			<p>発生時刻: {{ earthquakeData.time }}</p>
+			<p>{{ earthquakeData.Title }}</p>
+			<p>発生時刻: {{ earthquakeData.time_full }}</p>
 			<p>震源地: {{ earthquakeData.location }}</p>
 			<p>最大震度: {{ formatShindo(earthquakeData.shindo) }}</p>
 			<p>マグニチュード: {{ earthquakeData.magnitude }}</p>
@@ -57,8 +57,8 @@ const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
 const { widgetProps, configure } = useWidgetPropsManager(name, widgetPropsDef, props, emit);
 
 interface EarthquakeData {
-	title: string;
-	time: string;
+	Title: string;
+	time_full: string;
 	location: string;
 	shindo: string;
 	magnitude: string;
@@ -112,48 +112,43 @@ const connectWebSocket = () => {
 	};
 
 	ws.onmessage = (event) => {
-    try {
-        const data = JSON.parse(event.data);
-        console.log('受信データ:', data);
+		try {
+			const data = JSON.parse(event.data);
+			console.log('受信データ:', data);
 
-        if (data.type === 'heartbeat') {
-            return;
-        }
+			if (data.type === 'heartbeat') {
+				return;
+			}
 
-        if (Object.keys(data).length === 0 || !data.data) {
-            console.warn('データが空です:', data);
-            earthquakeData.value = null;
-            showLoadingTemporarily();
-            return;
-        }
+			if (Object.keys(data).length === 0 || !data.data) {
+				console.warn('データが空です:', data);
+				earthquakeData.value = null;
+				showLoadingTemporarily();
+				return;
+			}
 
-        const latestEarthquake = Object.values(data.data)[0];
+			const latestEarthquake = Object.values(data.data)[0] as EarthquakeData;
 
-        if (!latestEarthquake) {
-            console.warn('有効な地震データがありません:', data.data);
-            return;
-        }
+			const newEarthquakeData: EarthquakeData = {
+				Title: latestEarthquake.Title,
+				time_full: latestEarthquake.time_full,
+				location: latestEarthquake.location,
+				shindo: formatShindo(latestEarthquake.shindo),
+				magnitude: latestEarthquake.magnitude,
+				depth: latestEarthquake.depth,
+				info: latestEarthquake.info,
+			};
 
-        const newEarthquakeData: EarthquakeData = {
-            title: latestEarthquake.Title,
-            time: latestEarthquake.time_full || latestEarthquake.time,
-            location: latestEarthquake.location,
-            shindo: formatShindo(latestEarthquake.shindo ?? '不明'),
-            magnitude: latestEarthquake.magnitude ?? '不明',
-            depth: latestEarthquake.depth ?? '不明',
-            info: latestEarthquake.info ?? '情報なし',
-        };
+			if (JSON.stringify(earthquakeData.value) === JSON.stringify(newEarthquakeData)) {
+				return;
+			}
 
-        if (JSON.stringify(earthquakeData.value) === JSON.stringify(newEarthquakeData)) {
-            return;
-        }
-
-        earthquakeData.value = newEarthquakeData;
-        showLoadingTemporarily();
-    } catch (error) {
-        console.error('WebSocket データ解析エラー:', error);
-    }
-};
+			earthquakeData.value = newEarthquakeData;
+			showLoadingTemporarily();
+		} catch (error) {
+			console.error('WebSocket データ解析エラー:', error);
+		}
+	};
 
 	ws.onerror = (error) => {
 		console.error('WebSocket エラー:', error);
