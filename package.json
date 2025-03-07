@@ -1,6 +1,6 @@
 {
 	"name": "misskey",
-	"version": "2025.3.0-ruru-1.2.8",
+	"version": "2025.3.1-alpha.0-ruru-1.2.9",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
