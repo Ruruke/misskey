@@ -19,8 +19,7 @@ import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
 import { mainRouter } from '@/router/main.js';
 import { genEmbedCode } from '@/scripts/get-embed-code.js';
 import { prefer } from '@/preferences.js';
-import { userActions } from '@/plugin.js';
-import { store } from '@/store.js';
+import { getPluginHandlers } from '@/plugin.js';
 
 export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -443,6 +442,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		});
 	}
 
+	const userActions = getPluginHandlers('user_action');
 	if (userActions.length > 0) {
 		menuItems.push({ type: 'divider' }, ...userActions.map(action => ({
 			icon: 'ti ti-plug',

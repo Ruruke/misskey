@@ -232,7 +232,7 @@ import { isEnabledUrlPreview } from '@/instance.js';
 import { focusPrev, focusNext } from '@/scripts/focus.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
 import { prefer } from '@/preferences.js';
-import { noteViewInterruptors } from '@/plugin.js';
+import { getPluginHandlers } from '@/plugin.js';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
@@ -261,6 +261,7 @@ const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', nul
 const note = ref(deepClone(props.note));
 
 // plugin
+const noteViewInterruptors = getPluginHandlers('note_view_interruptor');
 if (noteViewInterruptors.length > 0) {
 	onMounted(async () => {
 		let result: Misskey.entities.Note | null = deepClone(note.value);

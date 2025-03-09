@@ -24,7 +24,7 @@ import { isSupportShare } from '@/scripts/navigator.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
 import { genEmbedCode } from '@/scripts/get-embed-code.js';
 import { prefer } from '@/preferences.js';
-import { noteActions } from '@/plugin.js';
+import { getPluginHandlers } from '@/plugin.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;
@@ -497,6 +497,7 @@ export function getNoteMenu(props: {
 		}
 	}
 
+	const noteActions = getPluginHandlers('note_action');
 	if (noteActions.length > 0) {
 		menuItems.push({ type: 'divider' });
 
