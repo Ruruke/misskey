@@ -4,201 +4,172 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_gaps_m">
-	<MkSwitch v-model="isLocked" @update:modelValue="save()">{{ i18n.ts.makeFollowManuallyApprove }}<template #caption>{{ i18n.ts.lockedAccountInfo }}</template></MkSwitch>
-	<MkSwitch v-if="isLocked" v-model="autoAcceptFollowed" @update:modelValue="save()">{{ i18n.ts.autoAcceptFollowed }}</MkSwitch>
-	<MkSwitch v-if="isLocked" v-model="autoRejectFollowRequest" @update:modelValue="save()">
-		{{ i18n.ts.autoRejectFollowRequest }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-		<template #caption>{{ i18n.ts.autoRejectFollowRequestDescription }}</template>
-	</MkSwitch>
-	<MkSwitch v-if="!isLocked" v-model="carefulBot" @update:modelValue="save()">{{ i18n.ts.carefulBot }}<template #caption>{{ i18n.ts.carefulBotDescription }}</template></MkSwitch>
-
-	<MkSwitch v-model="publicReactions" @update:modelValue="save()">
-		{{ i18n.ts.makeReactionsPublic }}
-		<template #caption>{{ i18n.ts.makeReactionsPublicDescription }}</template>
-	</MkSwitch>
-
-	<MkSwitch v-model="hideActivity" @update:modelValue="save()">
-		{{ i18n.ts.hideActivity }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-		<template #caption>{{ i18n.ts.hideActivityDescription }}</template>
-	</MkSwitch>
-
-	<MkSwitch v-model="hideNoteFromOverview" @update:modelValue="save()">
-		{{ i18n.ts.hideNoteFromOverview }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-		<template #caption>{{ i18n.ts.hideNoteFromOverviewDescription }}</template>
-	</MkSwitch>
-
-	<MkSwitch v-model="hidePublicNotes" @update:modelValue="save()">
-		{{ i18n.ts.hidePublicNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-		<template #caption>{{ i18n.ts.hidePublicNotesDescription }}</template>
-	</MkSwitch>
-
-	<MkSwitch v-model="hideHomeNotes" @update:modelValue="save()">
-		{{ i18n.ts.hideHomeNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
-		<template #caption>{{ i18n.ts.hideHomeNotesDescription }}</template>
-	</MkSwitch>
-
-	<MkSelect v-model="followingVisibility" @update:modelValue="save()">
-		<template #label>{{ i18n.ts.followingVisibility }}</template>
-		<option value="public">{{ i18n.ts._ffVisibility.public }}</option>
-		<option value="followers">{{ i18n.ts._ffVisibility.followers }}</option>
-		<option value="private">{{ i18n.ts._ffVisibility.private }}</option>
-	</MkSelect>
-
-	<MkSelect v-model="followersVisibility" @update:modelValue="save()">
-		<template #label>{{ i18n.ts.followersVisibility }}</template>
-		<option value="public">{{ i18n.ts._ffVisibility.public }}</option>
-		<option value="followers">{{ i18n.ts._ffVisibility.followers }}</option>
-		<option value="private">{{ i18n.ts._ffVisibility.private }}</option>
-	</MkSelect>
-
-	<MkSwitch v-model="hideOnlineStatus" @update:modelValue="save()">
-		{{ i18n.ts.hideOnlineStatus }}
-		<template #caption>{{ i18n.ts.hideOnlineStatusDescription }}</template>
-	</MkSwitch>
-	<MkSwitch v-model="noCrawle" @update:modelValue="save()">
-		{{ i18n.ts.noCrawle }}
-		<template #caption>{{ i18n.ts.noCrawleDescription }}</template>
-	</MkSwitch>
-	<MkSwitch v-model="preventAiLearning" @update:modelValue="save()">
-		{{ i18n.ts.preventAiLearning }}
-		<template #caption>{{ i18n.ts.preventAiLearningDescription }}</template>
-	</MkSwitch>
-	<MkSwitch v-model="isExplorable" @update:modelValue="save()">
-		{{ i18n.ts.makeExplorable }}
-		<template #caption>{{ i18n.ts.makeExplorableDescription }}</template>
-	</MkSwitch>
-	<MkSwitch v-model="enableRss" @update:modelValue="save()">
-		{{ i18n.ts.enableRss }}
-		<template #caption>{{ i18n.ts.enableRssDescription }}</template>
-	</MkSwitch>
-
-	<FormSection>
-		<template #label>{{ i18n.ts.lockdown }}<span class="_beta">{{ i18n.ts.beta }}</span></template>
-
+	<SearchMarker path="/settings/privacy" :label="i18n.ts.privacy" :keywords="['privacy']" icon="ti ti-lock-open">
 		<div class="_gaps_m">
-			<MkSwitch :modelValue="requireSigninToViewContents" @update:modelValue="update_requireSigninToViewContents">
-				{{ i18n.ts._accountSettings.requireSigninToViewContents }}
-				<template #caption>
-					<div>{{ i18n.ts._accountSettings.requireSigninToViewContentsDescription1 }}</div>
-					<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.requireSigninToViewContentsDescription2 }}</div>
-					<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.requireSigninToViewContentsDescription3 }}</div>
-				</template>
-			</MkSwitch>
+			<SearchMarker :keywords="['follow', 'lock']">
+				<MkSwitch v-model="isLocked" @update:modelValue="save()">
+					<template #label><SearchLabel>{{ i18n.ts.makeFollowManuallyApprove }}</SearchLabel></template>
+					<template #caption><SearchKeyword>{{ i18n.ts.lockedAccountInfo }}</SearchKeyword></template>
+				</MkSwitch>
+			</SearchMarker>
 
-			<FormSlot>
-				<template #label>{{ i18n.ts._accountSettings.makeNotesFollowersOnlyBefore }}</template>
+			<MkDisableSection :disabled="!isLocked">
+				<SearchMarker :keywords="['follow', 'auto', 'accept']">
+					<MkSwitch v-model="autoAcceptFollowed" @update:modelValue="save()">
+						<template #label><SearchLabel>{{ i18n.ts.autoAcceptFollowed }}</SearchLabel></template>
+					</MkSwitch>
+				</SearchMarker>
+			</MkDisableSection>
 
-				<div class="_gaps_s">
-					<MkSelect :modelValue="makeNotesFollowersOnlyBefore_type" @update:modelValue="makeNotesFollowersOnlyBefore = $event === 'relative' ? -604800 : $event === 'absolute' ? Math.floor(Date.now() / 1000) : null">
-						<option :value="null">{{ i18n.ts.none }}</option>
-						<option value="relative">{{ i18n.ts._accountSettings.notesHavePassedSpecifiedPeriod }}</option>
-						<option value="absolute">{{ i18n.ts._accountSettings.notesOlderThanSpecifiedDateAndTime }}</option>
-					</MkSelect>
+			<SearchMarker :keywords="['reaction', 'public']">
+				<MkSwitch v-model="publicReactions" @update:modelValue="save()">
+					<template #label><SearchLabel>{{ i18n.ts.makeReactionsPublic }}</SearchLabel></template>
+					<template #caption><SearchKeyword>{{ i18n.ts.makeReactionsPublicDescription }}</SearchKeyword></template>
+				</MkSwitch>
+			</SearchMarker>
 
-					<MkSelect v-if="makeNotesFollowersOnlyBefore_type === 'relative'" v-model="makeNotesFollowersOnlyBefore">
-						<option :value="-3600">{{ i18n.ts.oneHour }}</option>
-						<option :value="-86400">{{ i18n.ts.oneDay }}</option>
-						<option :value="-259200">{{ i18n.ts.threeDays }}</option>
-						<option :value="-604800">{{ i18n.ts.oneWeek }}</option>
-						<option :value="-2592000">{{ i18n.ts.oneMonth }}</option>
-						<option :value="-7776000">{{ i18n.ts.threeMonths }}</option>
-						<option :value="-31104000">{{ i18n.ts.oneYear }}</option>
-					</MkSelect>
+			<SearchMarker :keywords="['following', 'visibility']">
+				<MkSelect v-model="followingVisibility" @update:modelValue="save()">
+					<template #label><SearchLabel>{{ i18n.ts.followingVisibility }}</SearchLabel></template>
+					<option value="public">{{ i18n.ts._ffVisibility.public }}</option>
+					<option value="followers">{{ i18n.ts._ffVisibility.followers }}</option>
+					<option value="private">{{ i18n.ts._ffVisibility.private }}</option>
+				</MkSelect>
+			</SearchMarker>
 
-					<MkInput
-						v-if="makeNotesFollowersOnlyBefore_type === 'absolute'"
-						:modelValue="formatDateTimeString(new Date(makeNotesFollowersOnlyBefore * 1000), 'yyyy-MM-dd')"
-						type="date"
-						:manualSave="true"
-						@update:modelValue="makeNotesFollowersOnlyBefore = Math.floor(new Date($event).getTime() / 1000)"
-					>
-					</MkInput>
-				</div>
+			<SearchMarker :keywords="['follower', 'visibility']">
+				<MkSelect v-model="followersVisibility" @update:modelValue="save()">
+					<template #label><SearchLabel>{{ i18n.ts.followersVisibility }}</SearchLabel></template>
+					<option value="public">{{ i18n.ts._ffVisibility.public }}</option>
+					<option value="followers">{{ i18n.ts._ffVisibility.followers }}</option>
+					<option value="private">{{ i18n.ts._ffVisibility.private }}</option>
+				</MkSelect>
+			</SearchMarker>
 
-				<template #caption>
-					<div>{{ i18n.ts._accountSettings.makeNotesFollowersOnlyBeforeDescription }}</div>
-					<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.mayNotEffectForFederatedNotes }}</div>
-				</template>
-			</FormSlot>
+			<SearchMarker :keywords="['online', 'status']">
+				<MkSwitch v-model="hideOnlineStatus" @update:modelValue="save()">
+					<template #label><SearchLabel>{{ i18n.ts.hideOnlineStatus }}</SearchLabel></template>
+					<template #caption><SearchKeyword>{{ i18n.ts.hideOnlineStatusDescription }}</SearchKeyword></template>
+				</MkSwitch>
+			</SearchMarker>
 
-			<FormSlot>
-				<template #label>{{ i18n.ts._accountSettings.makeNotesHiddenBefore }}</template>
+			<SearchMarker :keywords="['crawle', 'index', 'search']">
+				<MkSwitch v-model="noCrawle" @update:modelValue="save()">
+					<template #label><SearchLabel>{{ i18n.ts.noCrawle }}</SearchLabel></template>
+					<template #caption><SearchKeyword>{{ i18n.ts.noCrawleDescription }}</SearchKeyword></template>
+				</MkSwitch>
+			</SearchMarker>
 
-				<div class="_gaps_s">
-					<MkSelect :modelValue="makeNotesHiddenBefore_type" @update:modelValue="makeNotesHiddenBefore = $event === 'relative' ? -604800 : $event === 'absolute' ? Math.floor(Date.now() / 1000) : null">
-						<option :value="null">{{ i18n.ts.none }}</option>
-						<option value="relative">{{ i18n.ts._accountSettings.notesHavePassedSpecifiedPeriod }}</option>
-						<option value="absolute">{{ i18n.ts._accountSettings.notesOlderThanSpecifiedDateAndTime }}</option>
-					</MkSelect>
+			<SearchMarker :keywords="['crawle', 'ai']">
+				<MkSwitch v-model="preventAiLearning" @update:modelValue="save()">
+					<template #label><SearchLabel>{{ i18n.ts.preventAiLearning }}</SearchLabel></template>
+					<template #caption><SearchKeyword>{{ i18n.ts.preventAiLearningDescription }}</SearchKeyword></template>
+				</MkSwitch>
+			</SearchMarker>
 
-					<MkSelect v-if="makeNotesHiddenBefore_type === 'relative'" v-model="makeNotesHiddenBefore">
-						<option :value="-3600">{{ i18n.ts.oneHour }}</option>
-						<option :value="-86400">{{ i18n.ts.oneDay }}</option>
-						<option :value="-259200">{{ i18n.ts.threeDays }}</option>
-						<option :value="-604800">{{ i18n.ts.oneWeek }}</option>
-						<option :value="-2592000">{{ i18n.ts.oneMonth }}</option>
-						<option :value="-7776000">{{ i18n.ts.threeMonths }}</option>
-						<option :value="-31104000">{{ i18n.ts.oneYear }}</option>
-					</MkSelect>
+			<SearchMarker :keywords="['explore']">
+				<MkSwitch v-model="isExplorable" @update:modelValue="save()">
+					<template #label><SearchLabel>{{ i18n.ts.makeExplorable }}</SearchLabel></template>
+					<template #caption><SearchKeyword>{{ i18n.ts.makeExplorableDescription }}</SearchKeyword></template>
+				</MkSwitch>
+			</SearchMarker>
 
-					<MkInput
-						v-if="makeNotesHiddenBefore_type === 'absolute'"
-						:modelValue="formatDateTimeString(new Date(makeNotesHiddenBefore * 1000), 'yyyy-MM-dd')"
-						type="date"
-						:manualSave="true"
-						@update:modelValue="makeNotesHiddenBefore = Math.floor(new Date($event).getTime() / 1000)"
-					>
-					</MkInput>
-				</div>
+			<SearchMarker :keywords="['lockdown']">
+				<FormSection>
+					<template #label><SearchLabel>{{ i18n.ts.lockdown }}</SearchLabel><span class="_beta">{{ i18n.ts.beta }}</span></template>
 
-				<template #caption>
-					<div>{{ i18n.ts._accountSettings.makeNotesHiddenBeforeDescription }}</div>
-					<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.mayNotEffectForFederatedNotes }}</div>
-				</template>
-			</FormSlot>
+					<div class="_gaps_m">
+						<SearchMarker :keywords="['login', 'signin']">
+							<MkSwitch :modelValue="requireSigninToViewContents" @update:modelValue="update_requireSigninToViewContents">
+								<template #label><SearchLabel>{{ i18n.ts._accountSettings.requireSigninToViewContents }}</SearchLabel></template>
+								<template #caption>
+									<div>{{ i18n.ts._accountSettings.requireSigninToViewContentsDescription1 }}</div>
+									<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.requireSigninToViewContentsDescription2 }}</div>
+									<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.requireSigninToViewContentsDescription3 }}</div>
+								</template>
+							</MkSwitch>
+						</SearchMarker>
+
+						<SearchMarker :keywords="['follower']">
+							<FormSlot>
+								<template #label><SearchLabel>{{ i18n.ts._accountSettings.makeNotesFollowersOnlyBefore }}</SearchLabel></template>
+
+								<div class="_gaps_s">
+									<MkSelect :modelValue="makeNotesFollowersOnlyBefore_type" @update:modelValue="makeNotesFollowersOnlyBefore = $event === 'relative' ? -604800 : $event === 'absolute' ? Math.floor(Date.now() / 1000) : null">
+										<option :value="null">{{ i18n.ts.none }}</option>
+										<option value="relative">{{ i18n.ts._accountSettings.notesHavePassedSpecifiedPeriod }}</option>
+										<option value="absolute">{{ i18n.ts._accountSettings.notesOlderThanSpecifiedDateAndTime }}</option>
+									</MkSelect>
+
+									<MkSelect v-if="makeNotesFollowersOnlyBefore_type === 'relative'" v-model="makeNotesFollowersOnlyBefore">
+										<option :value="-3600">{{ i18n.ts.oneHour }}</option>
+										<option :value="-86400">{{ i18n.ts.oneDay }}</option>
+										<option :value="-259200">{{ i18n.ts.threeDays }}</option>
+										<option :value="-604800">{{ i18n.ts.oneWeek }}</option>
+										<option :value="-2592000">{{ i18n.ts.oneMonth }}</option>
+										<option :value="-7776000">{{ i18n.ts.threeMonths }}</option>
+										<option :value="-31104000">{{ i18n.ts.oneYear }}</option>
+									</MkSelect>
+
+									<MkInput
+										v-if="makeNotesFollowersOnlyBefore_type === 'absolute'"
+										:modelValue="formatDateTimeString(new Date(makeNotesFollowersOnlyBefore * 1000), 'yyyy-MM-dd')"
+										type="date"
+										:manualSave="true"
+										@update:modelValue="makeNotesFollowersOnlyBefore = Math.floor(new Date($event).getTime() / 1000)"
+									>
+									</MkInput>
+								</div>
+
+								<template #caption>
+									<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesFollowersOnlyBeforeDescription }}</SearchKeyword></div>
+									<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.mayNotEffectForFederatedNotes }}</div>
+								</template>
+							</FormSlot>
+						</SearchMarker>
+
+						<SearchMarker :keywords="['hidden']">
+							<FormSlot>
+								<template #label><SearchLabel>{{ i18n.ts._accountSettings.makeNotesHiddenBefore }}</SearchLabel></template>
+
+								<div class="_gaps_s">
+									<MkSelect :modelValue="makeNotesHiddenBefore_type" @update:modelValue="makeNotesHiddenBefore = $event === 'relative' ? -604800 : $event === 'absolute' ? Math.floor(Date.now() / 1000) : null">
+										<option :value="null">{{ i18n.ts.none }}</option>
+										<option value="relative">{{ i18n.ts._accountSettings.notesHavePassedSpecifiedPeriod }}</option>
+										<option value="absolute">{{ i18n.ts._accountSettings.notesOlderThanSpecifiedDateAndTime }}</option>
+									</MkSelect>
+
+									<MkSelect v-if="makeNotesHiddenBefore_type === 'relative'" v-model="makeNotesHiddenBefore">
+										<option :value="-3600">{{ i18n.ts.oneHour }}</option>
+										<option :value="-86400">{{ i18n.ts.oneDay }}</option>
+										<option :value="-259200">{{ i18n.ts.threeDays }}</option>
+										<option :value="-604800">{{ i18n.ts.oneWeek }}</option>
+										<option :value="-2592000">{{ i18n.ts.oneMonth }}</option>
+										<option :value="-7776000">{{ i18n.ts.threeMonths }}</option>
+										<option :value="-31104000">{{ i18n.ts.oneYear }}</option>
+									</MkSelect>
+
+									<MkInput
+										v-if="makeNotesHiddenBefore_type === 'absolute'"
+										:modelValue="formatDateTimeString(new Date(makeNotesHiddenBefore * 1000), 'yyyy-MM-dd')"
+										type="date"
+										:manualSave="true"
+										@update:modelValue="makeNotesHiddenBefore = Math.floor(new Date($event).getTime() / 1000)"
+									>
+									</MkInput>
+								</div>
+
+								<template #caption>
+									<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesHiddenBeforeDescription }}</SearchKeyword></div>
+									<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.mayNotEffectForFederatedNotes }}</div>
+								</template>
+							</FormSlot>
+						</SearchMarker>
+					</div>
+				</FormSection>
+			</SearchMarker>
 		</div>
-	</FormSection>
-
-		<FormSection>
-			<div class="_gaps_m">
-				<SearchMarker :keywords="['remember', 'keep', 'note', 'visibility']">
-					<MkPreferenceContainer k="rememberNoteVisibility">
-						<MkSwitch v-model="rememberNoteVisibility" @update:modelValue="save()">
-							<template #label><SearchLabel>{{ i18n.ts.rememberNoteVisibility }}</SearchLabel></template>
-						</MkSwitch>
-					</MkPreferenceContainer>
-				</SearchMarker>
-
-				<SearchMarker :keywords="['default', 'note', 'visibility']">
-						<MkFolder>
-							<template #label><SearchLabel>{{ i18n.ts.defaultNoteVisibility }}</SearchLabel></template>
-							<template v-if="defaultNoteVisibility === 'public'" #suffix>{{ i18n.ts._visibility.public }}</template>
-							<template v-else-if="defaultNoteVisibility === 'home'" #suffix>{{ i18n.ts._visibility.home }}</template>
-							<template v-else-if="defaultNoteVisibility === 'followers'" #suffix>{{ i18n.ts._visibility.followers }}</template>
-							<template v-else-if="defaultNoteVisibility === 'specified'" #suffix>{{ i18n.ts._visibility.specified }}</template>
-
-						<div class="_gaps_m">
-							<MkSelect v-model="defaultNoteVisibility">
-								<option value="public">{{ i18n.ts._visibility.public }}</option>
-								<option value="home">{{ i18n.ts._visibility.home }}</option>
-								<option value="followers">{{ i18n.ts._visibility.followers }}</option>
-								<option value="specified">{{ i18n.ts._visibility.specified }}</option>
-							</MkSelect>
-							<MkSwitch v-model="defaultNoteLocalOnly">{{ i18n.ts._visibility.disableFederation }}</MkSwitch>
-						</div>
-					</MkFolder>
-				</SearchMarker>
-			</div>
-		</FormSection>
-
-<!-- 一時的 -->
-<!--		<SearchMarker :keywords="['remember', 'keep', 'note', 'cw']">-->
-<!--			<MkSwitch v-model="keepCw" @update:modelValue="save()">-->
-<!--				<template #label><SearchLabel>{{ i18n.ts.keepCw }}</SearchLabel></template>-->
-<!--			</MkSwitch>-->
-<!--		</SearchMarker>-->
-	</div>
+	</SearchMarker>
 </template>
 
 <script lang="ts" setup>
@@ -216,34 +187,22 @@ import FormSlot from '@/components/form/slot.vue';
 import { formatDateTimeString } from '@/scripts/format-time-string.js';
 import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os.js';
-// import MkDisableSection from '@/components/MkDisableSection.vue';
-import { prefer } from '@/preferences.js';
-import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
+import MkDisableSection from '@/components/MkDisableSection.vue';
 
 const $i = signinRequired();
 
 const isLocked = ref($i.isLocked);
 const autoAcceptFollowed = ref($i.autoAcceptFollowed);
-const carefulBot = ref($i.carefulBot);
 const noCrawle = ref($i.noCrawle);
 const preventAiLearning = ref($i.preventAiLearning);
-const enableRss = ref($i.enableRss);
 const isExplorable = ref($i.isExplorable);
 const requireSigninToViewContents = ref($i.requireSigninToViewContents ?? false);
 const makeNotesFollowersOnlyBefore = ref($i.makeNotesFollowersOnlyBefore ?? null);
 const makeNotesHiddenBefore = ref($i.makeNotesHiddenBefore ?? null);
 const hideOnlineStatus = ref($i.hideOnlineStatus);
 const publicReactions = ref($i.publicReactions);
-const hideActivity = ref($i.hideActivity);
-const hideNoteFromOverview = ref($i.hideNoteFromOverview);
-const hidePublicNotes = ref($i.hidePublicNotes);
-const hideHomeNotes = ref($i.hideHomeNotes);
 const followingVisibility = ref($i.followingVisibility);
 const followersVisibility = ref($i.followersVisibility);
-
-const defaultNoteVisibility = prefer.model('defaultNoteVisibility');
-const defaultNoteLocalOnly = prefer.model('defaultNoteLocalOnly');
-const rememberNoteVisibility = prefer.model('rememberNoteVisibility');
 
 const makeNotesFollowersOnlyBefore_type = computed(() => {
 	if (makeNotesFollowersOnlyBefore.value == null) {
@@ -286,20 +245,14 @@ function save() {
 	misskeyApi('i/update', {
 		isLocked: !!isLocked.value,
 		autoAcceptFollowed: !!autoAcceptFollowed.value,
-		carefulBot: !!carefulBot.value,
 		noCrawle: !!noCrawle.value,
 		preventAiLearning: !!preventAiLearning.value,
-		enableRss: !!enableRss.value,
 		isExplorable: !!isExplorable.value,
 		requireSigninToViewContents: !!requireSigninToViewContents.value,
 		makeNotesFollowersOnlyBefore: makeNotesFollowersOnlyBefore.value,
 		makeNotesHiddenBefore: makeNotesHiddenBefore.value,
 		hideOnlineStatus: !!hideOnlineStatus.value,
 		publicReactions: !!publicReactions.value,
-		hideActivity: !!hideActivity.value,
-		hideNoteFromOverview: !!hideNoteFromOverview.value,
-		hidePublicNotes: !!hidePublicNotes.value,
-		hideHomeNotes: !!hideHomeNotes.value,
 		followingVisibility: followingVisibility.value,
 		followersVisibility: followersVisibility.value,
 	});
