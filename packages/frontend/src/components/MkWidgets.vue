@@ -44,7 +44,7 @@ export type Widget = {
 	id: string;
 	data: Record<string, any>;
 };
-export type DefaultStoredWidget = {
+export type storedWidget = {
 	place: string | null;
 } & Widget;
 </script>

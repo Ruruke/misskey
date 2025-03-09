@@ -175,7 +175,7 @@ import XInstanceMute from './mute-block.instance-mute.vue';
 import XWordMute from './mute-block.word-mute.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 import { userPage } from '@/filters/user.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
 import { i18n } from '@/i18n.js';
@@ -186,7 +186,9 @@ import { instance, infoImageUrl } from '@/instance.js';
 import { signinRequired } from '@/account.js';
 import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
 import { reloadAsk } from '@/scripts/reload-ask.js';
+import { prefer } from '@/preferences.js';
 
 const $i = signinRequired();
 
@@ -214,7 +216,7 @@ const expandedRenoteMuteItems = ref([]);
 const expandedMuteItems = ref([]);
 const expandedBlockItems = ref([]);
 
-const showSoftWordMutedWord = computed(defaultStore.makeGetterSetter('showSoftWordMutedWord'));
+const showSoftWordMutedWord = prefer.model('showSoftWordMutedWord');
 
 watch([
 	showSoftWordMutedWord,
@@ -232,7 +234,7 @@ async function _reloadAsk() {
 	unisonReload();
 }
 
-const anonymizeMutedUsers = computed(defaultStore.makeGetterSetter('anonymizeMutedUsers'));
+const anonymizeMutedUsers = computed(store.makeGetterSetter('anonymizeMutedUsers'));
 
 watch([
 	anonymizeMutedUsers,

@@ -45,7 +45,7 @@ import MkSelect from './MkSelect.vue';
 import MkInfo from './MkInfo.vue';
 import { formatDateTimeString } from '@/scripts/format-time-string.js';
 import { addTime } from '@/scripts/time.js';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 import { i18n } from '@/i18n.js';
 
 export type DeleteScheduleEditorModelValue = {
@@ -69,7 +69,7 @@ const after = ref(0);
 const unit = ref<'second' | 'minute' | 'hour' | 'day'>('second');
 const isValid = ref(true);
 
-const showDetail = ref(!defaultStore.state.defaultScheduledNoteDelete);
+const showDetail = ref(!store.state.defaultScheduledNoteDelete);
 const summaryText = computed(() => {
 	if (showDetail.value) {
 		return i18n.ts.scheduledNoteDelete;
@@ -108,7 +108,7 @@ const beautifyAfter = (base: number) => {
 	after.value = time;
 };
 
-beautifyAfter(defaultStore.state.defaultScheduledNoteDeleteTime / 1000);
+beautifyAfter(store.state.defaultScheduledNoteDeleteTime / 1000);
 
 if (props.modelValue.deleteAt) {
 	expiration.value = 'at';

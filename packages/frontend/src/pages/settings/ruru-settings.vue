@@ -143,7 +143,7 @@ import FormSection from '@/components/form/section.vue';
 import FromSlot from '@/components/form/slot.vue';
 import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
 import MkEmoji from '@/components/global/MkEmoji.vue';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 import * as os from '@/os.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
@@ -159,17 +159,17 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import MkNote from '@/components/MkNote.vue';
 
 const $i = signinRequired();
-const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
-const disableNoteNyaize = computed(defaultStore.makeGetterSetter('disableNoteNyaize'));
-const customFont = computed(defaultStore.makeGetterSetter('customFont'));
-const useNoteVisibilityColoring = computed(defaultStore.makeGetterSetter('useNoteVisibilityColoring'));
-const noteVisibilityColorHome = computed(defaultStore.makeGetterSetter('noteVisibilityColorHome'));
-const noteVisibilityColorFollowers = computed(defaultStore.makeGetterSetter('noteVisibilityColorFollowers'));
-const noteVisibilityColorSpecified = computed(defaultStore.makeGetterSetter('noteVisibilityColorSpecified'));
-const noteVisibilityColorLocalOnly = computed(defaultStore.makeGetterSetter('noteVisibilityColorLocalOnly'));
+const selectReaction = computed(store.makeGetterSetter('selectReaction'));
+const disableNoteNyaize = computed(store.makeGetterSetter('disableNoteNyaize'));
+const customFont = computed(store.makeGetterSetter('customFont'));
+const useNoteVisibilityColoring = computed(store.makeGetterSetter('useNoteVisibilityColoring'));
+const noteVisibilityColorHome = computed(store.makeGetterSetter('noteVisibilityColorHome'));
+const noteVisibilityColorFollowers = computed(store.makeGetterSetter('noteVisibilityColorFollowers'));
+const noteVisibilityColorSpecified = computed(store.makeGetterSetter('noteVisibilityColorSpecified'));
+const noteVisibilityColorLocalOnly = computed(store.makeGetterSetter('noteVisibilityColorLocalOnly'));
 const noteVisibilityColorChanged = ref(false);
-const useTextAreaAutoSize = computed(defaultStore.makeGetterSetter('useTextAreaAutoSize'));
-const imageCompressionMode = computed(defaultStore.makeGetterSetter('imageCompressionMode'));
+const useTextAreaAutoSize = computed(store.makeGetterSetter('useTextAreaAutoSize'));
+const imageCompressionMode = computed(store.makeGetterSetter('imageCompressionMode'));
 const hidePublicNotes = ref($i.hidePublicNotes);
 const hideHomeNotes = ref($i.hideHomeNotes);
 
@@ -192,10 +192,10 @@ watch([
 
 function saveColors() {
 	if (noteVisibilityColorChanged.value) {
-		defaultStore.set('noteVisibilityColorHome', noteVisibilityColorHome.value);
-		defaultStore.set('noteVisibilityColorFollowers', noteVisibilityColorFollowers.value);
-		defaultStore.set('noteVisibilityColorSpecified', noteVisibilityColorSpecified.value);
-		defaultStore.set('noteVisibilityColorLocalOnly', noteVisibilityColorLocalOnly.value);
+		store.set('noteVisibilityColorHome', noteVisibilityColorHome.value);
+		store.set('noteVisibilityColorFollowers', noteVisibilityColorFollowers.value);
+		store.set('noteVisibilityColorSpecified', noteVisibilityColorSpecified.value);
+		store.set('noteVisibilityColorLocalOnly', noteVisibilityColorLocalOnly.value);
 		noteVisibilityColorChanged.value = false;
 	}
 }
@@ -234,20 +234,20 @@ watch([
 
 // postForm
 
-const disableNoteDrafting = computed(defaultStore.makeGetterSetter('disableNoteDrafting'));
-const draftSavingBehavior = computed(defaultStore.makeGetterSetter('draftSavingBehavior'));
-const defaultScheduledNoteDelete = computed(defaultStore.makeGetterSetter('defaultScheduledNoteDelete'));
+const disableNoteDrafting = computed(store.makeGetterSetter('disableNoteDrafting'));
+const draftSavingBehavior = computed(store.makeGetterSetter('draftSavingBehavior'));
+const defaultScheduledNoteDelete = computed(store.makeGetterSetter('defaultScheduledNoteDelete'));
 
-const scheduledNoteDelete = ref({ deleteAt: null, deleteAfter: defaultStore.state.defaultScheduledNoteDeleteTime, isValid: true });
+const scheduledNoteDelete = ref({ deleteAt: null, deleteAfter: store.state.defaultScheduledNoteDeleteTime, isValid: true });
 
 watch(scheduledNoteDelete, () => {
 	if (!scheduledNoteDelete.value.isValid) return;
-	defaultStore.set('defaultScheduledNoteDeleteTime', scheduledNoteDelete.value.deleteAfter);
+	store.set('defaultScheduledNoteDeleteTime', scheduledNoteDelete.value.deleteAfter);
 });
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
-const items = ref(defaultStore.state.postFormActions.map(x => ({
+const items = ref(store.state.postFormActions.map(x => ({
 	id: Math.random().toString(),
 	type: x,
 })));
@@ -282,7 +282,7 @@ function removeItem(type: keyof typeof bottomItemDef, ev: MouseEvent) {
 }
 
 async function save() {
-	defaultStore.set('postFormActions', items.value.map(x => x.type));
+	store.set('postFormActions', items.value.map(x => x.type));
 }
 
 async function reset() {
@@ -292,7 +292,7 @@ async function reset() {
 	});
 	if (result.canceled) return;
 
-	items.value = defaultStore.def.postFormActions.default.map(x => ({
+	items.value = store.def.postFormActions.default.map(x => ({
 		id: Math.random().toString(),
 		type: x,
 	}));

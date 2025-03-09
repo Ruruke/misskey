@@ -47,7 +47,7 @@ import MkPagination from '@/components/MkPagination.vue';
 import type { Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 import { getHTMLElementOrNull } from "@/scripts/get-dom-node-or-null.js";
 import { getScrollContainer } from '@@/js/scroll.js';
 
@@ -75,7 +75,7 @@ function initNoteRenderSkipping() {
 
 	if (
 		!props.disableJsRenderSkip &&
-		defaultStore.state.skipNoteRender === 'js'
+		store.state.skipNoteRender === 'js'
 	) {
 		rootElWatcher = watch(rootEl, (to) => {
 			if (to != null) {

@@ -24,10 +24,10 @@ import { instanceName as localInstanceName } from '@@/js/config.js';
 import type { CSSProperties } from 'vue';
 import { instance as localInstance } from '@/instance.js';
 import { getProxiedImageUrlNullable } from '@/scripts/media-proxy.js';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 
-const showInstanceTickerSoftwareName = computed(() => defaultStore.state.showInstanceTickerSoftwareName);
-const showInstanceTickerVersion = computed(() => defaultStore.state.showInstanceTickerVersion);
+const showInstanceTickerSoftwareName = computed(() => store.state.showInstanceTickerSoftwareName);
+const showInstanceTickerVersion = computed(() => store.state.showInstanceTickerVersion);
 
 const props = defineProps<{
 	host: string | null;

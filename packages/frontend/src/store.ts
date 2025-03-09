@@ -5,15 +5,15 @@
 
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'misskey-js';
-import { hemisphere } from '@@/js/intl-const.js';
 import lightTheme from '@@/themes/l-light.json5';
 import darkTheme from '@@/themes/d-green-lime.json5';
-import type { SoundType } from '@/scripts/sound.js';
-import type { Ast } from '@syuilo/aiscript';
+import { hemisphere } from '@@/js/intl-const.js';
 import type { DeviceKind } from '@/scripts/device-kind.js';
-import { DEFAULT_DEVICE_KIND } from '@/scripts/device-kind.js';
+import type { Plugin } from '@/plugin.js';
+import type { Column } from '@/deck.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { Storage } from '@/pizzax.js';
+import { DEFAULT_DEVICE_KIND } from '@/scripts/device-kind.js';
 
 interface PostFormAction {
 	title: string,
@@ -42,22 +42,6 @@ interface PageViewInterruptor {
 	handler: (page: Misskey.entities.Page) => unknown;
 }
 
-/** サウンド設定 */
-export type SoundStore = {
-	type: Exclude<SoundType, '_driveFile_'>;
-	volume: number;
-} | {
-	type: '_driveFile_';
-
-	/** ドライブのファイルID */
-	fileId: string;
-
-	/** ファイルURL（こちらが優先される） */
-	fileUrl: string;
-
-	volume: number;
-};
-
 export const postFormActions: PostFormAction[] = [];
 export const userActions: UserAction[] = [];
 export const noteActions: NoteAction[] = [];
@@ -65,9 +49,10 @@ export const noteViewInterruptors: NoteViewInterruptor[] = [];
 export const notePostInterruptors: NotePostInterruptor[] = [];
 export const pageViewInterruptors: PageViewInterruptor[] = [];
 
-// TODO: それぞれいちいちwhereとかdefaultというキーを付けなきゃいけないの冗長なのでなんとかする(ただ型定義が面倒になりそう)
-//       あと、現行の定義の仕方なら「whereが何であるかに関わらずキー名の重複不可」という制約を付けられるメリットもあるからそのメリットを引き継ぐ方法も考えないといけない
-export const defaultStore = markRaw(new Storage('base', {
+/**
+ * 「状態」を管理するストア(not「設定」)
+ */
+export const store = markRaw(new Storage('base', {
 	accountSetupWizard: {
 		where: 'account',
 		default: 0,
@@ -191,17 +176,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
-	statusbars: {
-		where: 'deviceAccount',
-		default: [] as {
-			name: string;
-			id: string;
-			type: string;
-			size: 'verySmall' | 'small' | 'medium' | 'large' | 'veryLarge';
-			black: boolean;
-			props: Record<string, any>;
-		}[],
-	},
 	widgets: {
 		where: 'account',
 		default: [] as {
@@ -224,14 +198,87 @@ export const defaultStore = markRaw(new Storage('base', {
 			},
 		},
 	},
-	pinnedUserLists: {
-		where: 'deviceAccount',
-		default: [] as Misskey.entities.UserList[],
-	},
-
 	overridedDeviceKind: {
 		where: 'device',
 		default: null as null | 'smartphone' | 'tablet' | 'desktop',
+	},
+	darkMode: {
+		where: 'device',
+		default: false,
+	},
+	recentlyUsedEmojis: {
+		where: 'device',
+		default: [] as string[],
+	},
+	recentlyUsedUsers: {
+		where: 'device',
+		default: [] as string[],
+	},
+	menuDisplay: {
+		where: 'device',
+		default: 'sideFull' as 'sideFull' | 'sideIcon' | 'top',
+	},
+	postFormWithHashtags: {
+		where: 'device',
+		default: false,
+	},
+	postFormHashtags: {
+		where: 'device',
+		default: '',
+	},
+	additionalUnicodeEmojiIndexes: {
+		where: 'device',
+		default: {} as Record<string, Record<string, string[]>>,
+	},
+	defaultWithReplies: {
+		where: 'account',
+		default: false,
+	},
+	pluginTokens: {
+		where: 'deviceAccount',
+		default: {} as Record<string, string>, // plugin id, token
+	},
+	'deck.profile': {
+		where: 'deviceAccount',
+		default: 'default',
+	},
+	'deck.columns': {
+		where: 'deviceAccount',
+		default: [] as Column[],
+	},
+	'deck.layout': {
+		where: 'deviceAccount',
+		default: [] as Column['id'][][],
+	},
+
+	enablePreferencesAutoCloudBackup: {
+		where: 'device',
+		default: false,
+	},
+	showPreferencesAutoCloudBackupSuggestion: {
+		where: 'device',
+		default: true,
+	},
+
+	//#region TODO: そのうち消す (preferに移行済み)
+	defaultSideView: {
+		where: 'device',
+		default: false,
+	},
+	statusbars: {
+		where: 'deviceAccount',
+		default: [] as {
+			name: string;
+			id: string;
+			type: string;
+			size: 'verySmall' | 'small' | 'medium' | 'large' | 'veryLarge';
+			black: boolean;
+			props: Record<string, any>;
+		}[],
+	},
+	pinnedUserLists: {
+		where: 'deviceAccount',
+		default: [] as Misskey.entities.UserList[],
 	},
 	serverDisconnectedBehavior: {
 		where: 'device',
@@ -333,10 +380,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
-	darkMode: {
-		where: 'device',
-		default: false,
-	},
 	customFont: {
 		where: 'device',
 		default: null as null | string,
@@ -361,22 +404,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'auto' as 'auto' | 'popup' | 'drawer' | 'window',
 	},
-	recentlyUsedEmojis: {
-		where: 'device',
-		default: [] as string[],
-	},
-	recentlyUsedUsers: {
-		where: 'device',
-		default: [] as string[],
-	},
-	defaultSideView: {
-		where: 'device',
-		default: false,
-	},
-	menuDisplay: {
-		where: 'device',
-		default: 'sideFull' as 'sideFull' | 'sideIcon' | 'top',
-	},
 	reportError: {
 		where: 'device',
 		default: false,
@@ -386,18 +413,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: false,
 	},
 	showAvatarDecorations: {
-		where: 'device',
-		default: true,
-	},
-	postFormWithHashtags: {
-		where: 'device',
-		default: false,
-	},
-	postFormHashtags: {
-		where: 'device',
-		default: '',
-	},
-	themeInitial: {
 		where: 'device',
 		default: true,
 	},
@@ -461,16 +476,8 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	additionalUnicodeEmojiIndexes: {
-		where: 'device',
-		default: {} as Record<string, Record<string, string[]>>,
-	},
 	keepScreenOn: {
 		where: 'device',
-		default: false,
-	},
-	defaultWithReplies: {
-		where: 'account',
 		default: false,
 	},
 	disableStreamingTimeline: {
@@ -493,17 +500,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	enableSeasonalScreenEffect: {
 		where: 'device',
 		default: false,
-	},
-	dropAndFusion: {
-		where: 'device',
-		default: {
-			bgmVolume: 0.25,
-			sfxVolume: 1,
-		},
-	},
-	hemisphere: {
-		where: 'device',
-		default: hemisphere as 'N' | 'S',
 	},
 	enableHorizontalSwipe: {
 		where: 'device',
@@ -554,7 +550,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
-
+	hemisphere: {
+		where: 'device',
+		default: hemisphere as 'N' | 'S',
+	},
 	sound_masterVolume: {
 		where: 'device',
 		default: 0.3,
@@ -569,19 +568,19 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	sound_note: {
 		where: 'device',
-		default: { type: null, volume: 1 } as SoundStore,
+		default: { type: 'syuilo/n-aec', volume: 1 },
 	},
 	sound_noteMy: {
 		where: 'device',
-		default: { type: 'syuilo/n-cea-4va', volume: 1 } as SoundStore,
+		default: { type: 'syuilo/n-cea-4va', volume: 1 },
 	},
 	sound_notification: {
 		where: 'device',
-		default: { type: 'syuilo/n-ea', volume: 1 } as SoundStore,
+		default: { type: 'syuilo/n-ea', volume: 1 },
 	},
 	sound_reaction: {
 		where: 'device',
-		default: { type: 'syuilo/bubble2', volume: 1 } as SoundStore,
+		default: { type: 'syuilo/bubble2', volume: 1 },
 	},
 	reactionChecksMuting: {
 		where: 'device',
@@ -636,6 +635,14 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: 'resizeCompressLossy' as 'resizeCompress' | 'noResizeCompress' | 'resizeCompressLossy' | 'noResizeCompressLossy' | null,
 	},
+	dropAndFusion: {
+		where: 'device',
+		default: {
+			bgmVolume: 0.25,
+			sfxVolume: 1,
+		},
+	},
+	//#endregion
 }));
 
 // TODO: 他のタブと永続化されたstateを同期
@@ -662,16 +669,16 @@ interface Watcher {
 	callback: (value: unknown) => void;
 }
 
+// TODO: 消す(preferに移行済みのため)
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-
 export class ColdDeviceStorage {
 	public static default = {
-		lightTheme,
-		darkTheme,
-		syncDeviceDarkMode: true,
-		plugins: [] as Plugin[],
+		lightTheme, // TODO: 消す(preferに移行済みのため)
+		darkTheme, // TODO: 消す(preferに移行済みのため)
+		syncDeviceDarkMode: true, // TODO: 消す(preferに移行済みのため)
+		plugins: [] as Plugin[], // TODO: 消す(preferに移行済みのため)
 	};
 
 	public static watchers: Watcher[] = [];
