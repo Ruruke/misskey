@@ -12,14 +12,14 @@ import type { MenuItem } from '@/types/menu.js';
 import { i18n } from '@/i18n.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { userActions } from '@/store.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { $i, iAmModerator } from '@/account.js';
 import { notesSearchAvailable, canSearchNonLocalNotes } from '@/scripts/check-permissions.js';
 import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
 import { mainRouter } from '@/router/main.js';
 import { genEmbedCode } from '@/scripts/get-embed-code.js';
 import { prefer } from '@/preferences.js';
+import { userActions } from '@/plugin.js';
 import { store } from '@/store.js';
 
 export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter = mainRouter) {

@@ -107,30 +107,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { inject, watch, nextTick, onMounted, reactive, onBeforeUnmount, defineAsyncComponent, provide, shallowRef, ref, computed } from 'vue';
-import type { ShallowRef } from 'vue';
+import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shallowRef, ref, computed } from 'vue';
 import * as mfm from 'mfm-js';
 import * as Misskey from 'misskey-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { toASCII } from 'punycode.js';
 import { host, url } from '@@/js/config.js';
-import ShVisibilityColoring from './ShVisibilityColoring.vue';
+import type { ShallowRef } from 'vue';
 import type { PostFormProps } from '@/types/post-form.js';
-import MkNoteSimple from '@/components/MkNoteSimple.vue';
+import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
 import MkPollEditor from '@/components/MkPollEditor.vue';
-import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
-import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
-import type { DeleteScheduleEditorModelValue } from '@/components/MkDeleteScheduleEditor.vue';
-import { erase, unique } from '@/scripts/array.js';
-import { extractMentions } from '@/scripts/extract-mentions.js';
-import { formatTimeString } from '@/scripts/format-time-string.js';
-import { Autocomplete } from '@/scripts/autocomplete.js';
+import MkNoteSimple from '@/components/MkNoteSimple.vue';
+import { erase, unique } from '@/utility/array.js';
+import { extractMentions } from '@/utility/extract-mentions.js';
+import { formatTimeString } from '@/utility/format-time-string.js';
+import { Autocomplete } from '@/utility/autocomplete.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { selectFiles } from '@/scripts/select-file.js';
-import { store, notePostInterruptors, postFormActions } from '@/store.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { selectFiles } from '@/utility/select-file.js';
+import { store } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -146,6 +143,7 @@ import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
 import { bottomItemDef } from '@/scripts/post-form.js';
 import MkScheduleEditor from '@/components/MkScheduleEditor.vue';
 import { prefer } from '@/preferences.js';
+import { notePostInterruptors, postFormActions } from '@/plugin.js';
 
 const $i = signinRequired();
 
