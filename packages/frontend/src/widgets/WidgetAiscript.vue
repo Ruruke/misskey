@@ -26,7 +26,7 @@ import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps 
 import type { GetFormResultType } from '@/utility/form.js';
 import * as os from '@/os.js';
 import MkContainer from '@/components/MkContainer.vue';
-import { aiScriptReadline, createAiScriptEnv } from '@/utility/aiscript/api.js';
+import { aiScriptReadline, createAiScriptEnv } from '@/aiscript/api.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 
