@@ -10,11 +10,11 @@ import { readAndCompressImage } from '@misskey-dev/browser-image-resizer';
 import heicDecode from 'heic-decode';
 import { apiUrl } from '@@/js/config.js';
 import { getCompressionConfig } from './upload/compress-config.js';
-import { defaultStore } from '@/store.js';
 import { $i } from '@/account.js';
 import { alert } from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
+import { prefer } from '@/preferences.js';
 
 type Uploading = {
 	id: string;
@@ -35,7 +35,7 @@ export function uploadFile(
 	file: File,
 	folder?: string | Misskey.entities.DriveFolder,
 	name?: string,
-	keepOriginal: boolean = defaultStore.state.keepOriginalUploading,
+	keepOriginal: boolean = prefer.s.keepOriginalUploading,
 ): Promise<Misskey.entities.DriveFile> {
 	if ($i == null) throw new Error('Not logged in');
 
@@ -60,7 +60,7 @@ export function uploadFile(
 
 			const ctx = reactive<Uploading>({
 				id,
-				name: defaultStore.state.keepOriginalFilename ? filename : id + extension,
+				name: prefer.s.keepOriginalFilename ? filename : id + extension,
 				progressMax: undefined,
 				progressValue: undefined,
 				img: window.URL.createObjectURL(file),

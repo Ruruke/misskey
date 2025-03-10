@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineProps, computed } from 'vue';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 
 const props = defineProps<{
 	visibility: string;
@@ -19,16 +19,16 @@ const props = defineProps<{
 
 const color = computed(() => {
 	switch (props.visibility) {
-		case 'home': return defaultStore.state.noteVisibilityColorHome;
-		case 'followers': return defaultStore.state.noteVisibilityColorFollowers;
-		case 'specified': return defaultStore.state.noteVisibilityColorSpecified;
+		case 'home': return store.state.noteVisibilityColorHome;
+		case 'followers': return store.state.noteVisibilityColorFollowers;
+		case 'specified': return store.state.noteVisibilityColorSpecified;
 		default: return 'transparent';
 	}
 });
 
 const background = computed(() => {
 	if (props.localOnly) {
-		const theColor = props.visibility === 'public' ? defaultStore.state.noteVisibilityColorLocalOnly : color.value;
+		const theColor = props.visibility === 'public' ? store.state.noteVisibilityColorLocalOnly : color.value;
 		return `repeating-linear-gradient(135deg, transparent, transparent 5px, ${theColor} 5px, ${theColor} 10px);`;
 	}
 	return color.value;

@@ -56,7 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkFolder>
 				<template #label>{{ i18n.ts.pinnedList }}</template>
 				<!-- 複数ピン止め管理できるようにしたいけどめんどいので一旦ひとつのみ -->
-				<MkButton v-if="defaultStore.reactiveState.pinnedUserLists.value.length === 0" @click="setPinnedList()">{{ i18n.ts.add }}</MkButton>
+				<MkButton v-if="store.reactiveState.pinnedUserLists.value.length === 0" @click="setPinnedList()">{{ i18n.ts.add }}</MkButton>
 				<MkButton v-else danger @click="removePinnedList()"><i class="ti ti-trash"></i> {{ i18n.ts.remove }}</MkButton>
 			</MkFolder>
 		</div>
@@ -296,8 +296,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label>{{ i18n.ts.additionalEmojiDictionary }}</template>
 				<div class="_buttons">
 					<template v-for="lang in emojiIndexLangs" :key="lang">
-						<MkButton v-if="defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang]" danger @click="removeEmojiIndex(lang)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }} ({{ getEmojiIndexLangName(lang) }})</MkButton>
-						<MkButton v-else @click="downloadEmojiIndex(lang)"><i class="ti ti-download"></i> {{ getEmojiIndexLangName(lang) }}{{ defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang] ? ` (${ i18n.ts.installed })` : '' }}</MkButton>
+						<MkButton v-if="store.reactiveState.additionalUnicodeEmojiIndexes.value[lang]" danger @click="removeEmojiIndex(lang)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }} ({{ getEmojiIndexLangName(lang) }})</MkButton>
+						<MkButton v-else @click="downloadEmojiIndex(lang)"><i class="ti ti-download"></i> {{ getEmojiIndexLangName(lang) }}{{ store.reactiveState.additionalUnicodeEmojiIndexes.value[lang] ? ` (${ i18n.ts.installed })` : '' }}</MkButton>
 					</template>
 				</div>
 			</MkFolder>
@@ -324,7 +324,7 @@ import MkInfo from '@/components/MkInfo.vue';
 import FromSlot from '@/components/form/slot.vue';
 import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
 import MkEmoji from '@/components/global/MkEmoji.vue';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -338,70 +338,70 @@ import { claimAchievement } from '@/scripts/achievements.js';
 const lang = ref(miLocalStorage.getItem('lang'));
 const fontSize = ref(miLocalStorage.getItem('fontSize'));
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
-const dataSaver = ref(defaultStore.state.dataSaver);
+const dataSaver = ref(store.state.dataSaver);
 
-const hemisphere = computed(defaultStore.makeGetterSetter('hemisphere'));
-const overridedDeviceKind = computed(defaultStore.makeGetterSetter('overridedDeviceKind'));
-const serverDisconnectedBehavior = computed(defaultStore.makeGetterSetter('serverDisconnectedBehavior'));
-const showNoteActionsOnlyHover = computed(defaultStore.makeGetterSetter('showNoteActionsOnlyHover'));
-const showClipButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showClipButtonInNoteFooter'));
-const reactionsDisplaySize = computed(defaultStore.makeGetterSetter('reactionsDisplaySize'));
-const limitWidthOfReaction = computed(defaultStore.makeGetterSetter('limitWidthOfReaction'));
-const hideReactionUsers = computed(defaultStore.makeGetterSetter('hideReactionUsers'));
-const collapseRenotes = computed(defaultStore.makeGetterSetter('collapseRenotes'));
-const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
-const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));
-const useBlurEffect = computed(defaultStore.makeGetterSetter('useBlurEffect'));
-const showGapBetweenNotesInTimeline = computed(defaultStore.makeGetterSetter('showGapBetweenNotesInTimeline'));
-const animatedMfm = computed(defaultStore.makeGetterSetter('animatedMfm'));
-const advancedMfm = computed(defaultStore.makeGetterSetter('advancedMfm'));
-const showReactionsCount = computed(defaultStore.makeGetterSetter('showReactionsCount'));
-const enableQuickAddMfmFunction = computed(defaultStore.makeGetterSetter('enableQuickAddMfmFunction'));
-const emojiStyle = computed(defaultStore.makeGetterSetter('emojiStyle'));
-const disableDrawer = computed(defaultStore.makeGetterSetter('disableDrawer'));
-const menuStyle = computed(defaultStore.makeGetterSetter('menuStyle'));
-const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('disableShowingAnimatedImages'));
-const forceShowAds = computed(defaultStore.makeGetterSetter('forceShowAds'));
-const loadRawImages = computed(defaultStore.makeGetterSetter('loadRawImages'));
-const highlightSensitiveMedia = computed(defaultStore.makeGetterSetter('highlightSensitiveMedia'));
-const imageNewTab = computed(defaultStore.makeGetterSetter('imageNewTab'));
-const nsfw = computed(defaultStore.makeGetterSetter('nsfw'));
-const showFixedPostForm = computed(defaultStore.makeGetterSetter('showFixedPostForm'));
-const showFixedPostFormInChannel = computed(defaultStore.makeGetterSetter('showFixedPostFormInChannel'));
-const numberOfPageCache = computed(defaultStore.makeGetterSetter('numberOfPageCache'));
-const instanceTicker = computed(defaultStore.makeGetterSetter('instanceTicker'));
-const enableInfiniteScroll = computed(defaultStore.makeGetterSetter('enableInfiniteScroll'));
-const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('useReactionPickerForContextMenu'));
-const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
-const showAvatarDecorations = computed(defaultStore.makeGetterSetter('showAvatarDecorations'));
-const mediaListWithOneImageAppearance = computed(defaultStore.makeGetterSetter('mediaListWithOneImageAppearance'));
-const notificationPosition = computed(defaultStore.makeGetterSetter('notificationPosition'));
-const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificationStackAxis'));
-const keepScreenOn = computed(defaultStore.makeGetterSetter('keepScreenOn'));
-const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disableStreamingTimeline'));
-const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroupedNotifications'));
-const enableSeasonalScreenEffect = computed(defaultStore.makeGetterSetter('enableSeasonalScreenEffect'));
-const enableHorizontalSwipe = computed(defaultStore.makeGetterSetter('enableHorizontalSwipe'));
-const useNativeUIForVideoAudioPlayer = computed(defaultStore.makeGetterSetter('useNativeUIForVideoAudioPlayer'));
-const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfirmFollow'));
-const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
-const confirmOnReact = computed(defaultStore.makeGetterSetter('confirmOnReact'));
-const searchEngine = computed(defaultStore.makeGetterSetter('searchEngine'));
-const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
-const reactionChecksMuting = computed(defaultStore.makeGetterSetter('reactionChecksMuting'));
-const hideLocalTimeLine = computed(defaultStore.makeGetterSetter('hideLocalTimeLine'));
-const hideGlobalTimeLine = computed(defaultStore.makeGetterSetter('hideGlobalTimeLine'));
-const hideSocialTimeLine = computed(defaultStore.makeGetterSetter('hideSocialTimeLine'));
-const hideLists = computed(defaultStore.makeGetterSetter('hideLists'));
-const hideAntennas = computed(defaultStore.makeGetterSetter('hideAntennas'));
-const hideChannel = computed(defaultStore.makeGetterSetter('hideChannel'));
-const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
-const showLikeButton = computed(defaultStore.makeGetterSetter('showLikeButton'));
-const enableSnowMode = computed(defaultStore.makeGetterSetter('enableSnowMode'));
-const enableReactionConfirm = computed(defaultStore.makeGetterSetter('enableReactionConfirm'));
-const enableLikeConfirm = computed(defaultStore.makeGetterSetter('enableLikeConfirm'));
-const showInstanceTickerSoftwareName = computed(defaultStore.makeGetterSetter('showInstanceTickerSoftwareName'));
-const showInstanceTickerVersion = computed(defaultStore.makeGetterSetter('showInstanceTickerVersion'));
+const hemisphere = computed(store.makeGetterSetter('hemisphere'));
+const overridedDeviceKind = computed(store.makeGetterSetter('overridedDeviceKind'));
+const serverDisconnectedBehavior = computed(store.makeGetterSetter('serverDisconnectedBehavior'));
+const showNoteActionsOnlyHover = computed(store.makeGetterSetter('showNoteActionsOnlyHover'));
+const showClipButtonInNoteFooter = computed(store.makeGetterSetter('showClipButtonInNoteFooter'));
+const reactionsDisplaySize = computed(store.makeGetterSetter('reactionsDisplaySize'));
+const limitWidthOfReaction = computed(store.makeGetterSetter('limitWidthOfReaction'));
+const hideReactionUsers = computed(store.makeGetterSetter('hideReactionUsers'));
+const collapseRenotes = computed(store.makeGetterSetter('collapseRenotes'));
+const reduceAnimation = computed(store.makeGetterSetter('animation', v => !v, v => !v));
+const useBlurEffectForModal = computed(store.makeGetterSetter('useBlurEffectForModal'));
+const useBlurEffect = computed(store.makeGetterSetter('useBlurEffect'));
+const showGapBetweenNotesInTimeline = computed(store.makeGetterSetter('showGapBetweenNotesInTimeline'));
+const animatedMfm = computed(store.makeGetterSetter('animatedMfm'));
+const advancedMfm = computed(store.makeGetterSetter('advancedMfm'));
+const showReactionsCount = computed(store.makeGetterSetter('showReactionsCount'));
+const enableQuickAddMfmFunction = computed(store.makeGetterSetter('enableQuickAddMfmFunction'));
+const emojiStyle = computed(store.makeGetterSetter('emojiStyle'));
+const disableDrawer = computed(store.makeGetterSetter('disableDrawer'));
+const menuStyle = computed(store.makeGetterSetter('menuStyle'));
+const disableShowingAnimatedImages = computed(store.makeGetterSetter('disableShowingAnimatedImages'));
+const forceShowAds = computed(store.makeGetterSetter('forceShowAds'));
+const loadRawImages = computed(store.makeGetterSetter('loadRawImages'));
+const highlightSensitiveMedia = computed(store.makeGetterSetter('highlightSensitiveMedia'));
+const imageNewTab = computed(store.makeGetterSetter('imageNewTab'));
+const nsfw = computed(store.makeGetterSetter('nsfw'));
+const showFixedPostForm = computed(store.makeGetterSetter('showFixedPostForm'));
+const showFixedPostFormInChannel = computed(store.makeGetterSetter('showFixedPostFormInChannel'));
+const numberOfPageCache = computed(store.makeGetterSetter('numberOfPageCache'));
+const instanceTicker = computed(store.makeGetterSetter('instanceTicker'));
+const enableInfiniteScroll = computed(store.makeGetterSetter('enableInfiniteScroll'));
+const useReactionPickerForContextMenu = computed(store.makeGetterSetter('useReactionPickerForContextMenu'));
+const squareAvatars = computed(store.makeGetterSetter('squareAvatars'));
+const showAvatarDecorations = computed(store.makeGetterSetter('showAvatarDecorations'));
+const mediaListWithOneImageAppearance = computed(store.makeGetterSetter('mediaListWithOneImageAppearance'));
+const notificationPosition = computed(store.makeGetterSetter('notificationPosition'));
+const notificationStackAxis = computed(store.makeGetterSetter('notificationStackAxis'));
+const keepScreenOn = computed(store.makeGetterSetter('keepScreenOn'));
+const disableStreamingTimeline = computed(store.makeGetterSetter('disableStreamingTimeline'));
+const useGroupedNotifications = computed(store.makeGetterSetter('useGroupedNotifications'));
+const enableSeasonalScreenEffect = computed(store.makeGetterSetter('enableSeasonalScreenEffect'));
+const enableHorizontalSwipe = computed(store.makeGetterSetter('enableHorizontalSwipe'));
+const useNativeUIForVideoAudioPlayer = computed(store.makeGetterSetter('useNativeUIForVideoAudioPlayer'));
+const alwaysConfirmFollow = computed(store.makeGetterSetter('alwaysConfirmFollow'));
+const confirmWhenRevealingSensitiveMedia = computed(store.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
+const confirmOnReact = computed(store.makeGetterSetter('confirmOnReact'));
+const searchEngine = computed(store.makeGetterSetter('searchEngine'));
+const contextMenu = computed(store.makeGetterSetter('contextMenu'));
+const reactionChecksMuting = computed(store.makeGetterSetter('reactionChecksMuting'));
+const hideLocalTimeLine = computed(store.makeGetterSetter('hideLocalTimeLine'));
+const hideGlobalTimeLine = computed(store.makeGetterSetter('hideGlobalTimeLine'));
+const hideSocialTimeLine = computed(store.makeGetterSetter('hideSocialTimeLine'));
+const hideLists = computed(store.makeGetterSetter('hideLists'));
+const hideAntennas = computed(store.makeGetterSetter('hideAntennas'));
+const hideChannel = computed(store.makeGetterSetter('hideChannel'));
+const selectReaction = computed(store.makeGetterSetter('selectReaction'));
+const showLikeButton = computed(store.makeGetterSetter('showLikeButton'));
+const enableSnowMode = computed(store.makeGetterSetter('enableSnowMode'));
+const enableReactionConfirm = computed(store.makeGetterSetter('enableReactionConfirm'));
+const enableLikeConfirm = computed(store.makeGetterSetter('enableLikeConfirm'));
+const showInstanceTickerSoftwareName = computed(store.makeGetterSetter('showInstanceTickerSoftwareName'));
+const showInstanceTickerVersion = computed(store.makeGetterSetter('showInstanceTickerVersion'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -466,7 +466,7 @@ function getEmojiIndexLangName(targetLang: typeof emojiIndexLangs[number]) {
 
 function downloadEmojiIndex(lang: typeof emojiIndexLangs[number]) {
 	async function main() {
-		const currentIndexes = defaultStore.state.additionalUnicodeEmojiIndexes;
+		const currentIndexes = store.state.additionalUnicodeEmojiIndexes;
 
 		function download() {
 			switch (lang) {
@@ -478,7 +478,7 @@ function downloadEmojiIndex(lang: typeof emojiIndexLangs[number]) {
 		}
 
 		currentIndexes[lang] = await download();
-		await defaultStore.set('additionalUnicodeEmojiIndexes', currentIndexes);
+		await store.set('additionalUnicodeEmojiIndexes', currentIndexes);
 	}
 
 	os.promiseDialog(main());
@@ -486,9 +486,9 @@ function downloadEmojiIndex(lang: typeof emojiIndexLangs[number]) {
 
 function removeEmojiIndex(lang: string) {
 	async function main() {
-		const currentIndexes = defaultStore.state.additionalUnicodeEmojiIndexes;
+		const currentIndexes = store.state.additionalUnicodeEmojiIndexes;
 		delete currentIndexes[lang];
-		await defaultStore.set('additionalUnicodeEmojiIndexes', currentIndexes);
+		await store.set('additionalUnicodeEmojiIndexes', currentIndexes);
 	}
 
 	os.promiseDialog(main());
@@ -504,11 +504,11 @@ async function setPinnedList() {
 	});
 	if (canceled) return;
 
-	defaultStore.set('pinnedUserLists', [list]);
+	store.set('pinnedUserLists', [list]);
 }
 
 function removePinnedList() {
-	defaultStore.set('pinnedUserLists', []);
+	store.set('pinnedUserLists', []);
 }
 
 let smashCount = 0;
@@ -539,7 +539,7 @@ function testNotification(): void {
 }
 
 function enableAllDataSaver() {
-	const g = { ...defaultStore.state.dataSaver };
+	const g = { ...store.state.dataSaver };
 
 	Object.keys(g).forEach((key) => { g[key] = true; });
 
@@ -547,7 +547,7 @@ function enableAllDataSaver() {
 }
 
 function disableAllDataSaver() {
-	const g = { ...defaultStore.state.dataSaver };
+	const g = { ...store.state.dataSaver };
 
 	Object.keys(g).forEach((key) => { g[key] = false; });
 
@@ -555,7 +555,7 @@ function disableAllDataSaver() {
 }
 
 watch(dataSaver, (to) => {
-	defaultStore.set('dataSaver', to);
+	store.set('dataSaver', to);
 }, {
 	deep: true,
 });

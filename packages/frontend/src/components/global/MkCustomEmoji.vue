@@ -21,17 +21,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@error="errored = true"
 		@load="errored = false"
 		@click.stop="onClick"
-		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@mouseover="store.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@mouseout="store.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@touchstart="store.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@touchend="store.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, inject, ref, defineAsyncComponent } from 'vue';
 import { getProxiedImageUrl, getStaticImageUrl } from '@/scripts/media-proxy.js';
-import { defaultStore } from '@/store.js';
 import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import * as os from '@/os.js';
 import { misskeyApiGet } from '@/scripts/misskey-api.js';
@@ -40,7 +39,9 @@ import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
 import MkCustomEmojiDetailedDialog from '@/components/MkCustomEmojiDetailedDialog.vue';
 import { $i } from '@/account.js';
+import { prefer } from '@/preferences.js';
 import { importEmojiMeta } from '@/scripts/import-emoji.js';
+import { store } from '@/store.js';
 
 const props = defineProps<{
 	name: string;
@@ -71,7 +72,7 @@ const rawUrl = computed(() => {
 });
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+if (store.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => {
 	if (rawUrl.value == null) return undefined;
@@ -85,9 +86,9 @@ const url = computed(() => {
 				false,
 				true,
 			);
-		return defaultStore.reactiveState.disableShowingAnimatedImages.value
+		return prefer.s.disableShowingAnimatedImages
 			//TODO: Reactionはcherrypickの方の仕組みに移行してもいいかも？
-			// return defaultStore.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>defaultStore.reactiveState.showingAnimatedImages.value) && !playAnimation.value)
+			// return store.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>store.reactiveState.showingAnimatedImages.value) && !playAnimation.value)
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
@@ -150,7 +151,7 @@ function resetTimer() {
 }
 
 onMounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (store.state.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -158,7 +159,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (store.state.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);

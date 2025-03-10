@@ -6,7 +6,7 @@
 import isAnimated from 'is-file-animated';
 import { isWebpSupported } from './isWebpSupported.js';
 import type { BrowserImageResizerConfigWithConvertedOutput } from '@misskey-dev/browser-image-resizer';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 
 const compressTypeMap = {
 	'lossy': { quality: 0.90, mimeType: 'image/webp' },
@@ -63,7 +63,7 @@ export async function getCompressionConfig(file: File): Promise<BrowserImageResi
 	let compressKind: 'lossy' | 'lossless';
 	let resize: boolean;
 
-	switch (defaultStore.state.imageCompressionMode) {
+	switch (store.state.imageCompressionMode) {
 		case 'resizeCompress':
 		case null:
 		default:
