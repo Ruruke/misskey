@@ -4,7 +4,7 @@
  */
 
 import { miLocalStorage } from '@/local-storage.js';
-import { aiScriptReadline, createAiScriptEnv } from '@/utility/aiscript/api.js';
+import { aiScriptReadline, createAiScriptEnv } from '@/aiscript/api.js';
 import { errors, Interpreter, Parser, values } from '@syuilo/aiscript';
 import {
 	afterAll,
