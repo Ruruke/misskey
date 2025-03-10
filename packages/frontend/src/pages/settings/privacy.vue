@@ -27,6 +27,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #caption><SearchKeyword>{{ i18n.ts.makeReactionsPublicDescription }}</SearchKeyword></template>
 				</MkSwitch>
 			</SearchMarker>
+			<MkSwitch v-model="hideActivity" @update:modelValue="save()">
+				{{ i18n.ts.hideActivity }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				<template #caption>{{ i18n.ts.hideActivityDescription }}</template>
+			</MkSwitch>
+
+			<MkSwitch v-model="hideNoteFromOverview" @update:modelValue="save()">
+				{{ i18n.ts.hideNoteFromOverview }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				<template #caption>{{ i18n.ts.hideNoteFromOverviewDescription }}</template>
+			</MkSwitch>
+
+			<MkSwitch v-model="hidePublicNotes" @update:modelValue="save()">
+				{{ i18n.ts.hidePublicNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				<template #caption>{{ i18n.ts.hidePublicNotesDescription }}</template>
+			</MkSwitch>
+
+			<MkSwitch v-model="hideHomeNotes" @update:modelValue="save()">
+				{{ i18n.ts.hideHomeNotes }}<span class="_beta">{{ i18n.ts.originalFeature }}</span>
+				<template #caption>{{ i18n.ts.hideHomeNotesDescription }}</template>
+			</MkSwitch>
 
 			<SearchMarker :keywords="['following', 'visibility']">
 				<MkSelect v-model="followingVisibility" @update:modelValue="save()">
@@ -188,21 +207,30 @@ import { formatDateTimeString } from '@/scripts/format-time-string.js';
 import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os.js';
 import MkDisableSection from '@/components/MkDisableSection.vue';
-
 const $i = signinRequired();
 
 const isLocked = ref($i.isLocked);
 const autoAcceptFollowed = ref($i.autoAcceptFollowed);
+const carefulBot = ref($i.carefulBot);
 const noCrawle = ref($i.noCrawle);
 const preventAiLearning = ref($i.preventAiLearning);
+const enableRss = ref($i.enableRss);
 const isExplorable = ref($i.isExplorable);
 const requireSigninToViewContents = ref($i.requireSigninToViewContents ?? false);
 const makeNotesFollowersOnlyBefore = ref($i.makeNotesFollowersOnlyBefore ?? null);
 const makeNotesHiddenBefore = ref($i.makeNotesHiddenBefore ?? null);
 const hideOnlineStatus = ref($i.hideOnlineStatus);
 const publicReactions = ref($i.publicReactions);
+const hideActivity = ref($i.hideActivity);
+const hideNoteFromOverview = ref($i.hideNoteFromOverview);
+const hidePublicNotes = ref($i.hidePublicNotes);
+const hideHomeNotes = ref($i.hideHomeNotes);
 const followingVisibility = ref($i.followingVisibility);
 const followersVisibility = ref($i.followersVisibility);
+
+const defaultNoteVisibility = prefer.model('defaultNoteVisibility');
+const defaultNoteLocalOnly = prefer.model('defaultNoteLocalOnly');
+const rememberNoteVisibility = prefer.model('rememberNoteVisibility');
 
 const makeNotesFollowersOnlyBefore_type = computed(() => {
 	if (makeNotesFollowersOnlyBefore.value == null) {
@@ -245,14 +273,20 @@ function save() {
 	misskeyApi('i/update', {
 		isLocked: !!isLocked.value,
 		autoAcceptFollowed: !!autoAcceptFollowed.value,
+		carefulBot: !!carefulBot.value,
 		noCrawle: !!noCrawle.value,
 		preventAiLearning: !!preventAiLearning.value,
+		enableRss: !!enableRss.value,
 		isExplorable: !!isExplorable.value,
 		requireSigninToViewContents: !!requireSigninToViewContents.value,
 		makeNotesFollowersOnlyBefore: makeNotesFollowersOnlyBefore.value,
 		makeNotesHiddenBefore: makeNotesHiddenBefore.value,
 		hideOnlineStatus: !!hideOnlineStatus.value,
 		publicReactions: !!publicReactions.value,
+		hideActivity: !!hideActivity.value,
+		hideNoteFromOverview: !!hideNoteFromOverview.value,
+		hidePublicNotes: !!hidePublicNotes.value,
+		hideHomeNotes: !!hideHomeNotes.value,
 		followingVisibility: followingVisibility.value,
 		followersVisibility: followersVisibility.value,
 	});

@@ -174,7 +174,6 @@ import { ref, computed, watch } from 'vue';
 import XInstanceMute from './mute-block.instance-mute.vue';
 import XWordMute from './mute-block.word-mute.vue';
 import MkPagination from '@/components/MkPagination.vue';
-import MkSwitch from '@/components/MkSwitch.vue';
 import { store } from '@/store.js';
 import { userPage } from '@/filters/user.js';
 import { unisonReload } from '@/scripts/unison-reload.js';

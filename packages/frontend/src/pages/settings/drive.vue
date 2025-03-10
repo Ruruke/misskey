@@ -77,7 +77,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</FormSection>
 	</div>
-</SearchMarker>
 </template>
 
 <script lang="ts" setup>

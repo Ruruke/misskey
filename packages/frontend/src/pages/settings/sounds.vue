@@ -50,6 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<MkButton danger @click="reset()"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
 </div>
+</SearchMarker>
 </template>
 
 <script lang="ts" setup>
