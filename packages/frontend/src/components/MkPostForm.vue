@@ -145,6 +145,7 @@ import MkScheduleEditor from '@/components/MkScheduleEditor.vue';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
 import type { DeleteScheduleEditorModelValue } from '@/components/MkDeleteScheduleEditor.vue';
+import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
 
 const $i = signinRequired();
 
