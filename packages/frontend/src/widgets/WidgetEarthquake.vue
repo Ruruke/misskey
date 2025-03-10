@@ -14,14 +14,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</template>
 	<div class="$style.root">
 		<MkLoading v-if="fetching"></MkLoading>
-		<div v-if="earthquakeData">
-			<p>{{ earthquakeData.Title }}</p>
-			<p>発生時刻: {{ earthquakeData.time_full }}</p>
-			<p>震源地: {{ earthquakeData.location }}</p>
-			<p>最大震度: {{ formatShindo(earthquakeData.shindo) }}</p>
-			<p>マグニチュード: {{ earthquakeData.magnitude }}</p>
-			<p>震源の深さ: {{ earthquakeData.depth }}</p>
-			<p>{{ earthquakeData.info }}</p>
+		<div v-if="earthquakeData.value">
+			<p>{{ earthquakeData.value.Title }}</p>
+			<p>発生時刻: {{ earthquakeData.value.time_full }}</p>
+			<p>震源地: {{ earthquakeData.value.location }}</p>
+			<p>最大震度: {{ formatShindo(earthquakeData.value.shindo) }}</p>
+			<p>マグニチュード: {{ earthquakeData.value.magnitude }}</p>
+			<p>震源の深さ: {{ earthquakeData.value.depth }}</p>
+			<p>{{ earthquakeData.value.info }}</p>
 		</div>
 		<p v-else>現在、地震情報はありません。</p>
 	</div>
@@ -64,9 +64,10 @@ interface EarthquakeData {
 	magnitude: string;
 	depth: string;
 	info: string;
+	md5: string;
 }
 
-const earthquakeData = ref<EarthquakeData | null>(null);
+const earthquakeData = ref<{ value: EarthquakeData | null }>({ value: null });
 const fetching = ref(false);
 let ws: WebSocket | null = null;
 let reconnecting = ref(false);
@@ -122,7 +123,7 @@ const connectWebSocket = () => {
 
 			if (Object.keys(data).length === 0 || !data.data) {
 				console.warn('データが空です:', data);
-				earthquakeData.value = null;
+				earthquakeData.value.value = null;
 				showLoadingTemporarily();
 				return;
 			}
@@ -137,13 +138,14 @@ const connectWebSocket = () => {
 				magnitude: latestEarthquake.magnitude,
 				depth: latestEarthquake.depth,
 				info: latestEarthquake.info,
+				md5: latestEarthquake.md5,
 			};
 
 			if (JSON.stringify(earthquakeData.value) === JSON.stringify(newEarthquakeData)) {
 				return;
 			}
 
-			earthquakeData.value = newEarthquakeData;
+			earthquakeData.value.value = newEarthquakeData;
 			showLoadingTemporarily();
 		} catch (error) {
 			console.error('WebSocket データ解析エラー:', error);
