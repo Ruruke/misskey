@@ -92,8 +92,8 @@ import * as os from '@/os.js';
 import { store } from '@/store.js';
 import { addTheme } from '@/theme-store.js';
 import { i18n } from '@/i18n.js';
-import { useLeaveGuard } from '@/scripts/use-leave-guard.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { useLeaveGuard } from '@/utility/use-leave-guard.js';
+import { definePageMetadata } from '@/utility/page-metadata.js';
 import { prefer } from '@/preferences.js';
 
 const bgColors = [

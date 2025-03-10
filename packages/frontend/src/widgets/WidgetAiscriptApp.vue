@@ -18,14 +18,14 @@ import type { Ref } from 'vue';
 import { Interpreter, Parser } from '@syuilo/aiscript';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { GetFormResultType } from '@/scripts/form.js';
+import type { GetFormResultType } from '@/utility/form.js';
 import * as os from '@/os.js';
-import { aiScriptReadline, createAiScriptEnv } from '@/scripts/aiscript/api.js';
+import { aiScriptReadline, createAiScriptEnv } from '@/utility/aiscript/api.js';
 import { $i } from '@/account.js';
 import MkAsUi from '@/components/MkAsUi.vue';
 import MkContainer from '@/components/MkContainer.vue';
-import { registerAsUiLib } from '@/scripts/aiscript/ui.js';
-import type { AsUiComponent, AsUiRoot } from '@/scripts/aiscript/ui.js';
+import { registerAsUiLib } from '@/utility/aiscript/ui.js';
+import type { AsUiComponent, AsUiRoot } from '@/utility/aiscript/ui.js';
 
 const name = 'aiscriptApp';
 

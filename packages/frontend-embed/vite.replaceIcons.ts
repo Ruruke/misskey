@@ -113,7 +113,7 @@ export function pluginReplaceIcons() {
 				},
 				exclude: [
 					'**/components/MkMedia*',
-					'**/scripts/get-user-menu.*',
+					'**/utility/get-user-menu.*',
 					'**/pages/gallery/post.*',
 				],
 			}),
@@ -123,7 +123,7 @@ export function pluginReplaceIcons() {
 				},
 				include: [
 					'**/components/MkMedia*',
-					'**/scripts/get-user-menu.*',
+					'**/utility/get-user-menu.*',
 					'**/pages/gallery/post.*',
 				],
 			}),

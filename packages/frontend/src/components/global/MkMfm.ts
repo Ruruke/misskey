@@ -20,7 +20,7 @@ import MkCodeInline from '@/components/MkCodeInline.vue';
 import MkGoogle from '@/components/MkGoogle.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
 import HanaSaizeMenuBadge from '@/components/HanaSaizeMenuBadge.vue';
-import { parseMfmRjNumber } from '@/scripts/tms/rj-number.js';
+import { parseMfmRjNumber } from '@/utility/tms/rj-number.js';
 
 import MkA from '@/components/global/MkA.vue';
 import { prefer } from '@/preferences.js';

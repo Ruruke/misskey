@@ -48,7 +48,7 @@ import InboxModerationEditorFormula from '@/pages/admin/InboxModerationEditorFor
 import MkFolder from '@/components/MkFolder.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 
 type Rule = {
 	id?:string;

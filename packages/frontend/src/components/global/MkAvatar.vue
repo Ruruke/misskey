@@ -51,7 +51,7 @@ import { extractAvgColorFromBlurhash } from '@@/js/extract-avg-color-from-blurha
 import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
 import MkA from './MkA.vue';
 import { instance as Instance } from '@/instance.js';
-import { getStaticImageUrl, getProxiedImageUrlNullable } from '@/scripts/media-proxy.js';
+import { getStaticImageUrl, getProxiedImageUrlNullable } from '@/utility/media-proxy.js';
 import { acct, userPage } from '@/filters/user.js';
 import MkUserOnlineIndicator from '@/components/MkUserOnlineIndicator.vue';
 import { prefer } from '@/preferences.js';

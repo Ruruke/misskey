@@ -17,12 +17,12 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { store } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { getUserMenu } from '@/scripts/get-user-menu.js';
+import { getUserMenu } from '@/utility/get-user-menu.js';
 import { clipsCache, favoritedChannelsCache } from '@/cache.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
-import { isSupportShare } from '@/scripts/navigator.js';
-import { getAppearNote } from '@/scripts/get-appear-note.js';
-import { genEmbedCode } from '@/scripts/get-embed-code.js';
+import { isSupportShare } from '@/utility/navigator.js';
+import { getAppearNote } from '@/utility/get-appear-note.js';
+import { genEmbedCode } from '@/utility/get-embed-code.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
 

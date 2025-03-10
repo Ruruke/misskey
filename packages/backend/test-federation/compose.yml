@@ -71,8 +71,8 @@ services:
         target: /misskey/pnpm-workspace.yaml
         read_only: true
       - type: bind
-        source: ../../../scripts/dependency-patches
-        target: /misskey/scripts/dependency-patches
+        source: ../../../utility/dependency-patches
+        target: /misskey/utility/dependency-patches
         read_only: true
       - type: bind
         source: ./certificates/rootCA.crt
@@ -119,8 +119,8 @@ services:
         target: /misskey/pnpm-workspace.yaml
         read_only: true
       - type: bind
-        source: ../../../scripts/dependency-patches
-        target: /misskey/scripts/dependency-patches
+        source: ../../../utility/dependency-patches
+        target: /misskey/utility/dependency-patches
         read_only: true
     working_dir: /misskey
     command: >

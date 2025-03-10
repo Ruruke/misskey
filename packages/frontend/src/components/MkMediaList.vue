@@ -41,7 +41,7 @@ import XVideo from '@/components/MkMediaVideo.vue';
 import * as os from '@/os.js';
 import { store } from '@/store.js';
 
-import { focusParent } from '@/scripts/focus.js';
+import { focusParent } from '@/utility/focus.js';
 import { prefer } from '@/preferences.js';
 
 const props = defineProps<{

@@ -18,17 +18,17 @@ import { updateI18n, i18n } from '@/i18n.js';
 import { $i, refreshAccount, login } from '@/account.js';
 import { store } from '@/store.js';
 import { fetchInstance, instance } from '@/instance.js';
-import { deviceKind, updateDeviceKind } from '@/scripts/device-kind.js';
-import { reloadChannel } from '@/scripts/unison-reload.js';
-import { getUrlWithoutLoginId } from '@/scripts/login-id.js';
-import { getAccountFromId } from '@/scripts/get-account-from-id.js';
+import { deviceKind, updateDeviceKind } from '@/utility/device-kind.js';
+import { reloadChannel } from '@/utility/unison-reload.js';
+import { getUrlWithoutLoginId } from '@/utility/login-id.js';
+import { getAccountFromId } from '@/utility/get-account-from-id.js';
 import { deckStore } from '@/ui/deck/deck-store.js';
 import { analytics, initAnalytics } from '@/analytics.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
 import { setupRouter } from '@/router/main.js';
 import { createMainRouter } from '@/router/definition.js';
-import { applyFont } from '@/scripts/font';
+import { applyFont } from '@/utility/font';
 import { prefer } from '@/preferences.js';
 
 export async function common(createVue: () => App<Element>) {

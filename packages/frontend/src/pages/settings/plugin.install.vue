@@ -24,7 +24,7 @@ import MkButton from '@/components/MkButton.vue';
 import FormInfo from '@/components/MkInfo.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePageMetadata } from '@/utility/page-metadata.js';
 import { installPlugin } from '@/plugin.js';
 import { useRouter } from '@/router/supplier.js';
 
