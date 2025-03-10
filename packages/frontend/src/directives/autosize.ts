@@ -24,7 +24,7 @@ const onInput = (arg: Event | HTMLTextAreaElement) => {
 
 export default {
 	mounted(el: HTMLTextAreaElement) {
-		if (!store.state.useTextAreaAutoSize) return;
+		if (!store.s.useTextAreaAutoSize) return;
 		onInput(el);
 		el.addEventListener('input', onInput);
 		el.style.resize = 'none';

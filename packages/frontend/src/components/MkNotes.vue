@@ -75,7 +75,7 @@ function initNoteRenderSkipping() {
 
 	if (
 		!props.disableJsRenderSkip &&
-		store.state.skipNoteRender === 'js'
+		store.s.skipNoteRender === 'js'
 	) {
 		rootElWatcher = watch(rootEl, (to) => {
 			if (to != null) {

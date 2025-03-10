@@ -180,11 +180,11 @@ export async function common(createVue: () => App<Element>) {
 	});
 
 	//# Custom font
-	if (store.state.customFont) {
-		applyFont(store.state.customFont);
+	if (store.s.customFont) {
+		applyFont(store.s.customFont);
 	}
 
-	watch(store.reactiveState.customFont, (font) => {
+	watch(store.r.customFont, (font) => {
 		applyFont(font);
 	});
 

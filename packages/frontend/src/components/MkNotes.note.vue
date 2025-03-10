@@ -40,11 +40,11 @@ const props = withDefaults(defineProps<{
 
 const height = ref<number>(150);
 const heightResolved = ref(false);
-const skipRendering = computed(() => store.state.skipNoteRender === 'js' && !props.visible && heightResolved.value);
+const skipRendering = computed(() => store.s.skipNoteRender === 'js' && !props.visible && heightResolved.value);
 let observer: ResizeObserver | null = null;
 
 function onNoteMounted(el: HTMLElement) {
-	if (store.state.skipNoteRender !== 'js') return;
+	if (store.s.skipNoteRender !== 'js') return;
 
 	height.value = el.getBoundingClientRect().height ?? 150;
 	heightResolved.value = true;

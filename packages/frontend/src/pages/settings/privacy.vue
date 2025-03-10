@@ -140,12 +140,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 									</MkInput>
 								</div>
 
-								<template #caption>
-									<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesFollowersOnlyBeforeDescription }}</SearchKeyword></div>
-									<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.mayNotEffectForFederatedNotes }}</div>
-								</template>
-							</FormSlot>
-						</SearchMarker>
+							<template #caption>
+								<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesFollowersOnlyBeforeDescription }}</SearchKeyword></div>
+							</template>
+						</FormSlot>
+					</SearchMarker>
 
 						<SearchMarker :keywords="['hidden']">
 							<FormSlot>
@@ -178,17 +177,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 									</MkInput>
 								</div>
 
-								<template #caption>
-									<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesHiddenBeforeDescription }}</SearchKeyword></div>
-									<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.mayNotEffectForFederatedNotes }}</div>
-								</template>
-							</FormSlot>
-						</SearchMarker>
-					</div>
-				</FormSection>
-			</SearchMarker>
-		</div>
-	</SearchMarker>
+							<template #caption>
+								<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesHiddenBeforeDescription }}</SearchKeyword></div>
+							</template>
+						</FormSlot>
+					</SearchMarker>
+
+					<MkInfo warn>{{ i18n.ts._accountSettings.mayNotEffectSomeSituations }}</MkInfo>
+				</div>
+			</FormSection>
+		</SearchMarker>
+	</div>
+</SearchMarker>
 </template>
 
 <script lang="ts" setup>
@@ -207,6 +207,7 @@ import { formatDateTimeString } from '@/utility/format-time-string.js';
 import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os.js';
 import MkDisableSection from '@/components/MkDisableSection.vue';
+
 const $i = signinRequired();
 
 const isLocked = ref($i.isLocked);

@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@dragleave="onDragleave"
 	@drop.stop="onDrop"
 >
-	<ShVisibilityColoring v-if="store.state.useNoteVisibilityColoring && !channel && (visibility !== 'public' || localOnly)" :visibility="visibility" :localOnly="localOnly"/>
+	<ShVisibilityColoring v-if="store.s.useNoteVisibilityColoring && !channel && (visibility !== 'public' || localOnly)" :visibility="visibility" :localOnly="localOnly"/>
 	<header :class="$style.header">
 		<div :class="$style.headerLeft">
 			<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div> -->
 	<footer :class="$style.footer">
 		<div :class="$style.footerLeft">
-			<template v-for="item in store.state.postFormActions">
+			<template v-for="item in store.s.postFormActions">
 				<button v-if="!bottomItemActionDef[item].hide" :key="item" v-tooltip="bottomItemDef[item].title" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: bottomItemActionDef[item].active }]" v-on="bottomItemActionDef[item].action ? { click: bottomItemActionDef[item].action } : {}">
 					<i class="ti" :class="bottomItemDef[item].icon"></i>
 				</button>
@@ -201,7 +201,7 @@ const posted = ref(false);
 const text = ref(props.initialText ?? '');
 const files = ref(props.initialFiles ?? []);
 const poll = ref<PollEditorModelValue | null>(null);
-const scheduledNoteDelete = ref<DeleteScheduleEditorModelValue | null>(store.state.defaultScheduledNoteDelete ? { deleteAt: null, deleteAfter: store.state.defaultScheduledNoteDeleteTime, isValid: true } : null);
+const scheduledNoteDelete = ref<DeleteScheduleEditorModelValue | null>(store.s.defaultScheduledNoteDelete ? { deleteAt: null, deleteAfter: store.s.defaultScheduledNoteDeleteTime, isValid: true } : null);
 const useCw = ref<boolean>(!!props.initialCw);
 const showPreview = ref(store.s.showPreview);
 watch(showPreview, () => store.set('showPreview', showPreview.value));
@@ -526,7 +526,7 @@ function toggleScheduledNoteDelete() {
 	} else {
 		scheduledNoteDelete.value = {
 			deleteAt: null,
-			deleteAfter: store.state.defaultScheduledNoteDeleteTime,
+			deleteAfter: store.s.defaultScheduledNoteDeleteTime,
 			isValid: true,
 		};
 	}

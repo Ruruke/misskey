@@ -21,10 +21,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@error="errored = true"
 		@load="errored = false"
 		@click.stop="onClick"
-		@mouseover="store.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@mouseout="store.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-		@touchstart="store.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@touchend="store.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@mouseover="store.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@mouseout="store.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@touchstart="store.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@touchend="store.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
 </template>
 
@@ -72,7 +72,7 @@ const rawUrl = computed(() => {
 });
 
 const playAnimation = ref(true);
-if (store.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+if (store.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => {
 	if (rawUrl.value == null) return undefined;
@@ -88,7 +88,7 @@ const url = computed(() => {
 			);
 		return prefer.s.disableShowingAnimatedImages
 			//TODO: Reactionはcherrypickの方の仕組みに移行してもいいかも？
-			// return store.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>store.reactiveState.showingAnimatedImages.value) && !playAnimation.value)
+			// return store.r.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>store.r.showingAnimatedImages.value) && !playAnimation.value)
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
@@ -151,7 +151,7 @@ function resetTimer() {
 }
 
 onMounted(() => {
-	if (store.state.showingAnimatedImages === 'inactive') {
+	if (store.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -159,7 +159,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (store.state.showingAnimatedImages === 'inactive') {
+	if (store.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);

@@ -19,16 +19,16 @@ const props = defineProps<{
 
 const color = computed(() => {
 	switch (props.visibility) {
-		case 'home': return store.state.noteVisibilityColorHome;
-		case 'followers': return store.state.noteVisibilityColorFollowers;
-		case 'specified': return store.state.noteVisibilityColorSpecified;
+		case 'home': return store.s.noteVisibilityColorHome;
+		case 'followers': return store.s.noteVisibilityColorFollowers;
+		case 'specified': return store.s.noteVisibilityColorSpecified;
 		default: return 'transparent';
 	}
 });
 
 const background = computed(() => {
 	if (props.localOnly) {
-		const theColor = props.visibility === 'public' ? store.state.noteVisibilityColorLocalOnly : color.value;
+		const theColor = props.visibility === 'public' ? store.s.noteVisibilityColorLocalOnly : color.value;
 		return `repeating-linear-gradient(135deg, transparent, transparent 5px, ${theColor} 5px, ${theColor} 10px);`;
 	}
 	return color.value;

@@ -60,7 +60,7 @@ import { definePageMetadata } from '@/utility/page-metadata.js';
 
 const defaultScheduledNoteDelete = computed(store.makeGetterSetter('defaultScheduledNoteDelete'));
 
-const scheduledNoteDelete = ref({ deleteAt: null, deleteAfter: store.state.defaultScheduledNoteDeleteTime, isValid: true });
+const scheduledNoteDelete = ref({ deleteAt: null, deleteAfter: store.s.defaultScheduledNoteDeleteTime, isValid: true });
 
 watch(scheduledNoteDelete, () => {
 	if (!scheduledNoteDelete.value.isValid) return;
@@ -69,7 +69,7 @@ watch(scheduledNoteDelete, () => {
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
-const items = ref(store.state.postFormActions.map(x => ({
+const items = ref(store.s.postFormActions.map(x => ({
 	id: Math.random().toString(),
 	type: x,
 })));
