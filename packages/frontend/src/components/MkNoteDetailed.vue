@@ -267,6 +267,7 @@ import { isEnabledUrlPreview } from '@/instance.js';
 import { getAppearNote } from '@/utility/get-appear-note.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
+import { store } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
