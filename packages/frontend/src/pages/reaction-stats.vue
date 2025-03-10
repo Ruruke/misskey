@@ -34,13 +34,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import { misskeyApi } from '@/scripts/misskey-api';
+import { misskeyApi } from '@/utility/misskey-api';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePageMetadata } from '@/utility/page-metadata.js';
 import { signinRequired } from '@/account.js';
 import MkInfo from '@/components/MkInfo.vue';
 import MkButton from '@/components/MkButton.vue';
-import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
+import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 
 const $i = signinRequired();
 

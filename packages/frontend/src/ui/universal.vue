@@ -105,13 +105,12 @@ import XCommon from './_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import XDrawerMenu from '@/ui/_common_/navbar-for-mobile.vue';
 import * as os from '@/os.js';
-import { store } from '@/store.js';
 import { navbarItemDef } from '@/navbar.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
-import type { PageMetadata } from '@/scripts/page-metadata.js';
-import { deviceKind } from '@/scripts/device-kind.js';
+import { provideMetadataReceiver, provideReactiveMetadata } from '@/utility/page-metadata.js';
+import type { PageMetadata } from '@/utility/page-metadata.js';
+import { deviceKind } from '@/utility/device-kind.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { useScrollPositionManager } from '@/nirax.js';
 import { mainRouter } from '@/router/main.js';
@@ -178,20 +177,18 @@ if (window.innerWidth > 1024) {
 	}
 }
 
-store.loaded.then(() => {
-	if (store.state.widgets.length === 0) {
-		store.set('widgets', [{
-			name: 'calendar',
-			id: 'a', place: 'right', data: {},
-		}, {
-			name: 'notifications',
-			id: 'b', place: 'right', data: {},
-		}, {
-			name: 'trends',
-			id: 'c', place: 'right', data: {},
-		}]);
-	}
-});
+if (prefer.s.widgets.length === 0) {
+	prefer.set('widgets', [{
+		name: 'calendar',
+		id: 'a', place: 'right', data: {},
+	}, {
+		name: 'notifications',
+		id: 'b', place: 'right', data: {},
+	}, {
+		name: 'trends',
+		id: 'c', place: 'right', data: {},
+	}]);
+}
 
 onMounted(() => {
 	if (!isDesktop.value) {

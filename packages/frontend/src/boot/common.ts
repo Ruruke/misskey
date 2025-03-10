@@ -12,23 +12,23 @@ import type { App } from 'vue';
 import widgets from '@/widgets/index.js';
 import directives from '@/directives/index.js';
 import components from '@/components/index.js';
-import { applyTheme } from '@/scripts/theme.js';
-import { isDeviceDarkmode } from '@/scripts/is-device-darkmode.js';
+import { applyTheme } from '@/theme.js';
+import { isDeviceDarkmode } from '@/utility/is-device-darkmode.js';
 import { updateI18n, i18n } from '@/i18n.js';
 import { $i, refreshAccount, login } from '@/account.js';
 import { store } from '@/store.js';
 import { fetchInstance, instance } from '@/instance.js';
-import { deviceKind, updateDeviceKind } from '@/scripts/device-kind.js';
-import { reloadChannel } from '@/scripts/unison-reload.js';
-import { getUrlWithoutLoginId } from '@/scripts/login-id.js';
-import { getAccountFromId } from '@/scripts/get-account-from-id.js';
+import { deviceKind, updateDeviceKind } from '@/utility/device-kind.js';
+import { reloadChannel } from '@/utility/unison-reload.js';
+import { getUrlWithoutLoginId } from '@/utility/login-id.js';
+import { getAccountFromId } from '@/utility/get-account-from-id.js';
 import { deckStore } from '@/ui/deck/deck-store.js';
 import { analytics, initAnalytics } from '@/analytics.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
 import { setupRouter } from '@/router/main.js';
 import { createMainRouter } from '@/router/definition.js';
-import { applyFont } from '@/scripts/font';
+import { applyFont } from '@/utility/font';
 import { prefer } from '@/preferences.js';
 
 export async function common(createVue: () => App<Element>) {
@@ -212,7 +212,7 @@ export async function common(createVue: () => App<Element>) {
 		if (prefer.s.darkTheme == null && instance.defaultDarkTheme != null) prefer.set('darkTheme', JSON.parse(instance.defaultDarkTheme));
 	});
 
-	watch(store.reactiveState.overridedDeviceKind, (kind) => {
+	watch(prefer.r.overridedDeviceKind, (kind) => {
 		updateDeviceKind(kind);
 	}, { immediate: true });
 

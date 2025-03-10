@@ -54,10 +54,10 @@ import MkInfo from '@/components/MkInfo.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { signinRequired } from '@/account.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePageMetadata } from '@/utility/page-metadata.js';
 import { instance } from '@/instance.js';
 
 const $i = signinRequired();

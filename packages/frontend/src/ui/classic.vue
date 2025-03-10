@@ -51,10 +51,10 @@ import { instanceName } from '@@/js/config.js';
 import { isLink } from '@@/js/is-link.js';
 import XSidebar from './classic.sidebar.vue';
 import XCommon from './_common_/common.vue';
-import type { PageMetadata } from '@/scripts/page-metadata.js';
-import { StickySidebar } from '@/scripts/sticky-sidebar.js';
+import type { PageMetadata } from '@/utility/page-metadata.js';
+import { StickySidebar } from '@/utility/sticky-sidebar.js';
 import * as os from '@/os.js';
-import { provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
+import { provideMetadataReceiver, provideReactiveMetadata } from '@/utility/page-metadata.js';
 import { store } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -143,20 +143,18 @@ if (window.innerWidth < 1024) {
 
 document.documentElement.style.overflowY = 'scroll';
 
-store.loaded.then(() => {
-	if (store.state.widgets.length === 0) {
-		store.set('widgets', [{
-			name: 'calendar',
-			id: 'a', place: null, data: {},
-		}, {
-			name: 'notifications',
-			id: 'b', place: null, data: {},
-		}, {
-			name: 'trends',
-			id: 'c', place: null, data: {},
-		}]);
-	}
-});
+if (prefer.s.widgets.length === 0) {
+	prefer.set('widgets', [{
+		name: 'calendar',
+		id: 'a', place: null, data: {},
+	}, {
+		name: 'notifications',
+		id: 'b', place: null, data: {},
+	}, {
+		name: 'trends',
+		id: 'c', place: null, data: {},
+	}]);
+}
 
 onMounted(() => {
 	window.addEventListener('resize', () => {

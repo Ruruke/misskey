@@ -48,7 +48,7 @@ import type { Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
 import { store } from '@/store.js';
-import { getHTMLElementOrNull } from "@/scripts/get-dom-node-or-null.js";
+import { getHTMLElementOrNull } from "@/utility/get-dom-node-or-null.js";
 import { getScrollContainer } from '@@/js/scroll.js';
 
 const props = withDefaults(defineProps<{

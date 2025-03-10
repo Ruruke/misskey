@@ -52,7 +52,7 @@
 #           to avoid ACCIDENTAL LEAKING OF SENSITIVE INFORMATION.
 #           To prevent certain files from being included in the
 #           tarball, add a glob pattern after line 15 in
-#           <scripts/tarball.mjs>.  DO NOT FORGET TO BUILD AFTER
+#           <utility/tarball.mjs>.  DO NOT FORGET TO BUILD AFTER
 #           ENABLING THIS OPTION!)
 #
 # Step 1: Uncomment the following line.

@@ -56,18 +56,18 @@ import MkNoteDetailed from '@/components/MkNoteDetailed.vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkRemoteCaution from '@/components/MkRemoteCaution.vue';
 import MkButton from '@/components/MkButton.vue';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { definePageMetadata } from '@/utility/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import { dateString } from '@/filters/date.js';
 import MkClipPreview from '@/components/MkClipPreview.vue';
 import { prefer } from '@/preferences.js';
-import { pleaseLogin } from '@/scripts/please-login.js';
+import { pleaseLogin } from '@/utility/please-login.js';
 import { assertServerContext, serverContext } from '@/server-context.js';
 import { instance } from "@/instance.js";
 import { miLocalStorage } from "@/local-storage.js";
 import { $i } from '@/account.js';
-import { getAppearNote } from '@/scripts/get-appear-note.js';
+import { getAppearNote } from '@/utility/get-appear-note.js';
 
 // contextは非ログイン状態の情報しかないためログイン時は利用できない
 const CTX_NOTE = !$i && assertServerContext(serverContext, 'note') ? serverContext.note : null;

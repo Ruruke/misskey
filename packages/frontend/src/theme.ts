@@ -8,8 +8,8 @@ import tinycolor from 'tinycolor2';
 import lightTheme from '@@/themes/_light.json5';
 import darkTheme from '@@/themes/_dark.json5';
 import JSON5 from 'json5';
-import { deepClone } from './clone.js';
 import type { BundledTheme } from 'shiki/themes';
+import { deepClone } from '@/utility/clone.js';
 import { globalEvents } from '@/events.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { addTheme, getThemes } from '@/theme-store.js';
@@ -72,6 +72,9 @@ export function applyTheme(theme: Theme, persist = true) {
 
 	timeout = window.setTimeout(() => {
 		document.documentElement.classList.remove('_themeChanging_');
+
+		// 色計算など再度行えるようにクライアント全体に通知
+		globalEvents.emit('themeChanged');
 	}, 1000);
 
 	const colorScheme = theme.base === 'dark' ? 'dark' : 'light';
@@ -108,7 +111,7 @@ export function applyTheme(theme: Theme, persist = true) {
 	}
 
 	// 色計算など再度行えるようにクライアント全体に通知
-	globalEvents.emit('themeChanged');
+	globalEvents.emit('themeChanging');
 }
 
 function compile(theme: Theme): Record<string, string> {

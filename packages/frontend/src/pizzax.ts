@@ -9,12 +9,12 @@ import { onUnmounted, ref, watch } from 'vue';
 import { BroadcastChannel } from 'broadcast-channel';
 import type { Ref } from 'vue';
 import { $i } from '@/account.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { get, set } from '@/scripts/idb-proxy.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { get, set } from '@/utility/idb-proxy.js';
 import { store } from '@/store.js';
 import { useStream } from '@/stream.js';
-import { deepClone } from '@/scripts/clone.js';
-import { deepMerge } from '@/scripts/merge.js';
+import { deepClone } from '@/utility/clone.js';
+import { deepMerge } from '@/utility/merge.js';
 
 type StateDef = Record<string, {
 	where: 'account' | 'device' | 'deviceAccount';
@@ -237,6 +237,7 @@ export class Storage<T extends StateDef> {
 	 * 特定のキーの、簡易的なgetter/setterを作ります
 	 * 主にvue上で設定コントロールのmodelとして使う用
 	 */
+	// TODO: 廃止
 	public makeGetterSetter<K extends keyof T, R = T[K]['default']>(
 		key: K,
 		getter?: (v: T[K]['default']) => R,

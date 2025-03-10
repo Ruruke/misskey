@@ -327,13 +327,13 @@ import MkEmoji from '@/components/global/MkEmoji.vue';
 import { store } from '@/store.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { reloadAsk } from '@/scripts/reload-ask.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { reloadAsk } from '@/utility/reload-ask.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePageMetadata } from '@/utility/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
-import { claimAchievement } from '@/scripts/achievements.js';
+import { claimAchievement } from '@/utility/achievements.js';
 
 const lang = ref(miLocalStorage.getItem('lang'));
 const fontSize = ref(miLocalStorage.getItem('fontSize'));

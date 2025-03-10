@@ -4,26 +4,27 @@
  */
 
 import { defineAsyncComponent } from 'vue';
-import type { Ref, ShallowRef } from 'vue';
 import * as Misskey from 'misskey-js';
 import { url } from '@@/js/config.js';
 import { claimAchievement } from './achievements.js';
+import type { Ref, ShallowRef } from 'vue';
 import type { MenuItem } from '@/types/menu.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
-import { store, noteActions } from '@/store.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
+import { store } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { getUserMenu } from '@/scripts/get-user-menu.js';
+import { getUserMenu } from '@/utility/get-user-menu.js';
 import { clipsCache, favoritedChannelsCache } from '@/cache.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
-import { isSupportShare } from '@/scripts/navigator.js';
-import { getAppearNote } from '@/scripts/get-appear-note.js';
-import { genEmbedCode } from '@/scripts/get-embed-code.js';
+import { isSupportShare } from '@/utility/navigator.js';
+import { getAppearNote } from '@/utility/get-appear-note.js';
+import { genEmbedCode } from '@/utility/get-embed-code.js';
 import { prefer } from '@/preferences.js';
+import { getPluginHandlers } from '@/plugin.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;
@@ -496,6 +497,7 @@ export function getNoteMenu(props: {
 		}
 	}
 
+	const noteActions = getPluginHandlers('note_action');
 	if (noteActions.length > 0) {
 		menuItems.push({ type: 'divider' });
 
