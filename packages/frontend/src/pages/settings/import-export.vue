@@ -134,7 +134,7 @@ import { store } from '@/store.js';
 
 const excludeMutingUsers = ref(false);
 const excludeInactiveUsers = ref(false);
-const withReplies = ref(store.state.defaultWithReplies);
+const withReplies = ref(store.s.defaultWithReplies);
 
 const onExportSuccess = () => {
 	os.alert({

@@ -16,12 +16,7 @@ import { store } from '@/store.js';
  */
 class EmojiPicker {
 	private src: Ref<HTMLElement | null> = ref(null);
-
-	private isWindow: boolean = false;
-	private windowShowing: boolean = false;
-
-	private dialogShowing = ref(false);
-
+	private manualShowing = ref(false);
 	private onChosen?: (emoji: string) => void;
 	private onClosed?: () => void;
 
@@ -37,18 +32,19 @@ class EmojiPicker {
 			// なので一度initされたらwindow表示で固定する（設定を変更したら要リロード）
 			this.isWindow = true;
 		} else {
+			const emojisRef = store.r.pinnedEmojis;
 			await popup(defineAsyncComponent(() => import('@/components/MkEmojiPickerDialog.vue')), {
 				src: this.src,
 				pinnedEmojis: emojisRef,
 				asReactionPicker: false,
-				manualShowing: this.dialogShowing,
+				manualShowing: this.manualShowing,
 				choseAndClose: false,
 			}, {
 				done: emoji => {
 					if (this.onChosen) this.onChosen(emoji);
 				},
 				close: () => {
-					this.dialogShowing.value = false;
+					this.manualShowing.value = false;
 				},
 				closed: () => {
 					this.src.value = null;
