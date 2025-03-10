@@ -45,7 +45,7 @@ import MkFileListForAdmin from '@/components/MkFileListForAdmin.vue';
 import * as os from '@/os.js';
 import { lookupFile } from '@/utility/admin-lookup.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePage } from '@/page.js';
 
 const origin = ref('local');
 const type = ref<string | null>(null);
@@ -86,7 +86,7 @@ const headerActions = computed(() => [{
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.files,
 	icon: 'ti ti-cloud',
 }));
