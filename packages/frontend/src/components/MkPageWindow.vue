@@ -45,6 +45,7 @@ import { claimAchievement } from '@/utility/achievements.js';
 import { useRouterFactory } from '@/router/supplier.js';
 import { mainRouter } from '@/router/main.js';
 import { analytics } from '@/analytics.js';
+import { DI } from '@/di.js';
 
 const props = defineProps<{
 	initialPath: string;
@@ -110,7 +111,8 @@ windowRouter.addListener('change', ctx => {
 
 windowRouter.init();
 
-provide('router', windowRouter);
+provide(DI.router, windowRouter);
+provide('inAppSearchMarkerId', searchMarkerId);
 provideMetadataReceiver((metadataGetter) => {
 	const info = metadataGetter();
 	pageMetadata.value = info;
