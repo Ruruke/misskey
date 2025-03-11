@@ -147,7 +147,7 @@ import { store } from '@/store.js';
 import * as os from '@/os.js';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePageMetadata } from '@/page.js';
 import { fontList } from '@/utility/font';
 import MkSparkle from '@/components/MkSparkle.vue';
 import MkContainer from '@/components/MkContainer.vue';

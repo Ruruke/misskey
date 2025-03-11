@@ -28,7 +28,7 @@ import XHeader from './_header_.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkApprovalUser from '@/components/MkApprovalUser.vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePageMetadata } from '@/page.js';
 
 let paginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
 

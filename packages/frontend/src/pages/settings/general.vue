@@ -330,7 +330,7 @@ import { instance } from '@/instance.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePageMetadata } from '@/page.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
 import { claimAchievement } from '@/utility/achievements.js';

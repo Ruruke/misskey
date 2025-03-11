@@ -56,7 +56,7 @@ import { bottomItemDef } from '@/utility/post-form.js';
 import * as os from '@/os.js';
 import { store } from '@/store.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePageMetadata } from '@/page.js';
 
 const defaultScheduledNoteDelete = computed(store.makeGetterSetter('defaultScheduledNoteDelete'));
 
