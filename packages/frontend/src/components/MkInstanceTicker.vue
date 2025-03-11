@@ -26,8 +26,8 @@ import { instance as localInstance } from '@/instance.js';
 import { getProxiedImageUrlNullable } from '@/utility/media-proxy.js';
 import { store } from '@/store.js';
 
-const showInstanceTickerSoftwareName = computed(() => store.state.showInstanceTickerSoftwareName);
-const showInstanceTickerVersion = computed(() => store.state.showInstanceTickerVersion);
+const showInstanceTickerSoftwareName = computed(() => store.s.showInstanceTickerSoftwareName);
+const showInstanceTickerVersion = computed(() => store.s.showInstanceTickerVersion);
 
 const props = defineProps<{
 	host: string | null;

@@ -69,7 +69,7 @@ const after = ref(0);
 const unit = ref<'second' | 'minute' | 'hour' | 'day'>('second');
 const isValid = ref(true);
 
-const showDetail = ref(!store.state.defaultScheduledNoteDelete);
+const showDetail = ref(!store.s.defaultScheduledNoteDelete);
 const summaryText = computed(() => {
 	if (showDetail.value) {
 		return i18n.ts.scheduledNoteDelete;
@@ -108,7 +108,7 @@ const beautifyAfter = (base: number) => {
 	after.value = time;
 };
 
-beautifyAfter(store.state.defaultScheduledNoteDeleteTime / 1000);
+beautifyAfter(store.s.defaultScheduledNoteDeleteTime / 1000);
 
 if (props.modelValue.deleteAt) {
 	expiration.value = 'at';

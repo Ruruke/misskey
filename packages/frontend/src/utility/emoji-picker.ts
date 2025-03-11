@@ -16,12 +16,7 @@ import { store } from '@/store.js';
  */
 class EmojiPicker {
 	private src: Ref<HTMLElement | null> = ref(null);
-
-	private isWindow: boolean = false;
-	private windowShowing: boolean = false;
-
-	private dialogShowing = ref(false);
-
+	private manualShowing = ref(false);
 	private onChosen?: (emoji: string) => void;
 	private onClosed?: () => void;
 
@@ -30,25 +25,26 @@ class EmojiPicker {
 	}
 
 	public async init() {
-		const emojisRef = store.reactiveState.pinnedEmojis;
-		if (store.state.emojiPickerStyle === 'window') {
+		const emojisRef = store.r.pinnedEmojis;
+		if (store.s.emojiPickerStyle === 'window') {
 			// init後にemojiPickerStyleが変わった場合、drawer/popup用の初期化をスキップするため、
 			// 正常に絵文字ピッカーが表示されない。
 			// なので一度initされたらwindow表示で固定する（設定を変更したら要リロード）
 			this.isWindow = true;
 		} else {
+			const emojisRef = store.r.pinnedEmojis;
 			await popup(defineAsyncComponent(() => import('@/components/MkEmojiPickerDialog.vue')), {
 				src: this.src,
 				pinnedEmojis: emojisRef,
 				asReactionPicker: false,
-				manualShowing: this.dialogShowing,
+				manualShowing: this.manualShowing,
 				choseAndClose: false,
 			}, {
 				done: emoji => {
 					if (this.onChosen) this.onChosen(emoji);
 				},
 				close: () => {
-					this.dialogShowing.value = false;
+					this.manualShowing.value = false;
 				},
 				closed: () => {
 					this.src.value = null;
@@ -68,7 +64,7 @@ class EmojiPicker {
 			this.windowShowing = true;
 			const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkEmojiPickerWindow.vue')), {
 				src: opts.src,
-				pinnedEmojis: store.reactiveState.pinnedEmojis,
+				pinnedEmojis: store.r.pinnedEmojis,
 				asReactionPicker: false,
 			}, {
 				chosen: (emoji) => {

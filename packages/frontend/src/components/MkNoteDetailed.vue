@@ -193,7 +193,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-else-if="tab === 'reactions'" :class="$style.tab_reactions">
 			<div :class="$style.reactionTabs">
-				<button v-for="reaction in Object.keys(appearNote.reactions)" :key="reaction" :class="[$style.reactionTab, { [$style.reactionTabActive]: reactionTabType === reaction }]" class="_button" @click="reactionTabType = store.state.hideReactionUsers ? null : reaction">
+				<button v-for="reaction in Object.keys(appearNote.reactions)" :key="reaction" :class="[$style.reactionTab, { [$style.reactionTabActive]: reactionTabType === reaction }]" class="_button" @click="reactionTabType = store.s.hideReactionUsers ? null : reaction">
 					<MkReactionIcon :reaction="reaction"/>
 					<span style="margin-left: 4px;">{{ appearNote.reactions[reaction] }}</span>
 				</button>
@@ -320,7 +320,7 @@ const translating = ref(false);
 const parsed = appearNote.value.text ? mfm.parse(appearNote.value.text) : null;
 const urls = parsed ? extractUrlFromMfm(parsed).filter((url) => appearNote.value.renote?.url !== url && appearNote.value.renote?.uri !== url) : null;
 const showTicker = (prefer.s.instanceTicker === 'always') || (prefer.s.instanceTicker === 'remote' && appearNote.value.user.instance);
-const showInstanceIcon = (store.state.instanceTicker === 'alwaysIcon') || (store.state.instanceTicker === 'remoteIcon' && appearNote.value.user.instance);
+const showInstanceIcon = (store.s.instanceTicker === 'alwaysIcon') || (store.s.instanceTicker === 'remoteIcon' && appearNote.value.user.instance);
 const conversation = ref<Misskey.entities.Note[]>([]);
 const replies = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.value.visibility) || appearNote.value.userId === $i?.id);
@@ -500,7 +500,7 @@ function heartReact(): void {
 
 	sound.playMisskeySfx('reaction');
 
-	const selectreact = store.state.selectReaction;
+	const selectreact = store.s.selectReaction;
 
 	misskeyApi('notes/reactions/create', {
 		noteId: appearNote.value.id,

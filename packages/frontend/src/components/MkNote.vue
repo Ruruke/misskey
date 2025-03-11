@@ -11,11 +11,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 	v-hotkey="keymap"
 	:class="[$style.root, {
 		[$style.showActionsOnlyHover]: prefer.s.showNoteActionsOnlyHover,
-		[$style.skipRender]: store.state.skipNoteRender === 'css',
+		[$style.skipRender]: store.s.skipNoteRender === 'css',
 	}]"
 	:tabindex="isDeleted ? '-1' : '0'"
 >
-	<ShVisibilityColoring v-if="store.state.useNoteVisibilityColoring && !appearNote.channel && (appearNote.visibility !== 'public' || appearNote.localOnly)" :visibility="appearNote.visibility" :localOnly="appearNote.localOnly ?? false"/>
+	<ShVisibilityColoring v-if="store.s.useNoteVisibilityColoring && !appearNote.channel && (appearNote.visibility !== 'public' || appearNote.localOnly)" :visibility="appearNote.visibility" :localOnly="appearNote.localOnly ?? false"/>
 	<MkNoteSub v-if="appearNote.reply && !renoteCollapsed" :note="appearNote.reply" :class="$style.replyTo"/>
 	<div v-if="pinned" :class="$style.tip"><i class="ti ti-pin"></i> {{ i18n.ts.pinnedNote }}</div>
 	<!--<div v-if="appearNote._prId_" class="tip"><i class="ti ti-speakerphone"></i> {{ i18n.ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ i18n.ts.hideThisNote }} <i class="ti ti-x"></i></button></div>-->
@@ -329,7 +329,7 @@ const hardMuted = ref(props.withHardMute && checkMute(appearNote.value, $i?.hard
 const showSoftWordMutedWord = computed(() => prefer.s.showSoftWordMutedWord);
 const translation = ref<Misskey.entities.NotesTranslateResponse | null>(null);
 const translating = ref(false);
-const showTicker = (store.state.instanceTicker === 'always') || (store.state.instanceTicker === 'remote' && appearNote.value.user.instance);
+const showTicker = (store.s.instanceTicker === 'always') || (store.s.instanceTicker === 'remote' && appearNote.value.user.instance);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.value.visibility) || (appearNote.value.visibility === 'followers' && appearNote.value.userId === $i?.id));
 const renoteCollapsed = ref(
 	prefer.s.collapseRenotes && isRenote && (
@@ -587,7 +587,7 @@ function heartReact(): void {
 
 	sound.playMisskeySfx('reaction');
 
-	const selectreact = store.state.selectReaction;
+	const selectreact = store.s.selectReaction;
 
 	if (props.mock) {
 		return;

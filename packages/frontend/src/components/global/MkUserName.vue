@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<Mfm :text="(store.state.anonymizeMutedUsers && user.isMuted) ? i18n.ts.mutedUsers : userName(user)" :author="user" :plain="true" :nowrap="nowrap" :emojiUrls="user.emojis"/>
+<Mfm :text="(store.s.anonymizeMutedUsers && user.isMuted) ? i18n.ts.mutedUsers : userName(user)" :author="user" :plain="true" :nowrap="nowrap" :emojiUrls="user.emojis"/>
 </template>
 
 <script lang="ts" setup>

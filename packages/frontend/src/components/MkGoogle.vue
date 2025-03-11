@@ -24,7 +24,7 @@ const query = ref(props.q);
 const search = () => {
 	const sp = new URLSearchParams();
 	sp.append('q', query.value);
-	window.open(`${store.state.searchEngine}${sp.toString()}`, '_blank', 'noopener');
+	window.open(`${store.s.searchEngine}${sp.toString()}`, '_blank', 'noopener');
 };
 </script>
 

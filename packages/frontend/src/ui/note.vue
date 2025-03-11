@@ -49,10 +49,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 
 	<Transition
-		:enterActiveClass="store.state.animation ? $style.transition_menuDrawerBg_enterActive : ''"
-		:leaveActiveClass="store.state.animation ? $style.transition_menuDrawerBg_leaveActive : ''"
-		:enterFromClass="store.state.animation ? $style.transition_menuDrawerBg_enterFrom : ''"
-		:leaveToClass="store.state.animation ? $style.transition_menuDrawerBg_leaveTo : ''"
+		:enterActiveClass="store.s.animation ? $style.transition_menuDrawerBg_enterActive : ''"
+		:leaveActiveClass="store.s.animation ? $style.transition_menuDrawerBg_leaveActive : ''"
+		:enterFromClass="store.s.animation ? $style.transition_menuDrawerBg_enterFrom : ''"
+		:leaveToClass="store.s.animation ? $style.transition_menuDrawerBg_leaveTo : ''"
 	>
 		<div
 			v-if="drawerMenuShowing"
@@ -64,10 +64,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</Transition>
 
 	<Transition
-		:enterActiveClass="store.state.animation ? $style.transition_menuDrawer_enterActive : ''"
-		:leaveActiveClass="store.state.animation ? $style.transition_menuDrawer_leaveActive : ''"
-		:enterFromClass="store.state.animation ? $style.transition_menuDrawer_enterFrom : ''"
-		:leaveToClass="store.state.animation ? $style.transition_menuDrawer_leaveTo : ''"
+		:enterActiveClass="store.s.animation ? $style.transition_menuDrawer_enterActive : ''"
+		:leaveActiveClass="store.s.animation ? $style.transition_menuDrawer_leaveActive : ''"
+		:enterFromClass="store.s.animation ? $style.transition_menuDrawer_enterFrom : ''"
+		:leaveToClass="store.s.animation ? $style.transition_menuDrawer_leaveTo : ''"
 	>
 		<div v-if="drawerMenuShowing" :class="$style.menuDrawer">
 			<XDrawerMenu/>
@@ -75,10 +75,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</Transition>
 
 	<Transition
-		:enterActiveClass="store.state.animation ? $style.transition_widgetsDrawerBg_enterActive : ''"
-		:leaveActiveClass="store.state.animation ? $style.transition_widgetsDrawerBg_leaveActive : ''"
-		:enterFromClass="store.state.animation ? $style.transition_widgetsDrawerBg_enterFrom : ''"
-		:leaveToClass="store.state.animation ? $style.transition_widgetsDrawerBg_leaveTo : ''"
+		:enterActiveClass="store.s.animation ? $style.transition_widgetsDrawerBg_enterActive : ''"
+		:leaveActiveClass="store.s.animation ? $style.transition_widgetsDrawerBg_leaveActive : ''"
+		:enterFromClass="store.s.animation ? $style.transition_widgetsDrawerBg_enterFrom : ''"
+		:leaveToClass="store.s.animation ? $style.transition_widgetsDrawerBg_leaveTo : ''"
 	>
 		<div
 			v-if="widgetsShowing"
@@ -90,10 +90,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</Transition>
 
 	<Transition
-		:enterActiveClass="store.state.animation ? $style.transition_widgetsDrawer_enterActive : ''"
-		:leaveActiveClass="store.state.animation ? $style.transition_widgetsDrawer_leaveActive : ''"
-		:enterFromClass="store.state.animation ? $style.transition_widgetsDrawer_enterFrom : ''"
-		:leaveToClass="store.state.animation ? $style.transition_widgetsDrawer_leaveTo : ''"
+		:enterActiveClass="store.s.animation ? $style.transition_widgetsDrawer_enterActive : ''"
+		:leaveActiveClass="store.s.animation ? $style.transition_widgetsDrawer_leaveActive : ''"
+		:enterFromClass="store.s.animation ? $style.transition_widgetsDrawer_enterFrom : ''"
+		:leaveToClass="store.s.animation ? $style.transition_widgetsDrawer_leaveTo : ''"
 	>
 		<div v-if="widgetsShowing" :class="$style.widgetsDrawer">
 			<button class="_button" :class="$style.widgetsCloseButton" @click="widgetsShowing = false"><i class="ti ti-x"></i></button>
@@ -186,7 +186,7 @@ if (window.innerWidth > 1024) {
 }
 
 store.loaded.then(() => {
-	if (store.state.widgets.length === 0) {
+	if (store.s.widgets.length === 0) {
 		store.set('widgets', [{
 			name: 'calendar',
 			id: 'a', place: 'right', data: {},
