@@ -4,26 +4,33 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_gaps_m">
-	<FormSection v-if="!fetching" first>
-		<template #label>{{ i18n.ts.usageAmount }}</template>
+<SearchMarker path="/settings/drive" :label="i18n.ts.drive" :keywords="['drive']" icon="ti ti-cloud">
+	<div class="_gaps_m">
+		<MkFeatureBanner icon="/client-assets/cloud_3d.png" color="#0059ff">
+			<SearchKeyword>{{ i18n.ts._settings.driveBanner }}</SearchKeyword>
+		</MkFeatureBanner>
 
-		<div class="_gaps_m">
-			<div>
-				<div :class="$style.meter"><div :class="$style.meterValue" :style="meterStyle"></div></div>
-			</div>
-			<FormSplit>
-				<MkKeyValue>
-					<template #key>{{ i18n.ts.capacity }}</template>
-					<template #value>{{ bytes(capacity, 1) }}</template>
-				</MkKeyValue>
-				<MkKeyValue>
-					<template #key>{{ i18n.ts.inUse }}</template>
-					<template #value>{{ bytes(usage, 1) }}</template>
-				</MkKeyValue>
-			</FormSplit>
-		</div>
-	</FormSection>
+		<SearchMarker :keywords="['capacity', 'usage']">
+			<FormSection first>
+				<template #label><SearchLabel>{{ i18n.ts.usageAmount }}</SearchLabel></template>
+
+				<div v-if="!fetching" class="_gaps_m">
+					<div>
+						<div :class="$style.meter"><div :class="$style.meterValue" :style="meterStyle"></div></div>
+					</div>
+					<FormSplit>
+						<MkKeyValue>
+							<template #key>{{ i18n.ts.capacity }}</template>
+							<template #value>{{ bytes(capacity, 1) }}</template>
+						</MkKeyValue>
+						<MkKeyValue>
+							<template #key>{{ i18n.ts.inUse }}</template>
+							<template #value>{{ bytes(usage, 1) }}</template>
+						</MkKeyValue>
+					</FormSplit>
+				</div>
+			</FormSection>
+		</SearchMarker>
 
 	<FormSection>
 		<template #label>{{ i18n.ts.statistics }}</template>
@@ -97,6 +104,7 @@ import { definePage } from '@/page.js';
 import { signinRequired } from '@/account.js';
 import { prefer } from '@/preferences.js';
 import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
+import MkFeatureBanner from '@/components/MkFeatureBanner.vue';
 import MkSelect from '@/components/MkSelect.vue';
 
 const $i = signinRequired();

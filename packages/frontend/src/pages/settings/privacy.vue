@@ -4,14 +4,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-	<SearchMarker path="/settings/privacy" :label="i18n.ts.privacy" :keywords="['privacy']" icon="ti ti-lock-open">
-		<div class="_gaps_m">
-			<SearchMarker :keywords="['follow', 'lock']">
-				<MkSwitch v-model="isLocked" @update:modelValue="save()">
-					<template #label><SearchLabel>{{ i18n.ts.makeFollowManuallyApprove }}</SearchLabel></template>
-					<template #caption><SearchKeyword>{{ i18n.ts.lockedAccountInfo }}</SearchKeyword></template>
-				</MkSwitch>
-			</SearchMarker>
+<SearchMarker path="/settings/privacy" :label="i18n.ts.privacy" :keywords="['privacy']" icon="ti ti-lock-open">
+	<div class="_gaps_m">
+		<MkFeatureBanner icon="/client-assets/unlocked_3d.png" color="#aeff00">
+			<SearchKeyword>{{ i18n.ts._settings.privacyBanner }}</SearchKeyword>
+		</MkFeatureBanner>
+
+		<SearchMarker :keywords="['follow', 'lock']">
+			<MkSwitch v-model="isLocked" @update:modelValue="save()">
+				<template #label><SearchLabel>{{ i18n.ts.makeFollowManuallyApprove }}</SearchLabel></template>
+				<template #caption><SearchKeyword>{{ i18n.ts.lockedAccountInfo }}</SearchKeyword></template>
+			</MkSwitch>
+		</SearchMarker>
 
 			<MkDisableSection :disabled="!isLocked">
 				<SearchMarker :keywords="['follow', 'auto', 'accept']">
@@ -207,7 +211,7 @@ import { formatDateTimeString } from '@/utility/format-time-string.js';
 import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os.js';
 import MkDisableSection from '@/components/MkDisableSection.vue';
-import { prefer } from '@/preferences.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const $i = signinRequired();
 
