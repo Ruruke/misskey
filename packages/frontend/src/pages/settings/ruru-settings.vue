@@ -147,7 +147,7 @@ import { store } from '@/store.js';
 import * as os from '@/os.js';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePage } from '@/page.js';
 import { fontList } from '@/utility/font';
 import MkSparkle from '@/components/MkSparkle.vue';
 import MkContainer from '@/components/MkContainer.vue';
@@ -238,7 +238,7 @@ const disableNoteDrafting = computed(store.makeGetterSetter('disableNoteDrafting
 const draftSavingBehavior = computed(store.makeGetterSetter('draftSavingBehavior'));
 const defaultScheduledNoteDelete = computed(store.makeGetterSetter('defaultScheduledNoteDelete'));
 
-const scheduledNoteDelete = ref({ deleteAt: null, deleteAfter: store.state.defaultScheduledNoteDeleteTime, isValid: true });
+const scheduledNoteDelete = ref({ deleteAt: null, deleteAfter: store.s.defaultScheduledNoteDeleteTime, isValid: true });
 
 watch(scheduledNoteDelete, () => {
 	if (!scheduledNoteDelete.value.isValid) return;
@@ -247,7 +247,7 @@ watch(scheduledNoteDelete, () => {
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
-const items = ref(store.state.postFormActions.map(x => ({
+const items = ref(store.s.postFormActions.map(x => ({
 	id: Math.random().toString(),
 	type: x,
 })));
@@ -302,7 +302,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.postForm,
 	icon: 'ti ti-pencil',
 }));

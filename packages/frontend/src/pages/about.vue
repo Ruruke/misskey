@@ -28,7 +28,7 @@ import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { claimAchievement } from '@/utility/achievements.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { miLocalStorage } from "@/local-storage.js";
 
@@ -84,7 +84,7 @@ if (miLocalStorage.getItem('account') === null) {
 	}]);
 }
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.instanceInfo,
 	icon: 'ti ti-info-circle',
 }));

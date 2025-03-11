@@ -93,7 +93,7 @@ export async function parsePluginMeta(code: string): Promise<AiScriptPluginMeta>
 
 export async function authorizePlugin(plugin: Plugin) {
 	if (plugin.permissions == null || plugin.permissions.length === 0) return;
-	if (Object.hasOwn(store.state.pluginTokens, plugin.installId)) return;
+	if (Object.hasOwn(store.s.pluginTokens, plugin.installId)) return;
 
 	const token = await new Promise<string>((res, rej) => {
 		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkTokenGenerateWindow.vue')), {
@@ -116,7 +116,7 @@ export async function authorizePlugin(plugin: Plugin) {
 	});
 
 	store.set('pluginTokens', {
-		...store.state.pluginTokens,
+		...store.s.pluginTokens,
 		[plugin.installId]: token,
 	});
 }
@@ -145,7 +145,7 @@ export async function installPlugin(code: string, meta?: AiScriptPluginMeta) {
 		src: code,
 	};
 
-	prefer.set('plugins', prefer.s.plugins.concat(plugin));
+	prefer.commit('plugins', prefer.s.plugins.concat(plugin));
 
 	await authorizePlugin(plugin);
 
@@ -154,12 +154,12 @@ export async function installPlugin(code: string, meta?: AiScriptPluginMeta) {
 
 export async function uninstallPlugin(plugin: Plugin) {
 	abortPlugin(plugin);
-	prefer.set('plugins', prefer.s.plugins.filter(x => x.installId !== plugin.installId));
-	if (Object.hasOwn(store.state.pluginTokens, plugin.installId)) {
+	prefer.commit('plugins', prefer.s.plugins.filter(x => x.installId !== plugin.installId));
+	if (Object.hasOwn(store.s.pluginTokens, plugin.installId)) {
 		await os.apiWithDialog('i/revoke-token', {
-			token: store.state.pluginTokens[plugin.installId],
+			token: store.s.pluginTokens[plugin.installId],
 		});
-		const pluginTokens = { ...store.state.pluginTokens };
+		const pluginTokens = { ...store.s.pluginTokens };
 		delete pluginTokens[plugin.installId];
 		store.set('pluginTokens', pluginTokens);
 	}
@@ -311,13 +311,13 @@ export async function configPlugin(plugin: Plugin) {
 	const { canceled, result } = await os.form(plugin.name, config);
 	if (canceled) return;
 
-	prefer.set('plugins', prefer.s.plugins.map(x => x.installId === plugin.installId ? { ...x, configData: result } : x));
+	prefer.commit('plugins', prefer.s.plugins.map(x => x.installId === plugin.installId ? { ...x, configData: result } : x));
 
 	reloadPlugin(plugin);
 }
 
 export function changePluginActive(plugin: Plugin, active: boolean) {
-	prefer.set('plugins', prefer.s.plugins.map(x => x.installId === plugin.installId ? { ...x, active } : x));
+	prefer.commit('plugins', prefer.s.plugins.map(x => x.installId === plugin.installId ? { ...x, active } : x));
 
 	if (active) {
 		launchPlugin(plugin.installId);
@@ -341,7 +341,7 @@ function createPluginEnv(opts: { plugin: Plugin; storageKey: string }): Record<s
 	}
 
 	const env: Record<string, values.Value> = {
-		...createAiScriptEnv({ ...opts, token: store.state.pluginTokens[id] }),
+		...createAiScriptEnv({ ...opts, token: store.s.pluginTokens[id] }),
 
 		'Plugin:register:post_form_action': values.FN_NATIVE(([title, handler]) => {
 			utils.assertString(title);

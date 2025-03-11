@@ -56,7 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkFolder>
 				<template #label>{{ i18n.ts.pinnedList }}</template>
 				<!-- 複数ピン止め管理できるようにしたいけどめんどいので一旦ひとつのみ -->
-				<MkButton v-if="store.reactiveState.pinnedUserLists.value.length === 0" @click="setPinnedList()">{{ i18n.ts.add }}</MkButton>
+				<MkButton v-if="store.r.pinnedUserLists.value.length === 0" @click="setPinnedList()">{{ i18n.ts.add }}</MkButton>
 				<MkButton v-else danger @click="removePinnedList()"><i class="ti ti-trash"></i> {{ i18n.ts.remove }}</MkButton>
 			</MkFolder>
 		</div>
@@ -296,8 +296,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label>{{ i18n.ts.additionalEmojiDictionary }}</template>
 				<div class="_buttons">
 					<template v-for="lang in emojiIndexLangs" :key="lang">
-						<MkButton v-if="store.reactiveState.additionalUnicodeEmojiIndexes.value[lang]" danger @click="removeEmojiIndex(lang)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }} ({{ getEmojiIndexLangName(lang) }})</MkButton>
-						<MkButton v-else @click="downloadEmojiIndex(lang)"><i class="ti ti-download"></i> {{ getEmojiIndexLangName(lang) }}{{ store.reactiveState.additionalUnicodeEmojiIndexes.value[lang] ? ` (${ i18n.ts.installed })` : '' }}</MkButton>
+						<MkButton v-if="store.r.additionalUnicodeEmojiIndexes.value[lang]" danger @click="removeEmojiIndex(lang)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }} ({{ getEmojiIndexLangName(lang) }})</MkButton>
+						<MkButton v-else @click="downloadEmojiIndex(lang)"><i class="ti ti-download"></i> {{ getEmojiIndexLangName(lang) }}{{ store.r.additionalUnicodeEmojiIndexes.value[lang] ? ` (${ i18n.ts.installed })` : '' }}</MkButton>
 					</template>
 				</div>
 			</MkFolder>
@@ -330,7 +330,7 @@ import { instance } from '@/instance.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePage } from '@/page.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
 import { claimAchievement } from '@/utility/achievements.js';
@@ -338,7 +338,7 @@ import { claimAchievement } from '@/utility/achievements.js';
 const lang = ref(miLocalStorage.getItem('lang'));
 const fontSize = ref(miLocalStorage.getItem('fontSize'));
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
-const dataSaver = ref(store.state.dataSaver);
+const dataSaver = ref(store.s.dataSaver);
 
 const hemisphere = computed(store.makeGetterSetter('hemisphere'));
 const overridedDeviceKind = computed(store.makeGetterSetter('overridedDeviceKind'));
@@ -466,7 +466,7 @@ function getEmojiIndexLangName(targetLang: typeof emojiIndexLangs[number]) {
 
 function downloadEmojiIndex(lang: typeof emojiIndexLangs[number]) {
 	async function main() {
-		const currentIndexes = store.state.additionalUnicodeEmojiIndexes;
+		const currentIndexes = store.s.additionalUnicodeEmojiIndexes;
 
 		function download() {
 			switch (lang) {
@@ -486,7 +486,7 @@ function downloadEmojiIndex(lang: typeof emojiIndexLangs[number]) {
 
 function removeEmojiIndex(lang: string) {
 	async function main() {
-		const currentIndexes = store.state.additionalUnicodeEmojiIndexes;
+		const currentIndexes = store.s.additionalUnicodeEmojiIndexes;
 		delete currentIndexes[lang];
 		await store.set('additionalUnicodeEmojiIndexes', currentIndexes);
 	}
@@ -539,7 +539,7 @@ function testNotification(): void {
 }
 
 function enableAllDataSaver() {
-	const g = { ...store.state.dataSaver };
+	const g = { ...store.s.dataSaver };
 
 	Object.keys(g).forEach((key) => { g[key] = true; });
 
@@ -547,7 +547,7 @@ function enableAllDataSaver() {
 }
 
 function disableAllDataSaver() {
-	const g = { ...store.state.dataSaver };
+	const g = { ...store.s.dataSaver };
 
 	Object.keys(g).forEach((key) => { g[key] = false; });
 
@@ -564,7 +564,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.general,
 	icon: 'ti ti-adjustments',
 }));

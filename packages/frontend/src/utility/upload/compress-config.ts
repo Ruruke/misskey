@@ -63,7 +63,7 @@ export async function getCompressionConfig(file: File): Promise<BrowserImageResi
 	let compressKind: 'lossy' | 'lossless';
 	let resize: boolean;
 
-	switch (store.state.imageCompressionMode) {
+	switch (store.s.imageCompressionMode) {
 		case 'resizeCompress':
 		case null:
 		default:

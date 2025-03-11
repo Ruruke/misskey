@@ -140,12 +140,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 									</MkInput>
 								</div>
 
-								<template #caption>
-									<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesFollowersOnlyBeforeDescription }}</SearchKeyword></div>
-									<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.mayNotEffectForFederatedNotes }}</div>
-								</template>
-							</FormSlot>
-						</SearchMarker>
+							<template #caption>
+								<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesFollowersOnlyBeforeDescription }}</SearchKeyword></div>
+							</template>
+						</FormSlot>
+					</SearchMarker>
 
 						<SearchMarker :keywords="['hidden']">
 							<FormSlot>
@@ -178,17 +177,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 									</MkInput>
 								</div>
 
-								<template #caption>
-									<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesHiddenBeforeDescription }}</SearchKeyword></div>
-									<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.mayNotEffectForFederatedNotes }}</div>
-								</template>
-							</FormSlot>
-						</SearchMarker>
-					</div>
-				</FormSection>
-			</SearchMarker>
-		</div>
-	</SearchMarker>
+							<template #caption>
+								<div><SearchKeyword>{{ i18n.ts._accountSettings.makeNotesHiddenBeforeDescription }}</SearchKeyword></div>
+							</template>
+						</FormSlot>
+					</SearchMarker>
+
+					<MkInfo warn>{{ i18n.ts._accountSettings.mayNotEffectSomeSituations }}</MkInfo>
+				</div>
+			</FormSection>
+		</SearchMarker>
+	</div>
+</SearchMarker>
 </template>
 
 <script lang="ts" setup>
@@ -201,12 +201,14 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { signinRequired } from '@/account.js';
-import { definePageMetadata } from '@/utility/page-metadata.js';
+import { definePage } from '@/page.js';
 import FormSlot from '@/components/form/slot.vue';
 import { formatDateTimeString } from '@/utility/format-time-string.js';
 import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os.js';
 import MkDisableSection from '@/components/MkDisableSection.vue';
+import { prefer } from '@/preferences.js';
+
 const $i = signinRequired();
 
 const isLocked = ref($i.isLocked);
@@ -296,7 +298,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.privacy,
 	icon: 'ti ti-lock-open',
 }));
