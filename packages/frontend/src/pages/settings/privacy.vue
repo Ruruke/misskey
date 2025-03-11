@@ -207,6 +207,7 @@ import { formatDateTimeString } from '@/utility/format-time-string.js';
 import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os.js';
 import MkDisableSection from '@/components/MkDisableSection.vue';
+import { prefer } from '@/preferences.js';
 
 const $i = signinRequired();
 
