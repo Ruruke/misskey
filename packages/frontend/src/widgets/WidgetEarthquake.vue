@@ -121,20 +121,20 @@ const connectWebSocket = () => {
 				return;
 			}
 
-			if (Object.keys(data).length === 0 || !data.data) {
+			if (Object.keys(data).length === 0 || !data.data || !data.data.No1) {
 				console.warn('データが空です:', data);
 				earthquakeData.value.value = null;
 				showLoadingTemporarily();
 				return;
 			}
 
-			const latestEarthquake = Object.values(data.data)[0] as EarthquakeData;
+			const latestEarthquake = data.data.No1 as EarthquakeData;
 
 			const newEarthquakeData: EarthquakeData = {
 				Title: latestEarthquake.Title,
 				time_full: latestEarthquake.time_full,
 				location: latestEarthquake.location,
-				shindo: formatShindo(latestEarthquake.shindo),
+				shindo: latestEarthquake.shindo,
 				magnitude: latestEarthquake.magnitude,
 				depth: latestEarthquake.depth,
 				info: latestEarthquake.info,
