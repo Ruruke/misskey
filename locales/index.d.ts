@@ -9234,6 +9234,10 @@ export interface Locale extends ILocale {
          * ListenBrainz
          */
         "listenBrainz": string;
+			  /**
+         * 地震情報
+         */
+        "earthquake": string;
     };
     "_cw": {
         /**
