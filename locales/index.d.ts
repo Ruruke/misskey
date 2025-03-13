@@ -5532,7 +5532,7 @@ export interface Locale extends ILocale {
          */
         "accountData": string;
         /**
-         * アカウントのデータをエクスポート/インポートして管理できます。
+         * アカウントデータのアーカイブをエクスポート/インポートして管理できます。
          */
         "accountDataBanner": string;
         /**
