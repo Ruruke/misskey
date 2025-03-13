@@ -27,12 +27,42 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #value><span class="_monospace">{{ $i.id }}</span></template>
 					</MkKeyValue>
 
-					<MkKeyValue>
-						<template #key>{{ i18n.ts.registeredDate }}</template>
-						<template #value><MkTime :time="$i.createdAt" mode="detail"/></template>
-					</MkKeyValue>
-				</div>
-			</MkFolder>
+							<MkKeyValue>
+								<template #key>{{ i18n.ts.registeredDate }}</template>
+								<template #value><MkTime :time="$i.createdAt" mode="detail"/></template>
+							</MkKeyValue>
+
+							<MkFolder>
+								<template #icon><i class="ti ti-badges"></i></template>
+								<template #label><SearchLabel>{{ i18n.ts._role.policies }}</SearchLabel></template>
+
+								<div class="_gaps_s">
+									<div v-for="policy in Object.keys($i.policies)" :key="policy">
+										{{ policy }} ... {{ $i.policies[policy] }}
+									</div>
+								</div>
+							</MkFolder>
+						</div>
+					</MkFolder>
+				</SearchMarker>
+
+				<SearchMarker :keywords="['roles']">
+					<MkFolder>
+						<template #icon><i class="ti ti-badges"></i></template>
+						<template #label><SearchLabel>{{ i18n.ts.rolesAssignedToMe }}</SearchLabel></template>
+
+						<MkRolePreview v-for="role in $i.roles" :key="role.id" :role="role" :forModeration="false"/>
+					</MkFolder>
+				</SearchMarker>
+
+				<SearchMarker :keywords="['account', 'move', 'migration']">
+					<MkFolder>
+						<template #icon><i class="ti ti-plane"></i></template>
+						<template #label><SearchLabel>{{ i18n.ts.accountMigration }}</SearchLabel></template>
+
+						<XMigration/>
+					</MkFolder>
+				</SearchMarker>
 
 			<MkFolder>
 				<template #icon><i class="ti ti-alert-triangle"></i></template>
@@ -109,6 +139,7 @@ import { definePage } from '@/page.js';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import FormSection from '@/components/form/section.vue';
 import { prefer } from '@/preferences.js';
+import MkRolePreview from '@/components/MkRolePreview.vue';
 
 const $i = signinRequired();
 
