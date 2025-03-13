@@ -111,7 +111,7 @@ import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import MkRadios from '@/components/MkRadios.vue';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { instance } from '@/instance.js';
 
 const props = withDefaults(defineProps<{

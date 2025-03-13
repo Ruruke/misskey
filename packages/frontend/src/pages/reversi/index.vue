@@ -115,7 +115,7 @@ import MkButton from '@/components/MkButton.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import MkPagination from '@/components/MkPagination.vue';
 import { useRouter } from '@/router/supplier.js';
 import * as os from '@/os.js';

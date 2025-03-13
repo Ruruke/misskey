@@ -16,7 +16,7 @@ import { i18n } from '@/i18n.js';
 import { alert, confirm, popup, post, toast } from '@/os.js';
 import { useStream } from '@/stream.js';
 import * as sound from '@/utility/sound.js';
-import { $i, signout, updateAccountPartial } from '@/account.js';
+import { $i, signout, updateAccountPartial } from '@/i.js';
 import { instance } from '@/instance.js';
 import { ColdDeviceStorage, store } from '@/store.js';
 import { reactionPicker } from '@/utility/reaction-picker.js';
@@ -32,6 +32,8 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 import { deckStore } from '@/ui/deck/deck-store.js';
 import { launchPlugins } from '@/plugin.js';
 import { unisonReload } from '@/utility/unison-reload.js';
+import { updateCurrentAccountPartial } from '@/accounts.js';
+import { signout } from '@/signout.js';
 
 export async function mainBoot() {
 	const { isClientUpdated, lastVersion } = await common(() => {
@@ -520,7 +522,7 @@ export async function mainBoot() {
 
 		main.on('unreadAntenna', () => {
 			updateAccountPartial({ hasUnreadAntenna: true });
-			sound.playMisskeySfx('notification');
+			sound.playMisskeySfx('antenna');
 		});
 
 		main.on('readAllAnnouncements', () => {

@@ -63,10 +63,8 @@ import { dateString } from '@/filters/date.js';
 import MkClipPreview from '@/components/MkClipPreview.vue';
 import { prefer } from '@/preferences.js';
 import { pleaseLogin } from '@/utility/please-login.js';
-import { assertServerContext, serverContext } from '@/server-context.js';
-import { instance } from "@/instance.js";
-import { miLocalStorage } from "@/local-storage.js";
-import { $i } from '@/account.js';
+import { serverContext, assertServerContext } from '@/server-context.js';
+import { $i } from '@/i.js';
 import { getAppearNote } from '@/utility/get-appear-note.js';
 
 // contextは非ログイン状態の情報しかないためログイン時は利用できない
