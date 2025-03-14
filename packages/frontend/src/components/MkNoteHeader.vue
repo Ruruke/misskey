@@ -44,6 +44,7 @@ import * as Misskey from 'misskey-js';
 import { i18n } from '@/i18n.js';
 import { notePage } from '@/filters/note.js';
 import { userPage } from '@/filters/user.js';
+import { DI } from '@/di.js';
 import { dateTimeFormat } from '@/utility/intl-const.js';
 
 defineProps<{
@@ -53,7 +54,7 @@ defineProps<{
 	scheduled?: boolean;
 }>();
 
-const mock = inject<boolean>('mock', false);
+const mock = inject(DI.mock, false);
 </script>
 
 <style lang="scss" module>
