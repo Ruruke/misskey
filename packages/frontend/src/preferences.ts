@@ -14,18 +14,18 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 
 const TAB_ID = uuid();
 
-function createProfileManager(storageProvider: StorageProvider) {
+function createPrefManager(storageProvider: StorageProvider) {
 	let profile: PreferencesProfile;
 
 	const savedProfileRaw = miLocalStorage.getItem('preferences');
 	if (savedProfileRaw == null) {
-		profile = ProfileManager.newProfile();
+		profile = PreferencesManager.newProfile();
 		miLocalStorage.setItem('preferences', JSON.stringify(profile));
 	} else {
-		profile = ProfileManager.normalizeProfile(JSON.parse(savedProfileRaw));
+		profile = PreferencesManager.normalizeProfile(JSON.parse(savedProfileRaw));
 	}
 
-	return new ProfileManager(profile, storageProvider);
+	return new PreferencesManager(profile, storageProvider);
 }
 
 const syncGroup = 'default';
@@ -104,7 +104,7 @@ const storageProvider: StorageProvider = {
 	},
 };
 
-export const prefer = createProfileManager(storageProvider);
+export const prefer = createPrefManager(storageProvider);
 
 let latestSyncedAt = Date.now();
 
@@ -118,7 +118,7 @@ function syncBetweenTabs() {
 	if (latestTab === TAB_ID) return;
 	if (latestAt <= latestSyncedAt) return;
 
-	prefer.rewriteProfile(ProfileManager.normalizeProfile(JSON.parse(miLocalStorage.getItem('preferences')!)));
+	prefer.rewriteProfile(PreferencesManager.normalizeProfile(JSON.parse(miLocalStorage.getItem('preferences')!)));
 
 	latestSyncedAt = Date.now();
 

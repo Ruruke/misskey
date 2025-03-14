@@ -37,11 +37,6 @@ export const searchIndexes: SearchIndexItem[] = [
 				label: i18n.ts.themeForDarkMode,
 				keywords: ['dark', 'theme'],
 			},
-			{
-				id: '8wcoRp76b',
-				label: i18n.ts.setWallpaper,
-				keywords: ['wallpaper'],
-			},
 		],
 		label: i18n.ts.theme,
 		keywords: ['theme'],
@@ -73,125 +68,6 @@ export const searchIndexes: SearchIndexItem[] = [
 		icon: 'ti ti-music',
 	},
 	{
-		id: '5BjnxMfYV',
-		children: [
-			{
-				id: '75QPEg57v',
-				children: [
-					{
-						id: 'CiHijRkGG',
-						label: i18n.ts.changePassword,
-						keywords: [],
-					},
-				],
-				label: i18n.ts.password,
-				keywords: ['password'],
-			},
-			{
-				id: '2fa',
-				children: [
-					{
-						id: 'qCXM0HtJ7',
-						label: i18n.ts.totp,
-						keywords: ['totp', 'app', i18n.ts.totpDescription],
-					},
-					{
-						id: '3g1RePuD9',
-						label: i18n.ts.securityKeyAndPasskey,
-						keywords: ['security', 'key', 'passkey'],
-					},
-					{
-						id: 'pFRud5u8k',
-						label: i18n.ts.passwordLessLogin,
-						keywords: ['password', 'less', 'key', 'passkey', 'login', 'signin', i18n.ts.passwordLessLoginDescription],
-					},
-				],
-				label: i18n.ts['2fa'],
-				keywords: ['2fa'],
-			},
-		],
-		label: i18n.ts.security,
-		keywords: ['security', i18n.ts._settings.securityBanner],
-		path: '/settings/security',
-		icon: 'ti ti-lock',
-	},
-	{
-		id: 'w4L6myH61',
-		children: [
-			{
-				id: 'ru8DrOn3J',
-				label: i18n.ts._profile.changeBanner,
-				keywords: ['banner', 'change'],
-			},
-			{
-				id: 'CCnD8Apnu',
-				label: i18n.ts._profile.changeAvatar,
-				keywords: ['avatar', 'icon', 'change'],
-			},
-			{
-				id: 'yFEVCJxFX',
-				label: i18n.ts._profile.name,
-				keywords: ['name'],
-			},
-			{
-				id: '2O1S5reaB',
-				label: i18n.ts._profile.description,
-				keywords: ['description', 'bio'],
-			},
-			{
-				id: 'pWi4OLS8g',
-				label: i18n.ts.location,
-				keywords: ['location', 'locale'],
-			},
-			{
-				id: 'oLO5X6Wtw',
-				label: i18n.ts.birthday,
-				keywords: ['birthday', 'birthdate', 'age'],
-			},
-			{
-				id: 'm2trKwPgq',
-				label: i18n.ts.language,
-				keywords: ['language', 'locale'],
-			},
-			{
-				id: 'kfDZxCDp9',
-				label: i18n.ts._profile.metadataEdit,
-				keywords: ['metadata'],
-			},
-			{
-				id: 'uPt3MFymp',
-				label: i18n.ts._profile.followedMessage,
-				keywords: ['follow', 'message', i18n.ts._profile.followedMessageDescription],
-			},
-			{
-				id: 'wuGg0tBjw',
-				label: i18n.ts.reactionAcceptance,
-				keywords: ['reaction'],
-			},
-			{
-				id: 'EezPpmMnf',
-				children: [
-					{
-						id: 'f2cRLh8ad',
-						label: i18n.ts.flagAsCat,
-						keywords: ['cat'],
-					},
-					{
-						id: 'eVoViiF3h',
-						label: i18n.ts.flagAsBot,
-						keywords: ['bot'],
-					},
-				],
-				label: i18n.ts.advancedSettings,
-				keywords: [],
-			},
-		],
-		label: i18n.ts.profile,
-		keywords: ['profile'],
-		path: '/settings/profile',
-		icon: 'ti ti-user',
-	},
-	{
 		id: '2rp9ka5Ht',
 		children: [
 			{
@@ -210,50 +86,50 @@ export const searchIndexes: SearchIndexItem[] = [
 				keywords: ['reaction', 'public', i18n.ts.makeReactionsPublicDescription],
 			},
 			{
-				id: '5Q6uhghzV',
+				id: 'izbVlS3rh',
 				label: i18n.ts.followingVisibility,
 				keywords: ['following', 'visibility'],
 			},
 			{
-				id: 'pZ9q65FX5',
+				id: 'aceURmNPq',
 				label: i18n.ts.followersVisibility,
 				keywords: ['follower', 'visibility'],
 			},
 			{
-				id: 'DMS4yvAGg',
+				id: 'tuxwL6QYm',
 				label: i18n.ts.hideOnlineStatus,
 				keywords: ['online', 'status', i18n.ts.hideOnlineStatusDescription],
 			},
 			{
-				id: '8rEsGuN8w',
+				id: 'lYZ10B0aP',
 				label: i18n.ts.noCrawle,
 				keywords: ['crawle', 'index', 'search', i18n.ts.noCrawleDescription],
 			},
 			{
-				id: 's7LdSpiLn',
+				id: 'Av7fAaHv8',
 				label: i18n.ts.preventAiLearning,
 				keywords: ['crawle', 'ai', i18n.ts.preventAiLearningDescription],
 			},
 			{
-				id: 'l2Wf1s2ad',
+				id: 'sMmYFCS60',
 				label: i18n.ts.makeExplorable,
 				keywords: ['explore', i18n.ts.makeExplorableDescription],
 			},
 			{
-				id: '7vr04wKol',
+				id: 'BzMIVBpL0',
 				children: [
 					{
-						id: 'Av7fAaHv8',
+						id: '2A57HOFHp',
 						label: i18n.ts._accountSettings.requireSigninToViewContents,
 						keywords: ['login', 'signin'],
 					},
 					{
-						id: 'lUtOQbnwi',
+						id: '9QtbNiKFM',
 						label: i18n.ts._accountSettings.makeNotesFollowersOnlyBefore,
 						keywords: ['follower', i18n.ts._accountSettings.makeNotesFollowersOnlyBeforeDescription],
 					},
 					{
-						id: '83WWcjwS9',
+						id: 's6h9nf6YM',
 						label: i18n.ts._accountSettings.makeNotesHiddenBefore,
 						keywords: ['hidden', i18n.ts._accountSettings.makeNotesHiddenBeforeDescription],
 					},
@@ -544,45 +420,6 @@ export const searchIndexes: SearchIndexItem[] = [
 		icon: 'ti ti-plug',
 	},
 	{
-		id: 'F1uK9ssiY',
-		children: [
-			{
-				id: 'E0ndmaP6Q',
-				label: i18n.ts._role.policies,
-				keywords: ['account', 'info'],
-			},
-			{
-				id: 'r5SjfwZJc',
-				label: i18n.ts.rolesAssignedToMe,
-				keywords: ['roles'],
-			},
-			{
-				id: 'cm7LrjgaW',
-				label: i18n.ts.accountMigration,
-				keywords: ['account', 'move', 'migration'],
-			},
-			{
-				id: 'ozfqNviP3',
-				label: i18n.ts.closeAccount,
-				keywords: ['account', 'close', 'delete', i18n.ts._accountDelete.requestAccountDelete],
-			},
-			{
-				id: 'tpywgkpxy',
-				label: i18n.ts.experimentalFeatures,
-				keywords: ['experimental', 'feature', 'flags'],
-			},
-			{
-				id: '54wETGawJ',
-				label: i18n.ts.developer,
-				keywords: ['developer', 'mode', 'debug'],
-			},
-		],
-		label: i18n.ts.other,
-		keywords: ['other'],
-		path: '/settings/other',
-		icon: 'ti ti-dots',
-	},
-	{
 		id: '3icEvyv2D',
 		children: [
 			{
@@ -680,74 +517,6 @@ export const searchIndexes: SearchIndexItem[] = [
 		icon: 'ti ti-mood-happy',
 	},
 	{
-		id: '3Tcxw4Fwl',
-		children: [
-			{
-				id: 'iIai9O65I',
-				label: i18n.ts.emailAddress,
-				keywords: ['email', 'address'],
-			},
-			{
-				id: 'i6cC6oi0m',
-				label: i18n.ts.receiveAnnouncementFromInstance,
-				keywords: ['announcement', 'email'],
-			},
-			{
-				id: 'C1YTinP11',
-				label: i18n.ts.emailNotification,
-				keywords: ['notification', 'email'],
-			},
-		],
-		label: i18n.ts.email,
-		keywords: ['email'],
-		path: '/settings/email',
-		icon: 'ti ti-mail',
-	},
-	{
-		id: 'tnYoppRiv',
-		children: [
-			{
-				id: 'cN3dsGNxu',
-				label: i18n.ts.usageAmount,
-				keywords: ['capacity', 'usage'],
-			},
-			{
-				id: 'rOAOU2P6C',
-				label: i18n.ts.statistics,
-				keywords: ['statistics', 'usage'],
-			},
-			{
-				id: 'uXGlQXATx',
-				label: i18n.ts.uploadFolder,
-				keywords: ['default', 'upload', 'folder'],
-			},
-			{
-				id: 'goQdtf3dD',
-				label: i18n.ts.keepOriginalUploading,
-				keywords: ['keep', 'original', 'raw', 'upload', i18n.ts.keepOriginalUploadingDescription],
-			},
-			{
-				id: '83xRo0XJl',
-				label: i18n.ts.keepOriginalFilename,
-				keywords: ['keep', 'original', 'filename', i18n.ts.keepOriginalFilenameDescription],
-			},
-			{
-				id: 'wf77yRQQq',
-				label: i18n.ts.alwaysMarkSensitive,
-				keywords: ['always', 'default', 'mark', 'nsfw', 'sensitive', 'media', 'file'],
-			},
-			{
-				id: '3pxwNB8e4',
-				label: i18n.ts.enableAutoSensitive,
-				keywords: ['auto', 'nsfw', 'sensitive', 'media', 'file', i18n.ts.enableAutoSensitiveDescription],
-			},
-		],
-		label: i18n.ts.drive,
-		keywords: ['drive', i18n.ts._settings.driveBanner],
-		path: '/settings/drive',
-		icon: 'ti ti-cloud',
-	},
-	{
 		id: 'FfZdOs8y',
 		children: [
 			{
@@ -799,13 +568,6 @@ export const searchIndexes: SearchIndexItem[] = [
 		keywords: ['app', 'service', 'connect', 'webhook', 'api', 'token', i18n.ts._settings.serviceConnectionBanner],
 		path: '/settings/connect',
 		icon: 'ti ti-link',
-	},
-	{
-		id: 'gtaOSdIJB',
-		label: i18n.ts.avatarDecorations,
-		keywords: ['avatar', 'icon', 'decoration'],
-		path: '/settings/avatar-decoration',
-		icon: 'ti ti-sparkles',
 	},
 	{
 		id: 'zK6posor9',

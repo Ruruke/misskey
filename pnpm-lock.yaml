@@ -811,6 +811,9 @@ importers:
       json5:
         specifier: 2.2.3
         version: 2.2.3
+      magic-string:
+        specifier: 0.30.17
+        version: 0.30.17
       matter-js:
         specifier: 0.20.0
         version: 0.20.0
