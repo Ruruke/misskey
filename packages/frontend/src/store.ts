@@ -91,7 +91,6 @@ export const store = markRaw(new Storage('base', {
 		where: 'account',
 		default: null,
 	},
-
 	menu: {
 		where: 'deviceAccount',
 		default: [
