@@ -55,12 +55,12 @@ import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
-import { signinRequired } from '@/i.js';
+import { ensureSignin } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import { instance } from '@/instance.js';
 
-const $i = signinRequired();
+const $i = ensureSignin();
 
 const emailAddress = ref($i.email);
 
