@@ -101,17 +101,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormSection>
 					<template #label><SearchLabel>{{ i18n.ts.lockdown }}</SearchLabel><span class="_beta">{{ i18n.ts.beta }}</span></template>
 
-					<div class="_gaps_m">
-						<SearchMarker :keywords="['login', 'signin']">
-							<MkSwitch :modelValue="requireSigninToViewContents" @update:modelValue="update_requireSigninToViewContents">
-								<template #label><SearchLabel>{{ i18n.ts._accountSettings.requireSigninToViewContents }}</SearchLabel></template>
-								<template #caption>
-									<div>{{ i18n.ts._accountSettings.requireSigninToViewContentsDescription1 }}</div>
-									<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.requireSigninToViewContentsDescription2 }}</div>
-									<div v-if="instance.federation !== 'none'"><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.requireSigninToViewContentsDescription3 }}</div>
-								</template>
-							</MkSwitch>
-						</SearchMarker>
+				<div class="_gaps_m">
+					<SearchMarker :keywords="['login', 'signin']">
+						<MkSwitch :modelValue="requireSigninToViewContents" @update:modelValue="update_requireSigninToViewContents">
+							<template #label><SearchLabel>{{ i18n.ts._accountSettings.requireSigninToViewContents }}</SearchLabel></template>
+							<template #caption>
+								<div>{{ i18n.ts._accountSettings.requireSigninToViewContentsDescription1 }}</div>
+								<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.requireSigninToViewContentsDescription2 }}</div>
+							</template>
+						</MkSwitch>
+					</SearchMarker>
 
 						<SearchMarker :keywords="['follower']">
 							<FormSlot>
