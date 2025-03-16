@@ -141,7 +141,6 @@ function copyLink() {
 	if (!flash.value) return;
 
 	copyToClipboard(`${url}/play/${flash.value.id}`);
-	os.success();
 }
 
 function shareWithNavigator() {

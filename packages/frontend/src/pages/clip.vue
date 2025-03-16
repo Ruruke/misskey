@@ -156,7 +156,6 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 			text: i18n.ts.copyUrl,
 			action: () => {
 				copyToClipboard(`${url}/clips/${clip.value!.id}`);
-				os.success();
 			},
 		}, {
 			icon: 'ti ti-code',
