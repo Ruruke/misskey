@@ -37,6 +37,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				translate: getDecorationOffset(decoration),
 			}"
 			alt=""
+			draggable="false"
+			style="-webkit-user-drag: none;"
 		>
 	</template>
 	<MkInstanceIcon v-if="showInstance" :class="$style.instanceicon" :instance="user.instance"/>

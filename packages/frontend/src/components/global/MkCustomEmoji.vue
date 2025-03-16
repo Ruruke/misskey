@@ -4,28 +4,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-	<img
-		v-if="errored && fallbackToImage"
-		:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
-		src="/client-assets/dummy.png"
-		:title="alt"
-	/>
-	<span v-else-if="errored">:{{ customEmojiName }}:</span>
-	<img
-		v-else
-		:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
-		:src="url"
-		:alt="alt"
-		:title="alt"
-		decoding="async"
-		@error="errored = true"
-		@load="errored = false"
-		@click.stop="onClick"
-		@mouseover="store.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@mouseout="store.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-		@touchstart="store.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@touchend="store.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-	/>
+<img
+	v-if="errored && fallbackToImage"
+	:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
+	src="/client-assets/dummy.png"
+	:title="alt"
+	draggable="false"
+	style="-webkit-user-drag: none;"
+/>
+<span v-else-if="errored">:{{ customEmojiName }}:</span>
+<img
+	v-else
+	:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
+	:src="url"
+	:alt="alt"
+	:title="alt"
+	decoding="async"
+	draggable="false"
+	@error="errored = true"
+	@load="errored = false"
+	@click="onClick"
+/>
 </template>
 
 <script lang="ts" setup>
@@ -171,6 +170,7 @@ onUnmounted(() => {
 .root {
 	height: 2em;
 	vertical-align: middle;
+	-webkit-user-drag: none;
 	transition: transform 0.2s ease;
 
 	&:hover {
