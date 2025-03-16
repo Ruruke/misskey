@@ -5506,6 +5506,14 @@ export interface Locale extends ILocale {
      * 絵文字パレット
      */
     "emojiPalette": string;
+    /**
+     * 投稿フォーム
+     */
+    "postForm": string;
+    /**
+     * 文字数
+     */
+    "textCount": string;
     "_emojiPalette": {
         /**
          * パレット
