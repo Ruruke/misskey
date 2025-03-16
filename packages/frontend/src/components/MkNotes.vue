@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:ad="true"
 				:class="$style.notes"
 			>
-				<XNote
+				<MkNote
 					:key="note._featuredId_ || note._prId_ || note.id"
 					:class="$style.note"
 					:data-note-id="note.id"
@@ -42,7 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { useTemplateRef, ref, watch, onActivated, onDeactivated, onBeforeUnmount } from 'vue';
 import type { WatchStopHandle } from 'vue';
 import type { Paging } from '@/components/MkPagination.vue';
-import XNote from '@/components/MkNotes.note.vue';
+import MkNote from '@/components/MkNote.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
