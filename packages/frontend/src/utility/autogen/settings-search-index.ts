@@ -420,6 +420,45 @@ export const searchIndexes: SearchIndexItem[] = [
 		icon: 'ti ti-plug',
 	},
 	{
+		id: 'F1uK9ssiY',
+		children: [
+			{
+				id: 'E0ndmaP6Q',
+				label: i18n.ts._role.policies,
+				keywords: ['account', 'info'],
+			},
+			{
+				id: 'r5SjfwZJc',
+				label: i18n.ts.rolesAssignedToMe,
+				keywords: ['roles'],
+			},
+			{
+				id: 'cm7LrjgaW',
+				label: i18n.ts.accountMigration,
+				keywords: ['account', 'move', 'migration'],
+			},
+			{
+				id: 'ozfqNviP3',
+				label: i18n.ts.closeAccount,
+				keywords: ['account', 'close', 'delete', i18n.ts._accountDelete.requestAccountDelete],
+			},
+			{
+				id: 'tpywgkpxy',
+				label: i18n.ts.experimentalFeatures,
+				keywords: ['experimental', 'feature', 'flags'],
+			},
+			{
+				id: 'zWbGKohZ2',
+				label: i18n.ts.developer,
+				keywords: ['developer', 'mode', 'debug'],
+			},
+		],
+		label: i18n.ts.other,
+		keywords: ['other'],
+		path: '/settings/other',
+		icon: 'ti ti-dots',
+	},
+	{
 		id: '3icEvyv2D',
 		children: [
 			{
