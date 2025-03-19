@@ -68,11 +68,10 @@ import MkUserInfo from '@/components/MkUserInfo.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
-import { definePage } from '@/page.js';
-import { signinRequired } from '@/account.js';
+import { ensureSignin } from '@/i.js';
 import { unisonReload } from '@/utility/unison-reload.js';
 
-const $i = signinRequired();
+const $i = ensureSignin();
 
 const moveToAccount = ref('');
 const movedTo = ref<Misskey.entities.UserDetailed>();
@@ -120,11 +119,6 @@ async function save(): Promise<void> {
 }
 
 init();
-
-definePage(() => ({
-	title: i18n.ts.accountMigration,
-	icon: 'ti ti-plane',
-}));
 </script>
 
 <style lang="scss">

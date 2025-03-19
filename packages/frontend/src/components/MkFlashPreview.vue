@@ -31,7 +31,7 @@ import { userName } from '@/filters/user.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { pleaseLogin } from '@/utility/please-login.js';
-import { $i } from '@/account';
+import { $i } from '@/i';
 
 const props = defineProps<{
 	flash: Misskey.entities.Flash;

@@ -5,7 +5,7 @@
 
 import * as Misskey from 'misskey-js';
 import { markRaw } from 'vue';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { wsOrigin } from '@@/js/config.js';
 import { DEFAULT_DEVICE_KIND } from '@/utility/device-kind.js';
 // TODO: No WebsocketモードでStreamMockが使えそう

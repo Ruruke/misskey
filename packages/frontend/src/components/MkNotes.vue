@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkPagination ref="pagingComponent" :pagination="pagination" :disableAutoLoad="disableAutoLoad">
 	<template #empty>
 		<div class="_fullinfo">
-			<img :src="infoImageUrl" class="_ghost"/>
+			<img :src="infoImageUrl" draggable="false"/>
 			<div>{{ i18n.ts.noNotes }}</div>
 		</div>
 	</template>
@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:ad="true"
 				:class="$style.notes"
 			>
-				<XNote
+				<MkNote
 					:key="note._featuredId_ || note._prId_ || note.id"
 					:class="$style.note"
 					:data-note-id="note.id"
@@ -40,11 +40,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { useTemplateRef, ref, watch, onActivated, onDeactivated, onBeforeUnmount } from 'vue';
-import type { WatchStopHandle } from 'vue';
-import XNote from '@/components/MkNotes.note.vue';
+import type { Paging } from '@/components/MkPagination.vue';
+import MkNote from '@/components/MkNote.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import MkPagination from '@/components/MkPagination.vue';
-import type { Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
 import { store } from '@/store.js';
@@ -62,6 +61,7 @@ const props = withDefaults(defineProps<{
 
 const pagingComponent = useTemplateRef('pagingComponent');
 const rootEl = useTemplateRef('rootEl');
+
 
 //#region Note Render Skipping (JS)
 let intersectionObserver: IntersectionObserver | null = null;
@@ -197,7 +197,6 @@ onDeactivated(() => {
 	disposeNoteRenderSkipping();
 });
 //#endregion
-
 defineExpose({
 	pagingComponent,
 });

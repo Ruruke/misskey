@@ -108,7 +108,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onActivated, onBeforeUnmount, onMounted, ref, shallowRef, watch, computed } from 'vue';
+import { nextTick, onActivated, onBeforeUnmount, onMounted, ref, useTemplateRef, watch, computed } from 'vue';
 import * as Misskey from 'misskey-js';
 import tinycolor from 'tinycolor2';
 import MkButton from './MkButton.vue';
@@ -146,8 +146,8 @@ const emit = defineEmits<{
 	(ev: 'open-folder', v: Misskey.entities.DriveFolder): void;
 }>();
 
-const loadMoreFiles = shallowRef<InstanceType<typeof MkButton>>();
-const fileInput = shallowRef<HTMLInputElement>();
+const loadMoreFiles = useTemplateRef('loadMoreFiles');
+const fileInput = useTemplateRef('fileInput');
 
 const folder = ref<Misskey.entities.DriveFolder | null>(null);
 const files = ref<Misskey.entities.DriveFile[]>([]);

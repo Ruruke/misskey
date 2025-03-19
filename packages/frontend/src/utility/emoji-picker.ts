@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import { popup } from '@/os.js';
-import { store } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 /**
  * 絵文字ピッカーを表示する。
@@ -25,33 +25,32 @@ class EmojiPicker {
 	}
 
 	public async init() {
-		const emojisRef = store.r.pinnedEmojis;
-		if (store.s.emojiPickerStyle === 'window') {
-			// init後にemojiPickerStyleが変わった場合、drawer/popup用の初期化をスキップするため、
-			// 正常に絵文字ピッカーが表示されない。
-			// なので一度initされたらwindow表示で固定する（設定を変更したら要リロード）
-			this.isWindow = true;
-		} else {
-			const emojisRef = store.r.pinnedEmojis;
-			await popup(defineAsyncComponent(() => import('@/components/MkEmojiPickerDialog.vue')), {
-				src: this.src,
-				pinnedEmojis: emojisRef,
-				asReactionPicker: false,
-				manualShowing: this.manualShowing,
-				choseAndClose: false,
-			}, {
-				done: emoji => {
-					if (this.onChosen) this.onChosen(emoji);
-				},
-				close: () => {
-					this.manualShowing.value = false;
-				},
-				closed: () => {
-					this.src.value = null;
-					if (this.onClosed) this.onClosed();
-				},
-			});
-		}
+		const emojisRef = ref<string[]>([]);
+
+		watch([prefer.r.emojiPaletteForMain, prefer.r.emojiPalettes], () => {
+			emojisRef.value = prefer.s.emojiPaletteForMain == null ? prefer.s.emojiPalettes[0].emojis : prefer.s.emojiPalettes.find(palette => palette.id === prefer.s.emojiPaletteForMain)?.emojis ?? [];
+		}, {
+			immediate: true,
+		});
+
+		await popup(defineAsyncComponent(() => import('@/components/MkEmojiPickerDialog.vue')), {
+			src: this.src,
+			pinnedEmojis: emojisRef,
+			asReactionPicker: false,
+			manualShowing: this.manualShowing,
+			choseAndClose: false,
+		}, {
+			done: emoji => {
+				if (this.onChosen) this.onChosen(emoji);
+			},
+			close: () => {
+				this.manualShowing.value = false;
+			},
+			closed: () => {
+				this.src.value = null;
+				if (this.onClosed) this.onClosed();
+			},
+		});
 	}
 
 	public show(opts: {

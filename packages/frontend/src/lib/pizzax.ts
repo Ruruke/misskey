@@ -8,7 +8,7 @@
 import { onUnmounted, ref, watch } from 'vue';
 import { BroadcastChannel } from 'broadcast-channel';
 import type { Ref } from 'vue';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { get, set } from '@/utility/idb-proxy.js';
 import { store } from '@/store.js';
@@ -33,7 +33,7 @@ type PizzaxChannelMessage<T extends StateDef> = {
 	userId?: string;
 };
 
-export class Storage<T extends StateDef> {
+export class Pizzax<T extends StateDef> {
 	public readonly ready: Promise<void>;
 	public readonly loaded: Promise<void>;
 

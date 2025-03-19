@@ -5,9 +5,8 @@
 
 import { defineAsyncComponent } from 'vue';
 import type { AsyncComponentLoader } from 'vue';
-import type { IRouter, RouteDef } from '@/nirax.js';
-import { Router } from '@/nirax.js';
-import { $i, iAmModerator } from '@/account.js';
+import type { RouteDef } from '@/lib/nirax.js';
+import { $i, iAmModerator } from '@/i.js';
 import MkLoading from '@/pages/_loading_.vue';
 import MkError from '@/pages/_error_.vue';
 
@@ -17,7 +16,7 @@ export const page = (loader: AsyncComponentLoader) => defineAsyncComponent({
 	errorComponent: MkError,
 });
 
-const routes: RouteDef[] = [{
+export const ROUTE_DEF = [{
 	path: '/@:username/pages/:pageName(*)',
 	component: page(() => import('@/pages/page.vue')),
 }, {
@@ -65,17 +64,13 @@ const routes: RouteDef[] = [{
 		name: 'avatarDecoration',
 		component: page(() => import('@/pages/settings/avatar-decoration.vue')),
 	}, {
-		path: '/roles',
-		name: 'roles',
-		component: page(() => import('@/pages/settings/roles.vue')),
-	}, {
 		path: '/privacy',
 		name: 'privacy',
 		component: page(() => import('@/pages/settings/privacy.vue')),
 	}, {
-		path: '/emoji-picker',
-		name: 'emojiPicker',
-		component: page(() => import('@/pages/settings/emoji-picker.vue')),
+		path: '/emoji-palette',
+		name: 'emoji-palette',
+		component: page(() => import('@/pages/settings/emoji-palette.vue')),
 	}, {
 		path: '/drive',
 		name: 'drive',
@@ -100,6 +95,10 @@ const routes: RouteDef[] = [{
 		path: '/general',
 		name: 'general',
 		component: page(() => import('@/pages/settings/general.vue')),
+	}, {
+		path: '/preferences',
+		name: 'preferences',
+		component: page(() => import('@/pages/settings/preferences.vue')),
 	}, {
 		path: '/theme/install',
 		name: 'theme',
@@ -133,33 +132,29 @@ const routes: RouteDef[] = [{
 		name: 'plugin',
 		component: page(() => import('@/pages/settings/plugin.vue')),
 	}, {
-		path: '/import-export',
-		name: 'import-export',
-		component: page(() => import('@/pages/settings/import-export.vue')),
+		path: '/account-data',
+		name: 'account-data',
+		component: page(() => import('@/pages/settings/account-data.vue')),
 	}, {
 		path: '/mute-block',
 		name: 'mute-block',
 		component: page(() => import('@/pages/settings/mute-block.vue')),
 	}, {
-		path: '/api',
-		name: 'api',
-		component: page(() => import('@/pages/settings/api.vue')),
+		path: '/connect',
+		name: 'connect',
+		component: page(() => import('@/pages/settings/connect.vue')),
 	}, {
 		path: '/apps',
-		name: 'api',
+		name: 'connect',
 		component: page(() => import('@/pages/settings/apps.vue')),
 	}, {
 		path: '/webhook/edit/:webhookId',
-		name: 'webhook',
+		name: 'connect',
 		component: page(() => import('@/pages/settings/webhook.edit.vue')),
 	}, {
 		path: '/webhook/new',
-		name: 'webhook',
+		name: 'connect',
 		component: page(() => import('@/pages/settings/webhook.new.vue')),
-	}, {
-		path: '/webhook',
-		name: 'webhook',
-		component: page(() => import('@/pages/settings/webhook.vue')),
 	}, {
 		path: '/deck',
 		name: 'deck',
@@ -509,10 +504,6 @@ const routes: RouteDef[] = [{
 		name: 'approvals',
 		component: page(() => import('@/pages/admin/approvals.vue')),
 	}, {
-		path: '/proxy',
-		name: 'proxy',
-		component: page(() => import('@/pages/admin/proxy.vue')),
-	}, {
 		path: '/ruru-admin',
 		name: 'Ruru Admin',
 		component: page(() => import('@/pages/admin/ruru-admin.vue')),
@@ -612,7 +603,6 @@ const routes: RouteDef[] = [{
 	name: 'index',
 	path: '/',
 	component: $i ? page(() => import('@/pages/timeline.vue')) : page(() => import('@/pages/welcome.vue')),
-	globalCacheKey: 'index',
 }, {
 	// テスト用リダイレクト設定。ログイン中ユーザのプロフィールにリダイレクトする
 	path: '/redirect-test',
@@ -621,8 +611,4 @@ const routes: RouteDef[] = [{
 }, {
 	path: '/:(*)',
 	component: page(() => import('@/pages/not-found.vue')),
-}];
-
-export function createMainRouter(path: string): IRouter {
-	return new Router(routes, path, !!$i, page(() => import('@/pages/not-found.vue')));
-}
+}] satisfies RouteDef[];

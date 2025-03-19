@@ -11,13 +11,13 @@ import { hemisphere } from '@@/js/intl-const.js';
 import type { DeviceKind } from '@/utility/device-kind.js';
 import type { Plugin } from '@/plugin.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { Storage } from '@/pizzax.js';
+import { Pizzax } from '@/lib/pizzax.js';
 import { DEFAULT_DEVICE_KIND } from '@/utility/device-kind.js';
 
 /**
  * 「状態」を管理するストア(not「設定」)
  */
-export const store = markRaw(new Storage('base', {
+export const store = markRaw(new Pizzax('base', {
 	accountSetupWizard: {
 		where: 'account',
 		default: 0,
@@ -79,14 +79,6 @@ export const store = markRaw(new Storage('base', {
 		where: 'account',
 		default: null,
 	},
-	reactions: {
-		where: 'account',
-		default: ['👍', '❤️', '😆', '🤔', '😮', '🎉', '💢', '😥', '😇', '🍮'],
-	},
-	pinnedEmojis: {
-		where: 'account',
-		default: [] as string[],
-	},
 	reactionAcceptance: {
 		where: 'account',
 		default: 'nonSensitiveOnly' as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
@@ -99,7 +91,6 @@ export const store = markRaw(new Storage('base', {
 		where: 'account',
 		default: null,
 	},
-
 	menu: {
 		where: 'deviceAccount',
 		default: [
@@ -182,13 +173,13 @@ export const store = markRaw(new Storage('base', {
 		where: 'device',
 		default: {} as Record<string, Record<string, string[]>>,
 	},
-	defaultWithReplies: {
-		where: 'account',
-		default: false,
-	},
 	pluginTokens: {
 		where: 'deviceAccount',
 		default: {} as Record<string, string>, // plugin id, token
+	},
+	accountTokens: {
+		where: 'device',
+		default: {} as Record<string, string>, // host/userId, token
 	},
 
 	enablePreferencesAutoCloudBackup: {
@@ -201,6 +192,18 @@ export const store = markRaw(new Storage('base', {
 	},
 
 	//#region TODO: そのうち消す (preferに移行済み)
+	defaultWithReplies: {
+		where: 'account',
+		default: false,
+	},
+	reactions: {
+		where: 'account',
+		default: ['👍', '❤️', '😆', '🤔', '😮', '🎉', '💢', '😥', '😇', '🍮'],
+	},
+	pinnedEmojis: {
+		where: 'account',
+		default: [],
+	},
 	widgets: {
 		where: 'account',
 		default: [] as {

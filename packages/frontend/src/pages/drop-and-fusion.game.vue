@@ -191,7 +191,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onDeactivated, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
+import { computed, onDeactivated, onMounted, onUnmounted, ref, shallowRef, watch, useTemplateRef } from 'vue';
 import * as Matter from 'matter-js';
 import * as Misskey from 'misskey-js';
 import { DropAndFusionGame } from 'misskey-bubble-game';
@@ -208,7 +208,7 @@ import { claimAchievement } from '@/utility/achievements.js';
 import { store } from '@/store.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import * as sound from '@/utility/sound.js';
 import MkRange from '@/components/MkRange.vue';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
@@ -567,8 +567,8 @@ let game = new DropAndFusionGame({
 });
 attachGameEvents();
 
-const containerEl = shallowRef<HTMLElement>();
-const canvasEl = shallowRef<HTMLCanvasElement>();
+const containerEl = useTemplateRef('containerEl');
+const canvasEl = useTemplateRef('canvasEl');
 const dropperX = ref(0);
 const currentPick = shallowRef<{ id: string; mono: Mono } | null>(null);
 const stock = shallowRef<{ id: string; mono: Mono }[]>([]);
@@ -849,7 +849,6 @@ function exportLog() {
 		l: DropAndFusionGame.serializeLogs(logs),
 	});
 	copyToClipboard(data);
-	os.success();
 }
 
 function updateSettings<

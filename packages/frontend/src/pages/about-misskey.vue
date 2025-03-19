@@ -134,7 +134,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, ref, shallowRef, computed } from 'vue';
+import { nextTick, onBeforeUnmount, ref, useTemplateRef, computed } from 'vue';
 import { version } from '@@/js/config.js';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
@@ -143,11 +143,11 @@ import MkInfo from '@/components/MkInfo.vue';
 import { physics } from '@/utility/physics.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { store } from '@/store.js';
 import * as os from '@/os.js';
 import { definePage } from '@/page.js';
 import { claimAchievement, claimedAchievements } from '@/utility/achievements.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
+import { prefer } from '@/preferences.js';
 
 const patronsWithIcon = [{
 	name: 'カイヤン',
@@ -403,10 +403,10 @@ const easterEggEmojis = ref<{
 	emoji: string
 }[]>([]);
 const easterEggEngine = ref<{ stop: () => void } | null>(null);
-const containerEl = shallowRef<HTMLElement>();
+const containerEl = useTemplateRef('containerEl');
 
 function iconLoaded() {
-	const emojis = store.s.reactions;
+	const emojis = prefer.s.emojiPalettes[0].emojis;
 	const containerWidth = containerEl.value.offsetWidth;
 	for (let i = 0; i < 32; i++) {
 		easterEggEmojis.value.push({
