@@ -59,7 +59,7 @@ const windowRouter = createRouter(props.initialPath);
 const pageMetadata = ref<null | PageMetadata>(null);
 const windowEl = shallowRef<InstanceType<typeof MkWindow>>();
 const history = ref<{ path: string; }[]>([{
-	path: windowRouter.getCurrentPath(),
+	path: windowRouter.getCurrentFullPath(),
 }]);
 const buttonsLeft = computed(() => {
 	const buttons: Record<string, unknown>[] = [];
@@ -88,20 +88,29 @@ const buttonsRight = computed(() => {
 });
 const reloadCount = ref(0);
 
+function getSearchMarker(path: string) {
+	const hash = path.split('#')[1];
+	if (hash == null) return null;
+	return hash;
+}
+
+const searchMarkerId = ref<string | null>(getSearchMarker(props.initialPath));
+
 windowRouter.addListener('push', ctx => {
-	history.value.push({ path: ctx.path });
+	history.value.push({ path: ctx.fullPath });
 });
 
 windowRouter.addListener('replace', ctx => {
 	history.value.pop();
-	history.value.push({ path: ctx.path });
+	history.value.push({ path: ctx.fullPath });
 });
 
 windowRouter.addListener('change', ctx => {
-	console.log('windowRouter: change', ctx.path);
+	if (_DEV_) console.log('windowRouter: change', ctx.fullPath);
+	searchMarkerId.value = getSearchMarker(ctx.fullPath);
 	analytics.page({
-		path: ctx.path,
-		title: ctx.path,
+		path: ctx.fullPath,
+		title: ctx.fullPath,
 	});
 });
 
@@ -130,14 +139,14 @@ const contextmenu = computed(() => ([{
 	icon: 'ti ti-external-link',
 	text: i18n.ts.openInNewTab,
 	action: () => {
-		window.open(url + windowRouter.getCurrentPath(), '_blank', 'noopener');
+		window.open(url + windowRouter.getCurrentFullPath(), '_blank', 'noopener');
 		windowEl.value?.close();
 	},
 }, {
 	icon: 'ti ti-link',
 	text: i18n.ts.copyLink,
 	action: () => {
-		copyToClipboard(url + windowRouter.getCurrentPath());
+		copyToClipboard(url + windowRouter.getCurrentFullPath());
 	},
 }]));
 
@@ -155,12 +164,12 @@ function close() {
 }
 
 function expand() {
-	mainRouter.push(windowRouter.getCurrentPath(), 'forcePage');
+	mainRouter.push(windowRouter.getCurrentFullPath(), 'forcePage');
 	windowEl.value?.close();
 }
 
 function popout() {
-	_popout(windowRouter.getCurrentPath(), windowEl.value?.$el);
+	_popout(windowRouter.getCurrentFullPath(), windowEl.value?.$el);
 	windowEl.value?.close();
 }
 
