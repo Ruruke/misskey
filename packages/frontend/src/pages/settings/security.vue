@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <SearchMarker path="/settings/security" :label="i18n.ts.security" :keywords="['security']" icon="ti ti-lock" :inlining="['2fa']">
-	<div class="_gaps_m">
+	<SearchMarker class="_gaps_m">
 		<MkFeatureBanner icon="/client-assets/locked_with_key_3d.png" color="#ffbf00">
 			<SearchKeyword>{{ i18n.ts._settings.securityBanner }}</SearchKeyword>
 		</MkFeatureBanner>
@@ -48,7 +48,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #caption>{{ i18n.ts.regenerateLoginTokenDescription }}</template>
 		</FormSlot>
 	</FormSection>
-</div>
+</SearchMarker>
+</SearchMarker>
 </template>
 
 <script lang="ts" setup>

@@ -164,16 +164,11 @@ if (meta.entranceShowFederation) {
 	}
 }
 
-		@media (max-width: 1200px) {
-			display: none;
-		}
-	}
-
-	> .contents {
-		position: relative;
-		width: min(430px, calc(100% - 32px));
-		margin-left: 128px;
-		padding: 100px 0 100px 0;
+.contents {
+	position: relative;
+	width: min(430px, calc(100% - 32px));
+	margin-left: 128px;
+	padding: 100px 0 100px 0;
 
 	@media (max-width: 1200px) {
 		margin: auto;

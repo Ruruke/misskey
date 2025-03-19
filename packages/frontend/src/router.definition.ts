@@ -96,6 +96,10 @@ export const ROUTE_DEF = [{
 		name: 'general',
 		component: page(() => import('@/pages/settings/general.vue')),
 	}, {
+		path: '/preferences',
+		name: 'preferences',
+		component: page(() => import('@/pages/settings/preferences.vue')),
+	}, {
 		path: '/theme/install',
 		name: 'theme',
 		component: page(() => import('@/pages/settings/theme.install.vue')),
@@ -499,10 +503,6 @@ export const ROUTE_DEF = [{
 		path: '/approvals',
 		name: 'approvals',
 		component: page(() => import('@/pages/admin/approvals.vue')),
-	}, {
-		path: '/proxy',
-		name: 'proxy',
-		component: page(() => import('@/pages/admin/proxy.vue')),
 	}, {
 		path: '/ruru-admin',
 		name: 'Ruru Admin',

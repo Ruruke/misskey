@@ -4,65 +4,66 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_gaps_m">
-	<!--
-	<MkSwitch v-model="$i.injectFeaturedNote" @update:model-value="onChangeInjectFeaturedNote">
-		<template #label>{{ i18n.ts.showFeaturedNotesInTimeline }}</template>
-	</MkSwitch>
-	-->
+	<SearchMarker path="/settings/other" :label="i18n.ts.other" :keywords="['other']" icon="ti ti-dots">
+		<div class="_gaps_m">
+			<!--
+			<MkSwitch v-model="$i.injectFeaturedNote" @update:model-value="onChangeInjectFeaturedNote">
+				<template #label>{{ i18n.ts.showFeaturedNotesInTimeline }}</template>
+			</MkSwitch>
+			-->
 
-	<!--
-	<MkSwitch v-model="reportError">{{ i18n.ts.sendErrorReports }}<template #caption>{{ i18n.ts.sendErrorReportsDescription }}</template></MkSwitch>
-	-->
+			<!--
+			<MkSwitch v-model="reportError">{{ i18n.ts.sendErrorReports }}<template #caption>{{ i18n.ts.sendErrorReportsDescription }}</template></MkSwitch>
+			-->
 
-		<div class="_gaps_s">
-			<SearchMarker :keywords="['account', 'info']">
-				<MkFolder>
-					<template #icon><i class="ti ti-info-circle"></i></template>
-					<template #label><SearchLabel>{{ i18n.ts.accountInfo }}</SearchLabel></template>
+			<div class="_gaps_s">
+				<SearchMarker :keywords="['account', 'info']">
+					<MkFolder>
+						<template #icon><i class="ti ti-info-circle"></i></template>
+						<template #label><SearchLabel>{{ i18n.ts.accountInfo }}</SearchLabel></template>
 
-					<div class="_gaps_m">
-						<MkKeyValue>
-							<template #key>ID</template>
-							<template #value><span class="_monospace">{{ $i.id }}</span></template>
-						</MkKeyValue>
+						<div class="_gaps_m">
+							<MkKeyValue>
+								<template #key>ID</template>
+								<template #value><span class="_monospace">{{ $i.id }}</span></template>
+							</MkKeyValue>
 
-						<MkKeyValue>
-							<template #key>{{ i18n.ts.registeredDate }}</template>
-							<template #value><MkTime :time="$i.createdAt" mode="detail"/></template>
-						</MkKeyValue>
+							<MkKeyValue>
+								<template #key>{{ i18n.ts.registeredDate }}</template>
+								<template #value><MkTime :time="$i.createdAt" mode="detail"/></template>
+							</MkKeyValue>
 
-						<MkFolder>
-							<template #icon><i class="ti ti-badges"></i></template>
-							<template #label><SearchLabel>{{ i18n.ts._role.policies }}</SearchLabel></template>
+							<MkFolder>
+								<template #icon><i class="ti ti-badges"></i></template>
+								<template #label><SearchLabel>{{ i18n.ts._role.policies }}</SearchLabel></template>
 
-							<div class="_gaps_s">
-								<div v-for="policy in Object.keys($i.policies)" :key="policy">
-									{{ policy }} ... {{ $i.policies[policy] }}
+								<div class="_gaps_s">
+									<div v-for="policy in Object.keys($i.policies)" :key="policy">
+										{{ policy }} ... {{ $i.policies[policy] }}
+									</div>
 								</div>
-							</div>
-						</MkFolder>
-					</div>
-				</MkFolder>
-			</SearchMarker>
+							</MkFolder>
+						</div>
+					</MkFolder>
+				</SearchMarker>
 
-			<SearchMarker :keywords="['roles']">
-				<MkFolder>
-					<template #icon><i class="ti ti-badges"></i></template>
-					<template #label><SearchLabel>{{ i18n.ts.rolesAssignedToMe }}</SearchLabel></template>
+				<SearchMarker :keywords="['roles']">
+					<MkFolder>
+						<template #icon><i class="ti ti-badges"></i></template>
+						<template #label><SearchLabel>{{ i18n.ts.rolesAssignedToMe }}</SearchLabel></template>
 
-					<MkRolePreview v-for="role in $i.roles" :key="role.id" :role="role" :forModeration="false"/>
-				</MkFolder>
-			</SearchMarker>
+						<MkRolePreview v-for="role in $i.roles" :key="role.id" :role="role" :forModeration="false"/>
+					</MkFolder>
+				</SearchMarker>
 
-			<SearchMarker :keywords="['account', 'move', 'migration']">
-				<MkFolder>
-					<template #icon><i class="ti ti-plane"></i></template>
-					<template #label><SearchLabel>{{ i18n.ts.accountMigration }}</SearchLabel></template>
+				<SearchMarker :keywords="['account', 'move', 'migration']">
+					<MkFolder>
+						<template #icon><i class="ti ti-plane"></i></template>
+						<template #label><SearchLabel>{{ i18n.ts.accountMigration }}</SearchLabel></template>
 
-					<XMigration/>
-				</MkFolder>
-			</SearchMarker>
+						<XMigration/>
+					</MkFolder>
+				</SearchMarker>
 
 				<SearchMarker :keywords="['account', 'close', 'delete']">
 					<MkFolder>
@@ -83,19 +84,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #icon><i class="ti ti-flask"></i></template>
 						<template #label><SearchLabel>{{ i18n.ts.experimentalFeatures }}</SearchLabel></template>
 
-					<div class="_gaps_m">
-						<MkSwitch v-model="enableCondensedLine">
-							<template #label>Enable condensed line</template>
-						</MkSwitch>
-						<MkSwitch v-model="skipNoteRender">
-							<template #label>Enable note render skipping</template>
-						</MkSwitch>
-						<MkSwitch v-model="stackingRouterView">
-							<template #label>Enable stacking router view</template>
-						</MkSwitch>
-					</div>
-				</MkFolder>
-			</SearchMarker>
+						<div class="_gaps_m">
+							<MkSwitch v-model="enableCondensedLine">
+								<template #label>Enable condensed line</template>
+							</MkSwitch>
+							<MkSwitch v-model="skipNoteRender">
+								<template #label>Enable note render skipping</template>
+							</MkSwitch>
+							<MkSwitch v-model="stackingRouterView">
+								<template #label>Enable stacking router view</template>
+							</MkSwitch>
+						</div>
+					</MkFolder>
+				</SearchMarker>
 
 				<SearchMarker :keywords="['developer', 'mode', 'debug']">
 					<MkFolder>
@@ -110,21 +111,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkFolder>
 				</SearchMarker>
 			</div>
-		</FormSection>
 
-		<FormSection>
+			<hr>
+
 			<FormLink to="/registry"><template #icon><i class="ti ti-adjustments"></i></template>{{ i18n.ts.registry }}</FormLink>
-		</FormSection>
-
-		<FormSection>
-			<div class="_gaps_s">
-				<MkSwitch v-model="defaultWithReplies">{{ i18n.ts.withRepliesByDefaultForNewlyFollowed }}</MkSwitch>
-				<MkButton danger @click="updateRepliesAll(true)"><i class="ti ti-messages"></i> {{ i18n.ts.showRepliesToOthersInTimelineAll }}</MkButton>
-				<MkButton danger @click="updateRepliesAll(false)"><i class="ti ti-messages-off"></i> {{ i18n.ts.hideRepliesToOthersInTimelineAll }}</MkButton>
-			</div>
-		</FormSection>
-	</div>
-</SearchMarker>
+		</div>
+	</SearchMarker>
 </template>
 
 <script lang="ts" setup>

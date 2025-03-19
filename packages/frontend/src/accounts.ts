@@ -32,6 +32,11 @@ export async function getAccounts(): Promise<{
 		token: tokens[host + '/' + user.id] ?? null,
 	}));
 }
+//TODO: 後で消す。
+export function signinRequired() {
+	if ($i == null) throw new Error('signin required');
+	return $i;
+}
 
 async function addAccount(host: string, user: Misskey.entities.User, token: AccountWithToken['token']) {
 	if (!prefer.s.accounts.some(x => x[0] === host && x[1].id === user.id)) {

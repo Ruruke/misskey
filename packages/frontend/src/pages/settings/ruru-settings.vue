@@ -153,7 +153,7 @@ import MkSparkle from '@/components/MkSparkle.vue';
 import MkContainer from '@/components/MkContainer.vue';
 import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
 import { bottomItemDef } from '@/utility/post-form.js';
-import { signinRequired } from '@/account.js';
+import { signinRequired } from '@/accounts.js';
 import { globalEvents } from '@/events.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import MkNote from '@/components/MkNote.vue';

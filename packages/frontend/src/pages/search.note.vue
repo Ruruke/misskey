@@ -106,7 +106,7 @@ import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { apLookup } from '@/utility/lookup.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';

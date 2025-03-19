@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <SearchMarker path="/settings/drive" :label="i18n.ts.drive" :keywords="['drive']" icon="ti ti-cloud">
-	<div class="_gaps_m">
+	<SearchMarker class="_gaps_m">
 		<MkFeatureBanner icon="/client-assets/cloud_3d.png" color="#0059ff">
 			<SearchKeyword>{{ i18n.ts._settings.driveBanner }}</SearchKeyword>
 		</MkFeatureBanner>
@@ -83,7 +83,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</SearchMarker>
 			</div>
 		</FormSection>
-	</div>
+	</SearchMarker>
+</SearchMarker>
 </template>
 
 <script lang="ts" setup>
