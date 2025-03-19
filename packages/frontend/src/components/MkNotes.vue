@@ -40,7 +40,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { useTemplateRef, ref, watch, onActivated, onDeactivated, onBeforeUnmount } from 'vue';
-import type { WatchStopHandle } from 'vue';
 import type { Paging } from '@/components/MkPagination.vue';
 import MkNote from '@/components/MkNote.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
@@ -62,6 +61,7 @@ const props = withDefaults(defineProps<{
 
 const pagingComponent = useTemplateRef('pagingComponent');
 const rootEl = useTemplateRef('rootEl');
+
 
 //#region Note Render Skipping (JS)
 let intersectionObserver: IntersectionObserver | null = null;
@@ -197,7 +197,6 @@ onDeactivated(() => {
 	disposeNoteRenderSkipping();
 });
 //#endregion
-
 defineExpose({
 	pagingComponent,
 });

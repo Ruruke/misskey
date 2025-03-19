@@ -101,7 +101,6 @@ import { instanceName } from '@@/js/config.js';
 import { CURRENT_STICKY_BOTTOM } from '@@/js/const.js';
 import { isLink } from '@@/js/is-link.js';
 import XCommon from './_common_/common.vue';
-import type { Ref } from 'vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import type { PageMetadata } from '@/page.js';
 import XDrawerMenu from '@/ui/_common_/navbar-for-mobile.vue';
@@ -137,7 +136,7 @@ window.addEventListener('resize', () => {
 
 const pageMetadata = ref<null | PageMetadata>(null);
 const widgetsShowing = ref(false);
-const navFooter = shallowRef<HTMLElement>();
+const navFooter = useTemplateRef('navFooter');
 
 provide(DI.router, mainRouter);
 provideMetadataReceiver((metadataGetter) => {
