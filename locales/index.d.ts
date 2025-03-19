@@ -9227,14 +9227,14 @@ export interface Locale extends ILocale {
          */
         "birthdayFollowings": string;
         /**
+         * NowPlaying
+         */
+        "listenBrainz": string;
+        /**
          * 天気予報
          */
         "weather": string;
         /**
-         * ListenBrainz
-         */
-        "listenBrainz": string;
-			  /**
          * 地震情報
          */
         "earthquake": string;
