@@ -26,7 +26,6 @@ import { deckStore } from '@/ui/deck/deck-store.js';
 import { analytics, initAnalytics } from '@/analytics.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
-import { setupRouter } from '@/router/main.js';
 import { applyFont } from '@/utility/font';
 import { prefer } from '@/preferences.js';
 import { $i } from '@/i.js';

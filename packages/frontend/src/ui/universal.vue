@@ -95,7 +95,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, computed, ref, watch, shallowRef } from 'vue';
+import { useTemplateRef, defineAsyncComponent, provide, onMounted, computed, ref, watch, shallowRef } from 'vue';
 import type { Ref } from 'vue';
 import { instanceName } from '@@/js/config.js';
 import { CURRENT_STICKY_BOTTOM } from '@@/js/const.js';

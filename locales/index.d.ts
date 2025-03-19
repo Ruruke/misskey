@@ -5808,10 +5808,6 @@ export interface Locale extends ILocale {
      */
     "cannotScheduleLaterThanOneYear": string;
     /**
-     * 投稿フォーム
-     */
-    "postForm": string;
-    /**
      * 投稿フォームの下部に表示される項目の並び替えが出来ます。項目をクリックすると削除できます。
      */
     "postFormBottomSettingsDescription": string;
