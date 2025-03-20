@@ -62,7 +62,7 @@ export const hash = (str: string, seed = 0): number => {
 	return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 };
 
-const BASE62_DIGITS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+export const BASE62_DIGITS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 export function toBase62(n: number): string {
 	if (n === 0) {

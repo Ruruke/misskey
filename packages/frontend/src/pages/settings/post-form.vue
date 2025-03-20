@@ -48,7 +48,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
-import MkSelect from '@/components/MkSelect.vue';
 import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
 import FormSlot from '@/components/form/slot.vue';
 import MkContainer from '@/components/MkContainer.vue';

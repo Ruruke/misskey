@@ -68,6 +68,34 @@ export const searchIndexes: SearchIndexItem[] = [
 		icon: 'ti ti-music',
 	},
 	{
+		id: '5BjnxMfYV',
+		children: [
+			{
+				id: '23hVdUoF3',
+				children: [
+					{
+						id: '75QPEg57v',
+						children: [
+							{
+								id: 'CiHijRkGG',
+								label: i18n.ts.changePassword,
+								keywords: [],
+							},
+						],
+						label: i18n.ts.password,
+						keywords: ['password'],
+					},
+				],
+				label: 'Unnamed marker',
+				keywords: [i18n.ts._settings.securityBanner],
+			},
+		],
+		label: i18n.ts.security,
+		keywords: ['security'],
+		path: '/settings/security',
+		icon: 'ti ti-lock',
+	},
+	{
 		id: '2rp9ka5Ht',
 		children: [
 			{
@@ -420,6 +448,45 @@ export const searchIndexes: SearchIndexItem[] = [
 		icon: 'ti ti-plug',
 	},
 	{
+		id: 'F1uK9ssiY',
+		children: [
+			{
+				id: 'E0ndmaP6Q',
+				label: i18n.ts._role.policies,
+				keywords: ['account', 'info'],
+			},
+			{
+				id: 'r5SjfwZJc',
+				label: i18n.ts.rolesAssignedToMe,
+				keywords: ['roles'],
+			},
+			{
+				id: 'cm7LrjgaW',
+				label: i18n.ts.accountMigration,
+				keywords: ['account', 'move', 'migration'],
+			},
+			{
+				id: 'ozfqNviP3',
+				label: i18n.ts.closeAccount,
+				keywords: ['account', 'close', 'delete', i18n.ts._accountDelete.requestAccountDelete],
+			},
+			{
+				id: 'tpywgkpxy',
+				label: i18n.ts.experimentalFeatures,
+				keywords: ['experimental', 'feature', 'flags'],
+			},
+			{
+				id: 'zWbGKohZ2',
+				label: i18n.ts.developer,
+				keywords: ['developer', 'mode', 'debug'],
+			},
+		],
+		label: i18n.ts.other,
+		keywords: ['other'],
+		path: '/settings/other',
+		icon: 'ti ti-dots',
+	},
+	{
 		id: '3icEvyv2D',
 		children: [
 			{
@@ -515,6 +582,52 @@ export const searchIndexes: SearchIndexItem[] = [
 		keywords: ['emoji', 'palette'],
 		path: '/settings/emoji-palette',
 		icon: 'ti ti-mood-happy',
+	},
+	{
+		id: 'tnYoppRiv',
+		children: [
+			{
+				id: 'jcLlnlh88',
+				children: [
+					{
+						id: 'cN3dsGNxu',
+						label: i18n.ts.usageAmount,
+						keywords: ['capacity', 'usage'],
+					},
+					{
+						id: 'DpKcurvCa',
+						label: i18n.ts.uploadFolder,
+						keywords: ['default', 'upload', 'folder'],
+					},
+					{
+						id: 'f8JrzlfZf',
+						label: i18n.ts.keepOriginalUploading,
+						keywords: ['keep', 'original', 'raw', 'upload', i18n.ts.keepOriginalUploadingDescription],
+					},
+					{
+						id: 'DpSG4EIpb',
+						label: i18n.ts.keepOriginalFilename,
+						keywords: ['keep', 'original', 'filename', i18n.ts.keepOriginalFilenameDescription],
+					},
+					{
+						id: 'iGlVjsfVj',
+						label: i18n.ts.alwaysMarkSensitive,
+						keywords: ['always', 'default', 'mark', 'nsfw', 'sensitive', 'media', 'file'],
+					},
+					{
+						id: 't6vNAKPZf',
+						label: i18n.ts.enableAutoSensitive,
+						keywords: ['auto', 'nsfw', 'sensitive', 'media', 'file', i18n.ts.enableAutoSensitiveDescription],
+					},
+				],
+				label: 'Unnamed marker',
+				keywords: [i18n.ts._settings.driveBanner],
+			},
+		],
+		label: i18n.ts.drive,
+		keywords: ['drive'],
+		path: '/settings/drive',
+		icon: 'ti ti-cloud',
 	},
 	{
 		id: 'FfZdOs8y',
