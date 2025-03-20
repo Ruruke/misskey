@@ -45,7 +45,6 @@ import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/i.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
-import XNotFound from '@/pages/not-found.vue';
 import { serverContext, assertServerContext } from '@/server-context.js';
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
@@ -74,9 +73,7 @@ const props = withDefaults(defineProps<{
 const tab = ref(props.page);
 
 const user = ref<null | Misskey.entities.UserDetailed>(CTX_USER);
-const error = ref<null | any>(null);
-const userstatus = ref<null | any>(null);
-const showContent = ref(true);
+const error = ref<any>(null);
 
 function fetchUser(): void {
 	if (props.acct == null) return;
@@ -99,146 +96,61 @@ function fetchUser(): void {
 	});
 }
 
-watch(
-	[() => props.acct, () => $i],
-	() => {
-		fetchUser();
-	},
-	{
-		immediate: true,
-		deep: true,
-	},
-);
-
-// アクセス制御のロジック
-const hasTabAccess = (tabName: string): boolean => {
-	if (!user.value || !$i) return tabName === 'home';
-
-	const isOwner = $i.id === user.value.id;
-	const isAdminMod = $i.isAdmin || $i.isModerator;
-
-	switch (tabName) {
-		case 'home':
-			return true;
-		case 'notes':
-			return !user.value.isBlocked;
-		case 'files':
-			return !user.value.isBlocked;
-		case 'activity':
-			return (!user.value.hideActivity && !user.value.isBlocked) || isOwner || isAdminMod;
-		case 'achievements':
-			return user.value.host == null && !user.value.isBlocked;
-		case 'reactions':
-			return (user.value.publicReactions && !user.value.isBlocked) || isOwner || isAdminMod;
-		case 'raw':
-			return isOwner || isAdminMod;
-		case 'clips':
-		case 'lists':
-		case 'pages':
-		case 'flashs':
-		case 'gallery':
-			return !user.value.isBlocked;
-		default:
-			return false;
-	}
-};
-
-// タブ変更時の処理
-watch(tab, (newTab) => {
-	showContent.value = hasTabAccess(newTab);
+watch(() => props.acct, fetchUser, {
+	immediate: true,
 });
 
 const headerActions = computed(() => []);
 
-const headerTabs = computed(() => {
-	if (!$i || !user.value) return [{
-		key: 'home',
-		title: i18n.ts.overview,
-		icon: 'ti ti-home',
-	}];
-
-	const baseTabs = [{
-		key: 'home',
-		title: i18n.ts.overview,
-		icon: 'ti ti-home',
-	}];
-
-	if (user.value.isBlocked) return baseTabs;
-
-	const tabs = [
-		{
-			key: 'notes',
-			title: i18n.ts.notes,
-			icon: 'ti ti-pencil',
-		}, {
-			key: 'files',
-			title: i18n.ts.files,
-			icon: 'ti ti-photo',
-		},
-	];
-
-	if (($i.id === user.value.id || $i.isAdmin || $i.isModerator) || !user.value.hideActivity) {
-		tabs.push({
-			key: 'activity',
-			title: i18n.ts.activity,
-			icon: 'ti ti-chart-line',
-		});
-	}
-
-	if (user.value.host == null) {
-		tabs.push({
-			key: 'achievements',
-			title: i18n.ts.achievements,
-			icon: 'ti ti-medal',
-		});
-	}
-
-	if (($i.id === user.value.id || $i.isAdmin || $i.isModerator) || user.value.publicReactions) {
-		tabs.push({
-			key: 'reactions',
-			title: i18n.ts.reaction,
-			icon: 'ti ti-mood-happy',
-		});
-	}
-
-	tabs.push(...[
-		{
-			key: 'clips',
-			title: i18n.ts.clips,
-			icon: 'ti ti-paperclip',
-		},
-		{
-			key: 'lists',
-			title: i18n.ts.lists,
-			icon: 'ti ti-list',
-		},
-		{
-			key: 'pages',
-			title: i18n.ts.pages,
-			icon: 'ti ti-news',
-		},
-		{
-			key: 'flashs',
-			title: 'Play',
-			icon: 'ti ti-player-play',
-		},
-		{
-			key: 'gallery',
-			title: i18n.ts.gallery,
-			icon: 'ti ti-icons',
-		},
-	]);
-
-	if ($i.id === user.value.id || $i.isAdmin || $i.isModerator) {
-		tabs.push({
-			key: 'raw',
-			title: 'Raw',
-			icon: 'ti ti-code',
-		});
-	}
-
-	return [...baseTabs, ...tabs];
-});
+const headerTabs = computed(() => user.value ? [{
+	key: 'home',
+	title: i18n.ts.overview,
+	icon: 'ti ti-home',
+}, {
+	key: 'notes',
+	title: i18n.ts.notes,
+	icon: 'ti ti-pencil',
+}, {
+	key: 'files',
+	title: i18n.ts.files,
+	icon: 'ti ti-photo',
+}, {
+	key: 'activity',
+	title: i18n.ts.activity,
+	icon: 'ti ti-chart-line',
+}, ...(user.value.host == null ? [{
+	key: 'achievements',
+	title: i18n.ts.achievements,
+	icon: 'ti ti-medal',
+}] : []), ...($i && ($i.id === user.value.id || $i.isAdmin || $i.isModerator)) || user.value.publicReactions ? [{
+	key: 'reactions',
+	title: i18n.ts.reaction,
+	icon: 'ti ti-mood-happy',
+}] : [], {
+	key: 'clips',
+	title: i18n.ts.clips,
+	icon: 'ti ti-paperclip',
+}, {
+	key: 'lists',
+	title: i18n.ts.lists,
+	icon: 'ti ti-list',
+}, {
+	key: 'pages',
+	title: i18n.ts.pages,
+	icon: 'ti ti-news',
+}, {
+	key: 'flashs',
+	title: 'Play',
+	icon: 'ti ti-player-play',
+}, {
+	key: 'gallery',
+	title: i18n.ts.gallery,
+	icon: 'ti ti-icons',
+}, {
+	key: 'raw',
+	title: 'Raw',
+	icon: 'ti ti-code',
+}] : []);
 
 definePage(() => ({
 	title: i18n.ts.user,
@@ -255,16 +167,3 @@ definePage(() => ({
 	} : {},
 }));
 </script>
-
-<style lang="scss" scoped>
-.forbidden {
-	text-align: center;
-	padding: 32px;
-	color: var(--error);
-
-	> i {
-		font-size: 24px;
-		margin-bottom: 8px;
-	}
-}
-</style>
