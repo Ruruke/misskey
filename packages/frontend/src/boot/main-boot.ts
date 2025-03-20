@@ -32,6 +32,7 @@ import { deckStore } from '@/ui/deck/deck-store.js';
 import { launchPlugins } from '@/plugin.js';
 import { unisonReload } from '@/utility/unison-reload.js';
 import { updateCurrentAccountPartial } from '@/accounts.js';
+import { $i } from '@/i.js';
 
 export async function mainBoot() {
 	const { isClientUpdated, lastVersion } = await common(() => {
