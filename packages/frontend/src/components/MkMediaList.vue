@@ -51,7 +51,7 @@ const props = defineProps<{
 
 const gallery = useTemplateRef('gallery');
 const pswpZIndex = os.claimZIndex('middle');
-document.documentElement.style.setProperty('--mk-pswp-root-z-index', pswpZIndex.toString());
+window.document.documentElement.style.setProperty('--mk-pswp-root-z-index', pswpZIndex.toString());
 const count = computed(() => props.mediaList.filter(media => previewable(media)).length);
 let lightbox: PhotoSwipeLightbox | null = null;
 
@@ -169,7 +169,7 @@ onMounted(() => {
 			className: 'pswp__alt-text-container',
 			appendTo: 'wrapper',
 			onInit: (el, pswp) => {
-				const textBox = document.createElement('p');
+				const textBox = window.document.createElement('p');
 				textBox.className = 'pswp__alt-text _acrylic';
 				el.appendChild(textBox);
 
@@ -181,7 +181,7 @@ onMounted(() => {
 	});
 
 	lightbox.on('afterInit', () => {
-		activeEl = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		activeEl = window.document.activeElement instanceof HTMLElement ? window.document.activeElement : null;
 		focusParent(activeEl, true, true);
 		lightbox?.pswp?.element?.focus({
 			preventScroll: true,
