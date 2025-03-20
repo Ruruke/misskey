@@ -1,33 +1,19 @@
 import path from 'path';
-import pluginReplace from '@rollup/plugin-replace';
 import pluginVue from '@vitejs/plugin-vue';
-import { defineConfig } from 'vite';
-import type { UserConfig } from 'vite';
+import { type UserConfig, defineConfig } from 'vite';
 import * as yaml from 'js-yaml';
 import { promises as fsp } from 'fs';
 
 import locales from '../../locales/index.js';
 import meta from '../../package.json';
 import packageInfo from './package.json' with { type: 'json' };
-import pluginUnwindCssModuleClassName from './lib/rollup-plugin-unwind-css-module-class-name.js';
 import pluginJson5 from './vite.json5.js';
-import pluginCreateSearchIndex from './lib/vite-plugin-create-search-index.js';
-import type { Options as SearchIndexOptions } from './lib/vite-plugin-create-search-index.js';
 import { pluginReplaceIcons } from './vite.replaceIcons.js';
 
 const url = process.env.NODE_ENV === 'development' ? yaml.load(await fsp.readFile('../../.config/default.yml', 'utf-8')).url : null;
 const host = url ? (new URL(url)).hostname : undefined;
 
 const extensions = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json', '.json5', '.svg', '.sass', '.scss', '.css', '.vue'];
-
-/**
- * 検索インデックスの生成設定
- */
-export const searchIndexes = [{
-	targetFilePaths: ['src/pages/settings/*.vue'],
-	exportFilePath: './src/utility/autogen/settings-search-index.ts',
-	verbose: process.env.FRONTEND_SEARCH_INDEX_VERBOSE === 'true',
-}] satisfies SearchIndexOptions[];
 
 /**
  * Misskeyのフロントエンドにバンドルせず、CDNなどから別途読み込むリソースを記述する。
@@ -47,7 +33,7 @@ const externalPackages = [
 	},
 ];
 
-export const hash = (str: string, seed = 0): number => {
+const hash = (str: string, seed = 0): number => {
 	let h1 = 0xdeadbeef ^ seed,
 		h2 = 0x41c6ce57 ^ seed;
 	for (let i = 0, ch; i < str.length; i++) {
@@ -62,9 +48,9 @@ export const hash = (str: string, seed = 0): number => {
 	return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 };
 
-export const BASE62_DIGITS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const BASE62_DIGITS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-export function toBase62(n: number): string {
+function toBase62(n: number): string {
 	if (n === 0) {
 		return '0';
 	}
@@ -79,38 +65,23 @@ export function toBase62(n: number): string {
 
 export function getConfig(): UserConfig {
 	return {
-		base: '/vite/',
+		base: '/embed_vite/',
 
 		server: {
 			host,
-			port: 5173,
+			port: 5174,
 			hmr: {
-				// バックエンド経由での起動時、Viteは5173経由でアセットを参照していると思い込んでいるが実際は3000から配信される
+				// バックエンド経由での起動時、Viteは5174経由でアセットを参照していると思い込んでいるが実際は3000から配信される
 				// そのため、バックエンドのWSサーバーにHMRのWSリクエストが吸収されてしまい、正しくHMRが機能しない
 				// クライアント側のWSポートをViteサーバーのポートに強制させることで、正しくHMRが機能するようになる
-				clientPort: 5173,
-			},
-			headers: { // なんか効かない
-				'X-Frame-Options': 'DENY',
+				clientPort: 5174,
 			},
 		},
 
 		plugins: [
-			...searchIndexes.map(options => pluginCreateSearchIndex(options)),
 			pluginVue(),
-			pluginUnwindCssModuleClassName(),
 			pluginJson5(),
 			...pluginReplaceIcons(),
-			...process.env.NODE_ENV === 'production'
-				? [
-					pluginReplace({
-						preventAssignment: true,
-						values: {
-							'isChromatic()': JSON.stringify(false),
-						},
-					}),
-				]
-				: [],
 		],
 
 		resolve: {
@@ -119,9 +90,7 @@ export function getConfig(): UserConfig {
 				'@/': __dirname + '/src/',
 				'@@/': __dirname + '/../frontend-shared/',
 				'/client-assets/': __dirname + '/assets/',
-				'/static-assets/': __dirname + '/../backend/assets/',
-				'/fluent-emojis/': __dirname + '/../../fluent-emojis/dist/',
-				'/fluent-emoji/': __dirname + '/../../fluent-emojis/dist/',
+				'/static-assets/': __dirname + '/../backend/assets/'
 			},
 		},
 
@@ -149,10 +118,7 @@ export function getConfig(): UserConfig {
 			_ENV_: JSON.stringify(process.env.NODE_ENV),
 			_DEV_: process.env.NODE_ENV !== 'production',
 			_PERF_PREFIX_: JSON.stringify('Misskey:'),
-			_DATA_TRANSFER_DRIVE_FILE_: JSON.stringify('mk_drive_file'),
-			_DATA_TRANSFER_DRIVE_FOLDER_: JSON.stringify('mk_drive_folder'),
-			_DATA_TRANSFER_DECK_COLUMN_: JSON.stringify('mk_deck_column'),
-			__VUE_OPTIONS_API__: true,
+			__VUE_OPTIONS_API__: false,
 			__VUE_PROD_DEVTOOLS__: false,
 		},
 
@@ -165,13 +131,12 @@ export function getConfig(): UserConfig {
 			manifest: 'manifest.json',
 			rollupOptions: {
 				input: {
-					app: './src/_boot_.ts',
+					app: './src/boot.ts',
 				},
 				external: externalPackages.map(p => p.match),
 				output: {
 					manualChunks: {
 						vue: ['vue'],
-						photoswipe: ['photoswipe', 'photoswipe/lightbox', 'photoswipe/style.css'],
 					},
 					chunkFileNames: process.env.NODE_ENV === 'production' ? '[hash:8].js' : '[name]-[hash:8].js',
 					assetFileNames: process.env.NODE_ENV === 'production' ? '[hash:8][extname]' : '[name]-[hash:8][extname]',
@@ -187,7 +152,7 @@ export function getConfig(): UserConfig {
 				},
 			},
 			cssCodeSplit: true,
-			outDir: __dirname + '/../../built/_frontend_vite_',
+			outDir: __dirname + '/../../built/_frontend_embed_vite_',
 			assetsDir: '.',
 			emptyOutDir: false,
 			sourcemap: process.env.NODE_ENV === 'development',
@@ -195,27 +160,12 @@ export function getConfig(): UserConfig {
 
 			// https://vitejs.dev/guide/dep-pre-bundling.html#monorepos-and-linked-dependencies
 			commonjsOptions: {
-				include: [/misskey-js/, /misskey-reversi/, /misskey-bubble-game/, /node_modules/],
+				include: [/misskey-js/, /node_modules/],
 			},
 		},
 
 		worker: {
 			format: 'es',
-		},
-
-		test: {
-			environment: 'happy-dom',
-			deps: {
-				optimizer: {
-					web: {
-						include: [
-							// XXX: misskey-dev/browser-image-resizer has no "type": "module"
-							'browser-image-resizer',
-						],
-					},
-				},
-			},
-			includeSource: ['src/**/*.ts'],
 		},
 	};
 }
