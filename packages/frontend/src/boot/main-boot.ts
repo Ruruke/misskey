@@ -379,7 +379,7 @@ export async function mainBoot() {
 
 		main.on('newChatMessage', () => {
 			updateCurrentAccountPartial({ hasUnreadChatMessages: true });
-			sound.playMisskeySfx('chat');
+			sound.playMisskeySfx('chatMessage');
 		});
 
 		main.on('readAllAnnouncements', () => {
