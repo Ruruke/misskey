@@ -53,34 +53,15 @@ class EmojiPicker {
 		});
 	}
 
-	public show(opts: {
+	public show(
 		src: HTMLElement,
 		onChosen?: EmojiPicker['onChosen'],
 		onClosed?: EmojiPicker['onClosed'],
-	}) {
-		if (this.isWindow) {
-			if (this.windowShowing) return;
-			this.windowShowing = true;
-			const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkEmojiPickerWindow.vue')), {
-				src: opts.src,
-				pinnedEmojis: store.r.pinnedEmojis,
-				asReactionPicker: false,
-			}, {
-				chosen: (emoji) => {
-					if (opts.onChosen) opts.onChosen(emoji);
-				},
-				closed: () => {
-					if (opts.onClosed) opts.onClosed();
-					this.windowShowing = false;
-					dispose();
-				},
-			});
-		} else {
-			this.src.value = opts.src;
-			this.dialogShowing.value = true;
-			this.onChosen = opts.onChosen;
-			this.onClosed = opts.onClosed;
-		}
+	) {
+		this.src.value = src;
+		this.manualShowing.value = true;
+		this.onChosen = onChosen;
+		this.onClosed = onClosed;
 	}
 }
 

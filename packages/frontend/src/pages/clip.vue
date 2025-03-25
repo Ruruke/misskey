@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions"/></template>
+<PageWithHeader :actions="headerActions">
 	<MkSpacer :contentMax="800">
 		<MkRemoteCaution v-if="remoteUrl != null" :href="remoteUrl" class="warn" :class="$style.remote_caution"/>
 		<div v-if="clip" class="_gaps">
@@ -28,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkNotes :pagination="pagination" :detail="true"/>
 		</div>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>

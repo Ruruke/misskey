@@ -67,6 +67,7 @@ export type RolePolicies = {
 	canImportUserLists: boolean;
 	canPlayGames: boolean;
 	canAddRoles: boolean;
+	canChat: boolean;
 };
 
 export const DEFAULT_POLICIES: RolePolicies = {
@@ -105,6 +106,7 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	canImportUserLists: true,
 	canPlayGames: true,
 	canAddRoles: true,
+	canChat: true,
 };
 
 @Injectable()
@@ -412,6 +414,7 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			canImportUserLists: calc('canImportUserLists', vs => vs.some(v => v === true)),
 			canPlayGames: calc('canPlayGames', vs => vs.some(v => v === true)),
 			canAddRoles: calc('canAddRoles', vs => vs.some(v => v === true)),
+			canChat: calc('canChat', vs => vs.some(v => v === true)),
 		};
 	}
 

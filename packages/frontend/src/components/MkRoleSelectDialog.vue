@@ -4,28 +4,43 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-	<MkSpacer>
-		<MkFoldableSection>
-			<template #header>{{ i18n.ts._role.manual + " " + i18n.ts.roles }}</template>
-			<div :class="$style.roleGrid">
-				<MkRolePreview v-for="role in rolesManual" :key="role.id" :role="role" :forModeration="false"/>
-			</div>
-		</MkFoldableSection>
-		<MkFoldableSection>
-			<template #header>{{ i18n.ts._role.conditional + " " + i18n.ts.roles }}</template>
-			<div :class="$style.roleGrid">
-				<MkRolePreview v-for="role in rolesConditional" :key="role.id" :role="role" :forModeration="false"/>
-			</div>
-		</MkFoldableSection>
-		<MkFoldableSection>
-			<template #header>{{ i18n.ts.community + " " + i18n.ts.roles }}</template>
-			<div :class="$style.roleGrid">
-				<MkRolePreview v-for="role in rolesCommunity" :key="role.id" :role="role" :forModeration="false"/>
-			</div>
-		</MkFoldableSection>
-	</MkSpacer>
-</template>
+	<MkModalWindow
+		ref="windowEl"
+		:withOkButton="false"
+		:okButtonDisabled="false"
+		:width="400"
+		:height="500"
+		@close="onCloseModalWindow"
+		@closed="emit('closed')"
+	>
+		<template #header>{{ title }}</template>
+		<MkSpacer :marginMin="20" :marginMax="28">
+			<MkLoading v-if="fetching"/>
+			<div v-else class="_gaps" :class="$style.root">
+				<div :class="$style.header">
+					<MkButton rounded @click="addRole"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
+				</div>
 
+				<div v-if="selectedRoles.length > 0" class="_gaps" :class="$style.roleItemArea">
+					<div v-for="role in selectedRoles" :key="role.id" :class="$style.roleItem">
+						<MkRolePreview :class="$style.role" :role="role" :forModeration="true" :detailed="false" style="pointer-events: none;"/>
+						<button class="_button" :class="$style.roleUnAssign" @click="removeRole(role.id)"><i class="ti ti-x"></i></button>
+					</div>
+				</div>
+				<div v-else :class="$style.roleItemArea" style="text-align: center">
+					{{ i18n.ts._roleSelectDialog.notSelected }}
+				</div>
+
+				<MkInfo v-if="infoMessage">{{ infoMessage }}</MkInfo>
+
+				<div :class="$style.buttons">
+					<MkButton primary @click="onOkClicked">{{ i18n.ts.ok }}</MkButton>
+					<MkButton @click="onCancelClicked">{{ i18n.ts.cancel }}</MkButton>
+				</div>
+			</div>
+		</MkSpacer>
+	</MkModalWindow>
+</template>
 <script lang="ts" setup>
 import { ref } from 'vue';
 import * as Misskey from 'misskey-js';
@@ -33,6 +48,35 @@ import MkRolePreview from '@/components/MkRolePreview.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
+import * as os from '@/os.js';
+import MkSpacer from '@/components/global/MkSpacer.vue';
+import MkModalWindow from '@/components/MkModalWindow.vue';
+import MkLoading from '@/components/global/MkLoading.vue';
+
+const emit = defineEmits<{
+	(ev: 'done', value: Misskey.entities.Role[]),
+	(ev: 'close'),
+	(ev: 'closed'),
+}>();
+
+const props = withDefaults(defineProps<{
+	initialRoleIds?: string[],
+	infoMessage?: string,
+	title?: string,
+	publicOnly: boolean,
+}>(), {
+	initialRoleIds: undefined,
+	infoMessage: undefined,
+	title: undefined,
+	publicOnly: true,
+});
+
+const { initialRoleIds, infoMessage, title, publicOnly } = toRefs(props);
+
+const windowEl = ref<InstanceType<typeof MkModalWindow>>();
+const roles = ref<Misskey.entities.Role[]>([]);
+const selectedRoleIds = ref<string[]>(initialRoleIds.value ?? []);
+const fetching = ref(false);
 
 const rolesManual = ref<Misskey.entities.Role[] | null>(null);
 const rolesConditional = ref<Misskey.entities.Role[] | null>(null);

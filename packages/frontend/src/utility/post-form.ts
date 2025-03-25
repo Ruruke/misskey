@@ -42,10 +42,10 @@ export const bottomItemDef = {
 		title: i18n.ts.addMfmFunction,
 		icon: 'ti ti-palette',
 	},
-	saveAsDraft: {
-		title: i18n.ts.saveAsDraft,
-		icon: 'ti ti-note',
-	},
+	// saveAsDraft: {
+	// 	title: i18n.ts.saveAsDraft,
+	// 	icon: 'ti ti-note',
+	// },
 	clearPost: {
 		title: i18n.ts.clearPost,
 		icon: 'ti ti-trash',

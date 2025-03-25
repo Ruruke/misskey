@@ -4,35 +4,35 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkModal
-	ref="modal"
-	v-slot="{ type, maxHeight }"
-	:zPriority="'middle'"
-	:preferType="prefer.s.emojiPickerStyle"
-	:hasInteractionWithOtherFocusTrappedEls="true"
-	:transparentBg="true"
-	:manualShowing="manualShowing"
-	:src="src"
-	@click="modal?.close()"
-	@esc="modal?.close()"
-	@opening="opening"
-	@close="emit('close')"
-	@closed="emit('closed')"
->
-	<MkEmojiPicker
-		ref="picker"
-		class="_popup _shadow"
-		:class="{ [$style.drawer]: type === 'drawer' }"
-		:showPinned="showPinned"
-		:pinnedEmojis="pinnedEmojis"
-		:asReactionPicker="asReactionPicker"
-		:targetNote="targetNote"
-		:asDrawer="type === 'drawer'"
-		:max-height="maxHeight"
-		@chosen="chosen"
+	<MkModal
+		ref="modal"
+		v-slot="{ type, maxHeight }"
+		:zPriority="'middle'"
+		:preferType="prefer.s.emojiPickerStyle"
+		:hasInteractionWithOtherFocusTrappedEls="true"
+		:transparentBg="true"
+		:manualShowing="manualShowing"
+		:src="src"
+		@click="modal?.close()"
 		@esc="modal?.close()"
-	/>
-</MkModal>
+		@opening="opening"
+		@close="emit('close')"
+		@closed="emit('closed')"
+	>
+		<MkEmojiPicker
+			ref="picker"
+			class="_popup _shadow"
+			:class="{ [$style.drawer]: type === 'drawer' }"
+			:showPinned="showPinned"
+			:pinnedEmojis="pinnedEmojis"
+			:asReactionPicker="asReactionPicker"
+			:targetNote="targetNote"
+			:asDrawer="type === 'drawer'"
+			:max-height="maxHeight"
+			@chosen="chosen"
+			@esc="modal?.close()"
+		/>
+	</MkModal>
 </template>
 
 <script lang="ts" setup>

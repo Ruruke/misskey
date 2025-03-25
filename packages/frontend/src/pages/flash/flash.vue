@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
 	<MkSpacer :contentMax="700">
 		<MkRemoteCaution v-if="remoteUrl != null" :href="remoteUrl" class="warn" :class="$style.remote_caution"/>
 		<Transition :name="prefer.s.animation ? 'fade' : ''" mode="out-in">
@@ -59,7 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkLoading v-else/>
 		</Transition>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
