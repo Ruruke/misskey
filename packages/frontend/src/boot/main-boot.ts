@@ -29,6 +29,7 @@ import { launchPlugins } from '@/plugin.js';
 import { updateCurrentAccountPartial } from '@/accounts.js';
 import { signout } from '@/signout.js';
 import { migrateOldSettings } from '@/pref-migrate.js';
+import { $i } from '@/i.js';
 
 export async function mainBoot() {
 	const { isClientUpdated, lastVersion } = await common(() => {
