@@ -30,16 +30,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, inject, ref, defineAsyncComponent } from 'vue';
 import { getProxiedImageUrl, getStaticImageUrl } from '@/utility/media-proxy.js';
+import type { MenuItem } from '@/types/menu.js';
 import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import * as os from '@/os.js';
-import { misskeyApiGet } from '@/utility/misskey-api.js';
-import * as sound from '@/utility/sound.js';
+import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
 import MkCustomEmojiDetailedDialog from '@/components/MkCustomEmojiDetailedDialog.vue';
 import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
-import { importEmojiMeta } from '@/utility/import-emoji.js';
+import { DI } from '@/di.js';
+import * as sound from '@/utility/sound.js';
 import { store } from '@/store.js';
 
 const props = defineProps<{
@@ -54,7 +55,7 @@ const props = defineProps<{
 	fallbackToImage?: boolean;
 }>();
 
-const react = inject<((name: string) => void) | null>('react', null);
+const react = inject(DI.mfmEmojiReactCallback);
 
 const customEmojiName = computed(() => (props.name[0] === ':' ? props.name.substring(1, props.name.length - 1) : props.name).replace('@.', ''));
 const isLocal = computed(() => !props.host && (customEmojiName.value.endsWith('@.') || !customEmojiName.value.includes('@')));
@@ -96,50 +97,67 @@ const alt = computed(() => `:${customEmojiName.value}:`);
 const errored = ref(url.value == null);
 
 function onClick(ev: MouseEvent) {
-	if (props.menu && canReact.value ) {
-		os.popupMenu([{
+	if (props.menu) {
+		const menuItems: MenuItem[] = [];
+
+		menuItems.push({
 			type: 'label',
 			text: `:${props.name}:`,
-		}, ...((customEmojis.value.find(it => it.name === customEmojiName.value)?.name ?? null) ? [{
+		}, {
 			text: i18n.ts.copy,
 			icon: 'ti ti-copy',
 			action: () => {
 				copyToClipboard(`:${props.name}:`);
 			},
-		}] : []), ...(props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis) ? [{
-			text: i18n.ts.import,
-			icon: 'ti ti-plus',
-			action: async() => {
-				let emoji = await os.apiWithDialog('admin/emoji/steal', {
-					name: customEmojiName.value,
-					host: props.host,
-				});
-				emoji = await importEmojiMeta(emoji, props.host);
-				os.popup(defineAsyncComponent(() => import('@/pages/emoji-edit-dialog.vue')), {
-					emoji: emoji,
-				});
-			},
-		}] : []), ...(props.menuReaction && react ? [{
-			text: i18n.ts.doReaction,
-			icon: 'ti ti-plus',
-			action: () => {
-				react(`:${props.name}:`);
-				sound.playMisskeySfx('reaction');
-			},
-		}] : []), {
+		});
+
+		if (props.menuReaction && react) {
+			menuItems.push({
+				text: i18n.ts.doReaction,
+				icon: 'ti ti-plus',
+				action: () => {
+					react(`:${props.name}:`);
+				},
+			});
+		}
+
+		menuItems.push({
 			text: i18n.ts.info,
 			icon: 'ti ti-info-circle',
 			action: async () => {
-				os.popup(MkCustomEmojiDetailedDialog, {
+				const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
 					emoji: await misskeyApiGet('emoji', {
 						name: customEmojiName.value,
 					}),
 				}, {
-					anchor: ev.target,
+					closed: () => dispose(),
 				});
 			},
-		}], ev.currentTarget ?? ev.target);
+		});
+
+		if ($i?.isModerator ?? $i?.isAdmin) {
+			menuItems.push({
+				text: i18n.ts.edit,
+				icon: 'ti ti-pencil',
+				action: async () => {
+					await edit(props.name);
+				},
+			});
+		}
+
+		os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 	}
+}
+
+async function edit(name: string) {
+	const emoji = await misskeyApi('emoji', {
+		name: name,
+	});
+	const { dispose } = os.popup(defineAsyncComponent(() => import('@/pages/emoji-edit-dialog.vue')), {
+		emoji: emoji,
+	}, {
+		closed: () => dispose(),
+	});
 }
 
 function resetTimer() {
