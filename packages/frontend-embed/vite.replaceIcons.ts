@@ -323,6 +323,7 @@ export function pluginReplaceIcons() {
 					'ti ti-send': 'ph-paper-plane-tilt ph-bold ph-lg',
 					'ti ti-server': 'ph-hard-drives ph-bold ph-lg',
 					'ti ti-settings': 'ph-gear ph-bold ph-lg',
+					'ti ti-settings-2': 'ph-gear ph-bold ph-lg',
 					'ti ti-share': 'ph-share-network ph-bold ph-lg',
 					'ti ti-shield': 'ph-shield ph-bold ph-lg',
 					'ti ti-shield-lock': 'ph-shield ph-bold ph-lg',

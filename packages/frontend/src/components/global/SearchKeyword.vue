@@ -1,11 +1,14 @@
-<script setup lang="ts">
-
-</script>
+<!--
+SPDX-FileCopyrightText: syuilo and misskey-project
+SPDX-License-Identifier: AGPL-3.0-only
+-->
 
 <template>
-  $END$
+	<slot></slot>
 </template>
 
-<style scoped lang="scss">
+<script lang="ts" setup>
+</script>
 
+<style lang="scss" module>
 </style>

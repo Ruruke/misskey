@@ -4,41 +4,41 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<Transition
-	:name="transitionName"
-	:enterActiveClass="normalizeClass({
+	<Transition
+		:name="transitionName"
+		:enterActiveClass="normalizeClass({
 		[$style.transition_modalDrawer_enterActive]: transitionName === 'modal-drawer',
 		[$style.transition_modalPopup_enterActive]: transitionName === 'modal-popup',
 		[$style.transition_modal_enterActive]: transitionName === 'modal',
 		[$style.transition_send_enterActive]: transitionName === 'send',
 	})"
-	:leaveActiveClass="normalizeClass({
+		:leaveActiveClass="normalizeClass({
 		[$style.transition_modalDrawer_leaveActive]: transitionName === 'modal-drawer',
 		[$style.transition_modalPopup_leaveActive]: transitionName === 'modal-popup',
 		[$style.transition_modal_leaveActive]: transitionName === 'modal',
 		[$style.transition_send_leaveActive]: transitionName === 'send',
 	})"
-	:enterFromClass="normalizeClass({
+		:enterFromClass="normalizeClass({
 		[$style.transition_modalDrawer_enterFrom]: transitionName === 'modal-drawer',
 		[$style.transition_modalPopup_enterFrom]: transitionName === 'modal-popup',
 		[$style.transition_modal_enterFrom]: transitionName === 'modal',
 		[$style.transition_send_enterFrom]: transitionName === 'send',
 	})"
-	:leaveToClass="normalizeClass({
+		:leaveToClass="normalizeClass({
 		[$style.transition_modalDrawer_leaveTo]: transitionName === 'modal-drawer',
 		[$style.transition_modalPopup_leaveTo]: transitionName === 'modal-popup',
 		[$style.transition_modal_leaveTo]: transitionName === 'modal',
 		[$style.transition_send_leaveTo]: transitionName === 'send',
 	})"
-	:duration="transitionDuration" appear @afterLeave="onClosed" @enter="emit('opening')" @afterEnter="onOpened"
->
-	<div v-show="manualShowing != null ? manualShowing : showing" ref="modalRootEl" v-hotkey.global="keymap" :class="[$style.root, { [$style.drawer]: type === 'drawer', [$style.dialog]: type === 'dialog', [$style.popup]: type === 'popup' }]" :style="{ zIndex, pointerEvents: (manualShowing != null ? manualShowing : showing) ? 'auto' : 'none', '--transformOrigin': transformOrigin }">
-		<div data-cy-bg :data-cy-transparent="isEnableBgTransparent" class="_modalBg" :class="[$style.bg, { [$style.bgTransparent]: isEnableBgTransparent }]" :style="{ zIndex }" @click="onBgClick" @mousedown="onBgClick" @contextmenu.prevent.stop="() => {}"></div>
-		<div ref="content" :class="[$style.content, { [$style.fixed]: fixed }]" :style="{ zIndex }" @click.self="onBgClick">
-			<slot :max-height="maxHeight" :type="type"></slot>
+		:duration="transitionDuration" appear @afterLeave="onClosed" @enter="emit('opening')" @afterEnter="onOpened"
+	>
+		<div v-show="manualShowing != null ? manualShowing : showing" ref="modalRootEl" v-hotkey.global="keymap" :class="[$style.root, { [$style.drawer]: type === 'drawer', [$style.dialog]: type === 'dialog', [$style.popup]: type === 'popup' }]" :style="{ zIndex, pointerEvents: (manualShowing != null ? manualShowing : showing) ? 'auto' : 'none', '--transformOrigin': transformOrigin }">
+			<div data-cy-bg :data-cy-transparent="isEnableBgTransparent" class="_modalBg" :class="[$style.bg, { [$style.bgTransparent]: isEnableBgTransparent }]" :style="{ zIndex }" @click="onBgClick" @mousedown="onBgClick" @contextmenu.prevent.stop="() => {}"></div>
+			<div ref="content" :class="[$style.content, { [$style.fixed]: fixed }]" :style="{ zIndex }" @click.self="onBgClick">
+				<slot :max-height="maxHeight" :type="type"></slot>
+			</div>
 		</div>
-	</div>
-</Transition>
+	</Transition>
 </template>
 
 <script lang="ts" setup>
@@ -117,26 +117,26 @@ const type = computed<ModalTypes>(() => {
 });
 const isEnableBgTransparent = computed(() => props.transparentBg && (type.value === 'popup'));
 const transitionName = computed((() =>
-	prefer.s.animation
-		? useSendAnime.value
-			? 'send'
-			: type.value === 'drawer'
-				? 'modal-drawer'
-				: type.value === 'popup'
-					? 'modal-popup'
-					: 'modal'
-		: ''
+		prefer.s.animation
+			? useSendAnime.value
+				? 'send'
+				: type.value === 'drawer'
+					? 'modal-drawer'
+					: type.value === 'popup'
+						? 'modal-popup'
+						: 'modal'
+			: ''
 ));
 const transitionDuration = computed((() =>
-	transitionName.value === 'send'
-		? 400
-		: transitionName.value === 'modal-popup'
-			? 100
-			: transitionName.value === 'modal'
-				? 200
-				: transitionName.value === 'modal-drawer'
+		transitionName.value === 'send'
+			? 400
+			: transitionName.value === 'modal-popup'
+				? 100
+				: transitionName.value === 'modal'
 					? 200
-					: 0
+					: transitionName.value === 'modal-drawer'
+						? 200
+						: 0
 ));
 
 let releaseFocusTrap: (() => void) | null = null;
@@ -364,7 +364,7 @@ defineExpose({
 	}
 
 	> .content {
-    transform: translateY(0px);
+		transform: translateY(0px);
 		transition: opacity 0.3s ease-in, transform 0.3s cubic-bezier(.5,-0.5,1,.5) !important;
 	}
 }

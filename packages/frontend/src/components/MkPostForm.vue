@@ -101,7 +101,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { inject, watch, nextTick, onMounted, reactive, onBeforeUnmount, defineAsyncComponent, provide, shallowRef, ref, computed } from 'vue';
+import { inject, watch, nextTick, onMounted, reactive, onBeforeUnmount, defineAsyncComponent, provide, shallowRef, ref, computed, useTemplateRef } from 'vue';
 import * as mfm from 'mfm-js';
 import * as Misskey from 'misskey-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -1098,20 +1098,20 @@ async function insertEmoji(ev: MouseEvent) {
 
 	let pos = textareaEl.value?.selectionStart ?? 0;
 	let posEnd = textareaEl.value?.selectionEnd ?? text.value.length;
-	emojiPicker.show({
-		src: target as HTMLElement,
-		onChosen: emoji => {
+	emojiPicker.show(
+		target as HTMLElement,
+		emoji => {
 			const textBefore = text.value.substring(0, pos);
 			const textAfter = text.value.substring(posEnd);
 			text.value = textBefore + emoji + textAfter;
 			pos += emoji.length;
 			posEnd += emoji.length;
 		},
-		onClosed: () => {
+		() => {
 			textAreaReadOnly.value = false;
 			nextTick(() => focus());
 		},
-	});
+	);
 }
 
 async function insertMfmFunction(ev: MouseEvent) {
