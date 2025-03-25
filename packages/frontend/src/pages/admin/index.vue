@@ -363,7 +363,6 @@ defineExpose({
 	&.wide {
 		display: flex;
 		margin: 0 auto;
-		height: 100%;
 
 		> .nav {
 			position: sticky;
