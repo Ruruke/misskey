@@ -248,9 +248,9 @@ const followingVisibility = ref($i.followingVisibility);
 const followersVisibility = ref($i.followersVisibility);
 const chatScope = ref($i.chatScope);
 
-const defaultNoteVisibility = prefer.model('defaultNoteVisibility');
-const defaultNoteLocalOnly = prefer.model('defaultNoteLocalOnly');
-const rememberNoteVisibility = prefer.model('rememberNoteVisibility');
+// const defaultNoteVisibility = prefer.model('defaultNoteVisibility');
+// const defaultNoteLocalOnly = prefer.model('defaultNoteLocalOnly');
+// const rememberNoteVisibility = prefer.model('rememberNoteVisibility');
 
 const makeNotesFollowersOnlyBefore_type = computed(() => {
 	if (makeNotesFollowersOnlyBefore.value == null) {
