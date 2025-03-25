@@ -61,6 +61,8 @@ import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSlot from '@/components/form/slot.vue';
 import MkContainer from '@/components/MkContainer.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
+import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
 import { store } from '@/store.js';
@@ -78,6 +80,7 @@ const items = ref(prefer.s.menu.map(x => ({
 })));
 
 const menuDisplay = computed(store.makeGetterSetter('menuDisplay'));
+const showNavbarSubButtons = prefer.model('showNavbarSubButtons');
 
 async function addItem() {
 	const menu = Object.keys(navbarItemDef).filter(k => !prefer.s.menu.includes(k));
