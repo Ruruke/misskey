@@ -145,6 +145,7 @@ export const moderationLogTypes = [
 	'unsetUserMutualLink',
 	'quarantineRemoteInstance',
 	'unquarantineRemoteInstance',
+	'deleteChatRoom',
 	'updateProxyAccountDescription',
 ] as const;
 
@@ -432,6 +433,10 @@ export type ModerationLogPayloads = {
 	unquarantineRemoteInstance: {
 		id: string;
 		host: string;
+	};
+	deleteChatRoom: {
+		roomId: string;
+		room: any;
 	};
 	updateProxyAccountDescription: {
 		before: string | null;

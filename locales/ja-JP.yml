@@ -2917,6 +2917,7 @@ _moderationLogTypes:
   deleteGalleryPost: "ギャラリーの投稿を削除"
   quarantineRemoteInstance: "公開投稿のみ配送に制限"
   unquarantineRemoteInstance: "公開投稿のみ配送を解除"
+  deleteChatRoom: "チャットルームを削除"
   updateProxyAccountDescription: "プロキシアカウントの説明を更新"
 
 _fileViewer:

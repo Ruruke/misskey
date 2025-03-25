@@ -11014,6 +11014,10 @@ export interface Locale extends ILocale {
          */
         "unquarantineRemoteInstance": string;
         /**
+         * チャットルームを削除
+         */
+        "deleteChatRoom": string;
+        /**
          * プロキシアカウントの説明を更新
          */
         "updateProxyAccountDescription": string;
