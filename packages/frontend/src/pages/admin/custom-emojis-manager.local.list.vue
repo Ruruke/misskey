@@ -284,7 +284,7 @@ const searchQuery = ref<EmojiSearchQuery>({
 	localOnly: null,
 	roles: [],
 	sortOrders: [],
-	limit: 1000,
+	limit: 100,
 });
 let searchWindowOpening = false;
 
