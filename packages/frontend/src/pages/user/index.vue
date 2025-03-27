@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XGallery v-else-if="tab === 'gallery'" :user="user"/>
 					<XRaw v-else-if="tab === 'raw'" :user="user"/>
 				</template>
-				<div v-else class="forbidden">
+				<div v-else class="forbidde">
 					<XNotFound/>
 				</div>
 			</MkHorizontalSwipe>
