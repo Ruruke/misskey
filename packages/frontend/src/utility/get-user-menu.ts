@@ -383,7 +383,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 			},
 		});
 
-		if ($i.policies.canChat && user.canChat) {
+		if ($i.policies.canChat && user.canChat && user.host == null) {
 			menuItems.push({
 				type: 'link',
 				icon: 'ti ti-messages',
