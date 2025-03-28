@@ -623,41 +623,58 @@ export const searchIndexes: SearchIndexItem[] = [
 		id: 'tnYoppRiv',
 		children: [
 			{
-				id: 'jcLlnlh88',
-				children: [
-					{
-						id: 'cN3dsGNxu',
-						label: i18n.ts.usageAmount,
-						keywords: ['capacity', 'usage'],
-					},
-					{
-						id: 'DpKcurvCa',
-						label: i18n.ts.uploadFolder,
-						keywords: ['default', 'upload', 'folder'],
-					},
-					{
-						id: 'f8JrzlfZf',
-						label: i18n.ts.keepOriginalUploading,
-						keywords: ['keep', 'original', 'raw', 'upload', i18n.ts.keepOriginalUploadingDescription],
-					},
-					{
-						id: 'DpSG4EIpb',
-						label: i18n.ts.keepOriginalFilename,
-						keywords: ['keep', 'original', 'filename', i18n.ts.keepOriginalFilenameDescription],
-					},
-					{
-						id: 'iGlVjsfVj',
-						label: i18n.ts.alwaysMarkSensitive,
-						keywords: ['always', 'default', 'mark', 'nsfw', 'sensitive', 'media', 'file'],
-					},
-					{
-						id: 't6vNAKPZf',
-						label: i18n.ts.enableAutoSensitive,
-						keywords: ['auto', 'nsfw', 'sensitive', 'media', 'file', i18n.ts.enableAutoSensitiveDescription],
-					},
-				],
-				label: 'Unnamed marker',
-				keywords: [i18n.ts._settings.driveBanner],
+				id: 'iIai9O65I',
+				label: i18n.ts.emailAddress,
+				keywords: ['email', 'address'],
+			},
+			{
+				id: 'i6cC6oi0m',
+				label: i18n.ts.receiveAnnouncementFromInstance,
+				keywords: ['announcement', 'email'],
+			},
+			{
+				id: 'C1YTinP11',
+				label: i18n.ts.emailNotification,
+				keywords: ['notification', 'email'],
+			},
+		],
+		label: i18n.ts.email,
+		keywords: ['email'],
+		path: '/settings/email',
+		icon: 'ti ti-mail',
+	},
+	{
+		id: 'tnYoppRiv',
+		children: [
+			{
+				id: 'cN3dsGNxu',
+				label: i18n.ts.usageAmount,
+				keywords: ['capacity', 'usage'],
+			},
+			{
+				id: 'rOAOU2P6C',
+				label: i18n.ts.statistics,
+				keywords: ['statistics', 'usage'],
+			},
+			{
+				id: 'uXGlQXATx',
+				label: i18n.ts.uploadFolder,
+				keywords: ['default', 'upload', 'folder'],
+			},
+			{
+				id: 'goQdtf3dD',
+				label: i18n.ts.keepOriginalFilename,
+				keywords: ['keep', 'original', 'filename', i18n.ts.keepOriginalFilenameDescription],
+			},
+			{
+				id: '83xRo0XJl',
+				label: i18n.ts.alwaysMarkSensitive,
+				keywords: ['always', 'default', 'mark', 'nsfw', 'sensitive', 'media', 'file'],
+			},
+			{
+				id: 'BrBqZL35E',
+				label: i18n.ts.enableAutoSensitive,
+				keywords: ['auto', 'nsfw', 'sensitive', 'media', 'file', i18n.ts.enableAutoSensitiveDescription],
 			},
 		],
 		label: i18n.ts.drive,
