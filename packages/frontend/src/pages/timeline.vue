@@ -6,30 +6,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <PageWithHeader v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true">
 	<MkSpacer :contentMax="800">
-		<MkHorizontalSwipe v-model:tab="src" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
-			<div ref="rootEl">
-				<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
-					{{ i18n.ts._timelineDescription[src] }}
-				</MkInfo>
-				<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--MI-margin);"/>
-				<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
-				<div :class="$style.tl">
-					<MkTimeline
-						v-if="miLocalStorage !== null"
-						ref="tlComponent"
-						:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
-						:src="src.split(':')[0]"
-						:list="src.split(':')[1]"
-						:withRenotes="withRenotes"
-						:withReplies="withReplies"
-						:withSensitive="withSensitive"
-						:onlyFiles="onlyFiles"
-						:sound="true"
-						@queue="queueUpdated"
-					/>
-				</div>
-			</div>
-		</MkHorizontalSwipe>
+		<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
+			{{ i18n.ts._timelineDescription[src] }}
+		</MkInfo>
+		<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--MI-margin);"/>
+		<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
+		<div :class="$style.tl">
+			<MkTimeline
+				ref="tlComponent"
+				:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
+				:src="src.split(':')[0]"
+				:list="src.split(':')[1]"
+				:withRenotes="withRenotes"
+				:withReplies="withReplies"
+				:withSensitive="withSensitive"
+				:onlyFiles="onlyFiles"
+				:sound="true"
+				@queue="queueUpdated"
+			/>
+		</div>
 	</MkSpacer>
 </PageWithHeader>
 </template>
