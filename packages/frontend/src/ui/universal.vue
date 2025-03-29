@@ -92,7 +92,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { useTemplateRef, defineAsyncComponent, provide, onMounted, computed, ref, watch, shallowRef } from 'vue';
-import type { Ref } from 'vue';
 import { instanceName } from '@@/js/config.js';
 import { isLink } from '@@/js/is-link.js';
 import XCommon from './_common_/common.vue';
@@ -131,7 +130,7 @@ window.addEventListener('resize', () => {
 
 const pageMetadata = ref<null | PageMetadata>(null);
 const widgetsShowing = ref(false);
-const navFooter = useTemplateRef('navFooter');
+const navFooter = shallowRef();
 
 provide(DI.router, mainRouter);
 provideMetadataReceiver((metadataGetter) => {
