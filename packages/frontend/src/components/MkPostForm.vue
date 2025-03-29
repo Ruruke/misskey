@@ -147,7 +147,7 @@ import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
 
 const $i = ensureSignin();
 
-const modal = inject('modal');
+const modal = inject(DI.inModal, false);
 
 const props = withDefaults(defineProps<{
 	reply?: Misskey.entities.Note;
