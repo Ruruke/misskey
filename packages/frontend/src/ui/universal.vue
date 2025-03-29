@@ -209,29 +209,6 @@ watch(navFooter, () => {
 });
 </script>
 
-<style>
-html,
-body {
-	width: 100%;
-	height: 100%;
-	overscroll-behavior: none;
-}
-
-body {
-	/* NOTE: htmlにも overflow: clip を設定したいところだが、設定すると何故か少なくともChromeで html が main thread scrolling になりパフォーマンスが(多分)落ちる */
-	overflow: clip;
-}
-
-#misskey_app {
-	width: 100%;
-	height: 100%;
-	overflow: clip;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-</style>
-
 <style lang="scss" module>
 $ui-font-size: 1em; // TODO: どこかに集約したい
 $widgets-hide-threshold: 1090px;
