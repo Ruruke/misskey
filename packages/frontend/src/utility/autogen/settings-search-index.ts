@@ -762,6 +762,21 @@ export const searchIndexes: SearchIndexItem[] = [
 				label: i18n.ts._deck.columnAlign,
 				keywords: ['column', 'align'],
 			},
+			{
+				id: 'gtdEA4FTa',
+				label: i18n.ts._deck.deckMenuPosition,
+				keywords: ['menu', 'position'],
+			},
+			{
+				id: 'DHVFdPBT6',
+				label: i18n.ts._deck.navbarPosition,
+				keywords: ['navbar', 'position'],
+			},
+			{
+				id: '3UQ8rUssZ',
+				label: i18n.ts._deck.columnGap,
+				keywords: ['column', 'gap', 'margin'],
+			},
 		],
 		label: i18n.ts.deck,
 		keywords: ['deck', 'ui'],
