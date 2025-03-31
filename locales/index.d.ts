@@ -5673,7 +5673,7 @@ export interface Locale extends ILocale {
          */
         "thisUserAllowsChatOnlyFromFollowers": string;
         /**
-         * このユーザーはフォローしているユーザーからのみチャットを受け付けています。
+         * このユーザーは、このユーザーがフォローしているユーザーからのみチャットを受け付けています。
          */
         "thisUserAllowsChatOnlyFromFollowing": string;
         /**
