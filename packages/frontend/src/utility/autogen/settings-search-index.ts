@@ -586,7 +586,7 @@ export const searchIndexes: SearchIndexItem[] = [
 		id: '9bNikHWzQ',
 		children: [
 			{
-				id: 'appYJbpkK',
+				id: 't6XtfnRm9',
 				label: i18n.ts._settings.showNavbarSubButtons,
 				keywords: ['navbar', 'sidebar', 'toggle', 'button', 'sub'],
 			},
