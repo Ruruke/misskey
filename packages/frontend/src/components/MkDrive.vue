@@ -670,7 +670,7 @@ function getMenu() {
 	}, { type: 'divider' }, {
 		text: folder.value ? folder.value.name : i18n.ts.drive,
 		type: 'label',
-	}];
+	});
 
 	menu.push({
 		type: 'switch',
