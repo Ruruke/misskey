@@ -117,6 +117,7 @@ function fetchAccount(token: string, id?: string, forceShowDialog?: boolean): Pr
 	});
 }
 
+
 export function updateCurrentAccount(accountData: Misskey.entities.MeDetailed) {
 	if (!$i) return;
 	const token = $i.token;

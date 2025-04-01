@@ -355,11 +355,11 @@ export async function mainBoot() {
 
 		// 自分の情報が更新されたとき
 		main.on('meUpdated', i => {
-			updateAccountPartial(i);
+			updateCurrentAccountPartial(i);
 		});
 
 		main.on('readAllNotifications', () => {
-			updateAccountPartial({
+			updateCurrentAccountPartial({
 				hasUnreadNotification: false,
 				unreadNotificationsCount: 0,
 			});
@@ -367,14 +367,14 @@ export async function mainBoot() {
 
 		main.on('unreadNotification', () => {
 			const unreadNotificationsCount = ($i?.unreadNotificationsCount ?? 0) + 1;
-			updateAccountPartial({
+			updateCurrentAccountPartial({
 				hasUnreadNotification: true,
 				unreadNotificationsCount,
 			});
 		});
 
 		main.on('unreadAntenna', () => {
-			updateAccountPartial({ hasUnreadAntenna: true });
+			updateCurrentAccountPartial({ hasUnreadAntenna: true });
 			sound.playMisskeySfx('antenna');
 		});
 
@@ -384,7 +384,7 @@ export async function mainBoot() {
 		});
 
 		main.on('readAllAnnouncements', () => {
-			updateAccountPartial({ hasUnreadAnnouncement: false });
+			updateCurrentAccountPartial({ hasUnreadAnnouncement: false });
 		});
 
 		// 個人宛てお知らせが発行されたとき

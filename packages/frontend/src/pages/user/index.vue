@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XGallery v-else-if="tab === 'gallery'" :user="user"/>
 					<XRaw v-else-if="tab === 'raw'" :user="user"/>
 				</template>
-				<div v-else class="forbidden">
+				<div v-else class="forbidde">
 					<XNotFound/>
 				</div>
 			</MkHorizontalSwipe>
@@ -74,6 +74,7 @@ const tab = ref(props.page);
 
 const user = ref<null | Misskey.entities.UserDetailed>(CTX_USER);
 const error = ref<any>(null);
+const showContent = ref(true);
 
 function fetchUser(): void {
 	if (props.acct == null) return;
@@ -95,6 +96,44 @@ function fetchUser(): void {
 		error.value = err;
 	});
 }
+
+// アクセス制御のロジック
+const hasTabAccess = (tabName: string): boolean => {
+	if (!user.value || !$i) return tabName === 'home';
+
+	const isOwner = $i.id === user.value.id;
+	const isAdminMod = $i.isAdmin || $i.isModerator;
+
+	switch (tabName) {
+		case 'home':
+			return true;
+		case 'notes':
+			return !user.value.isBlocked;
+		case 'files':
+			return !user.value.isBlocked;
+		case 'activity':
+			return (!user.value.hideActivity && !user.value.isBlocked) || isOwner || isAdminMod;
+		case 'achievements':
+			return user.value.host == null && !user.value.isBlocked;
+		case 'reactions':
+			return (user.value.publicReactions && !user.value.isBlocked) || isOwner || isAdminMod;
+		case 'raw':
+			return isOwner || isAdminMod;
+		case 'clips':
+		case 'lists':
+		case 'pages':
+		case 'flashs':
+		case 'gallery':
+			return !user.value.isBlocked;
+		default:
+			return false;
+	}
+};
+
+// タブ変更時の処理
+watch(tab, (newTab) => {
+	showContent.value = hasTabAccess(newTab);
+});
 
 watch(() => props.acct, fetchUser, {
 	immediate: true,

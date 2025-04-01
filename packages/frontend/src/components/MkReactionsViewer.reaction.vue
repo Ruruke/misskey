@@ -36,6 +36,7 @@ import { checkReactionPermissions } from '@/utility/check-reaction-permissions.j
 import { customEmojisMap } from '@/custom-emojis.js';
 import { prefer } from '@/preferences.js';
 import { DI } from '@/di.js';
+import { store } from '@/store.js';
 
 const props = defineProps<{
 	reaction: string;
