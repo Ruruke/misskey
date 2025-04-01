@@ -1044,6 +1044,12 @@ type ChatMessagesShowRequest = operations['chat___messages___show']['requestBody
 type ChatMessagesShowResponse = operations['chat___messages___show']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type ChatMessagesUnreactRequest = operations['chat___messages___unreact']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type ChatMessagesUnreactResponse = operations['chat___messages___unreact']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type ChatMessagesUserTimelineRequest = operations['chat___messages___user-timeline']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1087,6 +1093,12 @@ type ChatRoomsInvitationsInboxRequest = operations['chat___rooms___invitations__
 
 // @public (undocumented)
 type ChatRoomsInvitationsInboxResponse = operations['chat___rooms___invitations___inbox']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type ChatRoomsInvitationsOutboxRequest = operations['chat___rooms___invitations___outbox']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type ChatRoomsInvitationsOutboxResponse = operations['chat___rooms___invitations___outbox']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type ChatRoomsJoiningRequest = operations['chat___rooms___joining']['requestBody']['content']['application/json'];
@@ -1666,6 +1678,8 @@ declare namespace entities {
         ChatMessagesSearchResponse,
         ChatMessagesShowRequest,
         ChatMessagesShowResponse,
+        ChatMessagesUnreactRequest,
+        ChatMessagesUnreactResponse,
         ChatMessagesUserTimelineRequest,
         ChatMessagesUserTimelineResponse,
         ChatRoomsCreateRequest,
@@ -1678,6 +1692,8 @@ declare namespace entities {
         ChatRoomsInvitationsIgnoreResponse,
         ChatRoomsInvitationsInboxRequest,
         ChatRoomsInvitationsInboxResponse,
+        ChatRoomsInvitationsOutboxRequest,
+        ChatRoomsInvitationsOutboxResponse,
         ChatRoomsJoinRequest,
         ChatRoomsJoinResponse,
         ChatRoomsJoiningRequest,
@@ -2906,10 +2922,13 @@ type ModerationLog = {
 } | {
     type: 'unquarantineRemoteInstance';
     info: ModerationLogPayloads['unquarantineRemoteInstance'];
+} | {
+    type: 'deleteChatRoom';
+    info: ModerationLogPayloads['deleteChatRoom'];
 });
 
 // @public (undocumented)
-export const moderationLogTypes: readonly ["updateServerSettings", "suspend", "approve", "unsuspend", "updateUser", "updateUserNote", "addCustomEmoji", "updateCustomEmoji", "deleteCustomEmoji", "assignRole", "unassignRole", "createRole", "updateRole", "deleteRole", "clearQueue", "promoteQueue", "deleteDriveFile", "deleteNote", "createGlobalAnnouncement", "createUserAnnouncement", "updateGlobalAnnouncement", "updateUserAnnouncement", "deleteGlobalAnnouncement", "deleteUserAnnouncement", "resetPassword", "suspendRemoteInstance", "unsuspendRemoteInstance", "updateRemoteInstanceNote", "markSensitiveDriveFile", "unmarkSensitiveDriveFile", "resolveAbuseReport", "forwardAbuseReport", "updateAbuseReportNote", "createInvitation", "createAd", "updateAd", "deleteAd", "createAvatarDecoration", "updateAvatarDecoration", "deleteAvatarDecoration", "unsetUserAvatar", "unsetUserBanner", "createSystemWebhook", "updateSystemWebhook", "deleteSystemWebhook", "createAbuseReportNotificationRecipient", "updateAbuseReportNotificationRecipient", "deleteAbuseReportNotificationRecipient", "deleteAccount", "deletePage", "deleteFlash", "deleteGalleryPost", "inboxRejected", "quarantineRemoteInstance", "unquarantineRemoteInstance"];
+export const moderationLogTypes: readonly ["updateServerSettings", "suspend", "approve", "unsuspend", "updateUser", "updateUserNote", "addCustomEmoji", "updateCustomEmoji", "deleteCustomEmoji", "assignRole", "unassignRole", "createRole", "updateRole", "deleteRole", "clearQueue", "promoteQueue", "deleteDriveFile", "deleteNote", "createGlobalAnnouncement", "createUserAnnouncement", "updateGlobalAnnouncement", "updateUserAnnouncement", "deleteGlobalAnnouncement", "deleteUserAnnouncement", "resetPassword", "suspendRemoteInstance", "unsuspendRemoteInstance", "updateRemoteInstanceNote", "markSensitiveDriveFile", "unmarkSensitiveDriveFile", "resolveAbuseReport", "forwardAbuseReport", "updateAbuseReportNote", "createInvitation", "createAd", "updateAd", "deleteAd", "createAvatarDecoration", "updateAvatarDecoration", "deleteAvatarDecoration", "unsetUserAvatar", "unsetUserBanner", "createSystemWebhook", "updateSystemWebhook", "deleteSystemWebhook", "createAbuseReportNotificationRecipient", "updateAbuseReportNotificationRecipient", "deleteAbuseReportNotificationRecipient", "deleteAccount", "deletePage", "deleteFlash", "deleteGalleryPost", "inboxRejected", "quarantineRemoteInstance", "unquarantineRemoteInstance", "deleteChatRoom"];
 
 // @public (undocumented)
 type MuteCreateRequest = operations['mute___create']['requestBody']['content']['application/json'];
@@ -3126,7 +3145,7 @@ type Notification_2 = components['schemas']['Notification'];
 type NotificationsCreateRequest = operations['notifications___create']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
-export const notificationTypes: readonly ["note", "follow", "mention", "reply", "renote", "quote", "reaction", "pollVote", "pollEnded", "receiveFollowRequest", "followRequestAccepted", "followRequestRejected", "groupInvited", "app", "roleAssigned", "achievementEarned", "scheduledNoteFailed", "scheduledNotePosted"];
+export const notificationTypes: readonly ["note", "follow", "mention", "reply", "renote", "quote", "reaction", "pollVote", "pollEnded", "receiveFollowRequest", "followRequestAccepted", "followRequestRejected", "chatRoomInvitationReceived", "groupInvited", "app", "roleAssigned", "achievementEarned", "scheduledNoteFailed", "scheduledNotePosted"];
 
 // @public (undocumented)
 export function nyaize(text: string): string;

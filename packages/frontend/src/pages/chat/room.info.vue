@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<hr>
 
-	<MkButton v-if="isOwner" danger @click="del">{{ i18n.ts._chat.deleteRoom }}</MkButton>
+	<MkButton v-if="isOwner || ($i.isAdmin || $i.isModerator)" danger @click="del">{{ i18n.ts._chat.deleteRoom }}</MkButton>
 
 	<MkSwitch v-if="!isOwner" v-model="isMuted">
 		<template #label>{{ i18n.ts._chat.muteThisRoom }}</template>
@@ -63,11 +63,11 @@ function save() {
 async function del() {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.ts.areYouSure,
+		text: i18n.tsx.deleteAreYouSure({ x: name_.value }),
 	});
 	if (canceled) return;
 
-	misskeyApi('chat/rooms/delete', {
+	await os.apiWithDialog('chat/rooms/delete', {
 		roomId: props.room.id,
 	});
 	router.push('/chat');
@@ -80,10 +80,6 @@ watch(isMuted, async () => {
 		roomId: props.room.id,
 		mute: isMuted.value,
 	});
-});
-
-onMounted(async () => {
-
 });
 </script>
 

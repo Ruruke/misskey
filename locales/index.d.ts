@@ -5522,6 +5522,22 @@ export interface Locale extends ILocale {
      * 通常これは自動で行われていますが、何らかの理由により上手く移行されなかった場合は手動で移行処理をトリガーできます。現在の設定情報は上書きされます。
      */
     "migrateOldSettings_description": string;
+    /**
+     * 圧縮
+     */
+    "compress": string;
+    /**
+     * 右
+     */
+    "right": string;
+    /**
+     * 下
+     */
+    "bottom": string;
+    /**
+     * 上
+     */
+    "top": string;
     "_chat": {
         /**
          * まだメッセージはありません
@@ -5589,6 +5605,10 @@ export interface Locale extends ILocale {
          */
         "inviteUser": string;
         /**
+         * 送信した招待
+         */
+        "sentInvitations": string;
+        /**
          * 参加
          */
         "join": string;
@@ -5613,6 +5633,14 @@ export interface Locale extends ILocale {
          */
         "home": string;
         /**
+         * 送信
+         */
+        "send": string;
+        /**
+         * 改行
+         */
+        "newline": string;
+        /**
          * このルームをミュート
          */
         "muteThisRoom": string;
@@ -5620,6 +5648,14 @@ export interface Locale extends ILocale {
          * ルームを削除
          */
         "deleteRoom": string;
+        /**
+         * このサーバー、またはこのアカウントでチャットは有効化されていません。
+         */
+        "chatNotAvailableForThisAccountOrServer": string;
+        /**
+         * 相手のアカウントでチャット機能が使えない状態になっています。
+         */
+        "chatNotAvailableInOtherAccount": string;
         /**
          * このユーザーとのチャットを開始できません
          */
@@ -5637,7 +5673,7 @@ export interface Locale extends ILocale {
          */
         "thisUserAllowsChatOnlyFromFollowers": string;
         /**
-         * このユーザーはフォローしているユーザーからのみチャットを受け付けています。
+         * このユーザーは、このユーザーがフォローしているユーザーからのみチャットを受け付けています。
          */
         "thisUserAllowsChatOnlyFromFollowing": string;
         /**
@@ -5775,9 +5811,31 @@ export interface Locale extends ILocale {
          */
         "makeEveryTextElementsSelectable_description": string;
         /**
+         * アイコンをスクロールに追従させる
+         */
+        "useStickyIcons": string;
+        /**
          * ナビゲーションバーに副ボタンを表示
          */
         "showNavbarSubButtons": string;
+        /**
+         * オンのとき
+         */
+        "ifOn": string;
+        /**
+         * オフのとき
+         */
+        "ifOff": string;
+        "_chat": {
+            /**
+             * 送信者の名前を表示
+             */
+            "showSenderName": string;
+            /**
+             * Enterで送信
+             */
+            "sendOnEnter": string;
+        };
     };
     "_preferencesProfile": {
         /**
@@ -6056,11 +6114,7 @@ export interface Locale extends ILocale {
     };
     "_featureBy": {
         /**
-         * by しゃふすきー
-         */
-        "shafu": string;
-        /**
-         * by misskey-temp
+         * by misskey-tempura
          */
         "temp": string;
         /**
@@ -8567,23 +8621,19 @@ export interface Locale extends ILocale {
              */
             "header": string;
             /**
-             * サイドバーの背景
+             * ナビゲーションバーの背景
              */
             "navBg": string;
             /**
-             * サイドバーの文字
+             * ナビゲーションバーの文字
              */
             "navFg": string;
             /**
-             * サイドバー文字(ホバー)
-             */
-            "navHoverFg": string;
-            /**
-             * サイドバー文字(アクティブ)
+             * ナビゲーションバー文字(アクティブ)
              */
             "navActive": string;
             /**
-             * サイドバーのインジケーター
+             * ナビゲーションバーのインジケーター
              */
             "navIndicator": string;
             /**
@@ -8603,7 +8653,7 @@ export interface Locale extends ILocale {
              */
             "mentionMe": string;
             /**
-             * Renote
+             * リノート
              */
             "renote": string;
             /**
@@ -8667,10 +8717,6 @@ export interface Locale extends ILocale {
              */
             "driveFolderBg": string;
             /**
-             * 壁紙のオーバーレイ
-             */
-            "wallpaperOverlay": string;
-            /**
              * バッジ
              */
             "badge": string;
@@ -8678,14 +8724,6 @@ export interface Locale extends ILocale {
              * チャットの背景
              */
             "messageBg": string;
-            /**
-             * アクセント (暗め)
-             */
-            "accentDarken": string;
-            /**
-             * アクセント (明るめ)
-             */
-            "accentLighten": string;
             /**
              * 強調された文字
              */
@@ -10304,6 +10342,10 @@ export interface Locale extends ILocale {
          */
         "scheduledNotePosted": string;
         /**
+         * チャットルームへ招待されました
+         */
+        "chatRoomInvitationReceived": string;
+        /**
          * プッシュ通知の更新をしました
          */
         "emptyPushNotificationMessage": string;
@@ -10431,6 +10473,10 @@ export interface Locale extends ILocale {
              */
             "roleAssigned": string;
             /**
+             * チャットルームへ招待された
+             */
+            "chatRoomInvitationReceived": string;
+            /**
              * 実績の獲得
              */
             "achievementEarned": string;
@@ -10484,6 +10530,18 @@ export interface Locale extends ILocale {
          */
         "columnAlign": string;
         /**
+         * カラム間のマージン
+         */
+        "columnGap": string;
+        /**
+         * デッキメニューの位置
+         */
+        "deckMenuPosition": string;
+        /**
+         * ナビゲーションバーの位置
+         */
+        "navbarPosition": string;
+        /**
          * カラムを追加
          */
         "addColumn": string;
@@ -10536,7 +10594,7 @@ export interface Locale extends ILocale {
          */
         "introduction": string;
         /**
-         * 画面の右にある + を押して、いつでもカラムを追加できます。
+         * カラムを追加するには、画面の + をクリックします。
          */
         "introduction2": string;
         /**
@@ -10979,6 +11037,10 @@ export interface Locale extends ILocale {
          * 公開投稿のみ配送を解除
          */
         "unquarantineRemoteInstance": string;
+        /**
+         * チャットルームを削除
+         */
+        "deleteChatRoom": string;
         /**
          * プロキシアカウントの説明を更新
          */

@@ -41,6 +41,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<XMessage v-for="message in messages.toReversed()" :key="message.id" :message="message"/>
 			</TransitionGroup>
 		</div>
+
+		<div v-if="user && (!user.canChat || user.host !== null)">
+			<MkInfo warn>{{ i18n.ts._chat.chatNotAvailableInOtherAccount }}</MkInfo>
+		</div>
+
+		<MkInfo v-if="!$i.policies.canChat" warn>{{ i18n.ts._chat.chatNotAvailableForThisAccountOrServer }}</MkInfo>
 	</MkSpacer>
 
 	<MkSpacer v-else-if="tab === 'search'" :contentMax="700">
@@ -61,7 +67,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<Transition name="fade">
 					<div v-show="showIndicator" :class="$style.new">
 						<button class="_buttonPrimary" :class="$style.newButton" @click="onIndicatorClick">
-							<i class="fas ti-fw fa-arrow-circle-down" :class="$style.newIcon"></i>{{ i18n.ts.newMessageExists }}
+							<i class="fas ti-fw fa-arrow-circle-down" :class="$style.newIcon"></i>{{ i18n.ts._chat.newMessage }}
 						</button>
 					</div>
 				</Transition>
@@ -93,6 +99,7 @@ import { prefer } from '@/preferences.js';
 import MkButton from '@/components/MkButton.vue';
 import { useRouter } from '@/router.js';
 import { useMutationObserver } from '@/use/use-mutation-observer.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const $i = ensureSignin();
 const router = useRouter();
@@ -170,6 +177,7 @@ async function initialize() {
 		connection.value.on('message', onMessage);
 		connection.value.on('deleted', onDeleted);
 		connection.value.on('react', onReact);
+		connection.value.on('unreact', onUnreact);
 	} else {
 		const [r, m] = await Promise.all([
 			misskeyApi('chat/rooms/show', { roomId: props.roomId }),
@@ -189,6 +197,7 @@ async function initialize() {
 		connection.value.on('message', onMessage);
 		connection.value.on('deleted', onDeleted);
 		connection.value.on('react', onReact);
+		connection.value.on('unreact', onUnreact);
 	}
 
 	window.document.addEventListener('visibilitychange', onVisibilitychange);
@@ -264,6 +273,16 @@ function onReact(ctx) {
 				reaction: ctx.reaction,
 				user: ctx.user,
 			});
+		}
+	}
+}
+
+function onUnreact(ctx) {
+	const message = messages.value.find(m => m.id === ctx.messageId);
+	if (message) {
+		const index = message.reactions.findIndex(r => r.reaction === ctx.reaction && r.user.id === ctx.user.id);
+		if (index !== -1) {
+			message.reactions.splice(index, 1);
 		}
 	}
 }
@@ -372,6 +391,7 @@ const headerActions = computed(() => [{
 
 definePage(computed(() => !initializing.value ? user.value ? {
 	userName: user,
+	title: user.value.name ?? user.value.username,
 	avatar: user,
 } : {
 	title: room.value?.name,

@@ -210,6 +210,9 @@ export type ModerationLog = {
 } | {
 	type: 'unquarantineRemoteInstance';
 	info: ModerationLogPayloads['unquarantineRemoteInstance'];
+} | {
+	type: 'deleteChatRoom';
+	info: ModerationLogPayloads['deleteChatRoom'];
 });
 
 export type ServerStats = {

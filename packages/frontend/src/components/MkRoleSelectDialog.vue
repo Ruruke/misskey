@@ -90,7 +90,20 @@ misskeyApi('roles/list').then(res => {
 });
 </script>
 
-<style lang="scss" module>
+<style module lang="scss">
+.root {
+	max-height: 410px;
+	height: 410px;
+	display: flex;
+	flex-direction: column;
+}
+
+.roleItemArea {
+	background-color: color(from var(--MI_THEME-bg) srgb r g b / 0.5);
+	border-radius: var(--MI-radius);
+	padding: 12px;
+	overflow-y: auto;
+}
 .roleGrid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

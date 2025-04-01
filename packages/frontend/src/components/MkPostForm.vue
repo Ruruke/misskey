@@ -147,7 +147,7 @@ import MkDeleteScheduleEditor from '@/components/MkDeleteScheduleEditor.vue';
 
 const $i = ensureSignin();
 
-const modal = inject('modal');
+const modal = inject(DI.inModal, false);
 
 const props = withDefaults(defineProps<{
 	reply?: Misskey.entities.Note;
@@ -1479,7 +1479,7 @@ html[data-color-scheme=light] .preview {
 	padding: 0 24px;
 	margin: 0;
 	width: 100%;
-	font-size: 16px;
+	font-size: 110%;
 	border: none;
 	border-radius: 0;
 	background: transparent;
