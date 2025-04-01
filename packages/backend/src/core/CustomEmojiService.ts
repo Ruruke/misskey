@@ -110,23 +110,23 @@ export class CustomEmojiService implements OnApplicationShutdown {
 	}, moderator?: MiUser): Promise<MiEmoji> {
 		const originalDriveData: MiDriveFile = data.driveFile;
 
-		// システムユーザーとして再アップロード
-		try {
-			if (!data.driveFile.user?.isRoot) {
-				data.driveFile = await this.driveService.uploadFromUrl({
-					url: data.driveFile.url,
-					user: null,
-					force: true,
-				});
-
-				// 元データの削除
-				await this.driveService.deleteFile(originalDriveData);
-			}
-		} catch (e) {
-			if (e instanceof TypeError) {
-				console.error(`Err : ${e.message}`);
-			}
-		}
+		// // システムユーザーとして再アップロード
+		// try {
+		// 	if (!data.driveFile.user?.isRoot) {
+		// 		data.driveFile = await this.driveService.uploadFromUrl({
+		// 			url: data.driveFile.url,
+		// 			user: null,
+		// 			force: true,
+		// 		});
+		//
+		// 		// 元データの削除
+		// 		await this.driveService.deleteFile(originalDriveData);
+		// 	}
+		// } catch (e) {
+		// 	if (e instanceof TypeError) {
+		// 		console.error(`Err : ${e.message}`);
+		// 	}
+		// }
 
 		const emoji = await this.emojisRepository.insertOne({
 			id: this.idService.gen(),
