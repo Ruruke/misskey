@@ -44,7 +44,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					'deleteFlash',
 					'deleteGalleryPost',
 					'deleteInboxRule',
-					'inboxRejected'
+					'inboxRejected',
 					'deleteChatRoom',
 				].includes(log.type)
 			}"
