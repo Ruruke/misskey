@@ -158,7 +158,7 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 			},
 		}, {
 			icon: 'ti ti-code',
-			text: i18n.ts.genEmbedCode,
+			text: i18n.ts.embed,
 			action: () => {
 				genEmbedCode('clips', clip.value!.id);
 			},
