@@ -5292,6 +5292,8 @@ export type components = {
       /** @example false */
       asBadge: boolean;
       /** @example false */
+      preserveAssignmentOnMoveAccount: boolean;
+      /** @example false */
       canEditMembersByModerator: boolean;
       policies: {
         [key: string]: {
@@ -9883,6 +9885,7 @@ export type operations = {
           /** @default false */
           isExplorable?: boolean;
           asBadge: boolean;
+          preserveAssignmentOnMoveAccount?: boolean;
           canEditMembersByModerator: boolean;
           displayOrder: number;
           policies: Record<string, never>;
@@ -10158,6 +10161,7 @@ export type operations = {
           permissionGroup?: 'Admin' | 'MainModerator' | 'Normal' | 'Community';
           isExplorable?: boolean;
           asBadge?: boolean;
+          preserveAssignmentOnMoveAccount?: boolean;
           canEditMembersByModerator?: boolean;
           displayOrder?: number;
           policies?: Record<string, never>;

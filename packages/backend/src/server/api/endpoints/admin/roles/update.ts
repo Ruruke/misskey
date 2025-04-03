@@ -40,6 +40,7 @@ export const paramDef = {
 		permissionGroup: { type: 'string', enum: ['Admin', 'MainModerator', 'Normal', 'Community'] },
 		isExplorable: { type: 'boolean' },
 		asBadge: { type: 'boolean' },
+		preserveAssignmentOnMoveAccount: { type: 'boolean' },
 		canEditMembersByModerator: { type: 'boolean' },
 		displayOrder: { type: 'number' },
 		policies: {
@@ -76,6 +77,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				permissionGroup: ps.permissionGroup,
 				isExplorable: ps.isExplorable,
 				asBadge: ps.asBadge,
+				preserveAssignmentOnMoveAccount: ps.preserveAssignmentOnMoveAccount,
 				canEditMembersByModerator: ps.canEditMembersByModerator,
 				displayOrder: ps.displayOrder,
 				policies: ps.policies,
