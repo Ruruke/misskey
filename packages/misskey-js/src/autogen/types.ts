@@ -5087,7 +5087,7 @@ export type components = {
       isNotResponding: boolean;
       isSuspended: boolean;
       /** @enum {string} */
-      suspensionState: 'none' | 'manuallySuspended' | 'goneSuspended' | 'autoSuspendedForNotResponding';
+      suspensionState: 'none' | 'manuallySuspended' | 'goneSuspended' | 'autoSuspendedForNotResponding' | 'softwareSuspended';
       isBlocked: boolean;
       /** @example misskey */
       softwareName: string | null;
@@ -9200,6 +9200,10 @@ export type operations = {
             entranceMarginTop: number;
             entranceMarginBottom: number;
             blockMentionsFromUnfamiliarRemoteUsers: boolean;
+            deliverSuspendedSoftware: {
+                software: string;
+                versionRange: string;
+              }[];
           };
         };
       };
@@ -11581,6 +11585,10 @@ export type operations = {
           entranceMarginRight?: number;
           entranceMarginTop?: number;
           entranceMarginBottom?: number;
+          deliverSuspendedSoftware?: {
+              software: string;
+              versionRange: string;
+            }[];
         };
       };
     };
