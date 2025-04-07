@@ -166,60 +166,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</MkFolder>
 
-			<MkFolder v-if="matchQuery([i18n.ts._role._options.canEditNote, 'canEditNote'])">
-				<template #label>{{ i18n.ts._role._options.canEditNote }}</template>
+			<MkFolder v-if="matchQuery([i18n.ts._role._options.chatAvailability, 'chatAvailability'])">
+				<template #label>{{ i18n.ts._role._options.chatAvailability }}</template>
 				<template #suffix>
-					<span v-if="role.policies.canEditNote.useDefault" :class="$style.useDefaultLabel">{{ i18n.ts._role.useBaseValue }}</span>
-					<span v-else>{{ role.policies.canEditNote.value ? i18n.ts.yes : i18n.ts.no }}</span>
-					<span :class="$style.priorityIndicator"><i :class="getPriorityIcon(role.policies.canEditNote)"></i></span>
+					<span v-if="role.policies.chatAvailability.useDefault" :class="$style.useDefaultLabel">{{ i18n.ts._role.useBaseValue }}</span>
+					<span v-else>{{ role.policies.chatAvailability.value === 'available' ? i18n.ts.yes : role.policies.chatAvailability.value === 'readonly' ? i18n.ts.readonly : i18n.ts.no }}</span>
+					<span :class="$style.priorityIndicator"><i :class="getPriorityIcon(role.policies.chatAvailability)"></i></span>
 				</template>
 				<div class="_gaps">
-					<MkSwitch v-model="role.policies.canEditNote.useDefault" :readonly="readonly">
+					<MkSwitch v-model="role.policies.chatAvailability.useDefault" :readonly="readonly">
 						<template #label>{{ i18n.ts._role.useBaseValue }}</template>
 					</MkSwitch>
-					<MkSwitch v-model="role.policies.canEditNote.value" :disabled="role.policies.canEditNote.useDefault" :readonly="readonly">
+					<MkSelect v-model="role.policies.chatAvailability.value" :disabled="role.policies.chatAvailability.useDefault" :readonly="readonly">
 						<template #label>{{ i18n.ts.enable }}</template>
-					</MkSwitch>
-					<MkRange v-model="role.policies.canEditNote.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
-						<template #label>{{ i18n.ts._role.priority }}</template>
-					</MkRange>
-				</div>
-			</MkFolder>
-
-			<MkFolder v-if="matchQuery([i18n.ts._role._options.scheduleNoteMax, 'scheduleNoteMax'])">
-				<template #label>{{ i18n.ts._role._options.scheduleNoteMax }}</template>
-				<template #suffix>
-					<span v-if="role.policies.scheduleNoteMax.useDefault" :class="$style.useDefaultLabel">{{ i18n.ts._role.useBaseValue }}</span>
-					<span v-else>{{ role.policies.scheduleNoteMax.value }}</span>
-					<span :class="$style.priorityIndicator"><i :class="getPriorityIcon(role.policies.scheduleNoteMax)"></i></span>
-				</template>
-				<div class="_gaps">
-					<MkSwitch v-model="role.policies.scheduleNoteMax.useDefault" :readonly="readonly">
-						<template #label>{{ i18n.ts._role.useBaseValue }}</template>
-					</MkSwitch>
-					<MkInput v-model="role.policies.scheduleNoteMax.value" :disabled="role.policies.scheduleNoteMax.useDefault" type="number" :readonly="readonly">
-					</MkInput>
-					<MkRange v-model="role.policies.scheduleNoteMax.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
-						<template #label>{{ i18n.ts._role.priority }}</template>
-					</MkRange>
-				</div>
-			</MkFolder>
-
-			<MkFolder v-if="matchQuery([i18n.ts._role._options.canChat, 'canChat'])">
-				<template #label>{{ i18n.ts._role._options.canChat }}</template>
-				<template #suffix>
-					<span v-if="role.policies.canChat.useDefault" :class="$style.useDefaultLabel">{{ i18n.ts._role.useBaseValue }}</span>
-					<span v-else>{{ role.policies.canChat.value ? i18n.ts.yes : i18n.ts.no }}</span>
-					<span :class="$style.priorityIndicator"><i :class="getPriorityIcon(role.policies.canChat)"></i></span>
-				</template>
-				<div class="_gaps">
-					<MkSwitch v-model="role.policies.canChat.useDefault" :readonly="readonly">
-						<template #label>{{ i18n.ts._role.useBaseValue }}</template>
-					</MkSwitch>
-					<MkSwitch v-model="role.policies.canChat.value" :disabled="role.policies.canChat.useDefault" :readonly="readonly">
-						<template #label>{{ i18n.ts.enable }}</template>
-					</MkSwitch>
-					<MkRange v-model="role.policies.canChat.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
+						<option value="available">{{ i18n.ts.enabled }}</option>
+						<option value="readonly">{{ i18n.ts.readonly }}</option>
+						<option value="unavailable">{{ i18n.ts.disabled }}</option>
+					</MkSelect>
+					<MkRange v-model="role.policies.chatAvailability.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
 						<template #label>{{ i18n.ts._role.priority }}</template>
 					</MkRange>
 				</div>

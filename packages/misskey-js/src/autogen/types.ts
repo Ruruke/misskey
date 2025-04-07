@@ -5338,7 +5338,8 @@ export type components = {
       canImportUserLists: boolean;
       scheduleNoteMax: number;
       canPlayGames: boolean;
-      canChat: boolean;
+			/** @enum {string} */
+			chatAvailability: 'available' | 'readonly' | 'unavailable';
     };
     ReversiGameLite: {
       /** Format: id */

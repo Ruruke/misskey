@@ -67,7 +67,7 @@ export type RolePolicies = {
 	canImportUserLists: boolean;
 	canPlayGames: boolean;
 	canAddRoles: boolean;
-	canChat: boolean;
+	chatAvailability: 'available' | 'readonly' | 'unavailable';
 };
 
 export const DEFAULT_POLICIES: RolePolicies = {
@@ -106,7 +106,7 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	canImportUserLists: true,
 	canPlayGames: true,
 	canAddRoles: true,
-	canChat: true,
+	chatAvailability: 'available',
 };
 
 @Injectable()
@@ -378,6 +378,12 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			return aggregate(policies.map(policy => policy.useDefault ? basePolicies[name] : policy.value));
 		}
 
+		function aggregateChatAvailability(vs: RolePolicies['chatAvailability'][]) {
+			if (vs.some(v => v === 'available')) return 'available';
+			if (vs.some(v => v === 'readonly')) return 'readonly';
+			return 'unavailable';
+		}
+
 		return {
 			gtlAvailable: calc('gtlAvailable', vs => vs.some(v => v === true)),
 			ltlAvailable: calc('ltlAvailable', vs => vs.some(v => v === true)),
@@ -414,7 +420,7 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			canImportUserLists: calc('canImportUserLists', vs => vs.some(v => v === true)),
 			canPlayGames: calc('canPlayGames', vs => vs.some(v => v === true)),
 			canAddRoles: calc('canAddRoles', vs => vs.some(v => v === true)),
-			canChat: calc('canChat', vs => vs.some(v => v === true)),
+			chatAvailability: calc('chatAvailability', aggregateChatAvailability),
 		};
 	}
 

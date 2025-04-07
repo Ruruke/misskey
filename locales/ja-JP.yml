@@ -1385,6 +1385,7 @@ bottom: "下"
 top: "上"
 embed: "埋め込み"
 settingsMigrating: "設定を移行しています。しばらくお待ちください... (後ほど、設定→その他→旧設定情報を移行 で手動で移行することもできます)"
+readonly: "読み取り専用"
 
 _chat:
   noMessagesYet: "まだメッセージはありません"
@@ -1415,6 +1416,7 @@ _chat:
   muteThisRoom: "このルームをミュート"
   deleteRoom: "ルームを削除"
   chatNotAvailableForThisAccountOrServer: "このサーバー、またはこのアカウントでチャットは有効化されていません。"
+  chatIsReadOnlyForThisAccountOrServer: "このサーバー、またはこのアカウントでチャットは読み取り専用となっています。新たに書き込んだり、チャットルームを作成・参加したりすることはできません。"
   chatNotAvailableInOtherAccount: "相手のアカウントでチャット機能が使えない状態になっています。"
   cannotChatWithTheUser: "このユーザーとのチャットを開始できません"
   cannotChatWithTheUser_description: "チャットが使えない状態になっているか、相手がチャットを開放していません。"
@@ -2051,7 +2053,7 @@ _role:
     scheduleNoteMax: "予約投稿の最大数"
     canPlayGames: "Misskey Gamesの利用"
     canAddRoles: "コミュニティーロールの追加"
-    canChat: "チャットを許可"
+    chatAvailability: "チャットを許可"
   _condition:
     roleAssignedTo: "マニュアルロールにアサイン済み"
     isLocal: "ローカルユーザー"

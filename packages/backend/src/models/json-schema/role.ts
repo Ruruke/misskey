@@ -299,9 +299,10 @@ export const packedRolePoliciesSchema = {
 		canPlayGames: {
 			type: 'boolean',
 		},
-		canChat: {
-			type: 'boolean',
+		chatAvailability: {
+			type: 'string',
 			optional: false, nullable: false,
+			enum: ['available', 'readonly', 'unavailable'],
 		},
 	},
 } as const;
