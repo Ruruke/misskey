@@ -16,11 +16,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-model="reportError">{{ i18n.ts.sendErrorReports }}<template #caption>{{ i18n.ts.sendErrorReportsDescription }}</template></MkSwitch>
 			-->
 
-			<div class="_gaps_s">
-				<SearchMarker :keywords="['account', 'info']">
-					<MkFolder>
-						<template #icon><i class="ti ti-info-circle"></i></template>
-						<template #label><SearchLabel>{{ i18n.ts.accountInfo }}</SearchLabel></template>
+		<div class="_gaps_s">
+			<SearchMarker :keywords="['account', 'info']">
+				<MkFolder>
+					<template #icon><SearchIcon><i class="ti ti-info-circle"></i></SearchIcon></template>
+					<template #label><SearchLabel>{{ i18n.ts.accountInfo }}</SearchLabel></template>
 
 						<div class="_gaps_m">
 							<MkKeyValue>
@@ -47,28 +47,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkFolder>
 				</SearchMarker>
 
-				<SearchMarker :keywords="['roles']">
-					<MkFolder>
-						<template #icon><i class="ti ti-badges"></i></template>
-						<template #label><SearchLabel>{{ i18n.ts.rolesAssignedToMe }}</SearchLabel></template>
+			<SearchMarker :keywords="['roles']">
+				<MkFolder>
+					<template #icon><SearchIcon><i class="ti ti-badges"></i></SearchIcon></template>
+					<template #label><SearchLabel>{{ i18n.ts.rolesAssignedToMe }}</SearchLabel></template>
 
 						<MkRolePreview v-for="role in $i.roles" :key="role.id" :role="role" :forModeration="false"/>
 					</MkFolder>
 				</SearchMarker>
 
-				<SearchMarker :keywords="['account', 'move', 'migration']">
-					<MkFolder>
-						<template #icon><i class="ti ti-plane"></i></template>
-						<template #label><SearchLabel>{{ i18n.ts.accountMigration }}</SearchLabel></template>
+			<SearchMarker :keywords="['account', 'move', 'migration']">
+				<MkFolder>
+					<template #icon><SearchIcon><i class="ti ti-plane"></i></SearchIcon></template>
+					<template #label><SearchLabel>{{ i18n.ts.accountMigration }}</SearchLabel></template>
 
 						<XMigration/>
 					</MkFolder>
 				</SearchMarker>
 
-				<SearchMarker :keywords="['account', 'close', 'delete']">
-					<MkFolder>
-						<template #icon><i class="ti ti-alert-triangle"></i></template>
-						<template #label><SearchLabel>{{ i18n.ts.closeAccount }}</SearchLabel></template>
+			<SearchMarker :keywords="['account', 'close', 'delete']">
+				<MkFolder>
+					<template #icon><SearchIcon><i class="ti ti-alert-triangle"></i></SearchIcon></template>
+					<template #label><SearchLabel>{{ i18n.ts.closeAccount }}</SearchLabel></template>
 
 						<div class="_gaps_m">
 							<FormInfo warn>{{ i18n.ts._accountDelete.mayTakeTime }}</FormInfo>
@@ -79,10 +79,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkFolder>
 				</SearchMarker>
 
-				<SearchMarker :keywords="['experimental', 'feature', 'flags']">
-					<MkFolder>
-						<template #icon><i class="ti ti-flask"></i></template>
-						<template #label><SearchLabel>{{ i18n.ts.experimentalFeatures }}</SearchLabel></template>
+			<SearchMarker :keywords="['experimental', 'feature', 'flags']">
+				<MkFolder>
+					<template #icon><SearchIcon><i class="ti ti-flask"></i></SearchIcon></template>
+					<template #label><SearchLabel>{{ i18n.ts.experimentalFeatures }}</SearchLabel></template>
 
 						<div class="_gaps_m">
 							<MkSwitch v-model="enableCondensedLine">
@@ -98,10 +98,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkFolder>
 				</SearchMarker>
 
-				<SearchMarker :keywords="['developer', 'mode', 'debug']">
-					<MkFolder>
-						<template #icon><i class="ti ti-code"></i></template>
-						<template #label><SearchLabel>{{ i18n.ts.developer }}</SearchLabel></template>
+			<SearchMarker :keywords="['developer', 'mode', 'debug']">
+				<MkFolder>
+					<template #icon><SearchIcon><i class="ti ti-code"></i></SearchIcon></template>
+					<template #label><SearchLabel>{{ i18n.ts.developer }}</SearchLabel></template>
 
 						<div class="_gaps_m">
 							<MkSwitch v-model="devMode">
