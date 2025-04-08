@@ -33,6 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<template #value><MkTime :time="$i.createdAt" mode="detail"/></template>
 							</MkKeyValue>
 
+						<SearchMarker :keywords="['role', 'policy']">
 							<MkFolder>
 								<template #icon><i class="ti ti-badges"></i></template>
 								<template #label><SearchLabel>{{ i18n.ts._role.policies }}</SearchLabel></template>
@@ -43,9 +44,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 									</div>
 								</div>
 							</MkFolder>
-						</div>
-					</MkFolder>
-				</SearchMarker>
+						</SearchMarker>
+					</div>
+				</MkFolder>
+			</SearchMarker>
 
 			<SearchMarker :keywords="['roles']">
 				<MkFolder>
