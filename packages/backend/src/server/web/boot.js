@@ -240,18 +240,18 @@ class Systemd {
 	//#endregion
 
 	//#media Server Status
-	const storage = await systemd.start('Response Storage', fetch('https://storage.ruruke.moe', {
-		method: 'GET',
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json',
-		},
-	}));
-
-	if (storage.status !== 200) {
-		renderError('STORAGE_FETCH');
-		return;
-	}
+	// const storage = await systemd.start('Response Storage', fetch('https://storage.ruruke.moe', {
+	// 	method: 'GET',
+	// 	headers: {
+	// 		'Accept': 'application/json',
+	// 		'Content-Type': 'application/json',
+	// 	},
+	// }));
+	//
+	// if (storage.status !== 200) {
+	// 	renderError('STORAGE_FETCH');
+	// 	return;
+	// }
 	//#endregion
 
 	//#region Theme
