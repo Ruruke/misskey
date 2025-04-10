@@ -1,10 +1,6 @@
 {
 	"name": "misskey",
-<<<<<<< HEAD
-	"version": "2025.4.0-rc.5-ruru-1.4.5",
-=======
-	"version": "2025.4.0",
->>>>>>> fb277501a0 (Release: 2025.4.0)
+	"version": "2025.4.0-ruru-1.4.5",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
