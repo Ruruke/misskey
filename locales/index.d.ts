@@ -9638,6 +9638,10 @@ export interface Locale extends ILocale {
          */
         "birthdayFollowings": string;
         /**
+         * チャット
+         */
+        "chat": string;
+        /**
          * NowPlaying
          */
         "listenBrainz": string;

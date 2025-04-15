@@ -2536,6 +2536,7 @@ _widgets:
   listenBrainz: "NowPlaying"
   weather: "天気予報"
   earthquake: "地震情報"
+  chat: "チャット"
 
 _cw:
   hide: "隠す"
