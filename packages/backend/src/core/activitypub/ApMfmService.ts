@@ -31,7 +31,7 @@ export class ApMfmService {
 
 		const parsed = mfm.parse(srcMfm);
 
-		if (!apAppend && parsed.every(n => ['text', 'unicodeEmoji', 'emojiCode', 'mention', 'hashtag', 'url'].includes(n.type))) {
+		if (!additionalAppender.length && parsed.every(n => ['text', 'unicodeEmoji', 'emojiCode', 'mention', 'hashtag', 'url'].includes(n.type))) {
 			noMisskeyContent = true;
 		}
 

@@ -24,6 +24,8 @@ type ChildNode = DefaultTreeAdapterMap['childNode'];
 const urlRegex = /^https?:\/\/[\w\/:%#@$&?!()\[\]~.,=+\-]+/;
 const urlRegexFull = /^https?:\/\/[\w\/:%#@$&?!()\[\]~.,=+\-]+$/;
 
+export type Appender = (document: Document, body: HTMLParagraphElement) => void;
+
 @Injectable()
 export class MfmService {
 	constructor(
@@ -268,7 +270,7 @@ export class MfmService {
 	}
 
 	@bindThis
-	public toHtml(nodes: mfm.MfmNode[] | null, mentionedRemoteUsers: IMentionedRemoteUsers = []) {
+	public toHtml(nodes: mfm.MfmNode[] | null, mentionedRemoteUsers: IMentionedRemoteUsers = [], additionalAppenders: Appender[] = []) {
 		if (nodes == null) {
 			return null;
 		}
