@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
-	<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
+	<MkSwiper v-model:tab="tab" :tabs="headerTabs">
 		<MkSpacer v-if="tab === 'overview'" :contentMax="600" :marginMin="20">
 			<XOverview/>
 		</MkSpacer>
@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer v-else-if="tab === 'charts' || miLocalStorage.getItem('account') === null" :contentMax="1000" :marginMin="20">
 			<MkInstanceStats/>
 		</MkSpacer>
-	</MkHorizontalSwipe>
+	</MkSwiper>
 </PageWithHeader>
 </template>
 
@@ -28,7 +28,7 @@ import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { claimAchievement } from '@/utility/achievements.js';
 import { definePage } from '@/page.js';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
+import MkSwiper from '@/components/MkSwiper.vue';
 import { miLocalStorage } from "@/local-storage.js";
 
 const XOverview = defineAsyncComponent(() => import('@/pages/about.overview.vue'));
