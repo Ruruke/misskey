@@ -49,10 +49,11 @@ import { updateColumn, swapLeftColumn, swapRightColumn, swapUpColumn, swapDownCo
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
+import { DI } from '@/di.js';
 
 provide('shouldHeaderThin', true);
 provide('shouldOmitHeaderTitle', true);
-provide('forceSpacerMin', true);
+provide(DI.forceSpacerMin, true);
 
 const withWallpaper = prefer.s['deck.wallpaper'] != null;
 
@@ -413,9 +414,14 @@ function onDrop(ev) {
 	font-size: 0.9em;
 	color: var(--MI_THEME-panelHeaderFg);
 	background: var(--MI_THEME-panelHeaderBg);
-	box-shadow: 0 0.5px 0 0 var(--MI_THEME-panelHeaderDivider);
 	cursor: pointer;
 	user-select: none;
+}
+
+@container style(--MI_THEME-panelHeaderBg: var(--MI_THEME-panel)) {
+	.header {
+		box-shadow: 0 0.5px 0 0 light-dark(#0002, #fff2);
+	}
 }
 
 .color {

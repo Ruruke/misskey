@@ -35,6 +35,7 @@ export const paramDef = {
 		permissionGroup: { type: 'string', enum: ['Admin', 'MainModerator', 'Normal', 'Community'] },
 		isExplorable: { type: 'boolean', default: false }, // optional for backward compatibility
 		asBadge: { type: 'boolean' },
+		preserveAssignmentOnMoveAccount: { type: 'boolean' },
 		canEditMembersByModerator: { type: 'boolean' },
 		displayOrder: { type: 'number' },
 		policies: {
