@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div>
 	<MkStickyContainer>
-		<template #header><XHeader/></template>
+		<template #header><PageWithHeader/></template>
 		<MkSpacer :contentMax="900">
 			<div class="_gaps">
 				<MkButton rounded primary @click="addRule">{{ i18n.ts._inboxRule.add }}</MkButton>
@@ -43,7 +43,7 @@ import { ref } from 'vue';
 import { v4 as uuid } from 'uuid';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
-import XHeader from '@/pages/admin/_header_.vue';
+// import XHeader from '@/pages/admin/_header_.vue';
 import InboxModerationEditorFormula from '@/pages/admin/InboxModerationEditorFormula.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkInput from '@/components/MkInput.vue';
