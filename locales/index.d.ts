@@ -5566,6 +5566,10 @@ export interface Locale extends ILocale {
      * デッキへ戻る
      */
     "goToDeck": string;
+    /**
+     * 連合ジョブ
+     */
+    "federationJobs": string;
     "_chat": {
         /**
          * まだメッセージはありません
