@@ -9638,10 +9638,6 @@ export interface Locale extends ILocale {
          */
         "birthdayFollowings": string;
         /**
-         * チャット
-         */
-        "chat": string;
-        /**
          * NowPlaying
          */
         "listenBrainz": string;
@@ -9653,6 +9649,10 @@ export interface Locale extends ILocale {
          * 地震情報
          */
         "earthquake": string;
+        /**
+         * チャット
+         */
+        "chat": string;
     };
     "_cw": {
         /**
