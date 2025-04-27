@@ -3,6 +3,8 @@
 ### General
 - Feat: bull-boardに代わるジョブキューの管理ツールが実装されました
 - Enhance: チャットの新規メッセージをプッシュ通知するように
+- Enhance: 依存関係の更新
+- Enhance: 翻訳の更新
 
 ### Client
 - Feat: チャットウィジェットを追加
