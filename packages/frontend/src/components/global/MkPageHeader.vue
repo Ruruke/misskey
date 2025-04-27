@@ -4,55 +4,48 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="show" ref="el" :class="[$style.root]">
-	<div :class="[$style.upper, { [$style.slim]: narrow, [$style.thin]: thin_ }]">
-		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
-			<MkAvatar :class="$style.avatar" :user="$i"/>
-		</div>
-		<div v-else-if="!thin_ && narrow && !hideTitle" :class="$style.buttonsLeft"/>
+	<div v-if="show" ref="el" :class="[$style.root]">
+		<div :class="[$style.upper, { [$style.slim]: narrow, [$style.thin]: thin_ }]">
+			<div v-if="!thin_ && narrow && props.displayMyAvatar && $i" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
+				<MkAvatar :class="$style.avatar" :user="$i"/>
+			</div>
+			<div v-else-if="!thin_ && narrow && !hideTitle" :class="$style.buttonsLeft"/>
 
-		<template v-if="pageMetadata">
-			<div v-if="!hideTitle" :class="$style.titleContainer" @click="top">
-				<div v-if="pageMetadata.avatar" :class="$style.titleAvatarContainer">
-					<MkAvatar :class="$style.titleAvatar" :user="pageMetadata.avatar" indicator/>
-				</div>
-				<i v-else-if="pageMetadata.icon" :class="[$style.titleIcon, pageMetadata.icon]"></i>
+			<template v-if="pageMetadata">
+				<div v-if="!hideTitle" :class="$style.titleContainer" @click="top">
+					<div v-if="pageMetadata.avatar" :class="$style.titleAvatarContainer">
+						<MkAvatar :class="$style.titleAvatar" :user="pageMetadata.avatar" indicator/>
+					</div>
+					<i v-else-if="pageMetadata.icon" :class="[$style.titleIcon, pageMetadata.icon]"></i>
 
-				<div :class="$style.title">
-					<MkUserName v-if="pageMetadata.userName" :user="pageMetadata.userName" :nowrap="true"/>
-					<div v-else-if="pageMetadata.title">{{ pageMetadata.title }}</div>
-					<div v-if="pageMetadata.subtitle" :class="$style.subtitle">
-						{{ pageMetadata.subtitle }}
+					<div :class="$style.title">
+						<MkUserName v-if="pageMetadata.userName" :user="pageMetadata.userName" :nowrap="true"/>
+						<div v-else-if="pageMetadata.title">{{ pageMetadata.title }}</div>
+						<div v-if="pageMetadata.subtitle" :class="$style.subtitle">
+							{{ pageMetadata.subtitle }}
+						</div>
 					</div>
 				</div>
-			</div>
-			<XTabs v-if="!narrow || hideTitle" :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
-		</template>
-		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
-			<template v-for="action in actions">
-				<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+				<XTabs v-if="!narrow || hideTitle" :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 			</template>
+			<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
+				<template v-for="action in actions">
+					<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+				</template>
+			</div>
+		</div>
+		<div v-if="(narrow && !hideTitle) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow, [$style.thin]: thin_ }]">
+			<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</div>
 	</div>
-	<div v-if="(narrow && !hideTitle) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow, [$style.thin]: thin_ }]">
-		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
-	</div>
-</div>
 </template>
 
-<script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
-import { scrollToTop } from '@@/js/scroll.js';
-import XTabs from './MkPageHeader.tabs.vue';
-import type { Tab } from './MkPageHeader.tabs.vue';
+<script lang="ts">
 import type { PageHeaderItem } from '@/types/page-header.js';
 import type { PageMetadata } from '@/page.js';
-import { globalEvents } from '@/events.js';
-import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
-import { $i } from '@/i.js';
-import { DI } from '@/di.js';
+import type { Tab } from './MkPageHeader.tabs.vue';
 
-const props = withDefaults(defineProps<{
+export type PageHeaderProps = {
 	overridePageMetadata?: PageMetadata;
 	tabs?: Tab[];
 	tab?: string;
@@ -60,7 +53,19 @@ const props = withDefaults(defineProps<{
 	thin?: boolean;
 	hideTitle?: boolean;
 	displayMyAvatar?: boolean;
-}>(), {
+};
+</script>
+
+<script lang="ts" setup>
+import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
+import { scrollToTop } from '@@/js/scroll.js';
+import XTabs from './MkPageHeader.tabs.vue';
+import { globalEvents } from '@/events.js';
+import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { $i } from '@/i.js';
+import { DI } from '@/di.js';
+
+const props = withDefaults(defineProps<PageHeaderProps>(), {
 	tabs: () => ([] as Tab[]),
 });
 
