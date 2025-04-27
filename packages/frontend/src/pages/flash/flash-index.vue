@@ -4,16 +4,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
-	<MkSpacer :contentMax="700">
-		<MkSwiper v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'featured'">
-				<MkPagination v-slot="{items}" :pagination="featuredFlashsPagination">
-					<div class="_gaps_s">
-						<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
-					</div>
-				</MkPagination>
-			</div>
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :swipable="true">
+	<div class="_spacer" style="--MI_SPACER-w: 700px;">
+		<div v-if="tab === 'featured'">
+			<MkPagination v-slot="{items}" :pagination="featuredFlashsPagination">
+				<div class="_gaps_s">
+					<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
+				</div>
+			</MkPagination>
+		</div>
 
 			<div v-else-if="tab === 'my'">
 				<div class="_gaps">
@@ -26,15 +25,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 
-			<div v-else-if="tab === 'liked'">
-				<MkPagination v-slot="{items}" :pagination="likedFlashsPagination">
-					<div class="_gaps_s">
-						<MkFlashPreview v-for="like in items" :key="like.flash.id" :flash="like.flash"/>
-					</div>
-				</MkPagination>
-			</div>
-		</MkSwiper>
-	</MkSpacer>
+		<div v-else-if="tab === 'liked'">
+			<MkPagination v-slot="{items}" :pagination="likedFlashsPagination">
+				<div class="_gaps_s">
+					<MkFlashPreview v-for="like in items" :key="like.flash.id" :flash="like.flash"/>
+				</div>
+			</MkPagination>
+		</div>
+	</div>
 </PageWithHeader>
 </template>
 

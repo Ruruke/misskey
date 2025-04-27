@@ -6,11 +6,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <PageWithHeader v-model:tab="tab" :tabs="headerTabs" :actions="headerActions">
 	<div v-if="user">
-		<MkSwiper v-if="hasTabAccess(tab)" v-model:tab="tab" :tabs="headerTabs">
+		<div v-if="hasTabAccess(tab)">
 			<XHome v-if="tab === 'home'" :user="user" @unfoldFiles="() => { tab = 'files'; }"/>
-			<MkSpacer v-else-if="tab === 'notes'" :contentMax="800" style="padding-top: 0">
+			<div v-else-if="tab === 'notes'" class="_spacer" style="--MI_SPACER-w: 800px;">
 				<XTimeline :user="user"/>
-			</MkSpacer>
+			</div>
 			<XFiles v-else-if="tab === 'files'" :user="user"/>
 			<XActivity v-else-if="tab === 'activity'" :user="user"/>
 			<XAchievements v-else-if="tab === 'achievements'" :user="user"/>
@@ -21,7 +21,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XFlashs v-else-if="tab === 'flashs'" :user="user"/>
 			<XGallery v-else-if="tab === 'gallery'" :user="user"/>
 			<XRaw v-else-if="tab === 'raw'" :user="user"/>
-		</MkSwiper>
+		</div>
+		<div v-else class="_fullinfo">
+			<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.pleaseLogin }}</div>
+			<div style="opacity: 0.7">{{ i18n.ts.pleaseLoginToViewProfile }}</div>
+		</div>
 	</div>
 	<MkError v-else-if="error" @retry="fetchUser()"/>
 	<MkLoading v-else/>
@@ -36,7 +40,6 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/i.js';
-import MkSwiper from '@/components/MkSwiper.vue';
 import { serverContext, assertServerContext } from '@/server-context.js';
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));

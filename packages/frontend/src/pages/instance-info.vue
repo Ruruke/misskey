@@ -4,32 +4,31 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
-	<MkSpacer v-if="instance" :contentMax="600" :marginMin="16" :marginMax="32">
-		<MkSwiper v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'overview'" class="_gaps_m">
-				<div class="fnfelxur">
-					<img :src="faviconUrl" alt="" class="icon"/>
-					<span class="name">{{ instance.name || `(${i18n.ts.unknown})` }}</span>
-				</div>
-				<div style="display: flex; flex-direction: column; gap: 1em;">
-					<MkKeyValue :copy="host" oneline>
-						<template #key>Host</template>
-						<template #value><span class="_monospace"><MkLink :url="`https://${host}`">{{ host }}</MkLink></span></template>
-					</MkKeyValue>
-					<MkKeyValue oneline>
-						<template #key>{{ i18n.ts.software }}</template>
-						<template #value><span class="_monospace">{{ instance.softwareName || `(${i18n.ts.unknown})` }} / {{ instance.softwareVersion || `(${i18n.ts.unknown})` }}</span></template>
-					</MkKeyValue>
-					<MkKeyValue oneline>
-						<template #key>{{ i18n.ts.administrator }}</template>
-						<template #value>{{ instance.maintainerName || `(${i18n.ts.unknown})` }} ({{ instance.maintainerEmail || `(${i18n.ts.unknown})` }})</template>
-					</MkKeyValue>
-				</div>
-				<MkKeyValue>
-					<template #key>{{ i18n.ts.description }}</template>
-					<template #value>{{ instance.description }}</template>
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :swipable="true">
+	<div v-if="instance" class="_spacer" style="--MI_SPACER-w: 600px; --MI_SPACER-min: 16px; --MI_SPACER-max: 32px;">
+		<div v-if="tab === 'overview'" class="_gaps_m">
+			<div class="fnfelxur">
+				<img :src="faviconUrl" alt="" class="icon"/>
+				<span class="name">{{ instance.name || `(${i18n.ts.unknown})` }}</span>
+			</div>
+			<div style="display: flex; flex-direction: column; gap: 1em;">
+				<MkKeyValue :copy="host" oneline>
+					<template #key>Host</template>
+					<template #value><span class="_monospace"><MkLink :url="`https://${host}`">{{ host }}</MkLink></span></template>
 				</MkKeyValue>
+				<MkKeyValue oneline>
+					<template #key>{{ i18n.ts.software }}</template>
+					<template #value><span class="_monospace">{{ instance.softwareName || `(${i18n.ts.unknown})` }} / {{ instance.softwareVersion || `(${i18n.ts.unknown})` }}</span></template>
+				</MkKeyValue>
+				<MkKeyValue oneline>
+					<template #key>{{ i18n.ts.administrator }}</template>
+					<template #value>{{ instance.maintainerName || `(${i18n.ts.unknown})` }} ({{ instance.maintainerEmail || `(${i18n.ts.unknown})` }})</template>
+				</MkKeyValue>
+			</div>
+			<MkKeyValue>
+				<template #key>{{ i18n.ts.description }}</template>
+				<template #value>{{ instance.description }}</template>
+			</MkKeyValue>
 
 				<FormSection v-if="iAmModerator">
 					<template #label>Moderation</template>
@@ -158,8 +157,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkObjectView tall :value="instance">
 				</MkObjectView>
 			</div>
-		</MkSwiper>
-	</MkSpacer>
+	</div>
 </PageWithHeader>
 </template>
 

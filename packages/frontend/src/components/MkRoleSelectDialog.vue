@@ -4,22 +4,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-	<MkModalWindow
-		ref="windowEl"
-		:withOkButton="false"
-		:okButtonDisabled="false"
-		:width="400"
-		:height="500"
-		@close="onCloseModalWindow"
-		@closed="emit('closed')"
-	>
-		<template #header>{{ title }}</template>
-		<MkSpacer :marginMin="20" :marginMax="28">
-			<MkLoading v-if="fetching"/>
-			<div v-else class="_gaps" :class="$style.root">
-				<div :class="$style.header">
-					<MkButton rounded @click="addRole"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
-				</div>
+<MkModalWindow
+	ref="windowEl"
+	:withOkButton="false"
+	:okButtonDisabled="false"
+	:width="400"
+	:height="500"
+	@close="onCloseModalWindow"
+	@closed="emit('closed')"
+>
+	<template #header>{{ title }}</template>
+	<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;">
+		<MkLoading v-if="fetching"/>
+		<div v-else class="_gaps" :class="$style.root">
+			<div :class="$style.header">
+				<MkButton rounded @click="addRole"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
+			</div>
 
 				<div v-if="selectedRoles.length > 0" class="_gaps" :class="$style.roleItemArea">
 					<div v-for="role in selectedRoles" :key="role.id" :class="$style.roleItem">
@@ -33,13 +33,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<MkInfo v-if="infoMessage">{{ infoMessage }}</MkInfo>
 
-				<div :class="$style.buttons">
-					<MkButton primary @click="onOkClicked">{{ i18n.ts.ok }}</MkButton>
-					<MkButton @click="onCancelClicked">{{ i18n.ts.cancel }}</MkButton>
-				</div>
+			<div :class="$style.buttons">
+				<MkButton primary @click="onOkClicked">{{ i18n.ts.ok }}</MkButton>
+				<MkButton @click="onCancelClicked">{{ i18n.ts.cancel }}</MkButton>
 			</div>
-		</MkSpacer>
-	</MkModalWindow>
+		</div>
+	</div>
+</MkModalWindow>
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue';
@@ -49,7 +49,6 @@ import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import * as os from '@/os.js';
-import MkSpacer from '@/components/global/MkSpacer.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkLoading from '@/components/global/MkLoading.vue';
 

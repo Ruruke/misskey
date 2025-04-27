@@ -4,11 +4,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_gaps">
-	<MkFolder>
-		<template #icon><i class="ti ti-settings"></i></template>
-		<template #label>{{ i18n.ts._customEmojisManager._local._register.uploadSettingTitle }}</template>
-		<template #caption>{{ i18n.ts._customEmojisManager._local._register.uploadSettingDescription }}</template>
+<div class="_spacer">
+	<div class="_gaps">
+		<MkFolder>
+			<template #icon><i class="ti ti-settings"></i></template>
+			<template #label>{{ i18n.ts._customEmojisManager._local._register.uploadSettingTitle }}</template>
+			<template #caption>{{ i18n.ts._customEmojisManager._local._register.uploadSettingDescription }}</template>
 
 		<div class="_gaps">
 			<MkSelect v-model="selectedFolderId">
@@ -58,13 +59,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		/>
 	</div>
 
-	<div v-if="gridItems.length > 0" :class="$style.footer">
-		<MkButton primary :disabled="registerButtonDisabled" @click="onRegistryClicked">
-			{{ i18n.ts.registration }}
-		</MkButton>
-		<MkButton @click="onClearClicked">
-			{{ i18n.ts.clear }}
-		</MkButton>
+		<div v-if="gridItems.length > 0" :class="$style.footer">
+			<MkButton primary :disabled="registerButtonDisabled" @click="onRegistryClicked">
+				{{ i18n.ts.registration }}
+			</MkButton>
+			<MkButton @click="onClearClicked">
+				{{ i18n.ts.clear }}
+			</MkButton>
+		</div>
 	</div>
 </div>
 </template>

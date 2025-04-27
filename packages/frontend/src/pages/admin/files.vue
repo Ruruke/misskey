@@ -5,16 +5,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <PageWithHeader :actions="headerActions" :tabs="headerTabs">
-		<MkSpacer :contentMax="900">
-			<div class="_gaps">
-				<div class="inputs" style="display: flex; gap: var(--MI-margin); flex-wrap: wrap;">
-					<MkSelect v-model="origin" style="margin: 0; flex: 1;">
-						<template #label>{{ i18n.ts.instance }}</template>
-						<option value="combined">{{ i18n.ts.all }}</option>
-						<option value="local">{{ i18n.ts.local }}</option>
-						<option value="remote">{{ i18n.ts.remote }}</option>
-						<option value="system">{{ i18n.ts.system }}</option>
-					</MkSelect>
+	<div class="_spacer" style="--MI_SPACER-w: 900px;">
+		<div class="_gaps">
+			<div class="inputs" style="display: flex; gap: var(--MI-margin); flex-wrap: wrap;">
+				<MkSelect v-model="origin" style="margin: 0; flex: 1;">
+					<template #label>{{ i18n.ts.instance }}</template>
+					<option value="combined">{{ i18n.ts.all }}</option>
+					<option value="local">{{ i18n.ts.local }}</option>
+					<option value="remote">{{ i18n.ts.remote }}</option>
+					<option value="system">{{ i18n.ts.system }}</option>
+				</MkSelect>
 				<MkInput v-model="searchHost" :debounce="true" type="search" style="margin: 0; flex: 1;" :disabled="pagination.params.origin === 'local'">
 					<template #label>{{ i18n.ts.host }}</template>
 				</MkInput>
@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<MkFileListForAdmin :pagination="pagination" :viewMode="viewMode"/>
 		</div>
-	</MkSpacer>
+	</div>
 </PageWithHeader>
 </template>
 
