@@ -4,31 +4,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="rootEl" class="_pageScrollable">
-	<MkStickyContainer>
-		<template #header><MkPageHeader v-model:tab="src" :displayMyAvatar="true" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/></template>
-		<MkSpacer :contentMax="800">
-			<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
-				{{ i18n.ts._timelineDescription[src] }}
-			</MkInfo>
-			<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="_panel" fixed style="margin-bottom: var(--MI-margin);"/>
-			<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
-			<MkTimeline
-				ref="tlComponent"
-				:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
-				:class="$style.tl"
-				:src="src.split(':')[0]"
-				:list="src.split(':')[1]"
-				:withRenotes="withRenotes"
-				:withReplies="withReplies"
-				:withSensitive="withSensitive"
-				:onlyFiles="onlyFiles"
-				:sound="true"
-				@queue="queueUpdated"
-			/>
-		</MkSpacer>
-	</MkStickyContainer>
-</div>
+<PageWithHeader ref="pageComponent" v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :swipable="true" :displayMyAvatar="true">
+	<MkSpacer :contentMax="800">
+		<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
+			{{ i18n.ts._timelineDescription[src] }}
+		</MkInfo>
+		<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="_panel" fixed style="margin-bottom: var(--MI-margin);"/>
+		<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
+		<MkTimeline
+			ref="tlComponent"
+			:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
+			:class="$style.tl"
+			:src="src.split(':')[0]"
+			:list="src.split(':')[1]"
+			:withRenotes="withRenotes"
+			:withReplies="withReplies"
+			:withSensitive="withSensitive"
+			:onlyFiles="onlyFiles"
+			:sound="true"
+			@queue="queueUpdated"
+		/>
+	</MkSpacer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -50,20 +47,11 @@ import { deepMerge } from '@/utility/merge.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
 import { prefer } from '@/preferences.js';
-import { useRouter } from '@/router.js';
-import { useScrollPositionKeeper } from '@/use/use-scroll-position-keeper.js';
 
 provide('shouldOmitHeaderTitle', true);
 
 const tlComponent = useTemplateRef('tlComponent');
-const rootEl = useTemplateRef('rootEl');
-
-useScrollPositionKeeper(rootEl);
-
-const router = useRouter();
-router.useListener('same', () => {
-	top();
-});
+const pageComponent = useTemplateRef('pageComponent');
 
 type TimelinePageSrc = BasicTimelineType | `list:${string}`;
 
@@ -131,7 +119,6 @@ function queueUpdated(q: number): void {
 }
 
 function top(): void {
-	if (rootEl.value) rootEl.value.scrollToTop();
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {
