@@ -92,12 +92,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 </template>
 <div v-else>
-	<component :is="self ? 'MkA' : 'a'" :class="[$style.link, { [$style.compact]: compact }]" :[attr]="self ? url.substring(local.length) : url" rel="nofollow noopener" :target="target" :title="url_string" @click.stop>
-		<div v-if="thumbnail && !sensitive" :class="$style.thumbnail" :style="prefer.s.dataSaver.urlPreview ? '' : `background-image: url('${thumbnail}')`">
+	<component :is="self ? 'MkA' : 'a'" :class="[$style.link, { [$style.compact]: compact }]" :[attr]="maybeRelativeUrl" rel="nofollow noopener" :target="target" :title="url">
+		<div v-if="thumbnail && !sensitive" :class="$style.thumbnail" :style="prefer.s.dataSaver.urlPreview ? '' : { backgroundImage: `url('${thumbnail}')` }">
 		</div>
 		<article :class="$style.body">
 			<header :class="$style.header">
-				<h1 v-if="unknownUrl" :class="$style.title">{{ url_string }}</h1>
+				<h1 v-if="unknownUrl" :class="$style.title">{{ url }}</h1>
 				<h1 v-else-if="fetching" :class="$style.title"><MkEllipsis/></h1>
 				<h1 v-else :class="$style.title" :title="title ?? undefined">{{ title }}</h1>
 			</header>
@@ -146,8 +146,7 @@ import { deviceKind } from '@/utility/device-kind.js';
 import MkButton from '@/components/MkButton.vue';
 import { transformPlayerUrl } from '@/utility/player-url-transform.js';
 import { prefer } from '@/preferences.js';
-import { store } from '@/store.js';
-import sanitizeHtml from 'sanitize-html';
+import { maybeMakeRelative } from '@@/js/url.js';
 
 type SummalyResult = Awaited<ReturnType<typeof summaly>>;
 
@@ -169,19 +168,8 @@ const props = withDefaults(defineProps<{
 const MOBILE_THRESHOLD = 500;
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
 
-let self = props.url.startsWith(local);
-let requestUrl = new URL(props.url);
-let url_string: string;
-if (props.host === requestUrl.host && (requestUrl.pathname.startsWith('/clips/') || requestUrl.pathname.startsWith('/play/'))) {
-	let split = requestUrl.pathname.split('@');
-	requestUrl = new URL(local + split[0] + '@' + (split.length >= 2 ? split[1] : props.host));
-	self = true;
-	url_string = requestUrl.toString();
-	requestUrl = new URL(props.url);
-} else {
-	url_string = requestUrl.toString();
-}
-
+const maybeRelativeUrl = maybeMakeRelative(props.url, local);
+const self = maybeRelativeUrl !== props.url;
 const attr = self ? 'to' : 'href';
 const target = self ? null : '_blank';
 let fetching = ref(true);
@@ -198,11 +186,14 @@ const player = ref({
 } as SummalyResult['player']);
 const playerEnabled = ref(false);
 
+const tweetId = ref<string | null>(null);
+const tweetExpanded = ref(props.detail);
+const tweetHeight = ref(150);
+const unknownUrl = ref(false);
 const embedId = `embed${Math.random().toString().replace(/\D/, '')}`;
 const postExpanded = ref(props.detail);
 const postHeight = ref(150);
 
-const tweetId = ref<string | null>(null);
 
 const isSteam = ref<boolean>(false);
 const steamAgeLimit = ref<string | null>(null);
@@ -219,7 +210,7 @@ onMounted(async () => {
 		.replace('ja-KS', 'ja-JP')
 		.replace('ja-KK', 'ja-JP');
 
-	const response = await fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`);
+	const response = await window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`);
 	if (response.ok) {
 		const info = await response.json();
 		// Steamの場合の処理
@@ -258,7 +249,7 @@ onDeactivated(() => {
 	playerEnabled.value = false;
 });
 
-//const requestUrl = new URL(props.url);
+const requestUrl = new URL(props.url);
 if (!['http:', 'https:'].includes(requestUrl.protocol)) throw new Error('invalid url');
 
 if (requestUrl.hostname === 'twitter.com' || requestUrl.hostname === 'mobile.twitter.com' || requestUrl.hostname === 'x.com' || requestUrl.hostname === 'mobile.x.com') {

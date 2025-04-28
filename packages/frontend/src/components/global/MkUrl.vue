@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <component
-	:is="self ? 'MkA' : 'a'" ref="el" :class="$style.root" class="_link" :[attr]="self ? url_string.substring(local.length) : url_string" :rel="rel ?? 'nofollow noopener'" :target="target"
+	:is="self ? 'MkA' : 'a'" ref="el" :class="$style.root" class="_link" :[attr]="maybeRelativeUrl" :rel="rel ?? 'nofollow noopener'" :target="target"
 	:behavior="props.navigationBehavior"
 	@contextmenu.stop="() => {}"
 >
@@ -32,6 +32,7 @@ import * as os from '@/os.js';
 import { useTooltip } from '@/use/use-tooltip.js';
 import { isEnabledUrlPreview } from '@/instance.js';
 import type { MkABehavior } from '@/components/global/MkA.vue';
+import { maybeMakeRelative } from '@@/js/url.js';
 
 function safeURIDecode(str: string): string {
 	try {
@@ -46,28 +47,21 @@ const props = withDefaults(defineProps<{
 	rel?: string;
 	showUrlPreview?: boolean;
 	navigationBehavior?: MkABehavior;
-	host: string | null | undefined;
 }>(), {
 	showUrlPreview: true,
 });
 
-let self = props.url.startsWith(local);
-let url = new URL(props.url);
+const maybeRelativeUrl = maybeMakeRelative(props.url, local);
+const self = maybeRelativeUrl !== props.url;
+const url = new URL(props.url);
 if (!['http:', 'https:'].includes(url.protocol)) throw new Error('invalid url');
-
-if (props.host === url.host && (url.pathname.startsWith('/clips/') || url.pathname.startsWith('/play/'))) {
-	let split = url.pathname.split('@');
-	url = new URL(local + split[0] + '@' + (split.length >= 2 ? split[1] : props.host));
-	self = true;
-}
-const url_string = url.toString();
 const el = ref();
 
 if (props.showUrlPreview && isEnabledUrlPreview.value) {
 	useTooltip(el, (showing) => {
 		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkUrlPreviewPopup.vue')), {
 			showing,
-			url: url_string,
+			url: props.url,
 			source: el.value instanceof HTMLElement ? el.value : el.value?.$el,
 		}, {
 			closed: () => dispose(),
