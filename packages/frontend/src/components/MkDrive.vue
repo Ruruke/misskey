@@ -45,6 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@contextmenu.stop="onContextmenu"
 	>
 		<div ref="contents">
+			<MkInfo v-if="!store.r.readDriveTip.value" closable @close="closeTip()"><div v-html="i18n.ts.driveAboutTip"></div></MkInfo>
 			<div v-show="folders.length > 0" ref="foldersContainer" :class="$style.folders">
 				<XFolder
 					v-for="(f, i) in folders"
@@ -101,6 +102,7 @@ import { nextTick, onActivated, onBeforeUnmount, onMounted, ref, useTemplateRef,
 import * as Misskey from 'misskey-js';
 import tinycolor from 'tinycolor2';
 import MkButton from './MkButton.vue';
+import MkInfo from './MkInfo.vue';
 import type { MenuItem } from '@/types/menu.js';
 import XNavFolder from '@/components/MkDrive.navFolder.vue';
 import XFolder from '@/components/MkDrive.folder.vue';
@@ -115,6 +117,7 @@ import bytes from "@/filters/bytes.js";
 import { claimAchievement } from '@/utility/achievements.js';
 import { prefer } from '@/preferences.js';
 import { chooseFileFromPc } from '@/utility/select-file.js';
+import { store } from '@/store.js';
 
 const searchQuery = ref('');
 
@@ -746,6 +749,10 @@ function showMenu(ev: MouseEvent) {
 
 function onContextmenu(ev: MouseEvent) {
 	os.contextMenu(getMenu(), ev);
+}
+
+function closeTip() {
+	store.set('readDriveTip', true);
 }
 
 onMounted(() => {

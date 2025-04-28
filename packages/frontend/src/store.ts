@@ -35,46 +35,50 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'account',
 		default: false,
 	},
-	keepCw: {
-		where: 'account',
-		default: true,
-	},
-	collapseRenotes: {
-		where: 'account',
-		default: true,
-	},
-	rememberNoteVisibility: {
-		where: 'account',
-		default: false,
-	},
-	defaultNoteVisibility: {
-		where: 'account',
-		default: 'public' as (typeof Misskey.noteVisibilities)[number],
-	},
-	defaultNoteLocalOnly: {
-		where: 'account',
-		default: false,
-	},
-	defaultScheduledNoteDelete: {
-		where: 'account',
-		default: false,
-	},
-	defaultScheduledNoteDeleteTime: {
-		where: 'account',
-		default: 86400000,
-	},
-	uploadFolder: {
-		where: 'account',
-		default: null as string | null,
-	},
-	pastedFileName: {
-		where: 'account',
-		default: 'yyyy-MM-dd HH-mm-ss [{{number}}]',
-	},
-	keepOriginalUploading: {
-		where: 'account',
-		default: false,
-	},
+keepCw: {
+	where: 'account',
+	default: true,
+},
+collapseRenotes: {
+	where: 'account',
+	default: true,
+},
+rememberNoteVisibility: {
+	where: 'account',
+	default: false,
+},
+defaultNoteVisibility: {
+	where: 'account',
+	default: 'public' as (typeof Misskey.noteVisibilities)[number],
+},
+defaultNoteLocalOnly: {
+	where: 'account',
+	default: false,
+},
+defaultScheduledNoteDelete: {
+	where: 'account',
+	default: false,
+},
+defaultScheduledNoteDeleteTime: {
+	where: 'account',
+	default: 86400000,
+},
+uploadFolder: {
+	where: 'account',
+	default: null as string | null,
+},
+pastedFileName: {
+	where: 'account',
+	default: 'yyyy-MM-dd HH-mm-ss [{{number}}]',
+},
+keepOriginalUploading: {
+	where: 'account',
+	default: false,
+},
+readDriveTip: {
+	where: 'account',
+	default: false,
+},
 	memo: {
 		where: 'account',
 		default: null,

@@ -4,9 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
-	<div class="_spacer" style="--MI_SPACER-w: 700px;">
-		<MkSwiper v-model:tab="tab" :tabs="headerTabs">
+	<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :swipable="true">
+		<div class="_spacer" style="--MI_SPACER-w: 700px;">
 			<div v-if="channel && tab === 'overview'" class="_gaps">
 				<div class="_panel" :class="$style.bannerContainer">
 					<XChannelFollowButton :channel="channel" :full="true" :class="$style.subscribe"/>
@@ -38,35 +37,36 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<!-- スマホ・タブレットの場合、キーボードが表示されると投稿が見づらくなるので、デスクトップ場合のみ自動でフォーカスを当てる -->
 				<MkPostForm v-if="$i && prefer.r.showFixedPostFormInChannel.value" :channel="channel" class="post-form _panel" fixed :autofocus="deviceKind === 'desktop'"/>
 
-<MkTimeline :key="channelId" src="channel" :channel="channelId" @before="before" @after="after" @note="miLocalStorage.setItemAsJson(`channelLastReadedAt:${channel.id}`, Date.now())"/>
-</div>
-<div v-else-if="tab === 'featured'">
-	<MkNotes :pagination="featuredPagination"/>
-</div>
-<div v-else-if="tab === 'search'">
-	<div v-if="notesSearchAvailable" class="_gaps">
-		<div>
-			<MkInput v-model="searchQuery" @enter="search()">
-				<template #prefix><i class="ti ti-search"></i></template>
-			</MkInput>
-			<MkButton primary rounded style="margin-top: 8px;" @click="search()">{{ i18n.ts.search }}</MkButton>
-		</div>
-		<MkNotes v-if="searchPagination" :key="searchKey" :pagination="searchPagination"/>
-	</div>
-	<div v-else>
-		<MkInfo warn>{{ i18n.ts.notesSearchNotAvailable }}</MkInfo>
-	</div>
-</div>
-	<template #footer>
-		<div :class="$style.footer">
-			<div class="_spacer" style="--MI_SPACER-w: 700px; --MI_SPACER-min: 16px; --MI_SPACER-max: 16px;">
-				<div class="_buttonsCenter">
-					<MkButton inline rounded primary gradate @click="openPostForm()"><i class="ti ti-pencil"></i> {{ i18n.ts.postToTheChannel }}</MkButton>
+				<MkTimeline :key="channelId" src="channel" :channel="channelId" @before="before" @after="after" @note="miLocalStorage.setItemAsJson(`channelLastReadedAt:${channel.id}`, Date.now())"/>
+			</div>
+			<div v-else-if="tab === 'featured'">
+				<MkNotes :pagination="featuredPagination"/>
+			</div>
+			<div v-else-if="tab === 'search'">
+				<div v-if="notesSearchAvailable" class="_gaps">
+					<div>
+						<MkInput v-model="searchQuery" @enter="search()">
+							<template #prefix><i class="ti ti-search"></i></template>
+						</MkInput>
+						<MkButton primary rounded style="margin-top: 8px;" @click="search()">{{ i18n.ts.search }}</MkButton>
+					</div>
+					<MkNotes v-if="searchPagination" :key="searchKey" :pagination="searchPagination"/>
+				</div>
+				<div v-else>
+					<MkInfo warn>{{ i18n.ts.notesSearchNotAvailable }}</MkInfo>
 				</div>
 			</div>
 		</div>
-	</template>
-</PageWithHeader>
+		<template #footer>
+			<div :class="$style.footer">
+				<div class="_spacer" style="--MI_SPACER-w: 700px; --MI_SPACER-min: 16px; --MI_SPACER-max: 16px;">
+					<div class="_buttonsCenter">
+						<MkButton inline rounded primary gradate @click="openPostForm()"><i class="ti ti-pencil"></i> {{ i18n.ts.postToTheChannel }}</MkButton>
+					</div>
+				</div>
+			</div>
+		</template>
+	</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -91,7 +91,6 @@ import { prefer } from '@/preferences.js';
 import MkNote from '@/components/MkNote.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import MkSwiper from '@/components/MkSwiper.vue';
 import { isSupportShare } from '@/utility/navigator.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { notesSearchAvailable } from '@/utility/check-permissions.js';
