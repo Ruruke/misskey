@@ -5,21 +5,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="[$style.root, { '_forceShrinkSpacer': deviceKind === 'smartphone' }]">
-	<XSidebar v-if="!isMobile" :class="$style.sidebar" :showWidgetButton="!isDesktop" @widgetButtonClick="widgetsShowing = true"/>
+	<XTitlebar v-if="prefer.r.showTitlebar.value" style="flex-shrink: 0;"/>
 
-	<div :class="$style.contents" @contextmenu.stop="onContextmenu">
-		<div>
-			<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
-			<XAnnouncements v-if="$i"/>
-			<XStatusBars :class="$style.statusbars"/>
+	<div :class="$style.nonTitlebarArea">
+		<XSidebar v-if="!isMobile" :class="$style.sidebar" :showWidgetButton="!isDesktop" @widgetButtonClick="widgetsShowing = true"/>
+
+		<div :class="[$style.contents, !isMobile && prefer.r.showTitlebar.value ? $style.withSidebarAndTitlebar : null]" @contextmenu.stop="onContextmenu">
+			<div>
+				<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
+				<XAnnouncements v-if="$i"/>
+				<XStatusBars :class="$style.statusbars"/>
+			</div>
+			<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']" :class="$style.content"/>
+			<RouterView v-else :class="$style.content"/>
+			<XMobileFooterMenu v-if="isMobile" ref="navFooter" v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
 		</div>
-		<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']" :class="$style.content"/>
-		<RouterView v-else :class="$style.content"/>
-		<XMobileFooterMenu v-if="isMobile" ref="navFooter" v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
-	</div>
 
-	<div v-if="isDesktop && !pageMetadata?.needWideArea" :class="$style.widgets">
-		<XWidgets/>
+		<div v-if="isDesktop && !pageMetadata?.needWideArea" :class="$style.widgets">
+			<XWidgets/>
+		</div>
 	</div>
 
 	<XCommon v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
@@ -35,6 +39,7 @@ import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import type { PageMetadata } from '@/page.js';
 import XMobileFooterMenu from '@/ui/_common_/mobile-footer-menu.vue';
 import XPreferenceRestore from '@/ui/_common_/PreferenceRestore.vue';
+import XTitlebar from '@/ui/_common_/titlebar.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/i.js';
@@ -129,8 +134,14 @@ $widgets-hide-threshold: 1090px;
 	height: 100dvh;
 	overflow: clip;
 	contain: strict;
-	box-sizing: border-box;
 	display: flex;
+	flex-direction: column;
+	background: var(--MI_THEME-navBg);
+}
+
+.nonTitlebarArea {
+	display: flex;
+	flex: 1;
 }
 
 .sidebar {
@@ -143,14 +154,6 @@ $widgets-hide-threshold: 1090px;
 	flex: 1;
 	height: 100%;
 	min-width: 0;
-	overflow: auto;
-	overflow-y: scroll;
-	overscroll-behavior: contain;
-	background: var(--MI_THEME-bg);
-	scroll-padding-top: 60px; // TODO: ちゃんと計算する
-	scroll-padding-bottom: 60px; // TODO: ちゃんと計算する
-}
-
 .widgets {
 	width: 350px;
 	height: 100%;
@@ -163,38 +166,13 @@ $widgets-hide-threshold: 1090px;
 	@media (max-width: $widgets-hide-threshold) {
 		display: none;
 	}
-}
 
-.widgetButton {
-	display: block;
-	position: fixed;
-	z-index: 1000;
-	bottom: 32px;
-	right: 32px;
-	width: 64px;
-	height: 64px;
-	border-radius: 100%;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-	font-size: 22px;
-	background: var(--MI_THEME-panel);
+	&.withSidebarAndTitlebar {
+		background: var(--MI_THEME-navBg);
+		border-radius: 12px 0 0 0;
+		overflow: clip;
+	}
 }
-
-.widgetsDrawerBg {
-	z-index: 1001;
-}
-
-.widgetsDrawer {
-	position: fixed;
-	top: 0;
-	right: 0;
-	z-index: 1001;
-	width: 310px;
-	height: 100dvh;
-	padding: var(--MI-margin) var(--MI-margin) calc(var(--MI-margin) + env(safe-area-inset-bottom, 0px)) !important;
-	box-sizing: border-box;
-	overflow: auto;
-	overscroll-behavior: contain;
-	background: var(--MI_THEME-bg);
 }
 
 .content {
