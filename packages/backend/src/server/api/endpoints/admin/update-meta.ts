@@ -251,6 +251,17 @@ export const paramDef = {
 				required: ['software', 'versionRange'],
 			},
 		},
+		deliverSuspendedSoftware: {
+			type: 'array',
+			items: {
+				type: 'object',
+				properties: {
+					software: { type: 'string' },
+					versionRange: { type: 'string' },
+				},
+				required: ['software', 'versionRange'],
+			},
+		},
 	},
 	required: [],
 } as const;

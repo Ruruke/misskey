@@ -241,35 +241,52 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<option value="none">{{ i18n.ts.none }}</option>
 					</MkRadios>
 
-						<MkTextarea v-if="federationForm.state.federation === 'specified'" v-model="federationForm.state.federationHosts">
-							<template #label>{{ i18n.ts.federationAllowedHosts }}<span v-if="federationForm.modifiedStates.federationHosts" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>{{ i18n.ts.federationAllowedHostsDescription }}</template>
-						</MkTextarea>
+					<MkTextarea v-if="federationForm.state.federation === 'specified'" v-model="federationForm.state.federationHosts">
+						<template #label>{{ i18n.ts.federationAllowedHosts }}<span v-if="federationForm.modifiedStates.federationHosts" class="_modified">{{ i18n.ts.modified }}</span></template>
+						<template #caption>{{ i18n.ts.federationAllowedHostsDescription }}</template>
+					</MkTextarea>
 
-						<MkFolder>
-							<template #icon><i class="ti ti-list"></i></template>
-							<template #label><SearchLabel>{{ i18n.ts._serverSettings.deliverSuspendedSoftware }}</SearchLabel></template>
-							<template #footer>
-								<div class="_buttons">
-									<MkButton @click="federationForm.state.deliverSuspendedSoftware.push({software: '', versionRange: ''})"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
-								</div>
-							</template>
+					<MkFolder>
+						<template #icon><i class="ti ti-list"></i></template>
+						<template #label><SearchLabel>{{ i18n.ts._serverSettings.deliverSuspendedSoftware }}</SearchLabel></template>
+						<template #footer>
+							<div class="_buttons">
+								<MkButton @click="federationForm.state.deliverSuspendedSoftware.push({software: '', versionRange: ''})"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
+							</div>
+						</template>
 
-							<div :class="$style.metadataRoot" class="_gaps_s">
-								<MkInfo>{{ i18n.ts._serverSettings.deliverSuspendedSoftwareDescription }}</MkInfo>
-								<div v-for="(element, index) in federationForm.state.deliverSuspendedSoftware" :key="index" v-panel :class="$style.fieldDragItem">
-									<button class="_button" :class="$style.dragItemRemove" @click="federationForm.state.deliverSuspendedSoftware.splice(index, 1)"><i class="ti ti-x"></i></button>
-									<div :class="$style.dragItemForm">
-										<FormSplit :minWidth="200">
-											<MkInput v-model="element.software" small :placeholder="i18n.ts.softwareName">
-											</MkInput>
-											<MkInput v-model="element.versionRange" small :placeholder="i18n.ts.version">
-											</MkInput>
-										</FormSplit>
-									</div>
+						<div :class="$style.metadataRoot" class="_gaps_s">
+							<MkInfo>{{ i18n.ts._serverSettings.deliverSuspendedSoftwareDescription }}</MkInfo>
+							<div v-for="(element, index) in federationForm.state.deliverSuspendedSoftware" :key="index" v-panel :class="$style.fieldDragItem">
+								<button class="_button" :class="$style.dragItemRemove" @click="federationForm.state.deliverSuspendedSoftware.splice(index, 1)"><i class="ti ti-x"></i></button>
+								<div :class="$style.dragItemForm">
+									<FormSplit :minWidth="200">
+										<MkInput v-model="element.software" small :placeholder="i18n.ts.softwareName">
+										</MkInput>
+										<MkInput v-model="element.versionRange" small :placeholder="i18n.ts.version">
+										</MkInput>
+									</FormSplit>
 								</div>
 							</div>
-						</MkFolder>
+						</div>
+					</MkFolder>
+				</div>
+			</MkFolder>
+
+			<MkFolder>
+				<template #icon><i class="ti ti-ghost"></i></template>
+				<template #label>{{ i18n.ts.proxyAccount }}</template>
+				<template v-if="proxyAccountForm.modified.value" #footer>
+					<MkFormFooter :form="proxyAccountForm"/>
+				</template>
+
+				<div class="_gaps">
+					<MkInfo>{{ i18n.ts.proxyAccountDescription }}</MkInfo>
+
+					<MkTextarea v-model="proxyAccountForm.state.description" :max="500" tall mfmAutocomplete :mfmPreview="true">
+						<template #label>{{ i18n.ts._profile.description }}</template>
+						<template #caption>{{ i18n.ts._profile.youCanIncludeHashtags }}</template>
+					</MkTextarea>
 				</div>
 			</MkFolder>
 		</div>
@@ -413,6 +430,14 @@ const federationForm = useForm({
 	fetchInstance(true);
 });
 
+const proxyAccountForm = useForm({
+	description: proxyAccount.description,
+}, async (state) => {
+	await os.apiWithDialog('admin/update-proxy-account', {
+		description: state.description,
+	});
+	fetchInstance(true);
+});
 
 const headerTabs = computed(() => []);
 
@@ -426,34 +451,6 @@ definePage(() => ({
 .subCaption {
 	font-size: 0.85em;
 	color: color(from var(--MI_THEME-fg) srgb r g b / 0.75);
-}
-
-.banner {
-	position: relative;
-	height: 130px;
-	background-size: cover;
-	background-position: center;
-	border-bottom: solid 1px var(--MI_THEME-divider);
-	overflow: clip;
-}
-
-.avatarContainer {
-	margin-top: -50px;
-	padding-bottom: 16px;
-	text-align: center;
-}
-
-.avatar {
-	display: inline-block;
-	width: 72px;
-	height: 72px;
-	margin: 0 auto 16px auto;
-}
-
-.bannerEdit {
-	position: absolute;
-	top: 16px;
-	right: 16px;
 }
 
 .metadataRoot {

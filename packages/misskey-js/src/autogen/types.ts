@@ -9259,10 +9259,10 @@ export type operations = {
             entranceMarginTop: number;
             entranceMarginBottom: number;
             blockMentionsFromUnfamiliarRemoteUsers: boolean;
-            deliverSuspendedSoftware: {
-                software: string;
-                versionRange: string;
-              }[];
+						deliverSuspendedSoftware: {
+							software: string;
+							versionRange: string;
+						}[];
           };
         };
       };
