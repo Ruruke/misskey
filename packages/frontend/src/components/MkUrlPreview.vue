@@ -189,7 +189,6 @@ const playerEnabled = ref(false);
 const tweetId = ref<string | null>(null);
 const tweetExpanded = ref(props.detail);
 const tweetHeight = ref(150);
-const unknownUrl = ref(false);
 const embedId = `embed${Math.random().toString().replace(/\D/, '')}`;
 const postExpanded = ref(props.detail);
 const postHeight = ref(150);
