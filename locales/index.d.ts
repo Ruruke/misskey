@@ -5577,6 +5577,10 @@ export interface Locale extends ILocale {
      * フォルダを作って整理することもできます。
      */
     "driveAboutTip": string;
+    /**
+     * スクロールして閉じる
+     */
+    "scrollToClose": string;
     "_chat": {
         /**
          * まだメッセージはありません
