@@ -640,6 +640,10 @@ export const ROUTE_DEF = [{
 	path: '/',
 	component: $i ? page(() => import('@/pages/timeline.vue')) : page(() => import('@/pages/welcome.vue')),
 }, {
+	path: '/debug',
+	component: page(() => import('@/pages/debug.vue')),
+	loginRequired: false,
+}, {
 	// テスト用リダイレクト設定。ログイン中ユーザのプロフィールにリダイレクトする
 	path: '/redirect-test',
 	redirect: $i ? `@${$i.username}` : '/',
