@@ -23,7 +23,7 @@ import { computed, useTemplateRef } from 'vue';
 import { scrollInContainer } from '@@/js/scroll.js';
 import { prefer } from '@/preferences.js';
 import type { PageHeaderProps } from './MkPageHeader.vue';
-import { useScrollPositionKeeper } from '@/use/use-scroll-position-keeper.js';
+import { useScrollPositionKeeper } from '@/composables/use-scroll-position-keeper.js';
 import MkSwiper from '@/components/MkSwiper.vue';
 import { useRouter } from '@/router.js';
 
