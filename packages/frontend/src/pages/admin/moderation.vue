@@ -17,20 +17,31 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkSwitch>
 
 				<MkSwitch v-model="emailRequiredForSignup" @change="onChange_emailRequiredForSignup">
-					<template #label>{{ i18n.ts.emailRequiredForSignup }}</template>
+					<template #label>{{ i18n.ts.emailRequiredForSignup }} ({{ i18n.ts.recommended }})</template>
 				</MkSwitch>
 
 				<MkSwitch v-model="approvalRequiredForSignup" @change="onChange_approvalRequiredForSignup">
-						<template #label>{{ i18n.ts.approvalRequiredForSignup }}</template>
-						<template #caption>{{ i18n.ts.registerApprovalEmailRecommended }}</template>
-					</MkSwitch>
+					<template #label>{{ i18n.ts.approvalRequiredForSignup }}</template>
+					<template #caption>{{ i18n.ts.registerApprovalEmailRecommended }}</template>
+				</MkSwitch>
 
-					<MkSwitch v-model="blockMentionsFromUnfamiliarRemoteUsers" @change="onChange_blockMentionsFromUnfamiliarRemoteUsers">
-						<template #label>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsers }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
-						<template #caption>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsersDescription }} Cherry-picked from Misskey.io (https://github.com/MisskeyIO/misskey/commit/82cc3987c13db4ad0da1589386027c222ce85ff8)</template>
-					</MkSwitch>
+				<MkSwitch v-model="blockMentionsFromUnfamiliarRemoteUsers" @change="onChange_blockMentionsFromUnfamiliarRemoteUsers">
+					<template #label>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsers }}<span class="_beta">{{ i18n.ts.originalFeature }}</span></template>
+					<template #caption>{{ i18n.ts.blockMentionsFromUnfamiliarRemoteUsersDescription }} Cherry-picked from Misskey.io (https://github.com/MisskeyIO/misskey/commit/82cc3987c13db4ad0da1589386027c222ce85ff8)</template>
+				</MkSwitch>
 
-					<FormLink to="/admin/server-rules">{{ i18n.ts.serverRules }}</FormLink>
+				<MkSelect v-model="ugcVisibilityForVisitor" @update:modelValue="onChange_ugcVisibilityForVisitor">
+					<template #label>{{ i18n.ts._serverSettings.userGeneratedContentsVisibilityForVisitor }}</template>
+					<option value="all">{{ i18n.ts._serverSettings._userGeneratedContentsVisibilityForVisitor.all }}</option>
+					<option value="local">{{ i18n.ts._serverSettings._userGeneratedContentsVisibilityForVisitor.localOnly }} ({{ i18n.ts.recommended }})</option>
+					<option value="none">{{ i18n.ts._serverSettings._userGeneratedContentsVisibilityForVisitor.none }}</option>
+					<template #caption>
+						<div>{{ i18n.ts._serverSettings.userGeneratedContentsVisibilityForVisitor_description }}</div>
+						<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._serverSettings.userGeneratedContentsVisibilityForVisitor_description2 }}</div>
+					</template>
+				</MkSelect>
+
+				<FormLink to="/admin/server-rules">{{ i18n.ts.serverRules }}</FormLink>
 
 				<MkFolder>
 					<template #icon><i class="ti ti-lock-star"></i></template>
@@ -147,10 +158,12 @@ import { definePage } from '@/page.js';
 import MkButton from '@/components/MkButton.vue';
 import FormLink from '@/components/form/link.vue';
 import MkFolder from '@/components/MkFolder.vue';
+import MkSelect from '@/components/MkSelect.vue';
 
 const enableRegistration = ref<boolean>(false);
 const emailRequiredForSignup = ref<boolean>(false);
 const approvalRequiredForSignup = ref<boolean>(false);
+const ugcVisibilityForVisitor = ref<string>('all');
 const sensitiveWords = ref<string>('');
 const prohibitedWords = ref<string>('');
 const prohibitedWordsForNameOfUser = ref<string>('');
@@ -166,6 +179,7 @@ async function init() {
 	enableRegistration.value = !meta.disableRegistration;
 	emailRequiredForSignup.value = meta.emailRequiredForSignup;
 	approvalRequiredForSignup.value = meta.approvalRequiredForSignup;
+	ugcVisibilityForVisitor.value = meta.ugcVisibilityForVisitor;
 	sensitiveWords.value = meta.sensitiveWords.join('\n');
 	prohibitedWords.value = meta.prohibitedWords.join('\n');
 	prohibitedWordsForNameOfUser.value = meta.prohibitedWordsForNameOfUser.join('\n');
@@ -202,7 +216,6 @@ function onChange_emailRequiredForSignup(value: boolean) {
 		fetchInstance(true);
 	});
 }
-
 function onChange_approvalRequiredForSignup(value: boolean) {
 	os.apiWithDialog('admin/update-meta', {
 		approvalRequiredForSignup: value,
@@ -214,6 +227,14 @@ function onChange_approvalRequiredForSignup(value: boolean) {
 function onChange_blockMentionsFromUnfamiliarRemoteUsers(value: boolean) {
 	os.apiWithDialog('admin/update-meta', {
 		blockMentionsFromUnfamiliarRemoteUsers: value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function onChange_ugcVisibilityForVisitor(value: string) {
+	os.apiWithDialog('admin/update-meta', {
+		ugcVisibilityForVisitor: value,
 	}).then(() => {
 		fetchInstance(true);
 	});

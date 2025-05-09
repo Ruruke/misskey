@@ -705,6 +705,11 @@ export const meta = {
 					},
 				},
 			},
+			ugcVisibilityForVisitor: {
+				type: 'string',
+				enum: ['all', 'local', 'none'],
+				optional: false, nullable: false,
+			},
 		},
 	},
 } as const;
@@ -881,6 +886,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				entranceMarginTop: instance.entranceMarginTop,
 				entranceMarginBottom: instance.entranceMarginBottom,
 				deliverSuspendedSoftware: instance.deliverSuspendedSoftware,
+				ugcVisibilityForVisitor: instance.ugcVisibilityForVisitor,
 			};
 		});
 	}
