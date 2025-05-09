@@ -4,12 +4,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_spacer" :style="{ '--MI_SPACER-w': narrow ? '800px' : '1100px' }">
-	<div ref="rootEl" class="ftskorzw" :class="{ wide: !narrow }" style="container-type: inline-size;">
-		<div class="main _gaps">
-			<!-- TODO -->
-			<!-- <div class="punished" v-if="user.isSuspended"><i class="ti ti-alert-triangle" style="margin-right: 8px;"></i> {{ i18n.ts.userSuspended }}</div> -->
-			<!-- <div class="punished" v-if="user.isSilenced"><i class="ti ti-alert-triangle" style="margin-right: 8px;"></i> {{ i18n.ts.userSilenced }}</div> -->
+<component :is="prefer.s.enablePullToRefresh ? MkPullToRefresh : 'div'" :refresher="() => reload()">
+	<div class="_spacer" :style="{ '--MI_SPACER-w': narrow ? '800px' : '1100px' }">
+		<div ref="rootEl" class="ftskorzw" :class="{ wide: !narrow }" style="container-type: inline-size;">
+			<div class="main _gaps">
+				<!-- TODO -->
+				<!-- <div class="punished" v-if="user.isSuspended"><i class="ti ti-alert-triangle" style="margin-right: 8px;"></i> {{ i18n.ts.userSuspended }}</div> -->
+				<!-- <div class="punished" v-if="user.isSilenced"><i class="ti ti-alert-triangle" style="margin-right: 8px;"></i> {{ i18n.ts.userSilenced }}</div> -->
 
 				<div class="profile _gaps">
 					<MkAccountMoved v-if="user.movedTo" :movedTo="user.movedTo"/>
@@ -56,12 +57,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkFukidashi>
 						</div>
 						<div v-if="user.roles.length > 0" class="roles">
-						<span v-for="role in user.roles" :key="role.id" v-tooltip="role.description" class="role" :style="{ '--color': role.color }">
-							<MkA v-adaptive-bg :to="`/roles/${role.id}`">
-								<img v-if="role.iconUrl" style="height: 1.3em; vertical-align: -22%;" :src="role.iconUrl"/>
-								{{ role.name }}
-							</MkA>
-						</span>
+							<span v-for="role in user.roles" :key="role.id" v-tooltip="role.description" class="role" :style="{ '--color': role.color }">
+								<MkA v-adaptive-bg :to="`/roles/${role.id}`">
+									<img v-if="role.iconUrl" style="height: 1.3em; vertical-align: -22%;" :src="role.iconUrl"/>
+									{{ role.name }}
+								</MkA>
+							</span>
 						</div>
 						<div v-if="iAmModerator" class="moderationNote">
 							<MkTextarea v-if="editModerationNote || (moderationNote != null && moderationNote !== '')" v-model="moderationNote" manualSave>
@@ -132,8 +133,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div v-else class="_fullinfo">
 						<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.pleaseLogin }}</div>
 						<div style="opacity: 0.7">{{ i18n.ts.pleaseLoginToViewProfile }}</div>
+						</div>
 					</div>
-				</div>
 				</div>
 
 				<div v-if="$i" class="contents _gaps">
@@ -173,7 +174,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<XListenBrainz v-if="user.listenbrainz && listenbrainzdata" :key="user.id" :user="user"/>
 			</div>
 		</template>
-</div>
+	</div>
+</component>
 </template>
 
 <script lang="ts" setup>
@@ -203,6 +205,7 @@ import { useRouter } from '@/router.js';
 import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import MkSparkle from '@/components/MkSparkle.vue';
 import { prefer } from '@/preferences.js';
+import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -225,7 +228,7 @@ const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed;
-	/** Test only; MkNotes currently causes problems in vitest */
+	/** Test only; MkNotesTimeline currently causes problems in vitest */
 	disableNotes: boolean;
 }>(), {
 	disableNotes: false,
@@ -316,6 +319,10 @@ async function updateMemo() {
 watch([props.user], () => {
 	memoDraft.value = props.user.memo;
 });
+
+async function reload() {
+	// TODO
+}
 
 onMounted(() => {
 	window.requestAnimationFrame(parallaxLoop);

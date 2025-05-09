@@ -153,6 +153,10 @@ readDriveTip: {
 		where: 'device',
 		default: false,
 	},
+	realtimeMode: {
+		where: 'device',
+		default: true,
+	},
 	recentlyUsedEmojis: {
 		where: 'device',
 		default: [] as string[],
@@ -441,10 +445,6 @@ readDriveTip: {
 		default: true,
 	},
 	keepScreenOn: {
-		where: 'device',
-		default: false,
-	},
-	disableStreamingTimeline: {
 		where: 'device',
 		default: false,
 	},

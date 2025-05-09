@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 
-			<MkNotes :pagination="pagination" :detail="true"/>
+			<MkNotesTimeline :pagination="pagination" :detail="true"/>
 		</div>
 	</div>
 </PageWithHeader>
@@ -35,7 +35,7 @@ import { computed, watch, provide, ref } from 'vue';
 import * as Misskey from 'misskey-js';
 import { url } from '@@/js/config.js';
 import type { MenuItem } from '@/types/menu.js';
-import MkNotes from '@/components/MkNotes.vue';
+import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import MkRemoteCaution from '@/components/MkRemoteCaution.vue';
 import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';

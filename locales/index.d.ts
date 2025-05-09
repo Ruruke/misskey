@@ -2403,6 +2403,10 @@ export interface Locale extends ILocale {
      */
     "newNoteRecived": string;
     /**
+     * 新しいノート
+     */
+    "newNote": string;
+    /**
      * サウンド
      */
     "sounds": string;
@@ -3238,10 +3242,6 @@ export interface Locale extends ILocale {
      * オフにすると、「みつける」にアカウントが載らなくなります。
      */
     "makeExplorableDescription": string;
-    /**
-     * タイムラインのノートを離して表示
-     */
-    "showGapBetweenNotesInTimeline": string;
     /**
      * 複製
      */
@@ -5107,11 +5107,7 @@ export interface Locale extends ILocale {
      */
     "pullDownToRefresh": string;
     /**
-     * タイムラインのリアルタイム更新を無効にする
-     */
-    "disableStreamingTimeline": string;
-    /**
-     * 通知をグルーピングして表示する
+     * 通知をグルーピング
      */
     "useGroupedNotifications": string;
     /**
@@ -5581,6 +5577,18 @@ export interface Locale extends ILocale {
      * スクロールして閉じる
      */
     "scrollToClose": string;
+    /**
+     * リアルタイムモード
+     */
+    "realtimeMode": string;
+    /**
+     * オンにする
+     */
+    "turnItOn": string;
+    /**
+     * オフにする
+     */
+    "turnItOff": string;
     "_chat": {
         /**
          * まだメッセージはありません
@@ -5885,6 +5893,22 @@ export interface Locale extends ILocale {
          * マウスでは、ホイールを押し込みながらドラッグします。
          */
         "enablePullToRefresh_description": string;
+        /**
+         * サーバーと接続を確立し、リアルタイムでコンテンツを更新します。通信量とバッテリーの消費が多くなる場合があります。
+         */
+        "realtimeMode_description": string;
+        /**
+         * コンテンツの取得頻度
+         */
+        "contentsUpdateFrequency": string;
+        /**
+         * 高いほどリアルタイムにコンテンツが更新されますが、パフォーマンスが低下し、通信量とバッテリーの消費が多くなります。
+         */
+        "contentsUpdateFrequency_description": string;
+        /**
+         * リアルタイムモードがオンのときは、この設定に関わらずリアルタイムでコンテンツが更新されます。
+         */
+        "contentsUpdateFrequency_description2": string;
         "_chat": {
             /**
              * 送信者の名前を表示
