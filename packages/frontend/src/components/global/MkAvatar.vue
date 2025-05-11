@@ -4,78 +4,66 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="[$style.root, { [$style.animation]: animation, [$style.cat]: user.isCat, [$style.square]: squareAvatars }]" :style="{ color }" :title="acct(user)" @click="onClick">
-	<MkImgWithBlurhash :class="$style.inner" :src="(store.s.anonymizeMutedUsers && user.isMuted) ? (instance.iconUrl || '/favicon.ico') : url" :hash="user.avatarBlurhash" :cover="true" :onlyAvgColor="true"/>
-	<MkUserOnlineIndicator v-if="!(store.s.anonymizeMutedUsers && user.isMuted) && indicator" :class="$style.indicator" :user="user"/>
-	<div v-if="!(store.s.anonymizeMutedUsers && user.isMuted) && user.isCat" :class="[$style.ears]">
-		<div :class="$style.earLeft">
-			<div v-if="false" :class="$style.layer">
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
+	<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="[$style.root, { [$style.animation]: animation, [$style.cat]: user.isCat, [$style.square]: squareAvatars }]" :style="{ color }" :title="acct(user)" @click="onClick">
+		<MkImgWithBlurhash v-if="prefer.s.enableHighQualityImagePlaceholders" :class="$style.inner" :src="url" :hash="user.avatarBlurhash" :cover="true" :onlyAvgColor="true"/>
+		<img v-else :class="$style.inner" :src="url" alt="" decoding="async" style="pointer-events: none;"/>
+		<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
+		<div v-if="user.isCat" :class="[$style.ears]">
+			<div :class="$style.earLeft">
+				<div v-if="false" :class="$style.layer">
+					<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
+					<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
+					<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
+				</div>
+			</div>
+			<div :class="$style.earRight">
+				<div v-if="false" :class="$style.layer">
+					<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
+					<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
+					<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
+				</div>
 			</div>
 		</div>
-		<div :class="$style.earRight">
-			<div v-if="false" :class="$style.layer">
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-			</div>
-		</div>
-	</div>
-	<div v-if="showInstance">
-		<img v-if="faviconUrl" :class="$style.instanceIcon" :src="faviconUrl" :title="instance.name ?? undefined"/>
-	</div>
-	<template v-if="showDecoration">
-		<img
-			v-for="decoration in decorations ?? user.avatarDecorations"
-			:class="[$style.decoration, { [$style.decorationBlink]: decoration.blink }]"
-			:src="getDecorationUrl(decoration)"
-			:style="{
+		<template v-if="showDecoration">
+			<img
+				v-for="decoration in decorations ?? user.avatarDecorations"
+				:class="[$style.decoration, { [$style.decorationBlink]: decoration.blink }]"
+				:src="getDecorationUrl(decoration)"
+				:style="{
 				rotate: getDecorationAngle(decoration),
 				scale: getDecorationScale(decoration),
 				translate: getDecorationOffset(decoration),
 			}"
-			alt=""
-			draggable="false"
-			style="-webkit-user-drag: none;"
-		>
-	</template>
-	<MkInstanceIcon v-if="showInstance" :class="$style.instanceicon" :instance="user.instance"/>
-</component>
+				alt=""
+				draggable="false"
+				style="-webkit-user-drag: none;"
+			>
+		</template>
+	</component>
 </template>
 
 <script lang="ts" setup>
 import { watch, ref, computed } from 'vue';
 import * as Misskey from 'misskey-js';
-import { instanceName } from '@@/js/config.js';
 import { extractAvgColorFromBlurhash } from '@@/js/extract-avg-color-from-blurhash.js';
 import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
 import MkA from './MkA.vue';
-import { instance as Instance } from '@/instance.js';
-import { getStaticImageUrl, getProxiedImageUrlNullable } from '@/utility/media-proxy.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { acct, userPage } from '@/filters/user.js';
 import MkUserOnlineIndicator from '@/components/MkUserOnlineIndicator.vue';
 import { prefer } from '@/preferences.js';
-import { instance } from '@/instance.js';
-import { store } from '@/store.js';
 
 const animation = ref(prefer.s.animation);
 const squareAvatars = ref(prefer.s.squareAvatars);
 
 const props = withDefaults(defineProps<{
-	user: Misskey.entities.UserDetailed;
+	user: Misskey.entities.User;
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;
 	indicator?: boolean;
 	decorations?: (Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'> & { blink?: boolean; })[];
 	forceShowDecoration?: boolean;
-	showInstance?: boolean;
-	instance?: {
-		faviconUrl?: string | null,
-		name?: string | null,
-	};
 }>(), {
 	target: null,
 	link: false,
@@ -83,8 +71,6 @@ const props = withDefaults(defineProps<{
 	indicator: false,
 	decorations: undefined,
 	forceShowDecoration: false,
-	showInstance: false,
-	instance: undefined,
 });
 
 const emit = defineEmits<{
@@ -92,7 +78,6 @@ const emit = defineEmits<{
 }>();
 
 const showDecoration = props.forceShowDecoration || prefer.s.showAvatarDecorations;
-const faviconUrl = computed(() => props.instance ? getProxiedImageUrlNullable(props.instance.faviconUrl, 'preview') : getProxiedImageUrlNullable(Instance.iconUrl, 'preview') ?? '/favicon.ico');
 
 const bound = computed(() => props.link
 	? { to: userPage(props.user), target: props.target }
@@ -279,7 +264,7 @@ watch(() => props.user.avatarBlurhash, () => {
 					skew(-30deg)
 					rotate(-37.5deg)
 					translate(-2.82842712475%, /* -2 * sqrt(2) */
-										-38.5857864376%); /* 40 - 2 * sqrt(2) */
+						-38.5857864376%); /* 40 - 2 * sqrt(2) */
 
 				> .plot {
 					background-position: 20% 10%; /* ~= 37.5deg */
@@ -308,7 +293,7 @@ watch(() => props.user.avatarBlurhash, () => {
 					skew(30deg)
 					rotate(37.5deg)
 					translate(2.82842712475%, /* 2 * sqrt(2) */
-										-38.5857864376%); /* 40 - 2 * sqrt(2) */
+						-38.5857864376%); /* 40 - 2 * sqrt(2) */
 
 				> .plot {
 					position: absolute;
@@ -358,34 +343,6 @@ watch(() => props.user.avatarBlurhash, () => {
 	}
 	50% {
 		filter: brightness(1);
-	}
-}
-
-.instanceIcon {
-	width: 25px;
-	height: 25px;
-	border-radius: 50%;
-	opacity: 0.65;
-	z-index: 2;
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	background: var(--MI_THEME-panel);
-	box-shadow: 0 0 0 2px var(--MI_THEME-panel);
-
-	@container (max-width: 580px) {
-		width: 21px;
-		height: 21px;
-	}
-
-	@container (max-width: 450px) {
-		width: 19px;
-		height: 19px;
-	}
-
-	@container (max-width: 300px) {
-		width: 17px;
-		height: 17px;
 	}
 }
 </style>
