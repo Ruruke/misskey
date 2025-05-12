@@ -65,7 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			allow="fullscreen;web-share"
 			sandbox="allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin"
 			scrolling="no"
-			:style="{ position: 'relative', width: '100%', height: `${tweetHeight}px`, border: 0 }"
+			:style="{ position: 'relative', width: `70%`, height: `${postHeight}px`, border: 0, borderRadius: '15px' }"
 			:src="`https://platform.twitter.com/embed/index.html?embedId=${embedId}&amp;hideCard=false&amp;hideThread=false&amp;lang=en&amp;theme=${store.s.darkMode ? 'dark' : 'light'}&amp;id=${tweetId}`"
 		></iframe>
 	</div>
@@ -142,11 +142,13 @@ import { versatileLang } from '@@/js/intl-const.js';
 import type { summaly } from '@misskey-dev/summaly';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
+import { store } from '@/store.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import MkButton from '@/components/MkButton.vue';
 import { transformPlayerUrl } from '@/utility/player-url-transform.js';
 import { prefer } from '@/preferences.js';
 import { maybeMakeRelative } from '@@/js/url.js';
+import sanitizeHtml from "sanitize-html";
 
 type SummalyResult = Awaited<ReturnType<typeof summaly>>;
 
@@ -192,7 +194,7 @@ const tweetHeight = ref(150);
 const embedId = `embed${Math.random().toString().replace(/\D/, '')}`;
 const postExpanded = ref(props.detail);
 const postHeight = ref(150);
-
+const postWidth = ref(250);
 
 const isSteam = ref<boolean>(false);
 const steamAgeLimit = ref<string | null>(null);
@@ -335,10 +337,12 @@ function openPlayer(): void {
 }
 
 function adjustSocialsEmbedHeight(message: MessageEvent) {
+	console.log(message.origin);
 	if (message.origin === 'https://platform.twitter.com') {
 		const embed = message.data?.['twttr.embed'];
 		if (embed?.method === 'twttr.private.resize' && embed?.id === embedId) {
 			const height = embed?.params[0]?.height;
+			console.log(height);
 			if (height) postHeight.value = height;
 		}
 	} else if (message.origin === 'https://embed.bsky.app') {
