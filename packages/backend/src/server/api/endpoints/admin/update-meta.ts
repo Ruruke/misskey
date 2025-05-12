@@ -267,6 +267,9 @@ export const paramDef = {
 			type: 'string',
 			enum: ['all', 'local', 'none'],
 		},
+		proxyRemoteFiles: { type: 'boolean' },
+		signToActivityPubGet: { type: 'boolean' },
+		allowExternalApRedirect: { type: 'boolean' },
 	},
 	required: [],
 } as const;
@@ -815,6 +818,18 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.ugcVisibilityForVisitor !== undefined) {
 				set.ugcVisibilityForVisitor = ps.ugcVisibilityForVisitor;
+			}
+
+			if (ps.proxyRemoteFiles !== undefined) {
+				set.proxyRemoteFiles = ps.proxyRemoteFiles;
+			}
+
+			if (ps.signToActivityPubGet !== undefined) {
+				set.signToActivityPubGet = ps.signToActivityPubGet;
+			}
+
+			if (ps.allowExternalApRedirect !== undefined) {
+				set.allowExternalApRedirect = ps.allowExternalApRedirect;
 			}
 
 			// if (Array.isArray(ps.customSplashText)) {

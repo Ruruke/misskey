@@ -106,7 +106,7 @@ export class Resolver {
 			throw new IdentifiableError('09d79f9e-64f1-4316-9cfa-e75c4d091574', `instance is blocked: ${value}`);
 		}
 
-		if (this.config.signToActivityPubGet && !this.user) {
+		if (this.meta.signToActivityPubGet && !this.user) {
 			this.user = await this.systemAccountService.fetch('actor');
 		}
 
