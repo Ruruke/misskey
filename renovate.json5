@@ -75,7 +75,7 @@
 		{
 			groupName: '[Node.js] Update dependencies',
 			matchManagers: ['custom.regex'],
-			matchPackageNames: ['dockerfile/node'],
+			matchPackageNames: ['node'],
 		},
 		{
 			groupName: '[Node.js] Update dependencies',
@@ -107,7 +107,7 @@
 			managerFilePatterns: ['/^Dockerfile$/'],
 			matchStrings: ['ARG NODE_VERSION=(?<currentValue>.*?)\\n'],
 			datasourceTemplate: 'docker',
-			depNameTemplate: 'dockerfile/node',
+			depNameTemplate: 'node',
 			versioningTemplate: 'docker',
 		},
 	],
