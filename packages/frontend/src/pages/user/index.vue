@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <PageWithHeader v-model:tab="tab" :tabs="headerTabs" :actions="headerActions">
 	<div v-if="user">
 		<div v-if="hasTabAccess(tab)">
-			<XHome v-if="tab === 'home'" :user="user" @unfoldFiles="() => { tab = 'files'; }"/>
+			<XHome v-if="tab === 'home'" :user="user" @showMoreFiles="() => { tab = 'files'; }"/>
 			<XNotes v-else-if="tab === 'notes'"  :user="user"/>
 
 			<XFiles v-else-if="tab === 'files'" :user="user"/>
