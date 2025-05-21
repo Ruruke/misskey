@@ -2415,6 +2415,10 @@ export interface Locale extends ILocale {
      */
     "sound": string;
     /**
+     * 通知音の設定
+     */
+    "notificationSoundSettings": string;
+    /**
      * 聴く
      */
     "listen": string;
