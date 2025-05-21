@@ -75,7 +75,6 @@ import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import MkSwitch from '@/components/MkSwitch.vue';
-import { selectFile } from '@/utility/select-file';
 import XTabs from '@/components/global/MkPageHeader.tabs.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkColorInput from '@/components/MkColorInput.vue';
@@ -124,10 +123,11 @@ const emit = defineEmits<{
 	}>();
 
 async function changeImage(ev) {
-	const file = await selectFile(ev.currentTarget ?? ev.target, null);
-	if (file != null) {
-		imgUrl.value = file.url;
-	}
+	alert("not implemented yet");
+	// const file = await selectFile(ev.currentTarget ?? ev.target, null);
+	// if (file != null) {
+	// 	imgUrl.value = file.url;
+	// }
 }
 
 async function done() {
