@@ -316,13 +316,9 @@ import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import MkButton from '@/components/MkButton.vue';
 import MkFolder from '@/components/MkFolder.vue';
-import MkKeyValue from '@/components/MkKeyValue.vue';
 import { useForm } from '@/composables/use-form.js';
 import MkFormFooter from '@/components/MkFormFooter.vue';
 import MkRadios from '@/components/MkRadios.vue';
-import { selectFile } from '@/utility/select-file.js';
-import { globalEvents } from '@/events.js';
-import { claimAchievement } from '@/utility/achievements.js';
 
 const meta = await misskeyApi('admin/meta');
 

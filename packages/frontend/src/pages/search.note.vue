@@ -96,7 +96,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, shallowRef, toRef } from 'vue';
+import { computed, ref, shallowRef, toRef, watch } from 'vue';
 import type * as Misskey from 'misskey-js';
 import type { PagingCtx } from '@/composables/use-pagination.js';
 import type { UserDetailed } from 'misskey-js/entities.js';
