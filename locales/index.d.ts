@@ -4147,6 +4147,10 @@ export interface Locale extends ILocale {
      */
     "cannotUploadBecauseExceedsFileSizeLimit": string;
     /**
+     * 許可されていないファイル種別のためアップロードできません。
+     */
+    "cannotUploadBecauseUnallowedFileType": string;
+    /**
      * ベータ
      */
     "beta": string;
@@ -8103,6 +8107,14 @@ export interface Locale extends ILocale {
              * チャットを許可
              */
             "chatAvailability": string;
+            /**
+             * アップロード可能なファイル種別
+             */
+            "uploadableFileTypes": string;
+            /**
+             * MIMEタイプを指定します。改行で区切って複数指定できるほか、アスタリスク(*)でワイルドカード指定できます。(例: image/*)
+             */
+            "uploadableFileTypes_caption": string;
         };
         "_condition": {
             /**
@@ -13479,6 +13491,10 @@ export interface Locale extends ILocale {
          * アップロード可能な最大ファイルサイズは{x}です。
          */
         "maxFileSizeIsX": ParameterizedString<"x">;
+        /**
+         * アップロード可能なファイル種別
+         */
+        "allowedTypes": string;
     };
     "_clientPerformanceIssueTip": {
         /**

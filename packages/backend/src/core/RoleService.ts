@@ -69,6 +69,7 @@ export type RolePolicies = {
 	canPlayGames: boolean;
 	canAddRoles: boolean;
 	chatAvailability: 'available' | 'readonly' | 'unavailable';
+	uploadableFileTypes: string[];
 };
 
 export const DEFAULT_POLICIES: RolePolicies = {
@@ -109,6 +110,13 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	canPlayGames: true,
 	canAddRoles: true,
 	chatAvailability: 'available',
+	uploadableFileTypes: [
+		'text/plain',
+		'application/json',
+		'image/*',
+		'video/*',
+		'audio/*',
+	],
 };
 
 @Injectable()
@@ -424,6 +432,16 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			canPlayGames: calc('canPlayGames', vs => vs.some(v => v === true)),
 			canAddRoles: calc('canAddRoles', vs => vs.some(v => v === true)),
 			chatAvailability: calc('chatAvailability', aggregateChatAvailability),
+			uploadableFileTypes: calc('uploadableFileTypes', vs => {
+				const set = new Set<string>();
+				for (const v of vs) {
+					for (const type of v) {
+						if (type.trim() === '') continue;
+						set.add(type.trim());
+					}
+				}
+				return [...set];
+			}),
 		};
 	}
 
