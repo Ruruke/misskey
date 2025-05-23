@@ -14,6 +14,18 @@ import { miLocalStorage } from '@/local-storage.js';
 import { Pizzax } from '@/lib/pizzax.js';
 import { DEFAULT_DEVICE_KIND } from '@/utility/device-kind.js';
 
+export const TIPS = [
+	'drive',
+	'uploader',
+	'clips',
+	'userLists',
+	'tl.home',
+	'tl.local',
+	'tl.social',
+	'tl.global',
+	'abuses',
+] as const;
+
 /**
  * 「状態」を管理するストア(not「設定」)
  */
@@ -21,6 +33,10 @@ export const store = markRaw(new Pizzax('base', {
 	accountSetupWizard: {
 		where: 'account',
 		default: 0,
+	},
+	tips: {
+		where: 'device',
+		default: {} as Partial<Record<typeof TIPS[number], boolean>>, // true = 既読
 	},
 	timelineTutorials: {
 		where: 'account',
@@ -35,50 +51,50 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'account',
 		default: false,
 	},
-keepCw: {
-	where: 'account',
-	default: true,
-},
-collapseRenotes: {
-	where: 'account',
-	default: true,
-},
-rememberNoteVisibility: {
-	where: 'account',
-	default: false,
-},
-defaultNoteVisibility: {
-	where: 'account',
-	default: 'public' as (typeof Misskey.noteVisibilities)[number],
-},
-defaultNoteLocalOnly: {
-	where: 'account',
-	default: false,
-},
-defaultScheduledNoteDelete: {
-	where: 'account',
-	default: false,
-},
-defaultScheduledNoteDeleteTime: {
-	where: 'account',
-	default: 86400000,
-},
-uploadFolder: {
-	where: 'account',
-	default: null as string | null,
-},
-pastedFileName: {
-	where: 'account',
-	default: 'yyyy-MM-dd HH-mm-ss [{{number}}]',
-},
-keepOriginalUploading: {
-	where: 'account',
-	default: false,
-},
-readDriveTip: {
-	where: 'account',
-	default: false,
-},
+	keepCw: {
+		where: 'account',
+		default: true,
+	},
+	collapseRenotes: {
+		where: 'account',
+		default: true,
+	},
+	rememberNoteVisibility: {
+		where: 'account',
+		default: false,
+	},
+	defaultNoteVisibility: {
+		where: 'account',
+		default: 'public' as (typeof Misskey.noteVisibilities)[number],
+	},
+	defaultNoteLocalOnly: {
+		where: 'account',
+		default: false,
+	},
+	defaultScheduledNoteDelete: {
+		where: 'account',
+		default: false,
+	},
+	defaultScheduledNoteDeleteTime: {
+		where: 'account',
+		default: 86400000,
+	},
+	uploadFolder: {
+		where: 'account',
+		default: null as string | null,
+	},
+	pastedFileName: {
+		where: 'account',
+		default: 'yyyy-MM-dd HH-mm-ss [{{number}}]',
+	},
+	keepOriginalUploading: {
+		where: 'account',
+		default: false,
+	},
+	readDriveTip: {
+		where: 'account',
+		default: false,
+	},
 	memo: {
 		where: 'account',
 		default: null,
