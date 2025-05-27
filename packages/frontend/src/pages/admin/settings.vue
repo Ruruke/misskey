@@ -161,6 +161,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkSwitch>
 
 					<template v-if="urlPreviewForm.state.urlPreviewEnabled">
+						<MkSwitch v-model="urlPreviewForm.state.urlPreviewAllowRedirect">
+							<template #label>{{ i18n.ts._urlPreviewSetting.allowRedirect }}<span v-if="urlPreviewForm.modifiedStates.urlPreviewAllowRedirect" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>{{ i18n.ts._urlPreviewSetting.allowRedirectDescription }}</template>
+						</MkSwitch>
+
 						<MkSwitch v-model="urlPreviewForm.state.urlPreviewRequireContentLength">
 							<template #label>{{ i18n.ts._urlPreviewSetting.requireContentLength }}<span v-if="urlPreviewForm.modifiedStates.urlPreviewRequireContentLength" class="_modified">{{ i18n.ts.modified }}</span></template>
 							<template #caption>{{ i18n.ts._urlPreviewSetting.requireContentLengthDescription }}</template>
@@ -303,7 +308,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive } from 'vue';
+import { computed } from 'vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -393,6 +398,7 @@ const adForm = useForm({
 
 const urlPreviewForm = useForm({
 	urlPreviewEnabled: meta.urlPreviewEnabled,
+	urlPreviewAllowRedirect: meta.urlPreviewAllowRedirect,
 	urlPreviewTimeout: meta.urlPreviewTimeout,
 	urlPreviewMaximumContentLength: meta.urlPreviewMaximumContentLength,
 	urlPreviewRequireContentLength: meta.urlPreviewRequireContentLength,
@@ -401,6 +407,7 @@ const urlPreviewForm = useForm({
 }, async (state) => {
 	await os.apiWithDialog('admin/update-meta', {
 		urlPreviewEnabled: state.urlPreviewEnabled,
+		urlPreviewAllowRedirect: state.urlPreviewAllowRedirect,
 		urlPreviewTimeout: state.urlPreviewTimeout,
 		urlPreviewMaximumContentLength: state.urlPreviewMaximumContentLength,
 		urlPreviewRequireContentLength: state.urlPreviewRequireContentLength,
