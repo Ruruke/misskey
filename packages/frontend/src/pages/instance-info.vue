@@ -369,15 +369,7 @@ const headerTabs = computed(() => [{
 	key: 'users',
 	title: i18n.ts.users,
 	icon: 'ti ti-users',
-}, {
-	key: 'following',
-	title: i18n.ts.following,
-	icon: 'ti ti-arrow-right',
-}, {
-	key: 'followers',
-	title: i18n.ts.followers,
-	icon: 'ti ti-arrow-left',
-}, {
+}] : []), {
 	key: 'raw',
 	title: 'Raw',
 	icon: 'ti ti-code',

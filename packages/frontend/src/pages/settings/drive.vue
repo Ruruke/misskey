@@ -140,7 +140,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</FormSection>
 		</SearchMarker>
-	</div>
+	</SearchMarker>
 </SearchMarker>
 </template>
 
@@ -152,7 +152,6 @@ import XWatermarkItem from './drive.WatermarkItem.vue';
 import type { WatermarkPreset } from '@/utility/watermark.js';
 import FormLink from '@/components/form/link.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
-import MkSelect from '@/components/MkSelect.vue';
 import FormSection from '@/components/form/section.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import FormSplit from '@/components/form/split.vue';

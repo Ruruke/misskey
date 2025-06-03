@@ -65,6 +65,7 @@ defineProps<{
 </script>
 
 <style lang="scss" module>
+
 @keyframes sensitive-blink {
 	0% { opacity: 1; }
 	50% { opacity: 0; }
@@ -116,19 +117,16 @@ defineProps<{
 	}
 }
 
-			> .sensitive-label {
-				position: absolute;
-				z-index: 10;
-				top: 8px;
-				left: 8px;
-				padding: 2px 4px;
-				background: #ff0000bf;
-				color: #fff;
-				border-radius: 4px;
-				font-size: 85%;
-				animation: sensitive-blink 1s infinite;
-			}
-		}
-	}
+.sensitiveLabel {
+	position: absolute;
+	z-index: 10;
+	top: 8px;
+	left: 8px;
+	padding: 2px 4px;
+	background: #ff0000bf;
+	color: #fff;
+	border-radius: 4px;
+	font-size: 85%;
+	animation: sensitive-blink 1s infinite;
 }
 </style>

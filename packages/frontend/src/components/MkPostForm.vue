@@ -142,6 +142,8 @@ import { getPluginHandlers } from '@/plugin.js';
 import { DI } from '@/di.js';
 import { globalEvents } from '@/events.js';
 import { checkDragDataType, getDragData } from '@/drag-and-drop.js';
+import MkDeleteScheduleEditor from "@/components/MkDeleteScheduleEditor.vue";
+import ShVisibilityColoring from "@/components/ShVisibilityColoring.vue";
 
 const $i = ensureSignin();
 

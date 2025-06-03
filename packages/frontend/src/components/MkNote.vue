@@ -248,6 +248,7 @@ import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
 import { DI } from '@/di.js';
 import { store } from "@/store"
+import ShVisibilityColoring from "@/components/ShVisibilityColoring.vue";
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
@@ -620,8 +621,12 @@ function heartReact(): void {
 	misskeyApi('notes/reactions/create', {
 		noteId: appearNote.id,
 		reaction: selectreact,
+	}).then(() => {
+		noteEvents.emit(`reacted:${appearNote.id}`, {
+			userId: $i!.id,
+			reaction: selectreact,
+		});
 	});
-
 	if (appearNote.text && appearNote.text.length > 100 && (Date.now() - new Date(appearNote.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
 	}

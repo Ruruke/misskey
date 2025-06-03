@@ -3343,13 +3343,13 @@ type QueueStats = {
 type QueueStatsLog = QueueStats[];
 
 // @public (undocumented)
+export const queueTypes: readonly ["system", "endedPollNotification", "deliver", "inbox", "db", "relationship", "objectStorage", "userWebhookDeliver", "systemWebhookDeliver"];
+
+// @public (undocumented)
 type ReactionStatsRequest = operations['reaction-stats']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type ReactionStatsResponse = operations['reaction-stats']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-export const queueTypes: readonly ["system", "endedPollNotification", "deliver", "inbox", "db", "relationship", "objectStorage", "userWebhookDeliver", "systemWebhookDeliver"];
 
 // @public (undocumented)
 type RenoteMuteCreateRequest = operations['renote-mute___create']['requestBody']['content']['application/json'];
