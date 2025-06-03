@@ -7,9 +7,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :swipable="true">
 	<div v-if="instance" class="_spacer" style="--MI_SPACER-w: 600px; --MI_SPACER-min: 16px; --MI_SPACER-max: 32px;">
 		<div v-if="tab === 'overview'" class="_gaps_m">
-			<div class="fnfelxur">
-				<img :src="faviconUrl" alt="" class="icon"/>
-				<span class="name">{{ instance.name || `(${i18n.ts.unknown})` }}</span>
+			<div :class="$style.faviconAndName">
+				<img :src="faviconUrl" alt="" :class="$style.icon"/>
+				<span :class="$style.name">{{ instance.name || `(${i18n.ts.unknown})` }}</span>
 			</div>
 			<div style="display: flex; flex-direction: column; gap: 1em;">
 				<MkKeyValue :copy="host" oneline>
@@ -215,7 +215,7 @@ const usersPagination = {
 		hostname: props.host,
 	},
 	offsetMode: true,
-} satisfies PagingCtx;
+} satisfies PagingCtx<'admin/show-users' | 'users'>;
 
 if (iAmModerator) {
 	watch(moderationNote, async () => {
@@ -361,7 +361,7 @@ const headerTabs = computed(() => [{
 	key: 'overview',
 	title: i18n.ts.overview,
 	icon: 'ti ti-info-circle',
-}, {
+}, ...(iAmModerator ? [{
 	key: 'chart',
 	title: i18n.ts.charts,
 	icon: 'ti ti-chart-line',
@@ -389,35 +389,32 @@ definePage(() => ({
 }));
 </script>
 
-<style lang="scss" scoped>
-.fnfelxur {
+<style lang="scss" module>
+.faviconAndName {
 	display: flex;
 	align-items: center;
-
-	> .icon {
-		display: block;
-		margin: 0 16px 0 0;
-		height: 64px;
-		border-radius: 8px;
-	}
-
-	> .name {
-		word-break: break-all;
-	}
 }
-
-.cmhjzshl {
-	> .selects {
-		display: flex;
-		margin: 0 0 16px 0;
-	}
-
-	> .charts {
-		> .label {
-			margin-bottom: 12px;
-			font-weight: bold;
-		}
-	}
+.icon {
+	display: block;
+	margin: 0 16px 0 0;
+	height: 64px;
+	border-radius: 8px;
+}
+.name {
+	word-break: break-all;
+}
+.selects {
+	display: flex;
+	margin: 0 0 16px 0;
+}
+.label {
+	margin-bottom: 12px;
+	font-weight: bold;
+}
+.users {
+	display: grid;
+	grid-template-columns: repeat(auto-fill,minmax(270px,1fr));
+	grid-gap: 12px;
 }
 
 .follow-relations-list {
