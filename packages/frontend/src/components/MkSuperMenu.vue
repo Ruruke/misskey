@@ -52,9 +52,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 						{{ item.label }}
 					</template>
 					<template v-else>
-						<span style="opacity: 0.7; font-size: 90%;">{{ item.parentLabels.join(' > ') }}</span>
+						<span style="opacity: 0.7; font-size: 90%; word-break: break-word;">{{ item.parentLabels.join(' > ') }}</span>
 						<br>
-						<span>{{ item.label }}</span>
+						<span style="word-break: break-word;">{{ item.label }}</span>
 					</template>
 				</span>
 			</MkA>
@@ -64,6 +64,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts">
+import type { Awaitable } from '@/types/misc.js';
+
 export type SuperMenuDef = {
 	title?: string;
 	items: ({
@@ -80,7 +82,7 @@ export type SuperMenuDef = {
 		text: string;
 		danger?: boolean;
 		active?: boolean;
-		action: (ev: MouseEvent) => void | Promise<void>;
+		action: (ev: PointerEvent) => Awaitable<void>;
 	} | {
 		type?: 'link';
 		to: string;
@@ -93,9 +95,10 @@ export type SuperMenuDef = {
 </script>
 
 <script lang="ts" setup>
-import { useTemplateRef, ref, watch, nextTick, computed } from 'vue';
+import { useTemplateRef, ref, watch, nextTick, computed, onUnmounted } from 'vue';
+import { throttle } from 'throttle-debounce';
 import { getScrollContainer } from '@@/js/scroll.js';
-import type { SearchIndexItem } from '@/utility/settings-search-index.js';
+import type { SearchIndexItem } from '@/utility/inapp-search.js';
 import MkInput from '@/components/MkInput.vue';
 import { i18n } from '@/i18n.js';
 import { useRouter } from '@/router.js';
@@ -107,7 +110,18 @@ const props = defineProps<{
 	searchIndex?: SearchIndexItem[];
 }>();
 
+type SearchResultItem = {
+	id: string;
+	path: string;
+	label: string;
+	icon?: string;
+	isRoot: boolean;
+	parentLabels: string[];
+};
+
 initIntlString();
+
+const maxSearchResult = 20;
 
 const router = useRouter();
 const rootEl = useTemplateRef('rootEl');
@@ -116,27 +130,15 @@ const searchQuery = ref('');
 const rawSearchQuery = ref('');
 
 const searchSelectedIndex = ref<null | number>(null);
-const searchResult = ref<{
-	id: string;
-	path: string;
-	label: string;
-	icon?: string;
-	isRoot: boolean;
-	parentLabels: string[];
-}[]>([]);
+const searchResult = ref<SearchResultItem[]>([]);
 const searchIndexItemByIdComputed = computed(() => props.searchIndex && new Map<string, SearchIndexItem>(props.searchIndex.map(i => [i.id, i])));
 
 watch(searchQuery, (value) => {
 	rawSearchQuery.value = value;
 });
 
-watch(rawSearchQuery, (value) => {
-	searchResult.value = [];
-	searchSelectedIndex.value = null;
-
-	if (value === '') {
-		return;
-	}
+function execSearch(value: string) {
+	const newResult: SearchResultItem[] = [];
 
 	const searchIndexItemById = searchIndexItemByIdComputed.value;
 	if (searchIndexItemById != null) {
@@ -155,7 +157,7 @@ watch(rawSearchQuery, (value) => {
 
 			if (_DEV_ && path == null) throw new Error('path is null for ' + item.id);
 
-			searchResult.value.push({
+			newResult.push({
 				id: item.id,
 				path: path ?? '/', // never gets `/`
 				label: item.label,
@@ -165,15 +167,59 @@ watch(rawSearchQuery, (value) => {
 			});
 		};
 
-		for (const item of searchIndexItemById.values()) {
-			if (
-				compareStringIncludes(item.label, value) ||
-				item.keywords.some((x) => compareStringIncludes(x, value))
-			) {
+		// label, keywords, texts の順に優先して表示
+
+		const items = Array.from(searchIndexItemById.values());
+		const matchedIds = new Set<string>();
+
+		for (const item of items) {
+			if (matchedIds.size >= maxSearchResult) break;
+			if (matchedIds.has(item.id)) continue;
+			if (compareStringIncludes(item.label, value)) {
 				addSearchResult(item);
+				matchedIds.add(item.id);
+			}
+		}
+
+		for (const item of items) {
+			if (matchedIds.size >= maxSearchResult) break;
+			if (matchedIds.has(item.id)) continue;
+			if (item.keywords.some((x) => compareStringIncludes(x, value))) {
+				addSearchResult(item);
+				matchedIds.add(item.id);
+			}
+		}
+
+		for (const item of items) {
+			if (matchedIds.size >= maxSearchResult) break;
+			if (matchedIds.has(item.id)) continue;
+			if (item.texts.some((x) => compareStringIncludes(x, value))) {
+				addSearchResult(item);
+				matchedIds.add(item.id);
 			}
 		}
 	}
+
+	searchResult.value = newResult;
+}
+
+const execSearchThrottled = throttle(150, execSearch);
+
+onUnmounted(() => {
+	execSearchThrottled.cancel();
+});
+
+watch(rawSearchQuery, (value) => {
+	searchSelectedIndex.value = null;
+
+	if (value === '') {
+		// クリア時は即座にメニュー表示へ戻すため、保留中の検索も破棄する
+		execSearchThrottled.cancel({ upcomingOnly: true });
+		searchResult.value = [];
+		return;
+	}
+
+	execSearchThrottled(value);
 });
 
 function searchOnInput(ev: InputEvent) {
@@ -186,7 +232,7 @@ function searchOnKeyDown(ev: KeyboardEvent) {
 
 	if (ev.key === 'Enter' && searchSelectedIndex.value != null) {
 		ev.preventDefault();
-		router.push(searchResult.value[searchSelectedIndex.value].path + '#' + searchResult.value[searchSelectedIndex.value].id);
+		router.pushByPath(searchResult.value[searchSelectedIndex.value].path + '#' + searchResult.value[searchSelectedIndex.value].id);
 	} else if (ev.key === 'ArrowDown') {
 		ev.preventDefault();
 		const current = searchSelectedIndex.value ?? -1;
